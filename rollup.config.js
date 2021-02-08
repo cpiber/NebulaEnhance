@@ -12,6 +12,7 @@ export default glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.
         input: e,
         output: {
             format: 'iife',
+            sourcemap: true,
             file: d
         },
         external: false,

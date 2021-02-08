@@ -8,7 +8,7 @@ This extension aspires to bring some useful features to the [Nebula](https://wat
 
 # Installing
 
-This extension is available on the official addon stores:
+This extension is available on the official add-on stores:
 
 - Firefox: [soon]
 - Chromium: [soon]
