@@ -18,6 +18,8 @@ declare namespace THEOplayer {
         autoplay: boolean;
         playbackRate: number;
         videoTracks: MediaTrackList;
+
+        addEventListener<TType extends StringKeyOf<PlayerEventMap>>(type: TType | TType[], listener: EventListener<PlayerEventMap[TType]>): void;
     }
 
 
@@ -96,6 +98,11 @@ declare namespace THEOplayer {
         update: UpdateQualityEvent;
     }
 
+    // only partially declared
+    interface PlayerEventMap {
+        playing: Event<'playing'>;
+    }
+    
     /**
      * misc
      */
@@ -107,12 +114,16 @@ declare namespace THEOplayer {
         readonly id: number;
         label: string;
         readonly name: string;
+        
+        // unofficial?
+        readonly height: number;
+        readonly width: number;
     }
-
+    
     interface QualityList extends Array<Quality> {
         item(index: number): Quality;
     }
-
+    
     /**
      * types
      */
@@ -122,7 +133,7 @@ declare namespace THEOplayer {
     };
     type StringKeyOf<T> = Extract<keyof T, string>;
     type EventListener<TEvent extends Event> = (event: TEvent) => void;
-
+    
     /**
      * stubs
      */

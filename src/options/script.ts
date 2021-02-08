@@ -3,20 +3,22 @@ import { getBrowserInstance } from "../_shared";
 const els: { [key: string]: HTMLInputElement } = {
     playbackRate: document.querySelector('[name="playbackRate"]'),
     targetQualities: document.querySelector('[name="targetQualities"]'),
+    playbackChange: document.querySelector('[name="playbackChange"]'),
 };
 const local = getBrowserInstance().storage.local;
 
 const toData = (useDefaults = false) => {
-    const data: { [key in keyof typeof els]?: string | string[] } = {};
+    const data: { [key in keyof typeof els]?: string | number | string[] | number[] } = {};
     Object.keys(els).map(key => {
         data[key] = !useDefaults ? els[key].value : els[key].dataset.default;
+        data[key] = els[key].type === "number" ? +data[key] : data[key];
     });
 
     // transforms
     const m = (data.targetQualities as string).match(/^\s*\[(.*)\]\s*/);
     if (m)
         data.targetQualities = m[1]; // remove [] around array
-    data.targetQualities = (data.targetQualities as string).split(',').filter(e => e.trim() !== "").map(e => +e).filter(e => !isNaN(e)).map(e => `${e}`);
+    data.targetQualities = (data.targetQualities as string).split(',').filter(e => e.trim() !== "").map(e => +e).filter(e => !isNaN(e));
     els.targetQualities.value = data.targetQualities.join(', ');
 
     return data;

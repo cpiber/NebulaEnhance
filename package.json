@@ -6,8 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:firefox": "concurrently \"npm:watch:ts\" \"npm:watch:other\" \"npm:ext:firefox\"",
+    "start:chromium": "concurrently \"npm:watch:ts\" \"npm:watch:other\" \"npm:ext:chromium\"",
     "build": "npm run clean && npm run build:ts && npm run build:other && npm run ext",
     "ext:firefox": "web-ext run --source-dir ./extension-dist/ --keep-profile-changes -p dev",
+    "ext:chromium": "web-ext run --source-dir ./extension-dist/ --target chromium",
     "ext": "web-ext build --source-dir ./extension-dist/",
     "watch:ts": "rollup -c rollup.config.js -w",
     "watch:other": "concurrently \"cpx \\\"src/**/*.!(ts)\\\" extension-dist -w\" \"cpx \\\"src/**/*.ts\\\" extension-dist/src -w\"",

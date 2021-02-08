@@ -14,7 +14,7 @@ function injectScript(file: string, node: HTMLElement, friendly?: string, data?:
 
 function c(data: any) {
     // @ts-ignore
-    return cloneInto(data, document.defaultView) || data;
+    return typeof cloneInto !== "undefined" ? cloneInto(data, document.defaultView) : data;
 }
 
 const b = getBrowserInstance();

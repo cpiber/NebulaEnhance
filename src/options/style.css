@@ -9,5 +9,6 @@ body {
 }
 
 .hint {
-  font-size: 75%;
+  display: block;
+  font-size: 85%;
 }
