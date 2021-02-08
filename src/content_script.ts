@@ -30,7 +30,7 @@ const storageSet = (e: CustomEvent) => local.set(e.detail.set, () => replyEvent(
 (async () => {
     if (document.body.classList.contains('enhancer'))
         return;
-    // document.body.classList.add('enhancer');
+    document.body.classList.add('enhancer');
 
     console.log('load');
     document.addEventListener('enhancer-storageGet', storageGet);

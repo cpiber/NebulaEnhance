@@ -25,6 +25,17 @@ The most recent releases are available [here](https://github.com/cpiber/NebulaEn
 More to come. If you have any suggestions, please open a new [issue](https://github.com/cpiber/NebulaEnhance/issues).
 
 
+# Screenshots
+
+Speed dial:
+
+![Speed dial. Scroll to change speed.](static/Screenshot1.png)
+
+Options page:
+
+![Options.](static/Screenshot2.png)
+
+
 # Developing
 
 Please make sure you have [NodeJS](https://nodejs.org/) and it's package manager [npm](https://www.npmjs.com/) installed.
