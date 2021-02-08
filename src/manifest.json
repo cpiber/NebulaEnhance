@@ -1,0 +1,41 @@
+{
+	"manifest_version": 2,
+	"name": "Enhancer for Nebula",
+	"description": "description",
+	"version": "0.0.1",
+	"icons": {
+		"64": "icons/icon.png"
+	},
+	"background": {
+		"scripts": [
+			"background_script.js"
+		]
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"*://*.mozilla.org/*"
+			],
+			"js": [
+				"content_script.js"
+			]
+		}
+	],
+	"browser_action": {
+		"default_icon": {
+			"64": "icons/icon.png"
+		},
+		"default_popup": "browserAction/index.html",
+		"default_title": "Enhancer for Nebula"
+	},
+	"page_action": {
+		"default_icon": {
+			"64": "icons/icon.png"
+		},
+		"default_popup": "pageAction/index.html",
+		"default_title": "Enhancer for Nebula"
+	},
+	"options_ui": {
+		"page": "options/index.html"
+	}
+}
