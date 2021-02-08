@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Enhancer for Nebula",
-	"description": "description",
+	"description": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
 	"version": "0.0.1",
 	"icons": {
 		"64": "icons/icon.png"
@@ -14,28 +14,28 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"*://*.mozilla.org/*"
+				"*://*.player.zype.com/embed/*"
 			],
 			"js": [
 				"content_script.js"
 			]
 		}
 	],
+	"web_accessible_resources": [
+		"zype.js"
+	],
+	"permissions": [
+		"storage"
+	],
 	"browser_action": {
 		"default_icon": {
 			"64": "icons/icon.png"
 		},
-		"default_popup": "browserAction/index.html",
-		"default_title": "Enhancer for Nebula"
-	},
-	"page_action": {
-		"default_icon": {
-			"64": "icons/icon.png"
-		},
-		"default_popup": "pageAction/index.html",
 		"default_title": "Enhancer for Nebula"
 	},
 	"options_ui": {
-		"page": "options/index.html"
+		"page": "options/index.html",
+		"browser_style": true,
+		"chrome_style": true
 	}
 }

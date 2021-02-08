@@ -1,10 +1,17 @@
 {
     "compilerOptions": {
-        "module": "ESNext",
+        "module": "commonjs",
+        "moduleResolution": "node",
         "noImplicitAny": true,
         "removeComments": false,
         "preserveConstEnums": true,
-        "outDir": "extension-dist"
+        "outDir": "extension-dist",
+        "typeRoots": [
+            "./src/types",
+            "node_modules/@types"
+        ],
+        "types": ["chrome"],
+        "lib": ["esnext", "dom"],
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules"]

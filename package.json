@@ -7,11 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:firefox": "concurrently \"npm:watch:ts\" \"npm:watch:other\" \"npm:ext:firefox\"",
     "build": "npm run clean && npm run build:ts && npm run build:other && npm run ext",
-    "ext:firefox": "web-ext run --source-dir ./extension-dist/",
+    "ext:firefox": "web-ext run --source-dir ./extension-dist/ --keep-profile-changes -p dev",
     "ext": "web-ext build --source-dir ./extension-dist/",
-    "watch:ts": "tsc -w --sourceMap",
-    "watch:other": "cpx \"src/**/*.!(ts)\" extension-dist -w",
-    "build:ts": "tsc",
+    "watch:ts": "rollup -c rollup.config.js -w",
+    "watch:other": "concurrently \"cpx \\\"src/**/*.!(ts)\\\" extension-dist -w\" \"cpx \\\"src/**/*.ts\\\" extension-dist/src -w\"",
+    "build:ts": "rollup -c rollup.config.js",
     "build:other": "cpx \"src/**/*.!(ts)\" extension-dist",
     "clean": "rimraf extension-dist"
   },
@@ -23,9 +23,14 @@
   "author": "cpiber",
   "license": "ISC",
   "devDependencies": {
+    "@types/chrome": "0.0.129",
+    "@types/video.js": "^7.3.11",
     "concurrently": "^5.3.0",
     "cpx": "^1.5.0",
+    "glob": "^7.1.6",
     "rimraf": "^3.0.2",
+    "rollup": "^2.38.5",
+    "rollup-plugin-typescript": "^1.0.1",
     "typescript": "^4.1.3",
     "web-ext": "^5.5.0"
   }

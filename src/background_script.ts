@@ -1,1 +1,5 @@
-// Put all the javascript code here, that you want to execute in background.
+import { getBrowserInstance } from "./_shared";
+
+getBrowserInstance().browserAction.onClicked.addListener(function () {
+    getBrowserInstance().runtime.openOptionsPage();
+});

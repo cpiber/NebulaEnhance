@@ -5,7 +5,25 @@
     <link href="style.css" rel="stylesheet" />
   </head>
   <body>
-    <h1 id="myHeading">My content</h1>
+    <form>
+      <h1>Nebula Enhancer Options</h1>
+      <h2>Player</h2>
+      <p>
+        <label>
+          Default playback rate:
+          <input type="number" name="playbackRate" data-default="1" min="0" />
+          <span class="hint">E.g. <code>1.25</code></span>
+        </label>
+      </p>
+      <p>
+        <label>
+          Target qualities:
+          <input name="targetQualities" data-default="" />
+          <span class="hint">E.g. <code>1080, 720</code></span>
+        </label>
+      </p>
+      <button type="submit">Save</button>
+    </form>
     <script src="script.js"></script>
   </body>
 </html>
