@@ -4,7 +4,8 @@
 	"description": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
 	"version": "0.0.1",
 	"icons": {
-		"64": "icons/icon.png"
+		"128": "icons/icon_128.png",
+		"64": "icons/icon_64.png"
 	},
 	"background": {
 		"scripts": [
@@ -30,7 +31,8 @@
 	],
 	"browser_action": {
 		"default_icon": {
-			"64": "icons/icon.png"
+			"128": "icons/icon_128.png",
+			"64": "icons/icon_64.png"
 		},
 		"default_title": "Enhancer for Nebula"
 	},

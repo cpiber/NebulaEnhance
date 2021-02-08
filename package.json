@@ -14,9 +14,9 @@
     "ext:chromium": "web-ext run --source-dir ./extension-dist/ --target chromium",
     "ext": "web-ext build --source-dir ./extension-dist/",
     "watch:ts": "rollup -c rollup.config.js -w",
-    "watch:other": "concurrently \"cpx \\\"src/**/*.!(ts)\\\" extension-dist -w\" \"cpx \\\"src/**/*.ts\\\" extension-dist/src -w\"",
+    "watch:other": "concurrently \"cpx \\\"src/**/*.!(ts|xcf)\\\" extension-dist -w\" \"cpx \\\"src/**/*.ts\\\" extension-dist/src -w\"",
     "build:ts": "rollup -c rollup.config.js",
-    "build:other": "cpx \"src/**/*.!(ts)\" extension-dist",
+    "build:other": "cpx \"src/**/*.!(ts|xcf)\" extension-dist",
     "clean": "rimraf extension-dist"
   },
   "keywords": [
