@@ -38,5 +38,10 @@
 		"page": "options/index.html",
 		"browser_style": true,
 		"chrome_style": true
+	},
+	"browser_specific_settings": {
+	  "gecko": {
+		"id": "nebula-enhancer@piber.at"
+	  }
 	}
 }

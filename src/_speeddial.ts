@@ -19,6 +19,7 @@ const SpeedDial = (playbackRate: number, playbackChange: number) => {
                 updateTooltip();
             };
             const scroll = (e: WheelEvent) => {
+                e.preventDefault();
                 window.theoplayer.playbackRate = Math.round((window.theoplayer.playbackRate - Math.sign(e.deltaY) * playbackChange) * 100) / 100;
                 updateTooltip();
             };
