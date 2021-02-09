@@ -12,7 +12,7 @@ Diese Erweiterung will nützliche Features zur Nebula Seite bringen. Im Moment w
 
 Die Erweiterung ist verfügbar in den offiziellen add-on stores:
 
-- Firefox: [soon]
+- Firefox: [Bei Mozilla holen](https://addons.mozilla.org/en-US/firefox/addon/enhancer-for-nebula/)
 - Chromium: [soon]
 
 Die neuesten Veröffentlichungen sind [hier](https://github.com/cpiber/NebulaEnhance/releases) verfügbar.
@@ -23,6 +23,8 @@ Die neuesten Veröffentlichungen sind [hier](https://github.com/cpiber/NebulaEnh
 - Standard Abspielgeschwindigkeit: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit abzuspielen
 - "Quick dial" für Abspielgeschwindigkeit: Ein neuer Knopf im Videospieler erlaubt es per Mausrad die Geschwindigkeit bequem und schnell zu verändern
 - Zielqualitäten: Erlaubt es, bevorzugte Videoqualität(en) zu setzen
+- Keyboard shortcuts: Tastaturkürzel für einfachere und schnellere Bedienung ([siehe Playback Sektion](https://www.mrfdev.com/youtube-keyboard-shortcuts))
+- Custom scripts: Benutzerdefinierte Scripts, die im iFrame des Videospielers ausgeführt werden
 
 Mehr in Planung. Falls Sie Vorschläge haben, öffnen Sie bitte eine neue [issue](https://github.com/cpiber/NebulaEnhance/issues).
 

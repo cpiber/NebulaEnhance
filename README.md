@@ -13,7 +13,7 @@ This extension aspires to bring some useful features to the [Nebula](https://wat
 
 This extension is available on the official add-on stores:
 
-- Firefox: [soon]
+- Firefox: [Get from Mozilla](https://addons.mozilla.org/en-US/firefox/addon/enhancer-for-nebula/)
 - Chromium: [soon]
 
 The most recent releases are available [here](https://github.com/cpiber/NebulaEnhance/releases).
@@ -24,6 +24,8 @@ The most recent releases are available [here](https://github.com/cpiber/NebulaEn
 - Default playback speed
 - Quick dial to set speed: New button in player allows to increase/decrease speed by scrolling
 - Target qualities: Set the preferred video quality or qualities
+- Keyboard shortcuts: Shortcuts in video player ([see Playback section](https://www.mrfdev.com/youtube-keyboard-shortcuts))
+- Custom scripts: Execute custom JavaScript code in the player's iFrame
 
 More to come. If you have any suggestions, please open a new [issue](https://github.com/cpiber/NebulaEnhance/issues).
 
