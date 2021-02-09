@@ -35,7 +35,7 @@ const init = async () => {
         T.videojs.registerComponent("SpeedDial", SpeedDial(playbackRate, playbackChange));
         t.ui.getChild("controlBar").addChild("SpeedDial", {});
         // custom keyboard shortcuts
-        document.addEventListener('keydown', getPressedKey);
+        document.addEventListener('keydown', getPressedKey.bind(null, playbackChange));
         // give focus to player when no controls are open (allows for better keyboard navigation)
         t.element.parentElement.addEventListener('click', () =>
             t.element.parentElement.querySelectorAll('.vjs-control-bar [aria-expanded="true"]').length === 0 && t.element.focus());
@@ -58,7 +58,7 @@ const isTheoPlayerFocused = function() {
     }
     return false;
 };
-const getPressedKey = (e: KeyboardEvent) => {
+const getPressedKey = (playbackChange: number, e: KeyboardEvent) => {
     if (e.altKey || e.ctrlKey || e.metaKey)
         return;
     const pressedKey = e.key;
@@ -74,6 +74,28 @@ const getPressedKey = (e: KeyboardEvent) => {
         case '.':
             // "frame" forward
             action = () => window.theoplayer.currentTime += 0.03;
+            break;
+        case 'j':
+            action = () => window.theoplayer.currentTime -= 10;
+            break;
+        case 'l':
+            action = () => window.theoplayer.currentTime += 10;
+            break;
+        case '0': case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '8': case '9':
+            window.theoplayer.currentTime = window.theoplayer.duration * (+pressedKey) / 10;
+            break;
+        case 'Home':
+            window.theoplayer.currentTime = 0;
+            break;
+        case 'End':
+            window.theoplayer.currentTime = window.theoplayer.duration;
+            break;
+        case '<':
+            window.theoplayer.playbackRate = Math.round((window.theoplayer.playbackRate - playbackChange) * 100) / 100;
+            break;
+        case '>':
+            window.theoplayer.playbackRate = Math.round((window.theoplayer.playbackRate + playbackChange) * 100) / 100;
             break;
     }
     if (action && isTheoPlayerFocused()) {

@@ -17,6 +17,7 @@ declare namespace THEOplayer {
         constructor(element: HTMLElement, configuration?: PlayerConfiguration);
         autoplay: boolean;
         currentTime: number;
+        duration: number;
         element: HTMLElement;
         playbackRate: number;
         videoTracks: MediaTrackList;
