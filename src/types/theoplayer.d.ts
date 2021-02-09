@@ -16,10 +16,13 @@ declare namespace THEOplayer {
     class ChromelessPlayer {
         constructor(element: HTMLElement, configuration?: PlayerConfiguration);
         autoplay: boolean;
+        currentTime: number;
+        element: HTMLElement;
         playbackRate: number;
         videoTracks: MediaTrackList;
 
         addEventListener<TType extends StringKeyOf<PlayerEventMap>>(type: TType | TType[], listener: EventListener<PlayerEventMap[TType]>): void;
+        removeEventListener<TType extends StringKeyOf<PlayerEventMap>>(type: TType | TType[], listener: EventListener<PlayerEventMap[TType]>): void;
     }
 
 

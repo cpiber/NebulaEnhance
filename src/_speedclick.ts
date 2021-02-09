@@ -10,7 +10,9 @@ const SpeedClick = () => {
             Button.apply(this, arguments);
         },
         handleClick: () => {
-            window.theoplayer.playbackRate = +window.prompt(speed, `${window.theoplayer.playbackRate}`);
+            const r = +window.prompt(speed, `${window.theoplayer.playbackRate}`);
+            if (!isNaN(r))
+                window.theoplayer.playbackRate = r;
         },
         buildCSSClass: function() {
             return SpeedClasses;
