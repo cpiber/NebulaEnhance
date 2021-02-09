@@ -20,3 +20,5 @@ export const sendEvent = <T> (name: string, data?: any) => {
         document.dispatchEvent(new CustomEvent(`enhancer-${name}`, { detail: { name: e, ...data } }));
     });
 }
+
+export const SpeedClasses = "vjs-icon-circle-inner-circle vjs-button vjs-control theo-controlbar-button";

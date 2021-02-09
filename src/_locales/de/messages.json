@@ -46,5 +46,9 @@
     "playerSpeed": {
         "message": "Geschwindigkeit",
         "description": "'Speed' text in scroll dial tooltip."
+    },
+    "playerNewSpeed": {
+        "message": "Neue Geschwindigkeit",
+        "description": "'Speed' text in scroll dial tooltip."
     }
 }

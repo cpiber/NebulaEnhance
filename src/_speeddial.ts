@@ -1,4 +1,4 @@
-import { sendEvent } from "./_shared";
+import { sendEvent, SpeedClasses } from "./_shared";
 
 const SpeedDial = (playbackRate: number, playbackChange: number) => {
     const Button = window.THEOplayer.videojs.getComponent("Button");
@@ -38,7 +38,7 @@ const SpeedDial = (playbackRate: number, playbackChange: number) => {
             window.theoplayer.playbackRate = playbackRate;
         },
         buildCSSClass: function() {
-            return "vjs-icon-circle-inner-circle vjs-button vjs-control theo-controlbar-button";
+            return SpeedClasses;
         }
     });
     return SpeedDial;
