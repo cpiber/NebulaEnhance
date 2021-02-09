@@ -39,6 +39,18 @@
         "message": "Die Höhen der Zielqualitäten des Videos, e.g. <code>1080, 720</code>",
         "description": "Hint for target qualities of options page."
     },
+    "optionsCustomScriptTitle": {
+        "message": "Custom Script",
+        "description": "Label for adding custom scripts to player of options page."
+    },
+    "optionsCustomScriptHint": {
+        "message": "Erlaubt es, benutzerdefinierten JavaScript Code im iFrame des Videospielers auszuführen.",
+        "description": "Label for adding custom scripts to player of options page."
+    },
+    "optionsCustomScriptWarning": {
+        "message": "Achtung! Fügen Sie nur Code aus vertrauenswürdigen Quellen ein!",
+        "description": "Label for adding custom scripts to player of options page."
+    },
     "buttonSave": {
         "message": "Speichern",
         "description": "Common 'save' button"

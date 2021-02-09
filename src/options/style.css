@@ -6,9 +6,29 @@ html, body {
 
 body {
   padding: 12px 24px;
+  margin-bottom: 12px;
+}
+
+.title {
+  display: block;
+  font-size: 110%;
+  margin-top: 24px;
 }
 
 .hint {
   display: block;
   font-size: 85%;
+}
+
+.warning {
+  display: block;
+  padding: 4px;
+  margin: 5px 1px 1px;
+  border-radius: 5px;
+  background-color: #d04444;
+  color: #eee;
+}
+
+textarea {
+  width: 100%;
 }

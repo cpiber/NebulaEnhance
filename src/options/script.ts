@@ -1,9 +1,10 @@
 import { getBrowserInstance } from "../_shared";
 
-const els: { [key: string]: HTMLInputElement } = {
+const els: { [key: string]: HTMLInputElement | HTMLTextAreaElement } = {
     playbackRate: document.querySelector('[name="playbackRate"]'),
     targetQualities: document.querySelector('[name="targetQualities"]'),
     playbackChange: document.querySelector('[name="playbackChange"]'),
+    customScript: document.querySelector('[name="customScript"]'),
 };
 const local = getBrowserInstance().storage.local;
 
@@ -11,7 +12,11 @@ const toData = (useDefaults = false) => {
     const data: { [key in keyof typeof els]?: string | number | string[] | number[] } = {};
     Object.keys(els).map(key => {
         data[key] = !useDefaults ? els[key].value : els[key].dataset.default;
-        data[key] = els[key].type === "number" ? +data[key] : data[key];
+        if (els[key].type === "number") {
+            data[key] = +data[key];
+            if (isNaN(data[key] as number) || data[key] == 0)
+                data[key] = +els[key].dataset.default;
+        }
     });
 
     // transforms

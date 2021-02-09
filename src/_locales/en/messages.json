@@ -39,6 +39,18 @@
         "message": "The (heights of) the qualities to target, e.g. <code>1080, 720</code>",
         "description": "Hint for target qualities of options page."
     },
+    "optionsCustomScriptTitle": {
+        "message": "Custom Script",
+        "description": "Label for adding custom scripts to player of options page."
+    },
+    "optionsCustomScriptHint": {
+        "message": "Allows to add custom JavaScript code to be executed in the player's iFrame.",
+        "description": "Label for adding custom scripts to player of options page."
+    },
+    "optionsCustomScriptWarning": {
+        "message": "Caution! Only insert code from trustworthy sources!",
+        "description": "Label for adding custom scripts to player of options page."
+    },
     "buttonSave": {
         "message": "Save",
         "description": "Common 'save' button"
