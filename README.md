@@ -1,3 +1,6 @@
+[English](README.md) / [Deutsch](README.DE.md)
+
+
 # Enhancer for Nebula
 
 Heavily inspired by [Enhancer for YouTube&trade;](https://www.mrfdev.com/enhancer-for-youtube)
