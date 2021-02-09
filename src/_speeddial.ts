@@ -1,3 +1,5 @@
+import { sendEvent } from "./_shared";
+
 const SpeedDial = (playbackRate: number, playbackChange: number) => {
     const Button = window.THEOplayer.videojs.getComponent("Button");
     // @ts-ignore
@@ -6,9 +8,11 @@ const SpeedDial = (playbackRate: number, playbackChange: number) => {
             Button.apply(this, arguments);
             this.tooltipSpan = document.createElement("span");
             this.tooltipSpan.className = "theo-button-tooltip vjs-hidden";
+            let speed = '';
+            sendEvent('getMessage', { message: 'playerSpeed' }).then((message: string) => speed = message);
             const updateTooltip = () => {
                 setTimeout(() => {
-                    this.tooltipSpan.innerText = `Speed: ${window.theoplayer.playbackRate}`;
+                    this.tooltipSpan.innerText = `${speed}: ${window.theoplayer.playbackRate}`;
                     const c = window.getComputedStyle(this.tooltipSpan, null);
                     const w = (+c.getPropertyValue('width').slice(0, -2)) - parseFloat(c.paddingLeft) - parseFloat(c.paddingRight);
                     this.tooltipSpan.style.left = `${-w / 2}px`;

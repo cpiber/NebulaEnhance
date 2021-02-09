@@ -1,0 +1,50 @@
+{
+    "title": {
+        "message": "Enhancer for Nebula",
+        "description": "Name/Title of the extension."
+    },
+    "extensionDescription": {
+        "message": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
+        "description": "Description of the extension."
+    },
+    "optionsTitle": {
+        "message": "Nebula Enhancer Options",
+        "description": "Title of options page."
+    },
+    "optionsTitlePlayer": {
+        "message": "Player",
+        "description": "Title for the player subsection of options page."
+    },
+    "optionsDefaultPlaybackRateTitle": {
+        "message": "Default playback rate",
+        "description": "Label for default playbackRate of options page."
+    },
+    "optionsDefaultPlaybackRateHint": {
+        "message": "The speed the player will be set to initially, e.g. <code>1.25</code>",
+        "description": "Hint for default playbackRate of options page."
+    },
+    "optionsPlaybackChangeRateTitle": {
+        "message": "Playback speed change rate",
+        "description": "Label for speed change rate of options page."
+    },
+    "optionsPlaybackChangeRateHint": {
+        "message": "The amount to change the speed when scrolling over the new speed button, e.g. <code>0.1</code>",
+        "description": "Hint for speed change rate of options page."
+    },
+    "optionsTargetQualitiesTitle": {
+        "message": "Target qualities",
+        "description": "Label for target qualities of options page."
+    },
+    "optionsTargetQualitiesHint": {
+        "message": "The (heights of) the qualities to target, e.g. <code>1080, 720</code>",
+        "description": "Hint for target qualities of options page."
+    },
+    "buttonSave": {
+        "message": "Save",
+        "description": "Common 'save' button"
+    },
+    "playerSpeed": {
+        "message": "Speed",
+        "description": "'Speed' text in scroll dial tooltip."
+    }
+}

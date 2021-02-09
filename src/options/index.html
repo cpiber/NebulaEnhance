@@ -7,30 +7,30 @@
   </head>
   <body>
     <form>
-      <h1>Nebula Enhancer Options</h1>
-      <h2>Player</h2>
+      <h1 class="i18n">__MSG_optionsTitle__</h1>
+      <h2 class="i18n">__MSG_optionsTitlePlayer__</h2>
       <p>
         <label>
-          Default playback rate:
+          <span class="i18n">__MSG_optionsDefaultPlaybackRateTitle__:</span>
           <input type="number" name="playbackRate" data-default="1" min="0" step="0.01" size="5" />
-          <span class="hint">The speed the player will be set to initially, e.g. <code>1.25</code></span>
+          <span class="hint i18n">__MSG_optionsDefaultPlaybackRateHint__</span>
         </label>
       </p>
       <p>
         <label>
-          Playback speed change rate:
+          <span class="i18n">__MSG_optionsPlaybackChangeRateTitle__:</span>
           <input type="number" name="playbackChange" data-default="0.1" step="0.005" size="5" />
-          <span class="hint">The amount to change the speed when scrolling over the new speed button, e.g. <code>0.1</code></span>
+          <span class="hint i18n">__MSG_optionsPlaybackChangeRateHint__</span>
         </label>
       </p>
       <p>
         <label>
-          Target qualities:
+          <span class="i18n">__MSG_optionsTargetQualitiesTitle__:</span>
           <input name="targetQualities" data-default="" />
-          <span class="hint">The (heights of) the qualities to target, e.g. <code>1080, 720</code></span>
+          <span class="hint i18n">__MSG_optionsTargetQualitiesHint__</span>
         </label>
       </p>
-      <button type="submit">Save</button>
+      <button type="submit" class="i18n">__MSG_buttonSave__</button>
     </form>
     <script src="script.js"></script>
   </body>

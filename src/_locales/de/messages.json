@@ -1,0 +1,50 @@
+{
+    "title": {
+        "message": "Enhancer for Nebula",
+        "description": "Name/Title of the extension."
+    },
+    "extensionDescription": {
+        "message": "Enhancer for Nebula. Fügt einige nützliche Features zum Nebula Videospieler hinzu.",
+        "description": "Description of the extension."
+    },
+    "optionsTitle": {
+        "message": "Nebula Enhancer Optionen",
+        "description": "Title of options page."
+    },
+    "optionsTitlePlayer": {
+        "message": "Videospieler",
+        "description": "Title for the player subsection of options page."
+    },
+    "optionsDefaultPlaybackRateTitle": {
+        "message": "Standard Abspielgeschwindigkeit",
+        "description": "Label for default playbackRate of options page."
+    },
+    "optionsDefaultPlaybackRateHint": {
+        "message": "Die Abspielgeschwindigkeit (Speed) zu der der Videospieler zu Beginn gesetzt wird, z.B. <code>1.25</code>",
+        "description": "Hint for default playbackRate of options page."
+    },
+    "optionsPlaybackChangeRateTitle": {
+        "message": "Geschwindigkeits-Änderungsrate",
+        "description": "Label for speed change rate of options page."
+    },
+    "optionsPlaybackChangeRateHint": {
+        "message": "Um wieviel die Geschwindigkeit geändert werden soll beim scrollen der Maus über dem neuen Speed Knopf, z.B. <code>0.1</code>",
+        "description": "Hint for speed change rate of options page."
+    },
+    "optionsTargetQualitiesTitle": {
+        "message": "Zielqualitäten",
+        "description": "Label for target qualities of options page."
+    },
+    "optionsTargetQualitiesHint": {
+        "message": "Die Höhen der Zielqualitäten des Videos, e.g. <code>1080, 720</code>",
+        "description": "Hint for target qualities of options page."
+    },
+    "buttonSave": {
+        "message": "Speichern",
+        "description": "Common 'save' button"
+    },
+    "playerSpeed": {
+        "message": "Geschwindigkeit",
+        "description": "'Speed' text in scroll dial tooltip."
+    }
+}

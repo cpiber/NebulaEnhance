@@ -1,21 +1,7 @@
+import { sendEvent } from "./_shared";
 import SpeedClick from "./_speedclick";
 import SpeedDial from "./_speeddial";
 
-const sendEvent = <T> (name: string, data?: any) => {
-    return new Promise<T> ((resolve, reject) => {
-        const e = `enhancer-event-${Math.random().toString().substr(2, 8)}`;
-        const c = (ev: CustomEvent) => {
-            console.log(ev.detail);
-            document.removeEventListener(e, c);
-            if (ev.detail.err)
-                reject(ev.detail.err)
-            else
-                resolve(ev.detail.res);
-        };
-        document.addEventListener(e, c);
-        document.dispatchEvent(new CustomEvent(`enhancer-${name}`, { detail: { name: e, ...data } }));
-    });
-}
 const getFromStorage = <T>(key: string | string[] | { [key: string]: any }) => sendEvent<T>('storageGet', { get: key });
 
 const init = async () => {
@@ -28,13 +14,13 @@ const init = async () => {
         playbackChange: 0.1,
         targetQualities: []
     });
-    console.log(playbackRate, playbackChange, targetQualities);
+    console.debug(playbackRate, playbackChange, targetQualities);
 
     window.theoplayer.playbackRate = playbackRate;
     window.theoplayer.addEventListener('playing', () => window.theoplayer.videoTracks[0].targetQuality = targetQualities.map(h => window.theoplayer.videoTracks[0].qualities.find(q => q.height == h)).filter(q => q !== undefined));
     
     const android = await sendEvent<boolean>('isAndroid');
-    console.log(android);
+    console.debug(android ? 'Android' : 'Other');
     if (!android) {
         window.THEOplayer.videojs.registerComponent("SpeedDial", SpeedDial(playbackRate, playbackChange));
         window.theoplayer.ui.getChild("controlBar").addChild("SpeedDial", {});
@@ -50,7 +36,7 @@ const init = async () => {
     document.body.classList.add('enhancer-zype');
 
     const waitForTheo = () => {
-        console.log('waiting');
+        console.debug('waiting');
         if (!window.theoplayer)
             return;
         clearInterval(int);

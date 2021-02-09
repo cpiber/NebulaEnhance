@@ -40,5 +40,11 @@ form.addEventListener('submit', e => {
 });
 Array.from(form.querySelectorAll('input')).forEach(e => e.addEventListener('focusout', save)); // autosave
 
+// load translations
+Array.from(document.querySelectorAll('.i18n')).forEach(e => {
+    e.innerHTML = e.innerHTML.replace(/__MSG_(.+)__/g, (...args) => getBrowserInstance().i18n.getMessage(args[1]));
+    e.classList.remove('i18n');
+});
+
 // load initial values from storage
 load(true);

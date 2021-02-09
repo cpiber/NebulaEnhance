@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
-	"name": "Enhancer for Nebula",
-	"description": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
+	"name": "__MSG_title__",
+	"description": "__MSG_extensionDescription__",
 	"version": "0.0.1",
 	"icons": {
 		"128": "icons/icon_128.png",
@@ -34,7 +34,7 @@
 			"128": "icons/icon_128.png",
 			"64": "icons/icon_64.png"
 		},
-		"default_title": "Enhancer for Nebula"
+		"default_title": "__MSG_title__"
 	},
 	"options_ui": {
 		"page": "options/index.html",
@@ -45,5 +45,6 @@
 	  "gecko": {
 		"id": "nebula-enhancer@piber.at"
 	  }
-	}
+	},
+	"default_locale": "en"
 }
