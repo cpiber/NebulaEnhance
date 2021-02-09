@@ -1,8 +1,9 @@
 'use strict';
 
 import 'rollup';
-import typescript from 'rollup-plugin-typescript';
+import typescript from '@rollup/plugin-typescript';
 import nodeResolve from '@rollup/plugin-node-resolve';
+import { terser } from "rollup-plugin-terser";
 import glob from 'glob';
 
 export default glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.ts' ] }).map(e => {
@@ -13,14 +14,17 @@ export default glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.
         input: e,
         output: {
             format: 'iife',
-            sourcemap: true,
+            sourcemap: !process.env.BUILD,
             file: d
         },
         external: false,
         context: "window",
         plugins: [
-            typescript(),
-            nodeResolve()
+            typescript({
+                tsconfig: process.env.BUILD ? "./tsconfig.prod.json" : "./tsconfig.json",
+            }),
+            nodeResolve(),
+            process.env.BUILD && terser({ format: { comments: false } })
         ]
     };
 });

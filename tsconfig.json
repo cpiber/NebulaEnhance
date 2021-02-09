@@ -1,11 +1,10 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "esnext",
         "moduleResolution": "node",
         "noImplicitAny": true,
         "removeComments": false,
         "preserveConstEnums": true,
-        "outDir": "extension-dist",
         "typeRoots": [
             "./src/types",
             "node_modules/@types"
