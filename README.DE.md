@@ -35,7 +35,7 @@ Speed dial:
 
 Optionen Seite:
 
-![Options.](static/Screenshot2.png)
+![Options.](static/Screenshot2_de.png)
 
 
 # Entwickeln
