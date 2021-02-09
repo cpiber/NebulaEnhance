@@ -1,20 +1,16 @@
 import { getBrowserInstance } from "./_shared";
 
 function isAndroid() {
-    return new Promise<boolean>((resolve, reject) => {
-        getBrowserInstance().runtime.getPlatformInfo(function (information) {
-            console.debug(information);
-            // @ts-ignore
-            resolve(information.os === chrome.runtime.PlatformOs.ANDROID);
-        });
-    });
+    return getBrowserInstance().runtime.getPlatformInfo().then(information => information.os === getBrowserInstance().runtime.PlatformOs.ANDROID);
 }
 
 getBrowserInstance().browserAction.onClicked.addListener(async function () {
     const android = await isAndroid();
+    // Avoid blank page in firefox android
+    // Taken from https://git.synz.io/Synzvato/decentraleyes/-/blob/master/pages/popup/popup.js#L391
     if (android) {
         getBrowserInstance().tabs.create({
-            'url': chrome.runtime.getURL('options/index.html'),
+            'url': getBrowserInstance().runtime.getURL('options/index.html'),
             'active': true
         });
     } else {
@@ -22,12 +18,10 @@ getBrowserInstance().browserAction.onClicked.addListener(async function () {
     }
 });
 
-getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [key: string]: any }, sender, sendResponse) => {
+getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: string]: any }, sender, sendResponse) => {
     if (typeof message === "string") message = { type: message };
     switch (message.type) {
         case "isAndroid":
-            const android = await isAndroid();
-            sendResponse({ response: android });
-            return android;
+            return isAndroid();
     }
 });

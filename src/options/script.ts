@@ -25,7 +25,7 @@ const toData = (useDefaults = false) => {
 }
 
 const save = () => local.set(toData());
-const load = (doSave = false) => local.get(toData(true), data => {
+const load = (doSave = false) => local.get(toData(true)).then(data => {
     for (const prop in els) 
         els[prop].value = data[prop];
     els.targetQualities.value = (data.targetQualities as string[]).join(', ');

@@ -1,4 +1,4 @@
-import { sendEvent } from "./_shared";
+import { sendEvent } from "./_sharedPage";
 import SpeedClick from "./_speedclick";
 import SpeedDial from "./_speeddial";
 
@@ -20,7 +20,7 @@ const init = async () => {
     window.theoplayer.addEventListener('playing', () => window.theoplayer.videoTracks[0].targetQuality = targetQualities.map(h => window.theoplayer.videoTracks[0].qualities.find(q => q.height == h)).filter(q => q !== undefined));
     
     const android = await sendEvent<boolean>('isAndroid');
-    console.debug(android ? 'Android' : 'Other');
+    console.debug(android, android ? 'Android' : 'Other');
     if (!android) {
         window.THEOplayer.videojs.registerComponent("SpeedDial", SpeedDial(playbackRate, playbackChange));
         window.theoplayer.ui.getChild("controlBar").addChild("SpeedDial", {});

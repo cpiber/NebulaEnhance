@@ -2,6 +2,7 @@
 
 import 'rollup';
 import typescript from 'rollup-plugin-typescript';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import glob from 'glob';
 
 export default glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.ts' ] }).map(e => {
@@ -16,8 +17,10 @@ export default glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.
             file: d
         },
         external: false,
+        context: "window",
         plugins: [
-            typescript()
+            typescript(),
+            nodeResolve()
         ]
     };
 });

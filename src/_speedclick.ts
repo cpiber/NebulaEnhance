@@ -1,4 +1,4 @@
-import { sendEvent, SpeedClasses } from "./_shared";
+import { sendEvent, SpeedClasses } from "./_sharedPage";
 
 const SpeedClick = () => {
     const Button = window.THEOplayer.videojs.getComponent("Button");
