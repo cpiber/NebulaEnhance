@@ -36,10 +36,10 @@ const local = b.storage.local;
 
 // handle messaging with injected script(s)
 const replyEvent = (e: CustomEvent, data: any, err?: any) => document.dispatchEvent(new CustomEvent(e.detail.name, { detail: c({ res: data, err: err }) }));
-const storageGet = (e: CustomEvent) => local.get(e.detail.get as Object).then(r => replyEvent(e, typeof e.detail.get == 'string' ? r[e.detail.get] : r), (r: any) => replyEvent(e, null, r));
-const storageSet = (e: CustomEvent) => local.set(e.detail.set as null).then(() => replyEvent(e, null), (r: any) => replyEvent(e, null, r));
+const storageGet = (e: CustomEvent) => local.get(e.detail.get).then(r => replyEvent(e, typeof e.detail.get == 'string' ? r[e.detail.get] : r), (r: any) => replyEvent(e, null, r));
+const storageSet = (e: CustomEvent) => local.set(e.detail.set).then(() => replyEvent(e, null), (r: any) => replyEvent(e, null, r));
 const getMessage = (e: CustomEvent) => replyEvent(e, b.i18n.getMessage(e.detail.message, e.detail.substitutions));
-const getAndroid = (e: CustomEvent) => b.runtime.sendMessage("isAndroid" as null).then((m: any) => replyEvent(e, m));
+const getAndroid = (e: CustomEvent) => b.runtime.sendMessage("isAndroid").then((m: any) => replyEvent(e, m));
 
 
 

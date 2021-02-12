@@ -1,7 +1,7 @@
 import { getBrowserInstance } from "./_shared";
 
 function isAndroid() {
-    return getBrowserInstance().runtime.getPlatformInfo().then(information => information.os === getBrowserInstance().runtime.PlatformOs.ANDROID);
+    return getBrowserInstance().runtime.getPlatformInfo().then(information => information.os === 'android');
 }
 
 getBrowserInstance().browserAction.onClicked.addListener(async function () {

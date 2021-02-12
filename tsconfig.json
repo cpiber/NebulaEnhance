@@ -9,7 +9,6 @@
             "./src/types",
             "node_modules/@types"
         ],
-        "types": ["chrome"],
         "lib": ["esnext", "dom"],
     },
     "include": ["src/**/*"],
