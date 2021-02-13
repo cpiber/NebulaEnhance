@@ -31,7 +31,8 @@
 		"scripts/pages/zype/zype.js"
 	],
 	"permissions": [
-		"storage"
+		"storage",
+		"*://api.zype.com/*"
 	],
 	"browser_action": {
 		"default_icon": {
