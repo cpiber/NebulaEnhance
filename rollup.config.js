@@ -2,6 +2,7 @@
 
 import 'rollup';
 import typescript from '@rollup/plugin-typescript';
+import { string } from "rollup-plugin-string";;
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { terser } from "rollup-plugin-terser";
 import glob from 'glob';
@@ -22,6 +23,9 @@ export default glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.
         plugins: [
             typescript({
                 tsconfig: process.env.BUILD ? "./tsconfig.prod.json" : "./tsconfig.json",
+            }),
+            string({
+                include: "**/*.svg"
             }),
             nodeResolve(),
             process.env.BUILD && terser({ format: { comments: false } })

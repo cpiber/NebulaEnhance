@@ -1,3 +1,4 @@
+import { nebula } from "./_nebula";
 import { getBrowserInstance } from "./_shared";
 
 function injectScript(node: HTMLElement, content: string, friendly?: string, data?: any): Promise<void>;
@@ -43,7 +44,8 @@ const getAndroid = (e: CustomEvent) => b.runtime.sendMessage("isAndroid").then((
 
 
 
-(async () => {
+(() => {
+    console.debug('load');
     if (document.body.classList.contains('enhancer'))
         return;
     document.body.classList.add('enhancer');
@@ -53,10 +55,21 @@ const getAndroid = (e: CustomEvent) => b.runtime.sendMessage("isAndroid").then((
     document.addEventListener('enhancer-getMessage', getMessage);
     document.addEventListener('enhancer-isAndroid', getAndroid);
 
+    switch (document.location.host) {
+        case "zype.com":
+            zype();
+            break;
+        case "watchnebula.com":
+            nebula();
+            break;
+    }
+})();
+
+const zype = async () => {
     // inject extension's script
     await injectScript(b.runtime.getURL('/zype.js'), document.body);
     // inject custom script (if available)
     const s = (await local.get({ customScript: '' })).customScript;
     if (s)
         injectScript(document.body, s);
-})();
+};

@@ -4,17 +4,18 @@ import SpeedDial from "./_speeddial";
 
 const getFromStorage = <T>(key: string | string[] | { [key: string]: any }) => sendEvent<T>('storageGet', { get: key });
 
+const defaults = {
+    playbackRate: 1,
+    playbackChange: 0.1,
+    targetQualities: [] as number[]
+};
 const init = async () => {
     const t = window.theoplayer, T = window.THEOplayer;
     const {
         playbackRate,
         playbackChange,
         targetQualities,
-    } = await getFromStorage<{ playbackRate: number, playbackChange: number, targetQualities: number[] }>({
-        playbackRate: 1,
-        playbackChange: 0.1,
-        targetQualities: []
-    });
+    } = await getFromStorage<typeof defaults>(defaults);
     console.debug(playbackRate, playbackChange, targetQualities);
 
     // set playbackRate (auto-updates)
