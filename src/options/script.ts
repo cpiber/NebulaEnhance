@@ -1,4 +1,4 @@
-import { getBrowserInstance } from "../_shared";
+import { getBrowserInstance } from "../scripts/_shared";
 
 const els: { [key: string]: HTMLInputElement | HTMLTextAreaElement } = {
     playbackRate: document.querySelector('[name="playbackRate"]'),

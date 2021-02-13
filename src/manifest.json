@@ -9,7 +9,7 @@
 	},
 	"background": {
 		"scripts": [
-			"background_script.js"
+			"scripts/background_script.js"
 		]
 	},
 	"content_scripts": [
@@ -19,16 +19,16 @@
 				"*://watchnebula.com/*"
 			],
 			"js": [
-				"content_script.js"
+				"scripts/content_script.js"
 			],
 			"css": [
-				"content.css"
+				"styles/content.css"
 			],
 			"all_frames": true
 		}
 	],
 	"web_accessible_resources": [
-		"zype.js"
+		"scripts/pages/zype/zype.js"
 	],
 	"permissions": [
 		"storage"

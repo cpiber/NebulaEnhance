@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rollup -c rollup.config.js && npm run build:other",
     "start": "concurrently \"npm:watch:ts\" \"npm:watch:other\"",
-    "start:firefox": "concurrently \"npm:watch:ts\" \"npm:watch:other\" \"npm:ext:firefox\"",
-    "start:chromium": "concurrently \"npm:watch:ts\" \"npm:watch:other\" \"npm:ext:chromium\"",
+    "start:firefox": "npm run prebuild && concurrently \"npm:watch:ts\" \"npm:watch:other\" \"npm:ext:firefox\"",
+    "start:chromium": "npm run prebuild && concurrently \"npm:watch:ts\" \"npm:watch:other\" \"npm:ext:chromium\"",
     "build": "npm run clean && npm run build:ts && npm run build:other && npm run ext",
     "ext:firefox": "web-ext run --source-dir ./extension-dist/ --keep-profile-changes -p dev",
     "ext:android": "web-ext run --source-dir ./extension-dist/ --target firefox-android --keep-profile-changes -p dev",

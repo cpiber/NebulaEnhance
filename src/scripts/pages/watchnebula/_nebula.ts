@@ -1,5 +1,5 @@
 const videoselector = 'a[href^="/videos/"]';
-import svg from "./icons/watchlater.svg";
+import svg from "./../../../icons/watchlater.svg";
 
 export const nebula = () => {
     console.log('nebula', document.body);
