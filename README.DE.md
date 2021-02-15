@@ -44,6 +44,7 @@ Optionen Seite:
 
 Stellen Sie bitte sicher, dass Sie [NodeJS](https://nodejs.org/) und dessen package manager [npm](https://www.npmjs.com/) installiert haben.
 
-- Abhängigkeiten installieren: `npm install`
-- Entwickeln: In Firefox `npm run start:firefox` / In Chromium `npm run start:chromium`
-- Builden: `npm run build`
+- pnpm installieren: `npm install -g pnpm`
+- Abhängigkeiten installieren: `pnpm install`
+- Entwickeln: In Firefox `pnpm run start:firefox` / In Chromium `pnpm run start:chromium`
+- Builden: `pnpm run build`

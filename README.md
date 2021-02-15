@@ -45,6 +45,7 @@ Options page:
 
 Please make sure you have [NodeJS](https://nodejs.org/) and it's package manager [npm](https://www.npmjs.com/) installed.
 
-- Install dependencies: `npm install`
-- Develop: In Firefox `npm run start:firefox` / In Chromium `npm run start:chromium`
-- Build: `npm run build`
+- Install pnpm: `npm install -g pnpm`
+- Install dependencies: `pnpm install`
+- Develop: In Firefox `pnpm run start:firefox` / In Chromium `pnpm run start:chromium`
+- Build: `pnpm run build`
