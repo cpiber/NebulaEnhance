@@ -9,8 +9,11 @@ export type video = {
 
 const store: { [key: string]: video } = {};
 const queue: string[] = [];
-let queuepos = 0;
+let queuepos = -1;
+let popupel: HTMLElement = null;
 let queueel: HTMLElement = null;
+let titleel: HTMLElement = null;
+let quenoel: HTMLElement = null;
 
 export async function addToStore(name: string, length: string, thumbnail: string, title: string, creator: string): Promise<void>;
 export async function addToStore(name: string): Promise<void>;
@@ -20,6 +23,7 @@ export async function addToStore(name: string, ...args: any[]) {
     const [ length, thumbnail, title, creator ] = args.length === 4 ? args : await requestData(name);
     store[name] = { length, thumbnail, title, creator };
 }
+export const isEmptyQueue = () => queue.length === 0;
 export const enqueue = (name: string, pos?: number) => {
     if (!store[name])
         throw "Not in store!";
@@ -27,60 +31,97 @@ export const enqueue = (name: string, pos?: number) => {
         queue.splice(pos, 0, name);
     else
         queue.splice(queue.length, 0, name);
-    console.log(queue);
+    popupel.classList.remove('hidden');
+    calcBottom(popupel.classList.contains('down'));
 };
 export const enqueueNow = (name: string) => {
     if (!name)
         throw "Not in store!";
-    queue.splice(queuepos + 1, 0, name);
-    console.log(queue);
+    if (queue[queuepos] !== name && queue[queuepos + 1] !== name)
+        enqueue(name, queuepos + 1);
 }
 export const removeFromQueue = (index: number) => {
+    console.log(index, queuepos, queue);
+    if (index < 0 || index >= queue.length) return;
+    if (queue.length === 1) return clearQueue();
     queue.splice(index, 1);
-    console.log(queue);
+    if (queuepos >= 0 && index <= queuepos) {
+        --queuepos;
+        updateText();
+    }
 }
-export const gotoQueue = (index: number) => {
+export const gotoQueue = (index: number, go=true) => {
+    console.log(index, queue);
+    if (index < 0 || index >= queue.length) return;
     queueel?.children[queuepos]?.classList.remove('playing');
     queuepos = index;
-    const url = `/videos/${queue[index]}`;
-    // trick router into accepting my url without reloading page
-    window.history.pushState(null, null, url);
-    window.history.pushState(null, null, url);
-    window.history.back();
+    if (go) {
+        const url = `/videos/${queue[index]}`;
+        // trick router into accepting my url without reloading page
+        // if previously tricked, need to undo that (to avoid broken history)
+        if (history.state?.fake === true)
+            window.history.back();
+        setTimeout(() => {
+            window.history.pushState({ fake: true }, null, url);
+            window.dispatchEvent(new PopStateEvent("popstate"));
+        }, 0);
+    }
     queueel?.children[index]?.classList.add('playing');
-    console.log(queuepos);
+    updateText();
 }
 export const gotoNextInQueue = () => gotoQueue(queuepos + 1);
+export const clearQueue = () => {
+    queuepos = -1;
+    queue.splice(0, queue.length);
+    clearText();
+    popupel.classList.add('hidden');
+    setTimeout(() => popupel.classList.remove('down'), 0);
+};
+export const toggleQueue = () => calcBottom(popupel.classList.toggle('down'));
 
 
 export const init = () => {
     // remove existing elements from extension reload
-    Array.from(document.querySelectorAll('.enhancer-queue')).forEach(e => e.remove());
+    Array.from(document.querySelectorAll('.enhancer-queue')).forEach(n => n.remove());
 
     const q = document.createElement('div');
-    q.className = 'enhancer-queue';
+    popupel = q;
+    q.className = 'enhancer-queue hidden';
     q.innerHTML = `
-        <div class="top"></div>
-        <div class="elements"></div>
+        <div class="enhancer-queue-inner">
+            <div class="top">
+                <div class="current"><span class="title">Nothing to play</span><span class="no">-</span> / <span class="of">0</span></div>
+                <div class="close">&times;</div>
+            </div>
+            <div class="elements"></div>
+        </div>
     `;
-    const e = q.querySelector('.elements') as HTMLElement;
+    const e: HTMLElement = q.querySelector('.elements');
     queueel = e;
-    document.body.appendChild(q);
+    const o: HTMLElement = q.querySelector('.of');
+    titleel = q.querySelector('.title');
+    quenoel = q.querySelector('.no');
+    document.body.append(q);
 
     queue.splice = (start: number, count: number, ...elements: string[]) => {
         start = start < 0 ? queue.length - start : start;
         start = start < 0 ? 0 : start > queue.length ? queue.length : start;
         const end = start + count > queue.length ? queue.length : start + count;
         let s = start > 0 ? e.children[start-1] : null;
-        for (let i = start; i < end; i++)
+        for (let i = end - 1; i >= start; i--)
             e.children[i].remove();
         for (let el of elements) {
             const node = insertChild(el);
-            s = s === null ? e.appendChild(node) : (s.after(node), node);
+            s === null ? e.firstChild === null ? e.append(node) : e.firstChild.before(node) : s.after(node);
+            s = node;
         }
-        return Array.prototype.splice.call(queue, start, count, ...elements);
+        const del = Array.prototype.splice.call(queue, start, count, ...elements);
+        o.textContent = `${queue.length}`;
+        return del;
     };
     e.addEventListener('click', clickElements);
+    q.querySelector('.top').addEventListener('click', toggleQueue);
+    q.querySelector('.close').addEventListener('click', clearQueue);
     window.addEventListener('message', msg);
 };
 const clickElements = (e: MouseEvent) => {
@@ -88,15 +129,37 @@ const clickElements = (e: MouseEvent) => {
     if (el === null)
         return;
     e.preventDefault();
-    const i = Array.from(el.parentElement.children).findIndex(e => e.isSameNode(el));
-    gotoQueue(i);
+    const i = Array.from(el.parentElement.children).findIndex(n => n.isSameNode(el));
+    if (i === -1)
+        return;
+    const r = (e.target as HTMLElement).closest('.r');
+    if (r === null)
+        gotoQueue(i);
+    else
+        removeFromQueue(i);
 };
 const msg = (e: MessageEvent) => {
     if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")
         return;
-    const m = JSON.parse(e.data);
-    if (m.event === "zype:complete") gotoNextInQueue();
-}
+    try {
+        const m = JSON.parse(e.data);
+        if (m.event === "zype:complete") gotoNextInQueue();
+    } catch {}
+};
+const updateText = () => {
+    titleel.textContent = store[queue[queuepos]]?.title;
+    quenoel.textContent = queuepos >= 0 ? `${queuepos + 1}` : '-';
+};
+const clearText = () => {
+    titleel.textContent = 'Nothing to play';
+    quenoel.textContent = '-';
+};
+const calcBottom = (down: boolean) => {
+    if (down)
+        popupel.style.bottom = `-${queueel.getBoundingClientRect().height}px`;
+    else
+        popupel.style.bottom = '';
+};
 
 
 type thumb = {
@@ -144,6 +207,7 @@ const insertChild = (name: string): HTMLElement => {
             <span class="title">${store[name].title}</span>
             <span class="creator">${store[name].creator} • ${store[name].length}</span>
         </div>
+        <div class="remove"><span class="r">&#128465;</span></div>
     `;
     return n;
 };

@@ -20,6 +20,10 @@ Die neuesten Veröffentlichungen sind [hier](https://github.com/cpiber/NebulaEnh
 
 # Features
 
+**Seite**
+- Queue: Füge Videos einfach zu einer Warteschlange hinzu
+
+**Videospieler**
 - Standard Abspielgeschwindigkeit: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit abzuspielen
 - "Quick dial" für Abspielgeschwindigkeit: Ein neuer Knopf im Videospieler erlaubt es per Mausrad die Geschwindigkeit bequem und schnell zu verändern
 - Zielqualitäten: Erlaubt es, bevorzugte Videoqualität(en) zu setzen
@@ -44,7 +48,7 @@ Optionen Seite:
 
 Stellen Sie bitte sicher, dass Sie [NodeJS](https://nodejs.org/) und dessen package manager [npm](https://www.npmjs.com/) installiert haben.
 
-- pnpm installieren: `npm install -g pnpm`
+- [pnpm](https://github.com/pnpm/pnpm) installieren: `npm install -g pnpm`
 - Abhängigkeiten installieren: `pnpm install`
 - Entwickeln: In Firefox `pnpm run start:firefox` / In Chromium `pnpm run start:chromium`
 - Builden: `pnpm run build`

@@ -2,9 +2,9 @@
 
 import 'rollup';
 import typescript from '@rollup/plugin-typescript';
-import { string } from "rollup-plugin-string";;
+import { string } from 'rollup-plugin-string';
 import nodeResolve from '@rollup/plugin-node-resolve';
-import { terser } from "rollup-plugin-terser";
+import { terser } from 'rollup-plugin-terser';
 import glob from 'glob';
 
 export default glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.ts' ] }).map(e => {

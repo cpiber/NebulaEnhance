@@ -14,7 +14,7 @@
     height: 19px;
     padding: 3px;
     fill: white;
-    fill: var(--font-color);
+    fill: currentColor;
     transition: width 0.1s ease-in-out, height 0.1s ease-in-out;
     pointer-events: initial;
 }
@@ -27,20 +27,68 @@
 .enhancer-queue {
     position: fixed;
     bottom: 0;
-    right: 0;
+    right: 15px;
     width: 360px;
+    transition: bottom 0.1s ease-in-out;
+}
+.enhancer-queue, .enhancer-queue-inner {
+    margin: 1px;
+    margin-bottom: 0px;
     background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
-    background-color: #111;
-    background-blend-mode: multiply;
+    background-color: #333;
+    background-blend-mode: difference;
     border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     overflow: hidden;
 }
+.enhancer-queue::before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
+    background-color: #aaa;
+    background-blend-mode: difference;
+    z-index: -1;
+}
+.enhancer-queue.hidden {
+    display: none;
+}
+.enhancer-queue .top {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 8px 12px;
+    font-size: 12px;
+}
+.enhancer-queue .top .current {
+    width: 100%;
+    overflow: hidden;
+}
+.enhancer-queue .top .title {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+}
+.enhancer-queue .top .close {
+    padding: 8px;
+    padding-right: 2px;
+    cursor: pointer;
+}
+.enhancer-queue .elements {
+    max-height: 270px;
+    overflow: hidden auto;
+}
 .enhancer-queue .element {
+    position: relative;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-}
-.enhancer-queue .element:hover {
     cursor: pointer;
 }
 .enhancer-queue .element img {
@@ -56,8 +104,8 @@
     overflow: hidden;
 }
 .enhancer-queue .element .data .title {
-    font-size: 16px;
-    max-height: 48px;
+    font-size: 14px;
+    max-height: 42px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical; 
@@ -89,11 +137,13 @@
     width: 100%;
     height: 100%;
     padding: 10px;
+    fill: var(--bg-color);
 }
 .enhancer-queue .element.playing .thumb .play {
     display: block;
+    overflow: hidden;
 }
-.enhancer-queue .element.playing .thumb::after {
+.enhancer-queue .element.playing .thumb::before {
     content: '';
     position: absolute;
     top: 0;
@@ -102,4 +152,43 @@
     height: 100%;
     background-color: var(--font-color);
     opacity: 0.4;
+}
+.enhancer-queue .element .remove {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -25px;
+    display: flex;
+    align-items: center;
+    transition: right 0.1s ease-in-out;
+}
+.enhancer-queue .element:hover .remove {
+    right: 5px;
+}
+.enhancer-queue .element .remove .r {
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    border: 1px solid var(--bg-color);
+    border-radius: 50%;
+    background-color: var(--bg-color);
+}
+.enhancer-queue .element .remove .r:hover {
+    border-color: var(--font-color);
+}
+.enhancer-queue .top::after,
+.enhancer-queue .element::before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    height: 1px;
+    background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
+    background-color: #bbb;
+    background-blend-mode: difference;
+}
+.enhancer-queue .top::after {
+    top: unset;
+    bottom: 1px;
 }

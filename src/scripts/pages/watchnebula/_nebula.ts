@@ -1,6 +1,6 @@
 const videoselector = 'a[href^="/videos/"]';
 import svg from "./../../../icons/watchlater.svg";
-import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init } from "./_queue";
+import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init, isEmptyQueue } from "./_queue";
 
 export const nebula = () => {
     document.body.addEventListener('mouseover', hover);
@@ -35,15 +35,22 @@ const hover = (e: MouseEvent) => {
 const click = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     const later = target.closest('.enhancer-queueButton');
-    const link = target.closest(videoselector) as HTMLAnchorElement;
+    const link: HTMLAnchorElement = target.closest(videoselector);
     if (link === null)
         return;
-    const img = link.querySelector('img') as HTMLImageElement;
-    // always prevent going to video
-    e.preventDefault();
+    const img: HTMLImageElement = link.querySelector('img');
     const name = link.getAttribute('href').substr(8);
     // extract and store information on video
-    addToStore(name, img.nextElementSibling?.lastChild.textContent, img.src, link.lastElementChild?.children[1]?.textContent, link.lastElementChild?.lastElementChild?.firstElementChild?.textContent);
+    addToStore(name,
+        img.nextElementSibling?.lastChild.textContent,
+        img.src,
+        link.lastElementChild?.children[1]?.textContent,
+        link.lastElementChild?.lastElementChild?.firstElementChild?.textContent);
+    // no queue and video clicked
+    if (isEmptyQueue() && later === null)
+        return;
+    // always prevent going to video
+    e.preventDefault();
     if (later !== null) {
         // queue button clicked
         enqueue(name);

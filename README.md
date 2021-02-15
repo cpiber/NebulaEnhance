@@ -21,6 +21,10 @@ The most recent releases are available [here](https://github.com/cpiber/NebulaEn
 
 # Features
 
+**Page**
+- Queue: Add videos to watch queue
+
+**Player**
 - Default playback speed
 - Quick dial to set speed: New button in player allows to increase/decrease speed by scrolling
 - Target qualities: Set the preferred video quality or qualities
@@ -45,7 +49,7 @@ Options page:
 
 Please make sure you have [NodeJS](https://nodejs.org/) and it's package manager [npm](https://www.npmjs.com/) installed.
 
-- Install pnpm: `npm install -g pnpm`
+- Install [pnpm](https://github.com/pnpm/pnpm): `npm install -g pnpm`
 - Install dependencies: `pnpm install`
 - Develop: In Firefox `pnpm run start:firefox` / In Chromium `pnpm run start:chromium`
 - Build: `pnpm run build`
