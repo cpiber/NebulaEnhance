@@ -41,7 +41,6 @@ export const enqueueNow = (name: string) => {
         enqueue(name, queuepos + 1);
 }
 export const removeFromQueue = (index: number) => {
-    console.log(index, queuepos, queue);
     if (index < 0 || index >= queue.length) return;
     if (queue.length === 1) return clearQueue();
     queue.splice(index, 1);
@@ -51,7 +50,6 @@ export const removeFromQueue = (index: number) => {
     }
 }
 export const gotoQueue = (index: number, go=true) => {
-    console.log(index, queue);
     if (index < 0 || index >= queue.length) return;
     queueel?.children[queuepos]?.classList.remove('playing');
     queuepos = index;
@@ -143,7 +141,7 @@ const msg = (e: MessageEvent) => {
         return;
     try {
         const m = JSON.parse(e.data);
-        if (m.event === "zype:complete") gotoNextInQueue();
+        if (m.event === "zype:complete") setTimeout(gotoNextInQueue, 1600);
     } catch {}
 };
 const updateText = () => {
