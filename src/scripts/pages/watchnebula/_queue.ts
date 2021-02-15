@@ -204,10 +204,12 @@ const insertChild = (name: string): HTMLElement => {
             <div class="play">${play}</div>
         </div>
         <div class="data">
-            <span class="title">${store[name].title}</span>
-            <span class="creator">${store[name].creator} • ${store[name].length}</span>
+            <span class="title"></span>
+            <span class="creator"></span>
         </div>
         <div class="remove"><span class="r">&#128465;</span></div>
     `;
+    n.querySelector('.title').textContent = store[name].title;
+    n.querySelector('.creator').textContent = `${store[name].creator} • ${store[name].length}`;
     return n;
 };

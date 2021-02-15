@@ -30,6 +30,8 @@ Die neuesten Veröffentlichungen sind [hier](https://github.com/cpiber/NebulaEnh
 - Keyboard shortcuts: Tastaturkürzel für einfachere und schnellere Bedienung ([siehe Playback Sektion](https://www.mrfdev.com/youtube-keyboard-shortcuts))
 - Custom scripts: Benutzerdefinierte Scripts, die im iFrame des Videospielers ausgeführt werden
 
+Beachten Sie, dass der Videospieler automatisch fokusiert wird, um die Tastaturkürzel funktional zu machen.
+
 Mehr in Planung. Falls Sie Vorschläge haben, öffnen Sie bitte eine neue [issue](https://github.com/cpiber/NebulaEnhance/issues).
 
 

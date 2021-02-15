@@ -31,6 +31,8 @@ The most recent releases are available [here](https://github.com/cpiber/NebulaEn
 - Keyboard shortcuts: Shortcuts in video player ([see Playback section](https://www.mrfdev.com/youtube-keyboard-shortcuts))
 - Custom scripts: Execute custom JavaScript code in the player's iFrame
 
+Note that the player is automatically focused to make the keyboard shortcuts work.
+
 More to come. If you have any suggestions, please open a new [issue](https://github.com/cpiber/NebulaEnhance/issues).
 
 
