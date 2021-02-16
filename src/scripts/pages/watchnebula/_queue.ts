@@ -162,6 +162,7 @@ const dragElement = (e: DragEvent) => {
     if (i === -1)
         return e.preventDefault();
     e.dataTransfer.setData('text', `${i}`);
+    el.classList.add('dragging');
 };
 const dropElement = (e: DragEvent) => {
     e.preventDefault();
@@ -174,6 +175,7 @@ const dropElement = (e: DragEvent) => {
         return;
     const [ name, elem ] = queue.splice2(o, 1);
     queue.splice2(i, 0, name, elem);
+    elem[0].classList.remove('dragging');
     if (queuepos === o) queuepos = i;
     else if (o > queuepos && i <= queuepos) queuepos++;
     else if (o < queuepos && i >= queuepos) queuepos--;

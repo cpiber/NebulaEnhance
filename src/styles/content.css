@@ -94,6 +94,10 @@
     flex-wrap: nowrap;
     align-items: center;
     cursor: pointer;
+    transition: filter 0.05s ease;
+}
+.enhancer-queue .element.dragging {
+    filter: blur(2px);
 }
 .enhancer-queue .element .drag {
     text-align: center;
