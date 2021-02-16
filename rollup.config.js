@@ -17,7 +17,9 @@ export default glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.
         output: {
             format: 'iife',
             sourcemap: !process.env.BUILD,
-            file: d
+            file: d,
+            intro: process.env.BUILD || 'try {',
+            outro: process.env.BUILD || '}catch(e){console.error(e)}',
         },
         external: false,
         context: "window",

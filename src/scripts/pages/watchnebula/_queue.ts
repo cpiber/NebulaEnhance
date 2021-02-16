@@ -6,9 +6,10 @@ export type video = {
     title: string,
     creator: string,
 };
+type Queue = Array<string> & { splice2: (start: number, count: number, elements?: string[], nodes?: Element[]) => [ string[], Element[] ] };
 
 const store: { [key: string]: video } = {};
-const queue: string[] = [];
+const queue: Queue = [] as Queue;
 let queuepos = -1;
 let popupel: HTMLElement = null;
 let queueel: HTMLElement = null;
@@ -28,9 +29,9 @@ export const enqueue = (name: string, pos?: number) => {
     if (!store[name])
         throw "Not in store!";
     if (pos !== undefined)
-        queue.splice(pos, 0, name);
+        queue.splice2(pos, 0, [ name ]);
     else
-        queue.splice(queue.length, 0, name);
+        queue.splice2(queue.length, 0, [ name ]);
     popupel.classList.remove('hidden');
     calcBottom(popupel.classList.contains('down'));
 };
@@ -43,7 +44,7 @@ export const enqueueNow = (name: string) => {
 export const removeFromQueue = (index: number) => {
     if (index < 0 || index >= queue.length) return;
     if (queue.length === 1) return clearQueue();
-    queue.splice(index, 1);
+    queue.splice2(index, 1);
     if (queuepos >= 0 && index <= queuepos) {
         --queuepos;
         updateText();
@@ -70,7 +71,7 @@ export const gotoQueue = (index: number, go=true) => {
 export const gotoNextInQueue = () => gotoQueue(queuepos + 1);
 export const clearQueue = () => {
     queuepos = -1;
-    queue.splice(0, queue.length);
+    queue.splice2(0, queue.length);
     clearText();
     popupel.classList.add('hidden');
 };
@@ -110,23 +111,32 @@ export const init = () => {
     quenoel = q.querySelector('.no');
     document.body.append(q);
 
-    queue.splice = (start: number, count: number, ...elements: string[]) => {
+    queue.splice2 = (start: number, count: number, elements?: string[], nodes?: Element[]) => {
+        if (nodes !== undefined && nodes.length !== 0 && nodes.length !== elements.length)
+            throw new Error('length mismatch');
         start = start < 0 ? queue.length - start : start;
         start = start < 0 ? 0 : start > queue.length ? queue.length : start;
         const end = start + count > queue.length ? queue.length : start + count;
         let s = start > 0 ? e.children[start-1] : null;
-        for (let i = end - 1; i >= start; i--)
+        const n = nodes === undefined || nodes.length === 0;
+        const delel = [];
+        for (let i = end - 1; i >= start; i--) {
+            delel.push(e.children[i]);
             e.children[i].remove();
-        for (let el of elements) {
-            const node = insertChild(el);
+        }
+        for (let i = 0; i < elements?.length || 0; i++) {
+            const node = n ? insertChild(elements[i]) : nodes[i];
             s === null ? e.firstChild === null ? e.append(node) : e.firstChild.before(node) : s.after(node);
             s = node;
         }
-        const del = Array.prototype.splice.call(queue, start, count, ...elements);
+        const del = Array.prototype.splice.call(queue, start, count, ...(elements || [])) as string[];
         o.textContent = `${queue.length}`;
-        return del;
+        return [ del, delel ];
     };
     e.addEventListener('click', clickElements);
+    e.addEventListener('dragstart', dragElement);
+    e.addEventListener('dragover', ev => ev.preventDefault()); // allow drop
+    e.addEventListener('drop', dropElement);
     q.querySelector('.top').addEventListener('click', clickTop);
     window.addEventListener('message', msg);
 };
@@ -143,6 +153,31 @@ const clickElements = (e: MouseEvent) => {
         gotoQueue(i);
     else
         removeFromQueue(i);
+};
+const dragElement = (e: DragEvent) => {
+    const el = (e.target as HTMLElement).closest('.element');
+    if (el === null)
+        return e.preventDefault();
+    const i = Array.from(el.parentElement.children).findIndex(n => n.isSameNode(el));
+    if (i === -1)
+        return e.preventDefault();
+    e.dataTransfer.setData('text', `${i}`);
+};
+const dropElement = (e: DragEvent) => {
+    e.preventDefault();
+    const el = (e.target as HTMLElement).closest('.element');
+    if (el === null)
+        return;
+    const i = Array.from(el.parentElement.children).findIndex(n => n.isSameNode(el));
+    const o = +e.dataTransfer.getData('text');
+    if (i === -1 || i === o)
+        return;
+    const [ name, elem ] = queue.splice2(o, 1);
+    queue.splice2(i, 0, name, elem);
+    if (queuepos === o) queuepos = i;
+    else if (o > queuepos && i <= queuepos) queuepos++;
+    else if (o < queuepos && i >= queuepos) queuepos--;
+    updateText();
 };
 const clickTop = (e: MouseEvent) => {
     e.preventDefault();
@@ -213,6 +248,7 @@ const insertChild = (name: string): HTMLElement => {
     const n = document.createElement('div');
     n.className = 'element';
     n.innerHTML = `
+        <div class="drag">&#x2630;</div>
         <div class="thumb">
             <img src="${store[name].thumbnail}" />
             <div class="play">${play}</div>
@@ -223,6 +259,7 @@ const insertChild = (name: string): HTMLElement => {
         </div>
         <div class="remove"><span class="r">&#128465;</span></div>
     `;
+    n.draggable = true;
     n.querySelector('.title').textContent = store[name].title;
     n.querySelector('.creator').textContent = `${store[name].creator} • ${store[name].length}`;
     return n;

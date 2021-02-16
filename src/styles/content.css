@@ -28,7 +28,7 @@
     position: fixed;
     bottom: 0;
     right: 15px;
-    width: 360px;
+    width: 375px;
     transition: bottom 0.1s ease-in-out;
 }
 .enhancer-queue, .enhancer-queue-inner {
@@ -92,7 +92,13 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    align-items: center;
     cursor: pointer;
+}
+.enhancer-queue .element .drag {
+    text-align: center;
+    width: 22px;
+    flex-shrink: 0;
 }
 .enhancer-queue .element img {
     height: 90px;
@@ -102,8 +108,8 @@
     display: flex;
     flex-direction: column;
     align-self: center;
-    margin: auto;
-    padding: 12px 8px;
+    margin: auto 0;
+    padding: 4px 8px;
     overflow: hidden;
 }
 .enhancer-queue .element .data .title {
@@ -196,11 +202,29 @@
     bottom: 1px;
 }
 
-@media (max-width: 440px) {
+@media (max-width: 987px) {
+    .enhancer-queue {
+        right: 63px;
+    }
+}
+@media (max-width: 650px) {
+    .enhancer-queue {
+        left: 63px;
+        right: 63px;
+        width: unset;
+    }
+}
+@media (max-width: 500px) {
     .enhancer-queue {
         left: 0;
         right: 0;
-        width: unset;
+    }
+}
+@media (max-width: 360px) {
+    .enhancer-queue .element img {
+        height: auto;
+        width: 160px;
+        max-width: 35vw;
     }
 }
 @media (any-pointer: coarse), (any-hover: none) {
