@@ -12,8 +12,8 @@ Diese Erweiterung will nützliche Features zur Nebula Seite bringen. Im Moment w
 
 Die Erweiterung ist verfügbar in den offiziellen add-on stores:
 
-- Firefox: [Bei Mozilla holen](https://addons.mozilla.org/en-US/firefox/addon/enhancer-for-nebula/)
-- Chromium: [soon]
+- Firefox: [Bei Mozilla holen](https://addons.mozilla.org/de-DE/firefox/addon/enhancer-for-nebula/)
+- Chromium: [Bei Chrome Webstore holen](https://chrome.google.com/webstore/detail/enhancer-for-nebula/niaholaehmipmbpoagjmdlocnhakeonl)
 
 Die neuesten Veröffentlichungen sind [hier](https://github.com/cpiber/NebulaEnhance/releases) verfügbar.
 

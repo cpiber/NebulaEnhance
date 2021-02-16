@@ -14,7 +14,7 @@ This extension aspires to bring some useful features to the [Nebula](https://wat
 This extension is available on the official add-on stores:
 
 - Firefox: [Get from Mozilla](https://addons.mozilla.org/en-US/firefox/addon/enhancer-for-nebula/)
-- Chromium: [soon]
+- Chromium: [Get from Chrome Webstore](https://chrome.google.com/webstore/detail/enhancer-for-nebula/niaholaehmipmbpoagjmdlocnhakeonl)
 
 The most recent releases are available [here](https://github.com/cpiber/NebulaEnhance/releases).
 
