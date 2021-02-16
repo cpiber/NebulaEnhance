@@ -73,9 +73,18 @@ export const clearQueue = () => {
     queue.splice(0, queue.length);
     clearText();
     popupel.classList.add('hidden');
-    setTimeout(() => popupel.classList.remove('down'), 0);
 };
-export const toggleQueue = () => calcBottom(popupel.classList.toggle('down'));
+export const toggleQueue = () => {
+    const tggl = popupel.classList.toggle('down');
+    // disable transitions after it's down
+    // or enable now
+    // to make sure adding new elements while down does not transition
+    if (tggl)
+        setTimeout(() => popupel.classList.add('no-transition'), 100);
+    else
+        popupel.classList.remove('no-transition');
+    calcBottom(tggl);
+}
 
 
 export const init = () => {
@@ -118,8 +127,7 @@ export const init = () => {
         return del;
     };
     e.addEventListener('click', clickElements);
-    q.querySelector('.top').addEventListener('click', toggleQueue);
-    q.querySelector('.close').addEventListener('click', clearQueue);
+    q.querySelector('.top').addEventListener('click', clickTop);
     window.addEventListener('message', msg);
 };
 const clickElements = (e: MouseEvent) => {
@@ -135,6 +143,14 @@ const clickElements = (e: MouseEvent) => {
         gotoQueue(i);
     else
         removeFromQueue(i);
+};
+const clickTop = (e: MouseEvent) => {
+    e.preventDefault();
+    const r = (e.target as HTMLElement).closest('.close');
+    if (r === null)
+        toggleQueue();
+    else
+        clearQueue();
 };
 const msg = (e: MessageEvent) => {
     if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")

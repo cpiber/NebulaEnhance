@@ -56,6 +56,9 @@
 .enhancer-queue.hidden {
     display: none;
 }
+.enhancer-queue.no-transition {
+    transition: none;
+}
 .enhancer-queue .top {
     position: relative;
     display: flex;
@@ -191,4 +194,20 @@
 .enhancer-queue .top::after {
     top: unset;
     bottom: 1px;
+}
+
+@media (max-width: 440px) {
+    .enhancer-queue {
+        left: 0;
+        right: 0;
+        width: unset;
+    }
+}
+@media (any-pointer: coarse), (any-hover: none) {
+    .enhancer-queueButton {
+        opacity: 1;
+    }
+    .enhancer-queue .element .remove {
+        right: 5px;
+    }
 }
