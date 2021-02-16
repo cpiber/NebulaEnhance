@@ -1,11 +1,13 @@
 const videoselector = 'a[href^="/videos/"]';
 import svg from "./../../../icons/watchlater.svg";
 import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init, isEmptyQueue } from "./_queue";
+import { init as initDrag } from "./_queueDrag";
 
 export const nebula = () => {
     document.body.addEventListener('mouseover', hover);
     document.body.addEventListener('click', click);
-    init();
+    const e = init();
+    initDrag(e);
 };
 
 const imgLink = (e: HTMLElement) => {
