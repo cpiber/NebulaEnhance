@@ -10,12 +10,14 @@ Diese Erweiterung will nützliche Features zur Nebula Seite bringen. Im Moment w
 
 # Installierung
 
-Die Erweiterung ist verfügbar in den offiziellen add-on stores:
+Die Erweiterung ist verfügbar in den offiziellen Add-On Stores:
 
 - Firefox: [Bei Mozilla holen](https://addons.mozilla.org/de-DE/firefox/addon/enhancer-for-nebula/)
 - Chromium: [Bei Chrome Webstore holen](https://chrome.google.com/webstore/detail/enhancer-for-nebula/niaholaehmipmbpoagjmdlocnhakeonl)
 
 Die neuesten Veröffentlichungen sind [hier](https://github.com/cpiber/NebulaEnhance/releases) verfügbar.
+
+Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überprüfen müssen, bevor diese sichtbar gemacht werden in den Stores. Besonders für den Chrome Webstore kann diese länder dauern.
 
 
 # Features
@@ -24,11 +26,14 @@ Die neuesten Veröffentlichungen sind [hier](https://github.com/cpiber/NebulaEnh
 - Queue: Füge Videos einfach zu einer Warteschlange hinzu
 
 **Videospieler**
-- Standard Abspielgeschwindigkeit: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit abzuspielen
+- Standard Abspielgeschwindigkeit und Lautstärke: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit und Lautstärke abzuspielen
 - "Quick dial" für Abspielgeschwindigkeit: Ein neuer Knopf im Videospieler erlaubt es per Mausrad die Geschwindigkeit bequem und schnell zu verändern
+- Autoplay: Videos können automatisch gestartet werden
 - Zielqualitäten: Erlaubt es, bevorzugte Videoqualität(en) zu setzen
 - Keyboard shortcuts: Tastaturkürzel für einfachere und schnellere Bedienung ([siehe Playback Sektion](https://www.mrfdev.com/youtube-keyboard-shortcuts))
-- Custom scripts: Benutzerdefinierte Scripts, die im iFrame des Videospielers ausgeführt werden
+
+**Custom scripts**
+- Benutzerdefinierte Scripts, die im iFrame des Videospielers und auf der Webseite ausgeführt werden
 
 Beachten Sie, dass der Videospieler automatisch fokusiert wird, um die Tastaturkürzel funktional zu machen.
 
@@ -37,9 +42,13 @@ Mehr in Planung. Falls Sie Vorschläge haben, öffnen Sie bitte eine neue [issue
 
 # Screenshots
 
+Video Schlange:
+
+![Queue / Video Warteschlange.](static/Screenshot3_de.png)
+
 Speed dial:
 
-![Speed dial. Scroll to change speed.](static/Screenshot1.png)
+![Speed dial. Mausrad Scrollen um Geschwindigkeit zu ändern.](static/Screenshot1.png)
 
 Optionen Seite:
 

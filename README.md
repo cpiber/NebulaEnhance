@@ -18,6 +18,8 @@ This extension is available on the official add-on stores:
 
 The most recent releases are available [here](https://github.com/cpiber/NebulaEnhance/releases).
 
+Please be aware that both Mozilla and Google need to verify my changes before making them visible in the stores. Especially for the Chrome Webstore this takes time.
+
 
 # Features
 
@@ -25,11 +27,14 @@ The most recent releases are available [here](https://github.com/cpiber/NebulaEn
 - Queue: Add videos to watch queue
 
 **Player**
-- Default playback speed
+- Default playback speed and volume
 - Quick dial to set speed: New button in player allows to increase/decrease speed by scrolling
+- Autoplay: Start videos automatically
 - Target qualities: Set the preferred video quality or qualities
 - Keyboard shortcuts: Shortcuts in video player ([see Playback section](https://www.mrfdev.com/youtube-keyboard-shortcuts))
-- Custom scripts: Execute custom JavaScript code in the player's iFrame
+
+**Custom scripts**
+- Execute custom JavaScript code in the player's iFrame and on the web page
 
 Note that the player is automatically focused to make the keyboard shortcuts work.
 
@@ -37,6 +42,10 @@ More to come. If you have any suggestions, please open a new [issue](https://git
 
 
 # Screenshots
+
+Queue:
+
+![Queue / Watch list.](static/Screenshot3.png)
 
 Speed dial:
 

@@ -6,7 +6,9 @@
     transition: opacity 0.1s ease-in-out;
     pointer-events: initial;
 }
-.enhancer-queueButton:hover, img:hover ~ .enhancer-queueButton {
+.enhancer-queueButton:hover, img:hover ~ .enhancer-queueButton,
+.enhancer-queueButton:focus, img:focus ~ .enhancer-queueButton,
+.enhancer-queueButton:active, img:active ~ .enhancer-queueButton {
     opacity: 1;
 }
 .enhancer-queueButton svg {
@@ -18,7 +20,9 @@
     transition: width 0.1s ease-in-out, height 0.1s ease-in-out;
     pointer-events: initial;
 }
-.enhancer-queueButton:hover svg {
+.enhancer-queueButton:hover svg,
+.enhancer-queueButton:focus svg,
+.enhancer-queueButton:active svg {
     width: 22px;
     height: 22px;
 }
@@ -175,7 +179,9 @@
     align-items: center;
     transition: right 0.1s ease-in-out;
 }
-.enhancer-queue .element:hover .remove {
+.enhancer-queue .element:hover .remove,
+.enhancer-queue .element:focus .remove,
+.enhancer-queue .element:active .remove {
     right: 5px;
 }
 .enhancer-queue .element .remove .r {
@@ -186,7 +192,9 @@
     border-radius: 50%;
     background-color: var(--bg-color);
 }
-.enhancer-queue .element .remove .r:hover {
+.enhancer-queue .element .remove .r:hover,
+.enhancer-queue .element .remove .r:focus,
+.enhancer-queue .element .remove .r:active {
     border-color: var(--font-color);
 }
 .enhancer-queue .top::after,
