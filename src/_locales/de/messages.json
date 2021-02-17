@@ -1,74 +1,82 @@
 {
     "title": {
         "message": "Enhancer for Nebula",
-        "description": "Name/Title of the extension."
+        "description": "Name/Titel der Erweiterung."
     },
     "extensionDescription": {
-        "message": "Enhancer for Nebula. Fügt einige nützliche Features zum Nebula Videospieler hinzu.",
-        "description": "Description of the extension."
+        "message": "Enhancer for Nebula. Fügt nützliche Features zur Nebula Seite hinzu.",
+        "description": "Beschreibung der Erweiterung."
     },
     "optionsTitle": {
         "message": "Nebula Enhancer Optionen",
-        "description": "Title of options page."
+        "description": "Titel der Optionen Seite."
     },
     "optionsTitlePlayer": {
         "message": "Videospieler",
-        "description": "Title for the player subsection of options page."
+        "description": "Titel der Videospieler-Sektion der Optionen Seite."
     },
     "optionsDefaultPlaybackRateTitle": {
         "message": "Standard Abspielgeschwindigkeit",
-        "description": "Label for default playbackRate of options page."
+        "description": "Beschriftung für Standard Abspielgeschwindigkeit der Optionen Seite."
     },
     "optionsDefaultPlaybackRateHint": {
         "message": "Die Abspielgeschwindigkeit (Speed) zu der der Videospieler zu Beginn gesetzt wird, z.B. <code>1.25</code>",
-        "description": "Hint for default playbackRate of options page."
+        "description": "Hilfstext für Standard Abspielgeschwindigkeit der Optionen Seite."
     },
     "optionsPlaybackChangeRateTitle": {
         "message": "Geschwindigkeits-Änderungsrate",
-        "description": "Label for speed change rate of options page."
+        "description": "Beschriftung für Änderungsrate der Abspielgeschwindigkeit der Optionen Seite."
     },
     "optionsPlaybackChangeRateHint": {
         "message": "Um wieviel die Geschwindigkeit geändert werden soll beim scrollen der Maus über dem neuen Speed Knopf, z.B. <code>0.1</code>",
-        "description": "Hint for speed change rate of options page."
+        "description": "Hilfstext für Änderungsrate der Abspielgeschwindigkeit der Optionen Seite."
     },
     "optionsDefaultVolumeTitle": {
         "message": "Standard Lautstärke",
-        "description": "Label for default volume of options page."
+        "description": "Beschriftung für Standard Lautstärke der Optionen Seite."
     },
     "optionsDefaultVolumeHint": {
         "message": "Die Lautstärke zu der der Videospieler zu Beginn gesetzt wird, z.B. <code>0.7</code>",
-        "description": "Hint for default volume of options page."
+        "description": "Hilfstext für Standard Lautstärke der Optionen Seite."
     },
     "optionsTargetQualitiesTitle": {
         "message": "Zielqualitäten",
-        "description": "Label for target qualities of options page."
+        "description": "Beschriftung für Zielqualitäten der Optionen Seite."
     },
     "optionsTargetQualitiesHint": {
         "message": "Die Höhen der Zielqualitäten des Videos, e.g. <code>1080, 720</code>",
-        "description": "Hint for target qualities of options page."
+        "description": "Hilfstext für Zielqualitäten der Optionen Seite."
     },
     "optionsCustomScriptTitle": {
         "message": "Custom Script",
-        "description": "Label for adding custom scripts to player of options page."
+        "description": "Beschriftung fürs Einfügen custom scripts zum Videospieler der Optionen Seite."
     },
     "optionsCustomScriptHint": {
         "message": "Erlaubt es, benutzerdefinierten JavaScript Code im iFrame des Videospielers auszuführen.",
-        "description": "Label for adding custom scripts to player of options page."
+        "description": "Hilfstext fürs Einfügen custom scripts zum Videospieler der Optionen Seite."
     },
     "optionsCustomScriptWarning": {
         "message": "Achtung! Fügen Sie nur Code aus vertrauenswürdigen Quellen ein!",
-        "description": "Label for adding custom scripts to player of options page."
+        "description": "Warnung fürs Einfügen von custom scripts zum Videospieler der Optionen Seite."
     },
     "buttonSave": {
         "message": "Speichern",
-        "description": "Common 'save' button"
+        "description": "'save' button"
     },
     "playerSpeed": {
         "message": "Geschwindigkeit",
-        "description": "'Speed' text in scroll dial tooltip."
+        "description": "'Speed' text im scroll dial Tooltip."
     },
     "playerNewSpeed": {
         "message": "Neue Geschwindigkeit",
-        "description": "'Speed' text in scroll dial tooltip."
+        "description": "'Speed' text im popup."
+    },
+    "pageAddToQueue": {
+        "message": "Zur Warteschlange hinzufügen",
+        "description": "Versteckter Hinweis fürs hinzufügen zur Warteschlange."
+    },
+    "pageNothingToPlay": {
+        "message": "Nichts am abspielen",
+        "description": "Titel der Warteschlange wenn leer."
     }
 }

@@ -1,9 +1,11 @@
-const videoselector = 'a[href^="/videos/"]';
 import { videosettings } from "../../_shared";
-import { c } from "../../_sharedBrowser";
+import { c, getBrowserInstance } from "../../_sharedBrowser";
 import svg from "./../../../icons/watchlater.svg";
 import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init, isEmptyQueue } from "./_queue";
 import { init as initDrag } from "./_queueDrag";
+
+const videoselector = 'a[href^="/videos/"]';
+const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 
 export const nebula = () => {
     window.addEventListener('message', message);
@@ -49,7 +51,7 @@ const hover = (e: MouseEvent) => {
     // create queue button
     const later = document.createElement('div');
     const time = img.nextElementSibling;
-    later.innerHTML = `<span class="${time?.firstElementChild?.className}">Add to queue</span>${svg}`;
+    later.innerHTML = `<span class="${time?.firstElementChild?.className}">${addToQueue}</span>${svg}`;
     later.className = `${time?.className} enhancer-queueButton`;
     img.parentElement.appendChild(later);
 };

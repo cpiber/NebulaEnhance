@@ -1,4 +1,7 @@
 import play from "../../../icons/play.svg";
+import { getBrowserInstance } from "../../_sharedBrowser";
+
+const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
 
 export type video = {
     length: string,
@@ -107,7 +110,7 @@ export const init = () => {
     q.innerHTML = `
         <div class="enhancer-queue-inner">
             <div class="top">
-                <div class="current"><span class="title">Nothing to play</span><span class="no">-</span> / <span class="of">0</span></div>
+                <div class="current"><span class="title">${nothingToPlay}</span><span class="no">-</span> / <span class="of">0</span></div>
                 <div class="close">&times;</div>
             </div>
             <div class="elements"></div>
@@ -182,7 +185,7 @@ const updateText = () => {
     quenoel.textContent = queuepos >= 0 ? `${queuepos + 1}` : '-';
 };
 const clearText = () => {
-    titleel.textContent = 'Nothing to play';
+    titleel.textContent = nothingToPlay;
     quenoel.textContent = '-';
 };
 const calcBottom = (down: boolean) => {

@@ -53,11 +53,11 @@
     },
     "optionsCustomScriptHint": {
         "message": "Allows to add custom JavaScript code to be executed in the player's iFrame.",
-        "description": "Label for adding custom scripts to player of options page."
+        "description": "Hint for adding custom scripts to player of options page."
     },
     "optionsCustomScriptWarning": {
         "message": "Caution! Only insert code from trustworthy sources!",
-        "description": "Label for adding custom scripts to player of options page."
+        "description": "Warning for adding custom scripts to player of options page."
     },
     "buttonSave": {
         "message": "Save",
@@ -69,6 +69,14 @@
     },
     "playerNewSpeed": {
         "message": "New Speed",
-        "description": "'Speed' text in scroll dial tooltip."
+        "description": "'Speed' text in popup."
+    },
+    "pageAddToQueue": {
+        "message": "Add to queue",
+        "description": "Hidden hint for queue button."
+    },
+    "pageNothingToPlay": {
+        "message": "Nothing to play",
+        "description": "Title for queue when nothing selected."
     }
 }
