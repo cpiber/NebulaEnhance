@@ -15,6 +15,7 @@ const defaults = {
     playbackRate: 1,
     playbackChange: 0.1,
     volume: 1,
+    autoplay: false,
     targetQualities: [] as number[]
 };
 const init = async () => {
@@ -23,6 +24,7 @@ const init = async () => {
         playbackRate: defaultPlaybackRate,
         playbackChange,
         volume: defaultVolume,
+        autoplay,
         targetQualities,
     } = await getFromStorage(defaults);
     const {
@@ -38,6 +40,8 @@ const init = async () => {
     t.playbackRate = playbackRate;
     // set volume (auto-updates)
     t.volume = volume;
+    // set autoplay (auto-updates)
+    t.autoplay = autoplay;
     // set qualities when starting player
     const setQualities = () => {
         try {
@@ -64,7 +68,7 @@ const init = async () => {
     console.log('listen');
     t.addEventListener('ratechange', () => setSetting('playbackRate', t.playbackRate));
     t.addEventListener('volumechange', () => setSetting('volume', t.volume));
-    
+
     const android = await sendEvent<boolean>('isAndroid');
     console.debug(android, android ? 'Android' : 'Other');
     if (!android) {
@@ -83,15 +87,15 @@ const init = async () => {
     }
 };
 
-const isTheoPlayerFocused = function() {
+const isTheoPlayerFocused = function () {
     // check if theoplayer is focused
     // taken from zype.com
     let node = document.activeElement;
 
     while (node !== null) {
-      if (window.theoplayer.element === node)
-        return true;
-      node = node.parentElement;
+        if (window.theoplayer.element === node)
+            return true;
+        node = node.parentElement;
     }
     return false;
 };

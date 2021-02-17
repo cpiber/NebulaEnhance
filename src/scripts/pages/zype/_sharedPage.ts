@@ -1,9 +1,9 @@
-export const sendEvent = <T> (name: string, data?: any, expectAnswer=true) => {
+export const sendEvent = <T>(name: string, data?: any, expectAnswer = true) => {
     if (!expectAnswer) {
         document.dispatchEvent(new CustomEvent(`enhancer-${name}`, { detail: data }));
         return Promise.resolve(undefined);
     }
-    return new Promise<T> ((resolve, reject) => {
+    return new Promise<T>((resolve, reject) => {
         const e = `enhancer-event-${Math.random().toString().substr(2, 8)}`;
         const c = (ev: CustomEvent) => {
             document.removeEventListener(e, c);
@@ -17,7 +17,7 @@ export const sendEvent = <T> (name: string, data?: any, expectAnswer=true) => {
     });
 };
 let origin = null as string;
-export const sendMessage = <T> (name: string, data?: any, expectAnswer=true) => {
+export const sendMessage = <T>(name: string, data?: any, expectAnswer = true) => {
     if (origin === null) {
         try {
             try {
@@ -36,7 +36,7 @@ export const sendMessage = <T> (name: string, data?: any, expectAnswer=true) => 
         window.parent.postMessage({ type: name, ...data }, origin);
         return Promise.resolve(undefined);
     }
-    return new Promise<T> ((resolve, reject) => {
+    return new Promise<T>((resolve, reject) => {
         const e = `enhancer-message-${Math.random().toString().substr(2, 8)}`;
         const c = (ev: MessageEvent) => {
             if (ev.origin !== origin) return;

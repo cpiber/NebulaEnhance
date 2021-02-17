@@ -1,31 +1,5 @@
 import { nebula } from "./pages/watchnebula/_nebula";
-import { c, getBrowserInstance } from "./_sharedBrowser";
-
-function injectScript(node: HTMLElement, content: string, friendly?: string, data?: any): Promise<void>;
-function injectScript(file: string, node: HTMLElement, friendly?: string, data?: any): Promise<void>;
-function injectScript(file: any, node: any, friendly?: string, data?: any) {
-    return new Promise(resolve => {
-        const gotSrc = typeof (node as HTMLElement).appendChild !== "undefined";
-        const n: HTMLElement = gotSrc ? node : file;
-        const f: string = gotSrc ? file : node;
-
-        const s = document.createElement('script');
-        s.setAttribute('type', 'text/javascript');
-        const end = () => {
-            s.remove();
-            if (data) document.dispatchEvent(new CustomEvent(`enhancer-load-${friendly}`, { detail: data }));
-            resolve(void 0);
-        };
-        s.addEventListener('load', end);
-        if (gotSrc)
-            s.setAttribute('src', f);
-        else
-            s.textContent = f;
-        n.appendChild(s);
-        if (!gotSrc)
-            end(); // no on-load, do it manually
-    });
-}
+import { c, getBrowserInstance, injectScript } from "./_sharedBrowser";
 
 const b = getBrowserInstance();
 const local = b.storage.local;
@@ -52,7 +26,7 @@ const zype = async () => {
     document.addEventListener('enhancer-storageSet', storageSet);
     document.addEventListener('enhancer-getMessage', getMessage);
     document.addEventListener('enhancer-isAndroid', getAndroid);
-    
+
     switch (document.location.host) {
         case "player.zype.com":
             zype();

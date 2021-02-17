@@ -6,7 +6,7 @@ const SpeedClick = () => {
     sendEvent('getMessage', { message: 'playerNewSpeed' }).then((message: string) => speed = `${message}:`);
     // @ts-ignore
     const SpeedClick = window.THEOplayer.videojs.extend(Button, {
-        constructor: function() {
+        constructor: function () {
             Button.apply(this, arguments);
         },
         handleClick: () => {
@@ -14,7 +14,7 @@ const SpeedClick = () => {
             if (!isNaN(r))
                 window.theoplayer.playbackRate = r;
         },
-        buildCSSClass: function() {
+        buildCSSClass: function () {
             return SpeedClasses;
         }
     });

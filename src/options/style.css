@@ -9,6 +9,13 @@ body {
   margin-bottom: 12px;
 }
 
+h2 {
+  margin-top: 60px;
+}
+h1 + h2 {
+  margin-top: initial;
+}
+
 .title {
   display: block;
   font-size: 110%;
@@ -29,6 +36,18 @@ body {
   color: #eee;
 }
 
+.spacing {
+  clear: both;
+  display: block;
+  height: 40px;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
 textarea {
   width: 100%;
+  box-sizing: border-box;
 }

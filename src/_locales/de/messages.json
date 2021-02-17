@@ -15,6 +15,10 @@
         "message": "Videospieler",
         "description": "Titel der Videospieler-Sektion der Optionen Seite."
     },
+    "optionsTitleScripts": {
+        "message": "Skripte",
+        "description": "Titel der Skripte-Sektion der Optionen Seite."
+    },
     "optionsDefaultPlaybackRateTitle": {
         "message": "Standard Abspielgeschwindigkeit",
         "description": "Beschriftung für Standard Abspielgeschwindigkeit der Optionen Seite."
@@ -39,6 +43,14 @@
         "message": "Die Lautstärke zu der der Videospieler zu Beginn gesetzt wird, z.B. <code>0.7</code>",
         "description": "Hilfstext für Standard Lautstärke der Optionen Seite."
     },
+    "optionsAutoplayTitle": {
+        "message": "Autoplay",
+        "description": "Beschriftung für Autoplay der Optionen Seite."
+    },
+    "optionsAutoplayHint": {
+        "message": "Ob das Video automatisch starten soll oder nicht.",
+        "description": "Hilfstext für Autoplay der Optionen Seite."
+    },
     "optionsTargetQualitiesTitle": {
         "message": "Zielqualitäten",
         "description": "Beschriftung für Zielqualitäten der Optionen Seite."
@@ -47,17 +59,37 @@
         "message": "Die Höhen der Zielqualitäten des Videos, e.g. <code>1080, 720</code>",
         "description": "Hilfstext für Zielqualitäten der Optionen Seite."
     },
-    "optionsCustomScriptTitle": {
-        "message": "Custom Script",
-        "description": "Beschriftung fürs Einfügen custom scripts zum Videospieler der Optionen Seite."
+    "optionsCustomScriptPageTitle": {
+        "message": "Custom Script für Webseite",
+        "description": "Beschriftung fürs Einfügen von custom scripts zur Webseite der Optionen Seite."
     },
-    "optionsCustomScriptHint": {
+    "optionsCustomScriptPageHint": {
+        "message": "Erlaubt es, benutzerdefinierten JavaScript Code auf der Nebula Seite auszuführen.",
+        "description": "Hilfstext fürs Einfügen von custom scripts zur Webseite der Optionen Seite."
+    },
+    "optionsCustomScriptPagePlaceholder": {
+        "message": "Script zum Ausführen auf der Nebula Seite",
+        "description": "Platzhalter fürs Einfügen von custom scripts zur Webseite der Optionen Seite."
+    },
+    "optionsCustomScriptZypeTitle": {
+        "message": "Custom Script für Videospieler",
+        "description": "Beschriftung fürs Einfügen von custom scripts zum Videospieler der Optionen Seite."
+    },
+    "optionsCustomScriptZypeHint": {
         "message": "Erlaubt es, benutzerdefinierten JavaScript Code im iFrame des Videospielers auszuführen.",
-        "description": "Hilfstext fürs Einfügen custom scripts zum Videospieler der Optionen Seite."
+        "description": "Hilfstext fürs Einfügen von custom scripts zum Videospieler der Optionen Seite."
+    },
+    "optionsCustomScriptZypePlaceholder": {
+        "message": "Script zum Ausführen auf der Seite des Videospielers",
+        "description": "Platzhalter fürs Einfügen von custom scripts zum Videospieler der Optionen Seite."
     },
     "optionsCustomScriptWarning": {
         "message": "Achtung! Fügen Sie nur Code aus vertrauenswürdigen Quellen ein!",
         "description": "Warnung fürs Einfügen von custom scripts zum Videospieler der Optionen Seite."
+    },
+    "optionsButtonSaveNote": {
+        "message": "Optionen werden automatisch gespeichert.",
+        "description": "Notiz zu 'save' button"
     },
     "buttonSave": {
         "message": "Speichern",

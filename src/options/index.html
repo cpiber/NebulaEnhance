@@ -33,20 +33,40 @@
       </p>
       <p>
         <label>
+          <div class="flex title">
+            <span class="i18n">__MSG_optionsAutoplayTitle__:</span>
+            <input type="checkbox" name="autoplay" data-default="1" />
+          </div>
+          <span class="hint i18n">__MSG_optionsAutoplayHint__</span>
+        </label>
+      </p>
+      <p>
+        <label>
           <span class="title i18n">__MSG_optionsTargetQualitiesTitle__:</span>
           <input name="targetQualities" data-default="" />
           <span class="hint i18n">__MSG_optionsTargetQualitiesHint__</span>
         </label>
       </p>
+      <h2 class="i18n">__MSG_optionsTitleScripts__</h2>
       <p>
         <label>
-          <span class="title i18n">__MSG_optionsCustomScriptTitle__:</span>
+          <span class="title i18n">__MSG_optionsCustomScriptPageTitle__:</span>
           <span class="warning i18n">__MSG_optionsCustomScriptWarning__</span>
-          <textarea name="customScript" data-default=""></textarea>
-          <span class="hint i18n">__MSG_optionsCustomScriptHint__</span>
+          <textarea name="customScriptPage" data-default="" data-i18n="placeholder" placeholder="__MSG_optionsCustomScriptPagePlaceholder__"></textarea>
+          <span class="hint i18n">__MSG_optionsCustomScriptPageHint__</span>
         </label>
       </p>
-      <button type="submit" class="i18n">__MSG_buttonSave__</button>
+      <p>
+        <label>
+          <span class="title i18n">__MSG_optionsCustomScriptZypeTitle__:</span>
+          <span class="warning i18n">__MSG_optionsCustomScriptWarning__</span>
+          <textarea name="customScript" data-default="" data-i18n="placeholder" placeholder="__MSG_optionsCustomScriptZypePlaceholder__"></textarea>
+          <span class="hint i18n">__MSG_optionsCustomScriptZypeHint__</span>
+        </label>
+      </p>
+      <div class="spacing"></div>
+      <button type="submit" class="i18n">__MSG_buttonSave__</button><br />
+      <span class="hint i18n">__MSG_optionsButtonSaveNote__</span>
     </form>
     <script src="script.js"></script>
   </body>

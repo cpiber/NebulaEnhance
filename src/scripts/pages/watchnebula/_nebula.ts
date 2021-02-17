@@ -1,5 +1,5 @@
 import { videosettings } from "../../_shared";
-import { c, getBrowserInstance } from "../../_sharedBrowser";
+import { c, getBrowserInstance, injectScript } from "../../_sharedBrowser";
 import svg from "./../../../icons/watchlater.svg";
 import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init, isEmptyQueue } from "./_queue";
 import { init as initDrag } from "./_queueDrag";
@@ -7,12 +7,17 @@ import { init as initDrag } from "./_queueDrag";
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 
-export const nebula = () => {
+export const nebula = async () => {
     window.addEventListener('message', message);
     document.body.addEventListener('mouseover', hover);
     document.body.addEventListener('click', click);
     const e = init();
     initDrag(e);
+
+    // inject custom script (if available)
+    const s = (await getBrowserInstance().storage.local.get({ customScriptPage: '' })).customScriptPage;
+    if (s)
+        injectScript(document.body, s);
 };
 
 // @ts-ignore
@@ -59,10 +64,10 @@ const hover = (e: MouseEvent) => {
 const click = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     const later = target.closest('.enhancer-queueButton');
-    const link: HTMLAnchorElement = target.closest(videoselector);
+    const link = target.closest<HTMLAnchorElement>(videoselector);
     if (link === null)
         return;
-    const img: HTMLImageElement = link.querySelector('img');
+    const img = link.querySelector('img');
     const name = link.getAttribute('href').substr(8);
     // extract and store information on video
     addToStore(name,

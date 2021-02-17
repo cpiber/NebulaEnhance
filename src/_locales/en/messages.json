@@ -15,6 +15,10 @@
         "message": "Player",
         "description": "Title for the player subsection of options page."
     },
+    "optionsTitleScripts": {
+        "message": "Scripts",
+        "description": "Title for the scripts subsection of options page."
+    },
     "optionsDefaultPlaybackRateTitle": {
         "message": "Default playback rate",
         "description": "Label for default playbackRate of options page."
@@ -39,6 +43,14 @@
         "message": "The volume the player will be set to initially, e.g. <code>0.7</code>",
         "description": "Hint for default volume of options page."
     },
+    "optionsAutoplayTitle": {
+        "message": "Autoplay",
+        "description": "Label for Autoplay of options page."
+    },
+    "optionsAutoplayHint": {
+        "message": "Whether to make the video automatically play or not.",
+        "description": "Hint for Autoplay of options page."
+    },
     "optionsTargetQualitiesTitle": {
         "message": "Target qualities",
         "description": "Label for target qualities of options page."
@@ -47,17 +59,37 @@
         "message": "The (heights of) the qualities to target, e.g. <code>1080, 720</code>",
         "description": "Hint for target qualities of options page."
     },
-    "optionsCustomScriptTitle": {
-        "message": "Custom Script",
+    "optionsCustomScriptPageTitle": {
+        "message": "Custom Script for page",
+        "description": "Label for adding custom scripts to webpage of options page."
+    },
+    "optionsCustomScriptPageHint": {
+        "message": "Allows to add custom JavaScript code to be executed on the Nebula page.",
+        "description": "Hint for adding custom scripts to webpage of options page."
+    },
+    "optionsCustomScriptPagePlaceholder": {
+        "message": "Script to execute on webpage",
+        "description": "Placeholder for adding custom scripts to webpage of options page."
+    },
+    "optionsCustomScriptZypeTitle": {
+        "message": "Custom Script for player",
         "description": "Label for adding custom scripts to player of options page."
     },
-    "optionsCustomScriptHint": {
+    "optionsCustomScriptZypeHint": {
         "message": "Allows to add custom JavaScript code to be executed in the player's iFrame.",
         "description": "Hint for adding custom scripts to player of options page."
+    },
+    "optionsCustomScriptZypePlaceholder": {
+        "message": "Script to execute on player page",
+        "description": "Placeholder for adding custom scripts to player of options page."
     },
     "optionsCustomScriptWarning": {
         "message": "Caution! Only insert code from trustworthy sources!",
         "description": "Warning for adding custom scripts to player of options page."
+    },
+    "optionsButtonSaveNote": {
+        "message": "Hint: Options are automatically saved.",
+        "description": "Hint for 'save' button"
     },
     "buttonSave": {
         "message": "Save",

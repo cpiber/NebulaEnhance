@@ -9,7 +9,7 @@ export type video = {
     title: string,
     creator: string,
 };
-type Queue = Array<string> & { splice2: (start: number, count: number, elements?: string[], nodes?: Element[]) => [string[], Element[]] };
+type Queue = Array<string> & { splice2: (start: number, count: number, elements?: string[], nodes?: HTMLElement[]) => [string[], HTMLElement[]] };
 
 const store: { [key: string]: video } = {};
 const queue: Queue = [] as Queue;
@@ -96,7 +96,7 @@ export const moveQueue = (orig: number, index: number) => {
         else if (orig < queuepos && index >= queuepos) queuepos--;
         updateText();
     }
-    return elem[0] as HTMLElement;
+    return elem[0];
 }
 
 
@@ -116,14 +116,14 @@ export const init = () => {
             <div class="elements"></div>
         </div>
     `;
-    const e: HTMLElement = q.querySelector('.elements');
-    queueel = e;
-    const o: HTMLElement = q.querySelector('.of');
+    queueel = q.querySelector('.elements');
+    const e = queueel;
+    const o = q.querySelector('.of');
     titleel = q.querySelector('.title');
     quenoel = q.querySelector('.no');
     document.body.append(q);
 
-    queue.splice2 = (start: number, count: number, elements?: string[], nodes?: Element[]) => {
+    queue.splice2 = (start: number, count: number, elements?: string[], nodes?: HTMLElement[]) => {
         if (nodes !== undefined && nodes.length !== 0 && nodes.length !== elements.length)
             throw new Error('length mismatch');
         start = start < 0 ? queue.length - start : start;
@@ -133,7 +133,7 @@ export const init = () => {
         const n = nodes === undefined || nodes.length === 0;
         const delel = [];
         for (let i = end - 1; i >= start; i--) {
-            delel.push(e.children[i]);
+            delel.push(e.children[i] as HTMLElement);
             e.children[i].remove();
         }
         for (let i = 0; i < elements?.length || 0; i++) {
