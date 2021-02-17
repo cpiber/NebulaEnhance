@@ -31,6 +31,14 @@
         "message": "The amount to change the speed when scrolling over the new speed button, e.g. <code>0.1</code>",
         "description": "Hint for speed change rate of options page."
     },
+    "optionsDefaultVolumeTitle": {
+        "message": "Default volume",
+        "description": "Label for default volume of options page."
+    },
+    "optionsDefaultVolumeHint": {
+        "message": "The volume the player will be set to initially, e.g. <code>0.7</code>",
+        "description": "Hint for default volume of options page."
+    },
     "optionsTargetQualitiesTitle": {
         "message": "Target qualities",
         "description": "Label for target qualities of options page."

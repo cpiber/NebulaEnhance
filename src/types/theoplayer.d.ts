@@ -21,6 +21,7 @@ declare namespace THEOplayer {
         element: HTMLElement;
         playbackRate: number;
         videoTracks: MediaTrackList;
+        volume: number;
 
         addEventListener<TType extends StringKeyOf<PlayerEventMap>>(type: TType | TType[], listener: EventListener<PlayerEventMap[TType]>): void;
         removeEventListener<TType extends StringKeyOf<PlayerEventMap>>(type: TType | TType[], listener: EventListener<PlayerEventMap[TType]>): void;
@@ -105,6 +106,8 @@ declare namespace THEOplayer {
     // only partially declared
     interface PlayerEventMap {
         playing: Event<'playing'>;
+        ratechange: Event<'ratechange'>;
+        volumechange: Event<'volumechange'>;
     }
     
     /**

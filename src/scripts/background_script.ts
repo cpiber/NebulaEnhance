@@ -1,4 +1,4 @@
-import { getBrowserInstance } from "./_shared";
+import { getBrowserInstance } from "./_sharedBrowser";
 
 function isAndroid() {
     return getBrowserInstance().runtime.getPlatformInfo().then(information => information.os === 'android');

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link href="style.css" rel="stylesheet" />
+    <title>__MSG_optionsTitle__</title>
   </head>
   <body>
     <form>
@@ -21,6 +22,13 @@
           <span class="title i18n">__MSG_optionsPlaybackChangeRateTitle__:</span>
           <input type="number" name="playbackChange" data-default="0.1" step="0.005" size="5" placeholder="0.1" />
           <span class="hint i18n">__MSG_optionsPlaybackChangeRateHint__</span>
+        </label>
+      </p>
+      <p>
+        <label>
+          <span class="title i18n">__MSG_optionsDefaultVolumeTitle__:</span>
+          <input type="number" name="volume" data-default="1" min="0" max="1" step="0.01" size="5" placeholder="1" />
+          <span class="hint i18n">__MSG_optionsDefaultVolumeHint__</span>
         </label>
       </p>
       <p>

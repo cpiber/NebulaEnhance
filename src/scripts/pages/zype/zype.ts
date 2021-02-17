@@ -1,33 +1,69 @@
-import { sendEvent } from "./_sharedPage";
+import { videosettings } from "../../_shared";
+import { sendEvent, sendMessage } from "./_sharedPage";
 import SpeedClick from "./_speedclick";
 import SpeedDial from "./_speeddial";
 
-const getFromStorage = <T>(key: string | string[] | { [key: string]: any }) => sendEvent<T>('storageGet', { get: key });
+function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
+function getFromStorage<T>(key: string | string[]): Promise<T>;
+function getFromStorage<T>(key: string | string[] | { [key: string]: any }) { return sendEvent<T>('storageGet', { get: key }); }
+function setSetting(key: keyof typeof videosettings, value: number) { sendMessage('setSetting', { setting: key, value }, false); }
+function getSetting(): Promise<{ [key in keyof typeof videosettings]: number }>;
+function getSetting(key: keyof typeof videosettings): Promise<number>;
+function getSetting(key?: keyof typeof videosettings) { return sendMessage('getSetting', { setting: key }); }
 
 const defaults = {
     playbackRate: 1,
     playbackChange: 0.1,
+    volume: 1,
     targetQualities: [] as number[]
 };
 const init = async () => {
     const t = window.theoplayer, T = window.THEOplayer;
     const {
-        playbackRate,
+        playbackRate: defaultPlaybackRate,
         playbackChange,
+        volume: defaultVolume,
         targetQualities,
-    } = await getFromStorage<typeof defaults>(defaults);
-    console.debug(playbackRate, playbackChange, targetQualities);
+    } = await getFromStorage(defaults);
+    const {
+        playbackRate: currentPlaybackRate,
+        volume: currentVolume,
+        quality: currentQuality,
+    } = await getSetting();
+    const playbackRate = currentPlaybackRate || defaultPlaybackRate || 1;
+    const volume = currentVolume || defaultVolume || 1;
+    console.debug(playbackRate, playbackChange, volume, targetQualities, '\tcurrent:', currentPlaybackRate, currentVolume, currentQuality, '\tdefault:', defaultPlaybackRate, defaultVolume);
 
     // set playbackRate (auto-updates)
     t.playbackRate = playbackRate;
+    // set volume (auto-updates)
+    t.volume = volume;
     // set qualities when starting player
     const setQualities = () => {
-        t.videoTracks[0].targetQuality =
-            targetQualities.map(h => t.videoTracks[0].qualities.find(q => q.height === h)).filter(q => q !== undefined);
-        t.element.focus();
+        try {
+            // if already set quality on page, use that
+            // else if only one target quality, extract that
+            // default to target quality array
+            const quality = currentQuality ? currentQuality : targetQualities.length === 1 ? targetQualities[0] : targetQualities;
+            const qualities = typeof quality === "number"
+                ? t.videoTracks[0].qualities.find(q => q.height === quality) || null
+                : quality.map(h => t.videoTracks[0].qualities.find(q => q.height === h)).filter(q => q !== undefined);
+            t.videoTracks[0].targetQuality = qualities;
+            t.element.focus();
+        } catch (err) {
+            console.error(err);
+        }
+        // listen for changes and save
+        t.videoTracks[0].addEventListener('activequalitychanged', () => setSetting('quality', t.videoTracks[0].activeQuality.height));
+        t.videoTracks[0].addEventListener("targetqualitychanged", () => setSetting('quality', t.videoTracks[0].activeQuality.height));
         t.removeEventListener('playing', setQualities); // only once
     };
     t.addEventListener('playing', setQualities);
+
+    // listen to changes and save
+    console.log('listen');
+    t.addEventListener('ratechange', () => setSetting('playbackRate', t.playbackRate));
+    t.addEventListener('volumechange', () => setSetting('volume', t.volume));
     
     const android = await sendEvent<boolean>('isAndroid');
     console.debug(android, android ? 'Android' : 'Other');
@@ -115,6 +151,7 @@ const getPressedKey = (playbackChange: number, e: KeyboardEvent) => {
         console.debug('waiting');
         if (!window.theoplayer)
             return;
+        console.debug('ready');
         clearInterval(int);
         init();
     }

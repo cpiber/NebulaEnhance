@@ -1,16 +1,17 @@
-import { getBrowserInstance } from "../scripts/_shared";
+import { getBrowserInstance } from "../scripts/_sharedBrowser";
 
 const els: { [key: string]: HTMLInputElement | HTMLTextAreaElement } = {
     playbackRate: document.querySelector('[name="playbackRate"]'),
-    targetQualities: document.querySelector('[name="targetQualities"]'),
     playbackChange: document.querySelector('[name="playbackChange"]'),
+    volume: document.querySelector('[name="volume"]'),
+    targetQualities: document.querySelector('[name="targetQualities"]'),
     customScript: document.querySelector('[name="customScript"]'),
 };
 const local = getBrowserInstance().storage.local;
 
 const toData = (useDefaults = false) => {
     const data: { [key in keyof typeof els]?: string | number | string[] | number[] } = {};
-    Object.keys(els).map(key => {
+    Object.keys(els).forEach(key => {
         data[key] = !useDefaults ? els[key].value : els[key].dataset.default;
         if (els[key].type === "number") {
             data[key] = +data[key];
@@ -46,7 +47,7 @@ form.addEventListener('submit', e => {
 Array.from(form.querySelectorAll('input')).forEach(e => e.addEventListener('focusout', save)); // autosave
 
 // load translations
-Array.from(document.querySelectorAll('.i18n')).forEach(e => {
+Array.from(document.querySelectorAll('.i18n, title')).forEach(e => {
     e.innerHTML = e.innerHTML.replace(/__MSG_(.+)__/g, (...args) => getBrowserInstance().i18n.getMessage(args[1]));
     e.classList.remove('i18n');
 });
