@@ -5,7 +5,7 @@
 
 Heavily inspired by [Enhancer for YouTube&trade;](https://www.mrfdev.com/enhancer-for-youtube)
 
-This extension aspires to bring some useful features to the [Nebula](https://watchnebula.com) site. Currently, only features for the player are added.
+This extension aspires to bring some useful features to the [Nebula](https://watchnebula.com) site.
 
 
 
@@ -14,7 +14,7 @@ This extension aspires to bring some useful features to the [Nebula](https://wat
 This extension is available on the official add-on stores:
 
 - Firefox: [Get from Mozilla](https://addons.mozilla.org/en-US/firefox/addon/enhancer-for-nebula/)
-- Chromium: [Get from Chrome Webstore](https://chrome.google.com/webstore/detail/enhancer-for-nebula/niaholaehmipmbpoagjmdlocnhakeonl)
+- Chromium: [Get from Chrome Webstore](https://chrome.google.com/webstore/detail/enhancer-for-nebula/niaholaehmipmbpoagjmdlocnhakeonl?hl=de)
 
 The most recent releases are available [here](https://github.com/cpiber/NebulaEnhance/releases).
 

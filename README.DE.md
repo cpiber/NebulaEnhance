@@ -5,7 +5,7 @@
 
 Stark inspiriert von [Enhancer for YouTube&trade;](https://www.mrfdev.com/enhancer-for-youtube)
 
-Diese Erweiterung will nützliche Features zur Nebula Seite bringen. Im Moment werden nur Änderungen am Videospieler ausgeführt.
+Diese Erweiterung will nützliche Features zur Nebula Seite bringen.
 
 
 # Installierung
