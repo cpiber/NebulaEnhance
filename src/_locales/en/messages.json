@@ -110,5 +110,17 @@
     "pageNothingToPlay": {
         "message": "Nothing to play",
         "description": "Title for queue when nothing selected."
+    },
+    "pageShareQueue": {
+        "message": "Share",
+        "description": "Title for share queue popup."
+    },
+    "pageShareLink": {
+        "message": "Link",
+        "description": "Label for share input with link."
+    },
+    "pageShareStartHere": {
+        "message": "Start at this title",
+        "description": "Whether to start with the current title when sharing."
     }
 }

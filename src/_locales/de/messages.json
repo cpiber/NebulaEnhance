@@ -110,5 +110,17 @@
     "pageNothingToPlay": {
         "message": "Nichts am abspielen",
         "description": "Titel der Warteschlange wenn leer."
+    },
+    "pageShareQueue": {
+        "message": "Teilen",
+        "description": "Titel für Teilen-Popup."
+    },
+    "pageShareLink": {
+        "message": "Link",
+        "description": "Beschriftung für Feld mit Teilen-Link."
+    },
+    "pageShareStartHere": {
+        "message": "Mit diesem Titel starten",
+        "description": "Ob mit dem aktuellen Titel begonnen werden soll (Teilen)."
     }
 }

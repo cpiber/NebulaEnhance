@@ -96,6 +96,7 @@ const hashChange = () => {
     const hash = window.location.hash.match(/^#([A-Za-z0-9\-_]+(?:,[A-Za-z0-9\-_]+)*)$/);
     if (!hash)
         return; // invalid video list
+    // extract comma separated list of friendly-names from hash
     const q = hash[1].split(',');
     setQueue(q, current ? current[1] : undefined);
 }
