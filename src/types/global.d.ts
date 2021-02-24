@@ -9,4 +9,8 @@ declare global {
     interface Array<T> {
         equals(other: Array<T>): boolean;
     }
+
+    interface Number {
+        pad(length: number): string;
+    }
 }

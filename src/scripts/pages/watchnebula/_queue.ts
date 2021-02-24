@@ -15,6 +15,7 @@ export type video = {
 };
 type Queue = Array<string> & { splice2: (start: number, count: number, elements?: string[], nodes?: HTMLElement[]) => [string[], HTMLElement[]] };
 Array.prototype.equals = function <T>(this: Array<T>, other: Array<T>) { return this.every((v, i) => v === other[i]); }
+Number.prototype.pad = function (this: number, length: number) { return (""+this).padStart(length, "0"); }
 
 const store: { [key: string]: video } = {};
 const queue: Queue = [] as Queue;
@@ -325,7 +326,7 @@ const requestData = (name: string) =>
             throw new Error(`Invalid response: ${JSON.stringify(data)}`);
         const vid = data.response[0];
         return [
-            `${Math.floor(vid.duration / 60)}:${vid.duration - Math.floor(vid.duration / 60) * 60}`,
+            `${Math.floor(vid.duration / 60)}:${(vid.duration - Math.floor(vid.duration / 60) * 60).pad(2)}`,
             (vid.thumbnails as thumb[])[0].url,
             vid.title,
             (vid.categories as cat[]).find(c => c.value.length).value[0]
