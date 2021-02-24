@@ -1,6 +1,6 @@
 import { videosettings } from "../../_shared";
 import { c, getBrowserInstance, injectScript } from "../../_sharedBrowser";
-import svg from "./../../../icons/watchlater.svg";
+import iconWatchLater from "./../../../icons/watchlater.svg";
 import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue } from "./_queue";
 import { init as initDrag } from "./_queueDrag";
 
@@ -51,13 +51,15 @@ const hover = (e: MouseEvent) => {
     const link = imgLink(e.target as HTMLElement);
     if (link === null)
         return;
-    const img = e.target as HTMLElement;
+    createLink(e.target as HTMLElement);
+};
+const createLink = (img: HTMLElement) => {
     if (img.parentElement.querySelector('.enhancer-queueButton') !== null)
         return; // queue button exists
     // create queue button
     const later = document.createElement('div');
     const time = img.nextElementSibling;
-    later.innerHTML = `<span class="${time?.firstElementChild?.className}">${addToQueue}</span>${svg}`;
+    later.innerHTML = `<span class="${time?.firstElementChild?.className}">${addToQueue}</span>${iconWatchLater}`;
     later.className = `${time?.className} enhancer-queueButton`;
     img.parentElement.appendChild(later);
 };

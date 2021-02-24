@@ -1,24 +1,17 @@
-import iconPlay from "../../../icons/play.svg";
 import iconShare from "../../../icons/share.svg";
 import { getBrowserInstance } from "../../_sharedBrowser";
+import { Queue, Store, video } from "./_VideoQueue";
 
 const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
 const share = getBrowserInstance().i18n.getMessage('pageShareQueue');
 const link = getBrowserInstance().i18n.getMessage('pageShareLink');
 const starthere = getBrowserInstance().i18n.getMessage('pageShareStartHere');
 
-export type video = {
-    length: string,
-    thumbnail: string,
-    title: string,
-    creator: string,
-};
-type Queue = Array<string> & { splice2: (start: number, count: number, elements?: string[], nodes?: HTMLElement[]) => [string[], HTMLElement[]] };
 Array.prototype.equals = function <T>(this: Array<T>, other: Array<T>) { return this.every((v, i) => v === other[i]); }
-Number.prototype.pad = function (this: number, length: number) { return (""+this).padStart(length, "0"); }
+Number.prototype.pad = function (this: number, length: number) { return ("" + this).padStart(length, "0"); }
 
-const store: { [key: string]: video } = {};
-const queue: Queue = [] as Queue;
+const store: Store = {};
+let queue: Queue = null;
 let queuepos = -1;
 // some html elements related to queue and share
 let popupel: HTMLElement = null;
@@ -170,7 +163,6 @@ export const init = () => {
         </div>
     `;
     queueel = q.querySelector('.elements');
-    const e = queueel;
     const o = q.querySelector('.of');
     titleel = q.querySelector('.title');
     quenoel = q.querySelector('.no');
@@ -179,37 +171,17 @@ export const init = () => {
     qshahel = qsharel.querySelector('input[type="checkbox"]');
     document.body.append(q);
 
-    // splice function which also updates underlying dom elements
-    queue.splice2 = (start: number, count: number, elements?: string[], nodes?: HTMLElement[]) => {
-        if (nodes !== undefined && nodes.length !== 0 && nodes.length !== elements.length)
-            throw new Error('length mismatch');
-        start = start < 0 ? queue.length - start : start;
-        start = start < 0 ? 0 : start > queue.length ? queue.length : start;
-        const end = start + count > queue.length ? queue.length : start + count;
-        let s = start > 0 ? e.children[start - 1] : null;
-        const n = nodes === undefined || nodes.length === 0;
-        const delel = [];
-        for (let i = end - 1; i >= start; i--) {
-            delel.push(e.children[i] as HTMLElement);
-            e.children[i].remove();
-        }
-        for (let i = 0; i < elements?.length || 0; i++) {
-            const node = n ? createQueueElement(elements[i]) : nodes[i];
-            s === null ? e.firstChild === null ? e.append(node) : e.firstChild.before(node) : s.after(node);
-            s = node;
-        }
-        const del = Array.prototype.splice.call(queue, start, count, ...(elements || [])) as string[];
-        o.textContent = `${queue.length}`;
-        return [del, delel];
-    };
-    e.addEventListener('click', clickElements);
+    Queue.prototype.update = function (this: Queue) { o.textContent = `${this.length}`; }
+    queue = new Queue(queueel, store);
+
+    queueel.addEventListener('click', clickElements);
     q.querySelector('.top').addEventListener('click', clickTop);
     window.addEventListener('message', msg);
 
     qsharel.querySelector('.close').addEventListener('click', () => qsharel.classList.add('hidden'));
     qshtxel.addEventListener('click', ev => (ev.target as HTMLInputElement).select());
     qshahel.addEventListener('change', setShare);
-    return e;
+    return queueel;
 };
 const clickElements = (e: MouseEvent) => {
     const el = (e.target as HTMLElement).closest('.element');
@@ -321,34 +293,14 @@ const requestData = (name: string) =>
             "mode": "cors"
         }
     ).then(res => res.json())
-     .then(data => {
-        if (!data?.response?.length || data.response.length !== 1)
-            throw new Error(`Invalid response: ${JSON.stringify(data)}`);
-        const vid = data.response[0];
-        return [
-            `${Math.floor(vid.duration / 60)}:${(vid.duration - Math.floor(vid.duration / 60) * 60).pad(2)}`,
-            (vid.thumbnails as thumb[])[0].url,
-            vid.title,
-            (vid.categories as cat[]).find(c => c.value.length).value[0]
-        ] as string[];
-    });
-const createQueueElement = (name: string): HTMLElement => {
-    const n = document.createElement('div');
-    n.className = 'element';
-    n.innerHTML = `
-        <div class="drag">&#x2630;</div>
-        <div class="thumb">
-            <img src="${store[name].thumbnail}" draggable="false" />
-            <div class="play">${iconPlay}</div>
-        </div>
-        <div class="data">
-            <span class="title"></span>
-            <span class="creator"></span>
-        </div>
-        <div class="remove"><span class="r">&#128465;</span></div>
-    `;
-    n.draggable = true;
-    n.querySelector('.title').textContent = store[name].title;
-    n.querySelector('.creator').textContent = `${store[name].creator} • ${store[name].length}`;
-    return n;
-};
+        .then(data => {
+            if (!data?.response?.length || data.response.length !== 1)
+                throw new Error(`Invalid response: ${JSON.stringify(data)}`);
+            const vid = data.response[0];
+            return [
+                `${Math.floor(vid.duration / 60)}:${(vid.duration - Math.floor(vid.duration / 60) * 60).pad(2)}`,
+                (vid.thumbnails as thumb[])[0].url,
+                vid.title,
+                (vid.categories as cat[]).find(c => c.value.length).value[0]
+            ] as string[];
+        });
