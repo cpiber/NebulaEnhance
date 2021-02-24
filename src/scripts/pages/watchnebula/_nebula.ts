@@ -16,6 +16,14 @@ export const nebula = async () => {
     window.addEventListener('hashchange', hashChange);
     hashChange();
 
+    const isAndroid: boolean = await getBrowserInstance().runtime.sendMessage("isAndroid");
+    if (isAndroid) {
+        // substitute hover listener
+        const m = new MutationObserver(mutation);
+        m.observe(document.querySelector('#root'), { subtree: true, childList: true });
+        mutation();
+    }
+
     // inject custom script (if available)
     const s = (await getBrowserInstance().storage.local.get({ customScriptPage: '' })).customScriptPage;
     if (s)
@@ -63,6 +71,15 @@ const createLink = (img: HTMLElement) => {
     later.className = `${time?.className} enhancer-queueButton`;
     img.parentElement.appendChild(later);
 };
+const mutation = (() => {
+    let timeout = 0;
+    return function () {
+        clearTimeout(timeout);
+        timeout = window.setTimeout(() => {
+            Array.from(document.querySelectorAll(`${videoselector} img`)).forEach(createLink);
+        }, 500);
+    }
+})();
 
 const click = async (e: MouseEvent) => {
     const target = e.target as HTMLElement;
