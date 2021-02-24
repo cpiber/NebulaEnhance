@@ -5,4 +5,8 @@ declare global {
         THEOplayer: typeof THEOplayer;
         theoplayer: THEOplayer.Player;
     }
+
+    interface Array<T> {
+        equals(other: Array<T>): boolean;
+    }
 }

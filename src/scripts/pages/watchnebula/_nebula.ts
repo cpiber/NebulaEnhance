@@ -1,7 +1,7 @@
 import { videosettings } from "../../_shared";
 import { c, getBrowserInstance, injectScript } from "../../_sharedBrowser";
 import svg from "./../../../icons/watchlater.svg";
-import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init, isEmptyQueue } from "./_queue";
+import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue } from "./_queue";
 import { init as initDrag } from "./_queueDrag";
 
 const videoselector = 'a[href^="/videos/"]';
@@ -11,8 +11,10 @@ export const nebula = async () => {
     window.addEventListener('message', message);
     document.body.addEventListener('mouseover', hover);
     document.body.addEventListener('click', click);
-    const e = init();
+    const e = initQueue();
     initDrag(e);
+    window.addEventListener('hashchange', hashChange);
+    hashChange();
 
     // inject custom script (if available)
     const s = (await getBrowserInstance().storage.local.get({ customScriptPage: '' })).customScriptPage;
@@ -28,7 +30,6 @@ const message = (e: MessageEvent) => {
     if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")
         return;
     const msg = (typeof e.data === "string" ? { type: e.data } : e.data) as { type: string, [key: string]: any };
-    console.log(msg);
     switch (msg.type) {
         case "getSetting":
             return getSetting(e);
@@ -61,7 +62,7 @@ const hover = (e: MouseEvent) => {
     img.parentElement.appendChild(later);
 };
 
-const click = (e: MouseEvent) => {
+const click = async (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     const later = target.closest('.enhancer-queueButton');
     const link = target.closest<HTMLAnchorElement>(videoselector);
@@ -70,7 +71,7 @@ const click = (e: MouseEvent) => {
     const img = link.querySelector('img');
     const name = link.getAttribute('href').substr(8);
     // extract and store information on video
-    addToStore(name,
+    await addToStore(name,
         img.nextElementSibling?.lastChild.textContent,
         img.src,
         link.lastElementChild?.children[1]?.textContent,
@@ -89,3 +90,12 @@ const click = (e: MouseEvent) => {
         gotoNextInQueue();
     }
 };
+
+const hashChange = () => {
+    const current = window.location.pathname.match(/^\/videos\/(.+)\/?$/);
+    const hash = window.location.hash.match(/^#([A-Za-z0-9\-_]+(?:,[A-Za-z0-9\-_]+)*)$/);
+    if (!hash)
+        return; // invalid video list
+    const q = hash[1].split(',');
+    setQueue(q, current ? current[1] : undefined);
+}

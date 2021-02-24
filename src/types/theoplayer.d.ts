@@ -20,6 +20,7 @@ declare namespace THEOplayer {
         duration: number;
         element: HTMLElement;
         playbackRate: number;
+        readyState: number;
         videoTracks: MediaTrackList;
         volume: number;
 
@@ -107,6 +108,7 @@ declare namespace THEOplayer {
     interface PlayerEventMap {
         playing: Event<'playing'>;
         ratechange: Event<'ratechange'>;
+        readystatechange: Event<'readystatechange'>;
         volumechange: Event<'volumechange'>;
     }
     

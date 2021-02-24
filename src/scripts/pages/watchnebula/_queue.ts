@@ -2,6 +2,7 @@ import play from "../../../icons/play.svg";
 import { getBrowserInstance } from "../../_sharedBrowser";
 
 const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
+Array.prototype.equals = function <T>(this: Array<T>, other: Array<T>) { return this.every((v, i) => v === other[i]); }
 
 export type video = {
     length: string,
@@ -19,13 +20,13 @@ let queueel: HTMLElement = null;
 let titleel: HTMLElement = null;
 let quenoel: HTMLElement = null;
 
-export async function addToStore(name: string, length: string, thumbnail: string, title: string, creator: string): Promise<video>;
-export async function addToStore(name: string): Promise<video>;
-export async function addToStore(name: string, ...args: any[]) {
+export function addToStore(name: string, length: string, thumbnail: string, title: string, creator: string): Promise<video>;
+export function addToStore(name: string): Promise<video>;
+export function addToStore(name: string, ...args: any[]) {
     if (store[name])
-        return store[name]; // already in
-    const [length, thumbnail, title, creator] = args.length === 4 ? args as string[] : await requestData(name);
-    return store[name] = { length, thumbnail, title, creator };
+        return Promise.resolve(store[name]); // already in
+    return (args.length === 4 ? Promise.resolve(args as string[]) : requestData(name))
+        .then(([length, thumbnail, title, creator]) => store[name] = { length, thumbnail, title, creator });
 }
 export const isEmptyQueue = () => queue.length === 0;
 export const enqueue = (name: string, pos?: number) => {
@@ -37,6 +38,7 @@ export const enqueue = (name: string, pos?: number) => {
         queue.splice2(queue.length, 0, [name]);
     popupel.classList.remove('hidden');
     calcBottom(popupel.classList.contains('down'));
+    console.log(queue.join(','));
 };
 export const enqueueNow = (name: string) => {
     if (queue[queuepos] !== name && queue[queuepos + 1] !== name)
@@ -73,6 +75,7 @@ export const gotoQueue = (index: number, go = true) => {
         }, 0);
     }
     queueel?.children[index]?.classList.add('playing');
+    queueel?.children[index]?.scrollIntoView();
     updateText();
 }
 export const gotoNextInQueue = () => gotoQueue(queuepos + 1);
@@ -98,6 +101,23 @@ export const moveQueue = (orig: number, index: number) => {
     }
     return elem[0];
 }
+export const setQueue = async (newq: string[], current?: string) => {
+    // check if they're already same
+    if (newq.length === queue.length && newq.equals(queue))
+        return;
+    // wait for all to be added (requests from api if needed)
+    // filters queue to valid elements
+    const q = (await Promise.all(newq.map(v => addToStore(v).catch(console.error))))
+        .map((v, i) => v !== undefined ? newq[i] : undefined).filter(e => e !== undefined);
+    queue.splice2(0, queue.length, q); // replace current queue
+    if (current)
+        setTimeout(() => gotoQueue(queue.indexOf(current), false), 0);
+    else
+        clearText(); // new queue, nothing playing
+    popupel.classList.toggle('hidden', q.length === 0);
+    calcBottom(popupel.classList.contains('down'));
+    return q;
+}
 
 
 export const init = () => {
@@ -114,6 +134,9 @@ export const init = () => {
                 <div class="close">&times;</div>
             </div>
             <div class="elements"></div>
+        </div>
+        <div class="enhancer-queue-share">
+            
         </div>
     `;
     queueel = q.querySelector('.elements');
@@ -172,12 +195,27 @@ const clickTop = (e: MouseEvent) => {
     else
         clearQueue();
 };
+const next = (() => {
+    function _next() {
+        gotoNextInQueue();
+        this.waitEnd = false;
+    }
+    return _next.bind(_next) as (() => void) & { waitEnd: boolean };
+})();
 const msg = (e: MessageEvent) => {
     if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")
         return;
     try {
         const m = JSON.parse(e.data);
-        if (m.event === "zype:complete") setTimeout(gotoNextInQueue, 1600);
+        switch (m.event) {
+            case "zype:complete":
+                setTimeout(next, 5000);
+                next.waitEnd = true;
+                break;
+            case "zype:pause":
+                if (next.waitEnd) next();
+                break;
+        }
     } catch { }
 };
 const updateText = () => {
@@ -209,25 +247,33 @@ type cat = {
     title: string,
     value: string[],
 };
-const requestData = async (name: string) => {
-    const data = await fetch(`https://api.zype.com/videos?friendly_title=${name}&per_page=1&api_key=JlSv9XTImxelHi-eAHUVDy_NUM3uAtEogEpEdFoWHEOl9SKf5gl9pCHB1AYbY3QF`, {
-        "credentials": "omit",
-        "headers": {
-            "Accept": "application/json, text/plain, */*",
-            "Accept-Language": "en-US,en;q=0.5",
-            "Cache-Control": "max-age=0"
-        },
-        "referrer": `https://watchnebula.com/videos/${name}`,
-        "method": "GET",
-        "mode": "cors"
-    }).then(res => res.json()).catch(console.error);
-    const vid = data.response[0];
-    return [
-        `${Math.floor(vid.duration / 60)}:${vid.duration - Math.floor(vid.duration / 60) * 60}`,
-        (vid.thumbnails as thumb[])[0].url,
-        vid.title,
-        (vid.categories as cat[]).find(c => c.value.length).value[0]
-    ] as string[];
+const requestData = (name: string) => {
+    return fetch(
+        `https://api.zype.com/videos?friendly_title=${name}&per_page=1&api_key=JlSv9XTImxelHi-eAHUVDy_NUM3uAtEogEpEdFoWHEOl9SKf5gl9pCHB1AYbY3QF`,
+        {
+            "credentials": "omit",
+            "headers": {
+                "Accept": "application/json, text/plain, */*",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Cache-Control": "max-age=0"
+            },
+            "referrer": `https://watchnebula.com/videos/${name}`,
+            "method": "GET",
+            "mode": "cors"
+        }
+    ).then(res => res.json()).then(r => {
+        if (!r?.response?.length || r.response.length !== 1)
+            throw new Error(`Invalid response: ${JSON.stringify(r)}`);
+        return r;
+    }).then(data => {
+        const vid = data.response[0];
+        return [
+            `${Math.floor(vid.duration / 60)}:${vid.duration - Math.floor(vid.duration / 60) * 60}`,
+            (vid.thumbnails as thumb[])[0].url,
+            vid.title,
+            (vid.categories as cat[]).find(c => c.value.length).value[0]
+        ] as string[];
+    });
 };
 const createQueueElement = (name: string): HTMLElement => {
     const n = document.createElement('div');

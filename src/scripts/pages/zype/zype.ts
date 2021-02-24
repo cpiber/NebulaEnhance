@@ -35,6 +35,7 @@ const init = async () => {
     const playbackRate = currentPlaybackRate || defaultPlaybackRate || 1;
     const volume = currentVolume || defaultVolume || 1;
     console.debug(playbackRate, playbackChange, volume, targetQualities, '\tcurrent:', currentPlaybackRate, currentVolume, currentQuality, '\tdefault:', defaultPlaybackRate, defaultVolume);
+    t.addEventListener('readystatechange', console.info);
 
     // set playbackRate (auto-updates)
     t.playbackRate = playbackRate;
@@ -65,7 +66,6 @@ const init = async () => {
     t.addEventListener('playing', setQualities);
 
     // listen to changes and save
-    console.log('listen');
     t.addEventListener('ratechange', () => setSetting('playbackRate', t.playbackRate));
     t.addEventListener('volumechange', () => setSetting('volume', t.volume));
 
