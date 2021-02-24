@@ -24,6 +24,7 @@ Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überp
 
 **Seite**
 - Queue: Füge Videos einfach zu einer Warteschlange hinzu
+- Teilen: Schlange kann jetzt geteilt werden -- Teilen Sie Ihre Liste oder legen Sie Lesezeichen dafür an!
 
 **Videospieler**
 - Standard Abspielgeschwindigkeit und Lautstärke: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit und Lautstärke abzuspielen

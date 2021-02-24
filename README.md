@@ -25,6 +25,7 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 
 **Page**
 - Queue: Add videos to watch queue
+- Share: Queue is shareable -- Bookmark and Share your list!
 
 **Player**
 - Default playback speed and volume
