@@ -212,19 +212,13 @@ const clickTop = (e: MouseEvent) => {
         return gotoNextInQueue();
     toggleQueue();
 };
-const next = (() => {
-    type _n = (() => void) & { waitEnd: boolean, timeout: number };
-    function _next(this: _n) {
-        if (!this.waitEnd)
-            return;
-        gotoNextInQueue();
-        this.waitEnd = false;
-        window.clearTimeout(this.timeout);
-    }
-    return _next.bind(_next) as _n;
-})();
-next.waitEnd = false;
-next.timeout = 0;
+const next: (() => void) & { waitEnd: boolean, timeout: number } = Object.assign(() => {
+    if (!next.waitEnd)
+        return;
+    gotoNextInQueue();
+    next.waitEnd = false;
+    window.clearTimeout(next.timeout);
+}, { waitEnd: false, timeout: 0 });
 const msg = (e: MessageEvent) => {
     if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")
         return;
