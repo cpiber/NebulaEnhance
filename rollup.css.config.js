@@ -1,8 +1,7 @@
 'use strict';
 
 import 'rollup';
-import scss from 'rollup-plugin-scss';
-import postcss from 'postcss';
+import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 import presetEnv from 'postcss-preset-env';
 import glob from 'glob';
@@ -19,24 +18,17 @@ export default glob.sync('src/**/*.@(sa|sc|c)ss', { ignore: [ 'src/**/_*.@(sa|sc
     return {
         input: e,
         output: {
-            file: `${d}.tmp`,
+            dir: path.dirname(e.replace(/(^|\/)src\//, '$1extension-dist/')),
         },
         plugins: [
-            scss({
-                output: d,
-                outFile: d,
-                outputStyle: process.env.BUILD ? 'compressed' : 'expanded',
-                sourceMap: process.env.BUILD ? null : `${d}.map`,
-                sass: require('sass'),
-                processor: _ => postcss([autoprefixer(), presetEnv()]),
-                watch: process.env.ROLLUP_WATCH ? glob.sync(`${path.dirname(e)}/**/*.@(sa|sc|c)ss`) : false,
+            postcss({
+                plugins: [autoprefixer(), presetEnv()],
+                extract: true,
+                sourceMap: !process.env.BUILD,
+                fiber: require('fibers')
             }),
             remove(),
         ],
-        onwarn: (warning, warn) => {
-            if (warning.code === 'EMPTY_BUNDLE') return; // intentionally empty
-            warn(warning);
-        },
         watch: w
     };
 });
@@ -47,7 +39,8 @@ function remove() {
             if (!isWrite)
                 return;
             for (const prop in bundle) {
-                if (bundle[prop].code === '\n')
+                if (!bundle[prop].code) continue;
+                if (bundle[prop].code === '\n' || bundle[prop].code.trim() === 'var undefined$1 = undefined;\n\nexport default undefined$1;')
                     delete bundle[prop];
             }
         }
