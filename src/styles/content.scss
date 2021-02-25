@@ -1,0 +1,47 @@
+@import './mixins';
+@import './queue';
+@import './queue_share';
+
+.enhancer-queueButton {
+    top: 8px;
+    bottom: unset;
+    line-height: 0;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+    pointer-events: initial;
+
+    &%hover {
+        opacity: 1;
+    }
+
+    @include hov {
+        @extend %hover;
+    }
+    $self: &;
+    @at-root img {
+        @include hov {
+            & ~ #{$self} {
+                @extend %hover;
+            }
+        }
+    }
+
+    svg {
+        width: 19px;
+        height: 19px;
+        padding: 3px;
+        fill: white;
+        fill: currentColor;
+        transition: width 0.1s ease-in-out, height 0.1s ease-in-out;
+        pointer-events: initial;
+    }
+    @include hov {
+        svg {
+            width: 22px;
+            height: 22px;
+        }
+    }
+    @include mobile {
+        opacity: 1;
+    }
+}

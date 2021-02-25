@@ -42,7 +42,6 @@ export const enqueue = (name: string, pos?: number) => {
         queue.splice2(queue.length, 0, [name]);
     popupel.classList.remove('hidden');
     calcBottom(popupel.classList.contains('down'));
-    console.log(queue.join(','));
 };
 export const enqueueNow = (name: string) => {
     if (queue[queuepos] !== name && queue[queuepos + 1] !== name)
@@ -259,7 +258,7 @@ const calcBottom = (down: boolean) => {
 const setShare = () => {
     const base = qshahel.checked && queuepos >= 0 ? `${window.location.origin}/videos/${queue[queuepos]}` : window.location.origin;
     const hash = queue.join(',');
-    qshtxel.value = `${base}#${hash}`;
+    qshtxel.value = `${base}/#${hash}`;
     qsharel.classList.remove('hidden');
 }
 

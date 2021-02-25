@@ -7,11 +7,11 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import glob from 'glob';
 
+console.info(`Build mode ${process.env.BUILD ? 'on' : 'off'}`);
 export default glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.ts' ] }).map(e => {
     const d = e.replace(/(^|\/)src\//, '$1extension-dist/').replace(/.ts$/, '.js');
     // Report destination paths on console
     console.info(`\u001b[36m\[Rollup build\]\u001b[97m Converting Typescript from ${e} to javascript, exporting to: ${d}`);
-    console.info(`Build mode ${process.env.BUILD ? 'on' : 'off'}`);
     return {
         input: e,
         output: {
