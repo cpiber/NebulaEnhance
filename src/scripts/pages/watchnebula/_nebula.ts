@@ -67,7 +67,7 @@ const createLink = (img: HTMLElement) => {
     // create queue button
     const later = document.createElement('div');
     const time = img.nextElementSibling;
-    later.innerHTML = `<span class="${time?.firstElementChild?.className}">${addToQueue}</span>${iconWatchLater}`;
+    later.innerHTML = `<span class="${time?.querySelector('span')?.className}">${addToQueue}</span>${iconWatchLater}`;
     later.className = `${time?.className} enhancer-queueButton`;
     img.parentElement.appendChild(later);
 };
