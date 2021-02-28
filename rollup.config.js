@@ -1,9 +1,14 @@
 'use strict';
 
+import { config } from 'dotenv';
+config();
+
 import 'rollup';
 import typescript from '@rollup/plugin-typescript';
 import { string } from 'rollup-plugin-string';
 import nodeResolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import glob from 'glob';
 import path from 'path';
@@ -32,9 +37,16 @@ export default glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.
                 tsconfig: process.env.BUILD ? "./tsconfig.prod.json" : "./tsconfig.json",
             }),
             string({
-                include: "**/*.svg"
+                include: "**/*.svg",
             }),
-            nodeResolve(),
+            nodeResolve({
+                preferBuiltins: false,
+            }),
+            commonjs(),
+            replace({
+                '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
+                preventAssignment: true,
+            }),
             process.env.BUILD && terser({ format: { comments: false } })
         ],
         watch: w

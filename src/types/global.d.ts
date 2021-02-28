@@ -13,4 +13,6 @@ declare global {
     interface Number {
         pad(length: number): string;
     }
+
+    const __YT_API_KEY__: string;
 }

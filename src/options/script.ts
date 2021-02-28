@@ -6,6 +6,7 @@ const els: { [key: string]: HTMLInputElement | HTMLTextAreaElement } = {
     volume: document.querySelector('[name="volume"]'),
     autoplay: document.querySelector('[name="autoplay"]'),
     targetQualities: document.querySelector('[name="targetQualities"]'),
+    youtube: document.querySelector('[name="youtube"]'),
     customScriptPage: document.querySelector('[name="customScriptPage"]'),
     customScript: document.querySelector('[name="customScript"]'),
 };
@@ -62,6 +63,7 @@ form.addEventListener('submit', e => {
     e.preventDefault();
     save();
 });
+
 // autosave
 Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')).forEach(e => {
     e.addEventListener('focusout', save);
@@ -79,6 +81,23 @@ Array.from(document.querySelectorAll<HTMLElement>('[data-i18n]')).forEach(e => {
         e.setAttribute(attr, e.getAttribute(attr).replace(/__MSG_(.+)__/g, (...args) => getBrowserInstance().i18n.getMessage(args[1]))));
     e.removeAttribute('data-i18n');
 });
+
+// permissions for youtube comments
+const permissions = getBrowserInstance().permissions;
+els.youtube.addEventListener('change', async () => {
+    const y = els.youtube as HTMLInputElement;
+    const perms: browser.permissions.Permissions = {
+        origins: [
+            "*://standard.tv/*",
+            "*://*.googleapis.com/*"
+        ]
+    };
+    const success = await (y.checked ? permissions.request : permissions.remove)(perms);
+    if (!success) y.checked = !y.checked; // revert
+    permissions.getAll().then(console.log);
+    if (y.checked && success) getBrowserInstance().runtime.sendMessage('loadCreators');
+});
+permissions.onRemoved.addListener(p => p.origins?.length && ((els.youtube as HTMLInputElement).checked = false));
 
 // load initial values from storage
 load(true);

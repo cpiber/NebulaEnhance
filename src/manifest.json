@@ -34,6 +34,10 @@
 		"storage",
 		"*://api.zype.com/*"
 	],
+	"optional_permissions": [
+		"*://standard.tv/*",
+		"*://*.googleapis.com/*"
+	],
 	"browser_action": {
 		"default_icon": {
 			"128": "icons/icon_128.png",

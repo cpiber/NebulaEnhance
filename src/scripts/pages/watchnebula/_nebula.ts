@@ -9,19 +9,27 @@ const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 
 export const nebula = async () => {
     window.addEventListener('message', message);
+    maybeLoadComments();
     document.body.addEventListener('mouseover', hover);
     document.body.addEventListener('click', click);
     const e = initQueue();
     initDrag(e);
     window.addEventListener('hashchange', hashChange);
     hashChange();
-
+    
     const isAndroid: boolean = await getBrowserInstance().runtime.sendMessage("isAndroid");
-    if (isAndroid) {
-        // substitute hover listener
-        const m = new MutationObserver(mutation);
+    const youtube: boolean = (await getBrowserInstance().storage.local.get({ youtube: false })).youtube;
+    if (isAndroid || youtube) {
+        const cb = mutation(() => {
+            // substitute hover listener
+            if (isAndroid)
+                Array.from(document.querySelectorAll(`${videoselector} img`)).forEach(createLink);
+            if (youtube)
+                maybeLoadComments();
+        });
+        const m = new MutationObserver(cb);
         m.observe(document.querySelector('#root'), { subtree: true, childList: true });
-        mutation();
+        cb();
     }
 
     // inject custom script (if available)
@@ -71,15 +79,13 @@ const createLink = (img: HTMLElement) => {
     later.className = `${time?.className} enhancer-queueButton`;
     img.parentElement.appendChild(later);
 };
-const mutation = (() => {
+const mutation = (func: () => void) => {
     let timeout = 0;
     return function () {
         clearTimeout(timeout);
-        timeout = window.setTimeout(() => {
-            Array.from(document.querySelectorAll(`${videoselector} img`)).forEach(createLink);
-        }, 500);
+        timeout = window.setTimeout(func, 500);
     }
-})();
+};
 
 const click = async (e: MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -118,4 +124,33 @@ const hashChange = () => {
     // extract comma separated list of friendly-names from hash
     const q = hash[1].split(',');
     setQueue(q, current ? current[1] : undefined);
-}
+};
+
+const maybeLoadComments = () => {
+    if (window.location.pathname.match(/^\/videos\//))
+        loadComments();
+};
+const loadComments = async () => {
+    const h2 = Array.from(document.querySelectorAll('h2'));
+    if (h2.length < 2) return;
+    const title = h2[0].textContent;
+    const creator = h2[1].textContent;
+    if (!title || !creator) return;
+    if (!h2[0].nextElementSibling || h2[0].nextElementSibling.querySelector('.enhancer-yt'))
+        return; // already requested
+    console.debug(`Requesting '${title}' by ${creator}`);
+
+    try {
+        const vid = await getBrowserInstance().runtime.sendMessage({ type: 'getYoutubeId', creator, title });
+        const v = document.createElement('span');
+        v.classList.add('enhancer-yt');
+        const a = document.createElement('a');
+        a.href = `https://youtu.be/${vid}`;
+        a.target = '_blank';
+        a.textContent = a.href;
+        v.append(a);
+        h2[0].nextElementSibling.append(h2[0].nextElementSibling.querySelector('span[class]')?.cloneNode(true), v);
+    } catch (err) {
+        console.error(err);
+    }
+};
