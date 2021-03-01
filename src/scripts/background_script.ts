@@ -1,7 +1,7 @@
 import { getBrowserInstance } from './_sharedBrowser';
 import { creator, creatorHasVideo, loadCreators as _loadCreators } from './_youtube';
 
-let videoFetch = 100;
+let videoFetch = 50;
 
 function isAndroid() {
     return getBrowserInstance().runtime.getPlatformInfo().then(information => information.os === 'android');

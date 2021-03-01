@@ -59,6 +59,14 @@
         "message": "The (heights of) the qualities to target, e.g. <code>1080, 720</code>",
         "description": "Hint for target qualities of options page."
     },
+    "optionsLoadYoutubeTitle": {
+        "message": "Load YouTube link",
+        "description": "Label for LoadYoutube of options page."
+    },
+    "optionsLoadYoutubeHint": {
+        "message": "Whether to automatically try and find the matching YouTube video or not.",
+        "description": "Hint for LoadYoutube of options page."
+    },
     "optionsCustomScriptPageTitle": {
         "message": "Custom Script for page",
         "description": "Label for adding custom scripts to webpage of options page."

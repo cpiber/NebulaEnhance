@@ -59,6 +59,14 @@
         "message": "Die Höhen der Zielqualitäten des Videos, e.g. <code>1080, 720</code>",
         "description": "Hilfstext für Zielqualitäten der Optionen Seite."
     },
+    "optionsLoadYoutubeTitle": {
+        "message": "YouTube Videolink laden",
+        "description": "Beschriftung für LoadYoutube der Optionen Seite."
+    },
+    "optionsLoadYoutubeHint": {
+        "message": "Ob automatisch versucht werden soll, das YouTube Video zu finden.",
+        "description": "Hilfstext für LoadYoutube der Optionen Seite."
+    },
     "optionsCustomScriptPageTitle": {
         "message": "Custom Script für Webseite",
         "description": "Beschriftung fürs Einfügen von custom scripts zur Webseite der Optionen Seite."
