@@ -175,7 +175,8 @@ export const init = () => {
 
     queueel.addEventListener('click', clickElements);
     q.querySelector('.top').addEventListener('click', clickTop);
-    window.addEventListener('message', msg);
+    if (!/chrome/i.test(navigator.userAgent))
+        window.addEventListener('message', msg);
 
     qsharel.querySelector('.close').addEventListener('click', () => qsharel.classList.add('hidden'));
     qshtxel.addEventListener('click', ev => (ev.target as HTMLInputElement).select());

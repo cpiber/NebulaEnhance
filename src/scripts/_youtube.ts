@@ -13,8 +13,8 @@ type video = {
 Array.prototype.occurence = function <T>(this: Array<T>) {
     return [...this].sort().reduce((prev, cur) => {
         const p = [[...prev[0]], [...prev[1]]] as typeof prev;
-        if (cur === p[0][p[0].length-1]) {
-            p[1][p[1].length-1]++; // increase frequency
+        if (cur === p[0][p[0].length - 1]) {
+            p[1][p[1].length - 1]++; // increase frequency
             return p;
         }
         // new element
@@ -158,21 +158,21 @@ export const creatorHasVideo = (playlist: string, title: string, num: number) =>
                 "method": "GET",
                 "mode": "cors"
             })
-                .then(res => res.json())
-                .then((res: PlaylistItemsReply<PlaylistItemSnippet>) => {
-                    if (!res || !res.pageInfo || !res.items || !res.items.length) {
-                        console.log(res);
-                        throw new Error("Invalid API response");
-                    }
-                    n += res.items.length;
-                    const v = res.items.find(e => e.snippet.title.toLowerCase().trim() === title);
-                    if (v) return v.snippet.resourceId.videoId; // found the video
-                    const vids = res.items.map(i => ({ title: i.snippet.title, videoId: i.snippet.resourceId.videoId }));
-                    const nlist = [...plist, ...vids];
-                    if (n < num && res.nextPageToken)
-                        return load(res.nextPageToken, nlist);
-                    return nlist;
-                })
+            .then(res => res.json())
+            .then((res: PlaylistItemsReply<PlaylistItemSnippet>) => {
+                if (!res || !res.pageInfo || !res.items || !res.items.length) {
+                    console.log(res);
+                    throw new Error("Invalid API response");
+                }
+                n += res.items.length;
+                const v = res.items.find(e => e.snippet.title.toLowerCase().trim() === title);
+                if (v) return v.snippet.resourceId.videoId; // found the video
+                const vids = res.items.map(i => ({ title: i.snippet.title, videoId: i.snippet.resourceId.videoId }));
+                const nlist = [...plist, ...vids];
+                if (n < num && res.nextPageToken)
+                    return load(res.nextPageToken, nlist);
+                return nlist;
+            })
     };
     return load().then(vids => toVid(vids, title)).catch(err => {
         console.error(err);
@@ -187,7 +187,7 @@ const toVid = (vids: string | video[], title: string) => {
     const exclude = ['the', 'is', 'a', 'and', 'or', 'as', 'of'];
     const numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
     const split = (s: string) =>
-        s.toLowerCase().normalize("NFD").replace(/["'\(\)\[\]\{\}\u0300-\u036f]/g, '').split(/[\s-_.,?!:;|]+/)
+        s.toLowerCase().normalize("NFD").replace(/["'\(\)\[\]\{\}\u0300-\u036f]/g, '').split(/([\s\-_.,?!:;|]|\p{Pd})+/)
             .filter(t => t && exclude.indexOf(t) === -1).map(v => numbers[+v] || v);
     const splitV = (v: video) => split(v.title);
     // approximate
@@ -199,7 +199,7 @@ const toVid = (vids: string | video[], title: string) => {
     const uterms = terms.map(ts => ts.occurence());
     const uquery = query.occurence();
     // count and create dict with unique terms
-    const [ dict, dc ] = [...uterms.map(t => t[0]).flat(), ...uquery[0]].occurence();
+    const [dict, dc] = [...uterms.map(t => t[0]).flat(), ...uquery[0]].occurence();
     const idf = dc.map(c => Math.log(vids.length / c));
     // term frequencies (expand to dict)
     const ifreq = (n: number, arr: number[], tarr: string[]) => {

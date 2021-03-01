@@ -68,14 +68,14 @@ const init = async () => {
     // listen to changes and save
     t.addEventListener('ratechange', () => setSetting('playbackRate', t.playbackRate));
     t.addEventListener('volumechange', () => setSetting('volume', t.volume));
-
-    // add button that toggles theatre mode
-    T.videojs.registerComponent("TheatreButton", TheatreButton());
-    t.ui.getChild("controlBar").addChild("TheatreButton", {});
     
     const android = await sendEvent<boolean>('isAndroid');
     console.debug(android, android ? 'Android' : 'Other');
     if (!android) {
+        // add button that toggles theatre mode
+        T.videojs.registerComponent("TheatreButton", TheatreButton());
+        t.ui.getChild("controlBar").addChild("TheatreButton", {});
+        
         // add SpeedDial to allow changing speed with mouse wheel
         T.videojs.registerComponent("SpeedDial", SpeedDial(playbackRate, playbackChange));
         t.ui.getChild("controlBar").addChild("SpeedDial", {});

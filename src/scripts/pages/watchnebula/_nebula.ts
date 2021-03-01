@@ -20,7 +20,7 @@ export const nebula = async () => {
     initDrag(e);
     window.addEventListener('hashchange', hashChange);
     hashChange();
-    
+
     const isAndroid: boolean = await getBrowserInstance().runtime.sendMessage("isAndroid");
     const { youtube, theatre, customScriptPage } = await getFromStorage({ youtube: false, theatre: false, customScriptPage: '' });
     console.debug(youtube, theatre);
@@ -31,12 +31,18 @@ export const nebula = async () => {
                 Array.from(document.querySelectorAll(`${videoselector} img`)).forEach(createLink);
             if (youtube)
                 maybeLoadComments();
-            if (theatre)
+            cancelTheatreMode();
+            if (theatre && !isAndroid)
                 maybeGoTheatreMode(menu);
+            const f = document.querySelector('iframe');
+            if (!f)
+                return;
+            f.removeEventListener('fullscreenchange', cancelTheatreMode);
+            f.addEventListener('fullscreenchange', cancelTheatreMode);
         });
         const m = new MutationObserver(cb);
         m.observe(document.querySelector('#root'), { subtree: true, childList: true });
-        window.addEventListener('resize', () => maybeGoTheatreMode(menu));
+        window.addEventListener('resize', () => updateTheatreMode(menu));
         cb();
     }
 
@@ -171,14 +177,14 @@ const loadComments = async () => {
 
 const maybeGoTheatreMode = (menu: HTMLElement) => {
     if (window.location.pathname.match(/^\/videos\/.+/))
-        goTheatreMode(menu);
+        setTimeout(() => goTheatreMode(menu), 0);
 };
 const goTheatreMode = (menu: HTMLElement) => {
     const mh = menu.getBoundingClientRect().height;
     const frame = document.querySelector('iframe');
     const ratio = frame.clientWidth / frame.clientHeight;
     const top = +window.getComputedStyle(frame.parentElement.parentElement).paddingTop.slice(0, -2);
-    if (!mh || !ratio || !top)
+    if (!ratio)
         return;
     let newheight = window.innerHeight - 2 * mh - 2 * top;
     let newwidth = ratio * newheight;
@@ -195,7 +201,13 @@ const goTheatreMode = (menu: HTMLElement) => {
 };
 const cancelTheatreMode = () => {
     const frame = document.querySelector('iframe');
+    if (!frame)
+        return;
     frame.parentElement.style.height = '';
     frame.parentElement.style.width = '';
     theatreMode = false;
+};
+const updateTheatreMode = (menu: HTMLElement) => {
+    if (theatreMode)
+        maybeGoTheatreMode(menu);
 };
