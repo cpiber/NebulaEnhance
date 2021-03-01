@@ -26,6 +26,8 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 **Page**
 - Queue: Add videos to watch queue
 - Share: Queue is shareable -- Bookmark and Share your list!
+- YouTube Link: This extension can try to find the corresponding YouTube video (enable in settings)
+- Theatre Mode: Make the player fit the page better
 
 **Player**
 - Default playback speed and volume

@@ -49,7 +49,7 @@ export const nebula = async () => {
 const replyMessage = (e: MessageEvent, data: any, err?: any) => e.data.name && e.source.postMessage(c({ type: e.data.name, res: data, err: err }), e.origin);
 const setSetting = (e: MessageEvent) => videosettings[e.data.setting as keyof typeof videosettings] = e.data.value;
 const getSetting = (e: MessageEvent) => replyMessage(e, e.data.setting ? videosettings[e.data.setting as keyof typeof videosettings] : videosettings);
-let theatre = false;
+let theatreMode = false;
 const message = (menu: HTMLElement, e: MessageEvent) => {
     if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")
         return;
@@ -64,7 +64,7 @@ const message = (menu: HTMLElement, e: MessageEvent) => {
         case "cancelTheatreMode":
             return cancelTheatreMode();
         case "toggleTheatreMode":
-            return theatre ? cancelTheatreMode() : goTheatreMode(menu);
+            return theatreMode ? cancelTheatreMode() : goTheatreMode(menu);
     }
 }
 
@@ -191,11 +191,11 @@ const goTheatreMode = (menu: HTMLElement) => {
         return;
     frame.parentElement.style.height = `${newheight}px`;
     frame.parentElement.style.width = `${newwidth}px`;
-    theatre = true;
+    theatreMode = true;
 };
 const cancelTheatreMode = () => {
     const frame = document.querySelector('iframe');
     frame.parentElement.style.height = '';
     frame.parentElement.style.width = '';
-    theatre = false;
+    theatreMode = false;
 };
