@@ -7,8 +7,12 @@ import { init as initDrag } from "./_queueDrag";
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 
+function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
+function getFromStorage<T>(key: string | string[] | { [key: string]: any }) { return getBrowserInstance().storage.local.get(key); }
+
 export const nebula = async () => {
-    window.addEventListener('message', message);
+    const menu = document.querySelector('menu');
+    window.addEventListener('message', message.bind(null, menu));
     maybeLoadComments();
     document.body.addEventListener('mouseover', hover);
     document.body.addEventListener('click', click);
@@ -18,31 +22,35 @@ export const nebula = async () => {
     hashChange();
     
     const isAndroid: boolean = await getBrowserInstance().runtime.sendMessage("isAndroid");
-    const youtube: boolean = (await getBrowserInstance().storage.local.get({ youtube: false })).youtube;
-    if (isAndroid || youtube) {
+    const { youtube, theatre, customScriptPage } = await getFromStorage({ youtube: false, theatre: false, customScriptPage: '' });
+    console.debug(youtube, theatre);
+    if (isAndroid || youtube || theatre) {
         const cb = mutation(() => {
             // substitute hover listener
             if (isAndroid)
                 Array.from(document.querySelectorAll(`${videoselector} img`)).forEach(createLink);
             if (youtube)
                 maybeLoadComments();
+            if (theatre)
+                maybeGoTheatreMode(menu);
         });
         const m = new MutationObserver(cb);
         m.observe(document.querySelector('#root'), { subtree: true, childList: true });
+        window.addEventListener('resize', () => maybeGoTheatreMode(menu));
         cb();
     }
 
     // inject custom script (if available)
-    const s = (await getBrowserInstance().storage.local.get({ customScriptPage: '' })).customScriptPage;
-    if (s)
-        injectScript(document.body, s);
+    if (customScriptPage)
+        injectScript(document.body, customScriptPage);
 };
 
 // @ts-ignore
 const replyMessage = (e: MessageEvent, data: any, err?: any) => e.data.name && e.source.postMessage(c({ type: e.data.name, res: data, err: err }), e.origin);
 const setSetting = (e: MessageEvent) => videosettings[e.data.setting as keyof typeof videosettings] = e.data.value;
 const getSetting = (e: MessageEvent) => replyMessage(e, e.data.setting ? videosettings[e.data.setting as keyof typeof videosettings] : videosettings);
-const message = (e: MessageEvent) => {
+let theatre = false;
+const message = (menu: HTMLElement, e: MessageEvent) => {
     if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")
         return;
     const msg = (typeof e.data === "string" ? { type: e.data } : e.data) as { type: string, [key: string]: any };
@@ -51,6 +59,12 @@ const message = (e: MessageEvent) => {
             return getSetting(e);
         case "setSetting":
             return setSetting(e);
+        case "goTheatreMode":
+            return goTheatreMode(menu);
+        case "cancelTheatreMode":
+            return cancelTheatreMode();
+        case "toggleTheatreMode":
+            return theatre ? cancelTheatreMode() : goTheatreMode(menu);
     }
 }
 
@@ -117,7 +131,7 @@ const click = async (e: MouseEvent) => {
 };
 
 const hashChange = () => {
-    const current = window.location.pathname.match(/^\/videos\/(.+)\/?$/);
+    const current = window.location.pathname.match(/^\/videos\/(.+?)\/?$/);
     const hash = window.location.hash.match(/^#([A-Za-z0-9\-_]+(?:,[A-Za-z0-9\-_]+)*)$/);
     if (!hash)
         return; // invalid video list
@@ -127,7 +141,7 @@ const hashChange = () => {
 };
 
 const maybeLoadComments = () => {
-    if (window.location.pathname.match(/^\/videos\//))
+    if (window.location.pathname.match(/^\/videos\/.+/))
         loadComments();
 };
 const loadComments = async () => {
@@ -153,4 +167,35 @@ const loadComments = async () => {
     } catch (err) {
         console.error(err);
     }
+};
+
+const maybeGoTheatreMode = (menu: HTMLElement) => {
+    if (window.location.pathname.match(/^\/videos\/.+/))
+        goTheatreMode(menu);
+};
+const goTheatreMode = (menu: HTMLElement) => {
+    const mh = menu.getBoundingClientRect().height;
+    const frame = document.querySelector('iframe');
+    const ratio = frame.clientWidth / frame.clientHeight;
+    const top = +window.getComputedStyle(frame.parentElement.parentElement).paddingTop.slice(0, -2);
+    if (!mh || !ratio || !top)
+        return;
+    let newheight = window.innerHeight - 2 * mh - 2 * top;
+    let newwidth = ratio * newheight;
+    if (newwidth > window.innerWidth - top * 2) {
+        const ratio2 = frame.clientHeight / frame.clientWidth;
+        newwidth = window.innerWidth - top * 2;
+        newheight = ratio2 * newwidth;
+    }
+    if (!newheight || !newwidth)
+        return;
+    frame.parentElement.style.height = `${newheight}px`;
+    frame.parentElement.style.width = `${newwidth}px`;
+    theatre = true;
+};
+const cancelTheatreMode = () => {
+    const frame = document.querySelector('iframe');
+    frame.parentElement.style.height = '';
+    frame.parentElement.style.width = '';
+    theatre = false;
 };

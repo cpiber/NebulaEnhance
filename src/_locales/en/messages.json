@@ -15,6 +15,10 @@
         "message": "Player",
         "description": "Title for the player subsection of options page."
     },
+    "optionsTitlePage": {
+        "message": "Page",
+        "description": "Title for the page subsection of options page."
+    },
     "optionsTitleScripts": {
         "message": "Scripts",
         "description": "Title for the scripts subsection of options page."
@@ -58,6 +62,14 @@
     "optionsTargetQualitiesHint": {
         "message": "The (heights of) the qualities to target, e.g. <code>1080, 720</code>",
         "description": "Hint for target qualities of options page."
+    },
+    "optionsTheatreTitle": {
+        "message": "Enable theatre mode by default",
+        "description": "Label for theatre mode of options page."
+    },
+    "optionsTheatreHint": {
+        "message": "Whether to automatically enable theatre mode (better fitting player).",
+        "description": "Hint for theatre mode of options page."
     },
     "optionsLoadYoutubeTitle": {
         "message": "Load YouTube link",
@@ -110,6 +122,10 @@
     "playerNewSpeed": {
         "message": "New Speed",
         "description": "'Speed' text in popup."
+    },
+    "playerTheatre": {
+        "message": "Toggle theatre mode",
+        "description": "Tooltip for toggle theatre button."
     },
     "pageAddToQueue": {
         "message": "Add to queue",

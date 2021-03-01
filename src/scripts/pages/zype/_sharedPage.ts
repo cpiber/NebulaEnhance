@@ -53,4 +53,6 @@ export const sendMessage = <T>(name: string, data?: any, expectAnswer = true) =>
     });
 };
 
-export const SpeedClasses = "vjs-icon-circle-inner-circle vjs-button vjs-control theo-controlbar-button";
+const vjs = "vjs-button vjs-control theo-controlbar-button";
+export const SpeedClasses = `vjs-icon-circle-inner-circle ${vjs}`;
+export const TheatreClasses = `vjs-icon-square ${vjs}`;

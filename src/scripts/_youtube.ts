@@ -183,10 +183,12 @@ export const creatorHasVideo = (playlist: string, title: string, num: number) =>
 const toVid = (vids: string | video[], title: string) => {
     if (typeof vids === "string")
         return vids; // exact match
-    // lowercase, remove accents, split at spaces and sentence marks, remove common words
-    const exclude = ['the', 'is', 'a', 'and', 'or'];
+    // lowercase, remove accents, split at spaces and sentence marks, remove common words, replace [0-12] with written words
+    const exclude = ['the', 'is', 'a', 'and', 'or', 'as', 'of'];
+    const numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
     const split = (s: string) =>
-        s.toLowerCase().normalize("NFD").replace(/["'\u0300-\u036f]/g, '').split(/[\s-_.,?!:;]+/).filter(t => t && exclude.indexOf(t) === -1);
+        s.toLowerCase().normalize("NFD").replace(/["'\(\)\[\]\{\}\u0300-\u036f]/g, '').split(/[\s-_.,?!:;|]+/)
+            .filter(t => t && exclude.indexOf(t) === -1).map(v => numbers[+v] || v);
     const splitV = (v: video) => split(v.title);
     // approximate
     // IFIDF - Term frequency, Inverse Document Frequency
@@ -202,27 +204,21 @@ const toVid = (vids: string | video[], title: string) => {
     // term frequencies (expand to dict)
     const ifreq = (n: number, arr: number[], tarr: string[]) => {
         let lastind = 0;
-        return dict.map(v => {
-            if (v !== tarr[lastind]) return 0; // not in doc
-            return arr[lastind++] / n;
-        });
+        return dict.map(v => v !== tarr[lastind] ? 0 /* not in doc */ : arr[lastind++] / n /* calculate frequency, goto next */);
     };
-    const ti = uterms.map((t, _i) => {
-        const l = terms[_i].length; // original terms (with duplicates)
-        return ifreq(l, t[1], t[0]);
-    });
-    const qi = ifreq(query.length, uquery[1], uquery[0]);
+    const tf = uterms.map((t, i) => ifreq(terms[i].length, t[1], t[0])); // length from original terms (with duplicates)
+    const qf = ifreq(query.length, uquery[1], uquery[0]);
     // tfidf
-    const tfidf = ti.map(t => t.map((v, index) => v * idf[index]));
-    const qfidf = qi.map((v, index) => v * idf[index]);
+    const tfidf = tf.map(t => t.map((v, index) => v * idf[index]));
+    const qfidf = qf.map((v, index) => v * idf[index]);
     const nfidf = norm(qfidf);
     // find most similar (cosine similarity maximised)
-    const sim = tfidf.map((t, i) => [(dot(t, qfidf) / (norm(t) * nfidf)), i])
+    const sim = tfidf.map((t, i) => [dot(t, qfidf) / (norm(t) * nfidf), i])
         .sort((a, b) => b[0] - a[0]);
     const best = sim[0];
     console.debug(best[0], best[1]);
     if (best[0] < 0.25) // arbitrary threshold
-        throw new Error(`Not enough confidence (${best[0]})`);
+        throw new Error(`Not enough confidence (${best[0]} < 0.25)`);
     return vids[best[1]].videoId;
 };
 

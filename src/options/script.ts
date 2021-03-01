@@ -6,6 +6,7 @@ const els: { [key: string]: HTMLInputElement | HTMLTextAreaElement } = {
     volume: document.querySelector('[name="volume"]'),
     autoplay: document.querySelector('[name="autoplay"]'),
     targetQualities: document.querySelector('[name="targetQualities"]'),
+    theatre: document.querySelector('[name="theatre"]'),
     youtube: document.querySelector('[name="youtube"]'),
     customScriptPage: document.querySelector('[name="customScriptPage"]'),
     customScript: document.querySelector('[name="customScript"]'),
@@ -94,7 +95,7 @@ els.youtube.addEventListener('change', async () => {
     };
     const success = await (y.checked ? permissions.request : permissions.remove)(perms);
     if (!success) y.checked = !y.checked; // revert
-    permissions.getAll().then(console.log);
+    // permissions.getAll().then(console.log);
     if (y.checked && success) getBrowserInstance().runtime.sendMessage('loadCreators');
 });
 permissions.onRemoved.addListener(p => p.origins?.length && ((els.youtube as HTMLInputElement).checked = false));

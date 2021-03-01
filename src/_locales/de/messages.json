@@ -15,6 +15,10 @@
         "message": "Videospieler",
         "description": "Titel der Videospieler-Sektion der Optionen Seite."
     },
+    "optionsTitlePage": {
+        "message": "Seite",
+        "description": "Titel der Seite-Sektion der Optionen Seite."
+    },
     "optionsTitleScripts": {
         "message": "Skripte",
         "description": "Titel der Skripte-Sektion der Optionen Seite."
@@ -58,6 +62,14 @@
     "optionsTargetQualitiesHint": {
         "message": "Die Höhen der Zielqualitäten des Videos, e.g. <code>1080, 720</code>",
         "description": "Hilfstext für Zielqualitäten der Optionen Seite."
+    },
+    "optionsTheatreTitle": {
+        "message": "Theater-Modus standardmäßig aktivieren",
+        "description": "Beschriftung für Theater-Modus der Optionen Seite."
+    },
+    "optionsTheatreHint": {
+        "message": "Ob der Theater-Modus (angepasster Videospieler) automatisch aktiviert werden soll oder nicht.",
+        "description": "Hilfstext für Theater-Modus der Optionen Seite."
     },
     "optionsLoadYoutubeTitle": {
         "message": "YouTube Videolink laden",
@@ -110,6 +122,10 @@
     "playerNewSpeed": {
         "message": "Neue Geschwindigkeit",
         "description": "'Speed' text im popup."
+    },
+    "playerTheatre": {
+        "message": "Theater-Modus umschalten",
+        "description": "Beschriftung für Theater-Modus Knopf."
     },
     "pageAddToQueue": {
         "message": "Zur Warteschlange hinzufügen",
