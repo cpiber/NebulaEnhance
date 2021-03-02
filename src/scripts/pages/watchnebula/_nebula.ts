@@ -25,6 +25,7 @@ export const nebula = async () => {
     const { youtube, theatre, customScriptPage } = await getFromStorage({ youtube: false, theatre: false, customScriptPage: '' });
     console.debug(youtube, theatre);
     if (isAndroid || youtube || theatre) {
+        const r = refreshTheatreMode.bind(null, menu);
         const cb = mutation(() => {
             // substitute hover listener
             if (isAndroid)
@@ -37,8 +38,8 @@ export const nebula = async () => {
             const f = document.querySelector('iframe');
             if (!f)
                 return;
-            f.removeEventListener('fullscreenchange', cancelTheatreMode);
-            f.addEventListener('fullscreenchange', cancelTheatreMode);
+            f.removeEventListener('fullscreenchange', r);
+            f.addEventListener('fullscreenchange', r);
         });
         const m = new MutationObserver(cb);
         m.observe(document.querySelector('#root'), { subtree: true, childList: true });
@@ -211,3 +212,9 @@ const updateTheatreMode = (menu: HTMLElement) => {
     if (theatreMode)
         maybeGoTheatreMode(menu);
 };
+const refreshTheatreMode = (menu: HTMLElement) => {
+    if (!theatreMode)
+        return;
+    cancelTheatreMode();
+    setTimeout(goTheatreMode, 0, menu);
+}

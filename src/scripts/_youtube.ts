@@ -132,11 +132,14 @@ const loadYoutube = (creators: creator[]) => {
     //     .then(arr => (arr.filter(a => a !== undefined) as creator[][]).flat().filter(c => c.uploads));
     return creators.map(c => ({ ...c, uploads: 'UU' + c.channel.substr(2) }));
 };
+const vidcache: { [key: string]: string } = {};
 export const creatorHasVideo = (playlist: string, title: string, num: number) => {
     if (!playlist || !title)
         return Promise.reject(`Playlist or title empty: ${playlist}; ${title}`);
+    title = title.toLowerCase().trim().replace(/\p{Pd}/g, '-');
+    if (title in vidcache)
+        return Promise.resolve(vidcache[title]);
     let n = 0;
-    title = title.toLowerCase().trim();
     const load = (page: string = null, plist: video[] = []): Promise<string | video[]> => {
         const url = new URL('https://youtube.googleapis.com/youtube/v3/playlistItems');
         url.search = "?" + encode({
@@ -165,7 +168,7 @@ export const creatorHasVideo = (playlist: string, title: string, num: number) =>
                     throw new Error("Invalid API response");
                 }
                 n += res.items.length;
-                const v = res.items.find(e => e.snippet.title.toLowerCase().trim() === title);
+                const v = res.items.find(e => e.snippet.title.toLowerCase().trim().replace(/\p{Pd}/g, '-') === title);
                 if (v) return v.snippet.resourceId.videoId; // found the video
                 const vids = res.items.map(i => ({ title: i.snippet.title, videoId: i.snippet.resourceId.videoId }));
                 const nlist = [...plist, ...vids];
@@ -182,7 +185,7 @@ export const creatorHasVideo = (playlist: string, title: string, num: number) =>
 
 const toVid = (vids: string | video[], title: string) => {
     if (typeof vids === "string")
-        return vids; // exact match
+        return vidcache[title] = vids; // exact match
     // lowercase, remove accents, split at spaces and sentence marks, remove common words, replace [0-12] with written words
     const exclude = ['the', 'is', 'a', 'and', 'or', 'as', 'of'];
     const numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
@@ -219,7 +222,7 @@ const toVid = (vids: string | video[], title: string) => {
     console.debug(best[0], best[1]);
     if (best[0] < 0.25) // arbitrary threshold
         throw new Error(`Not enough confidence (${best[0]} < 0.25)`);
-    return vids[best[1]].videoId;
+    return vidcache[title] = vids[best[1]].videoId;
 };
 
 // https://stackoverflow.com/questions/8495687/split-array-into-chunks#comment84212474_8495740
