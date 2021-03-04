@@ -1,4 +1,5 @@
 import { encode } from 'querystring';
+import { ytvideo } from './_shared';
 
 export type creator = {
     name: string,
@@ -132,8 +133,8 @@ const loadYoutube = (creators: creator[]) => {
     //     .then(arr => (arr.filter(a => a !== undefined) as creator[][]).flat().filter(c => c.uploads));
     return creators.map(c => ({ ...c, uploads: 'UU' + c.channel.substr(2) }));
 };
-const vidcache: { [key: string]: string } = {};
-export const creatorHasVideo = (playlist: string, title: string, num: number) => {
+const vidcache: { [key: string]: ytvideo } = {};
+export const creatorHasVideo = (playlist: string, title: string, num: number): Promise<ytvideo> => {
     if (!playlist || !title)
         return Promise.reject(`Playlist or title empty: ${playlist}; ${title}`);
     title = title.toLowerCase().trim().replace(/\p{Pd}/g, '-');
@@ -185,7 +186,7 @@ export const creatorHasVideo = (playlist: string, title: string, num: number) =>
 
 const toVid = (vids: string | video[], title: string) => {
     if (typeof vids === "string")
-        return vidcache[title] = vids; // exact match
+        return vidcache[title] = { confidence: 1, video: vids }; // exact match
     // lowercase, remove accents, split at spaces and sentence marks, remove common words, replace [0-12] with written words
     const exclude = ['the', 'is', 'a', 'and', 'or', 'as', 'of'];
     const numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
@@ -219,10 +220,10 @@ const toVid = (vids: string | video[], title: string) => {
     const sim = tfidf.map((t, i) => [dot(t, qfidf) / (norm(t) * nfidf), i])
         .sort((a, b) => b[0] - a[0]);
     const best = sim[0];
-    console.debug(best[0], best[1]);
+    console.debug(best[0], best[1], vids[best[1]]);
     if (best[0] < 0.25) // arbitrary threshold
         throw new Error(`Not enough confidence (${best[0]} < 0.25)`);
-    return vidcache[title] = vids[best[1]].videoId;
+    return vidcache[title] = { confidence: best[0], video: vids[best[1]].videoId };
 };
 
 // https://stackoverflow.com/questions/8495687/split-array-into-chunks#comment84212474_8495740

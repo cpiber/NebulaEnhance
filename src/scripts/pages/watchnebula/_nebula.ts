@@ -1,4 +1,4 @@
-import { videosettings } from "../../_shared";
+import { videosettings, ytvideo } from "../../_shared";
 import { c, getBrowserInstance, injectScript } from "../../_sharedBrowser";
 import iconWatchLater from "./../../../icons/watchlater.svg";
 import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue } from "./_queue";
@@ -162,14 +162,14 @@ const loadComments = async () => {
     console.debug(`Requesting '${title}' by ${creator}`);
 
     try {
-        const vid = await getBrowserInstance().runtime.sendMessage({ type: 'getYoutubeId', creator, title });
+        const vid: ytvideo = await getBrowserInstance().runtime.sendMessage({ type: 'getYoutubeId', creator, title });
         const v = document.createElement('span');
         v.classList.add('enhancer-yt');
         const a = document.createElement('a');
-        a.href = `https://youtu.be/${vid}`;
+        a.href = `https://youtu.be/${vid.video}`;
         a.target = '_blank';
         a.textContent = a.href;
-        v.append(a);
+        v.append(a, ` (${(vid.confidence * 100).toFixed(1)}%)`);
         h2[0].nextElementSibling.append(h2[0].nextElementSibling.querySelector('span[class]')?.cloneNode(true), v);
     } catch (err) {
         console.error(err);
