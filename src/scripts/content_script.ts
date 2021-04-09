@@ -29,9 +29,11 @@ const zype = async () => {
 
     switch (document.location.host) {
         case "player.zype.com":
+        case "content.watchnebula.com":
             zype();
             break;
         case "watchnebula.com":
+        default:
             nebula();
             break;
     }

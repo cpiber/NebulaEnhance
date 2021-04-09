@@ -16,7 +16,9 @@
 		{
 			"matches": [
 				"*://*.player.zype.com/embed/*",
-				"*://watchnebula.com/*"
+				"*://*.player.zype.com//embed/*",
+				"*://*.watchnebula.com/*",
+				"*://*.nebula.app/*"
 			],
 			"js": [
 				"scripts/content_script.js"

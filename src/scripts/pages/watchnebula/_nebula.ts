@@ -53,17 +53,22 @@ export const nebula = async () => {
 };
 
 // @ts-ignore
-const replyMessage = (e: MessageEvent, data: any, err?: any) => e.data.name && e.source.postMessage(c({ type: e.data.name, res: data, err: err }), e.origin);
+const replyMessage = (e: MessageEvent, name: string, data: any, err?: any) => name && e.source.postMessage(c({ type: name, res: data, err: err }), e.origin);
 const setSetting = (e: MessageEvent) => videosettings[e.data.setting as keyof typeof videosettings] = e.data.value;
-const getSetting = (e: MessageEvent) => replyMessage(e, e.data.setting ? videosettings[e.data.setting as keyof typeof videosettings] : videosettings);
+const getSetting = (e: MessageEvent, name: string) => replyMessage(e, name, e.data.setting ? videosettings[e.data.setting as keyof typeof videosettings] : videosettings);
 let theatreMode = false;
 const message = (menu: HTMLElement, e: MessageEvent) => {
     if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")
         return;
-    const msg = (typeof e.data === "string" ? { type: e.data } : e.data) as { type: string, [key: string]: any };
+    let d = e.data;
+    try {
+        d = JSON.parse(d);
+    } catch (err) {
+    }
+    const msg = (typeof d === "string" ? { type: d } : d) as { type: string, [key: string]: any };
     switch (msg.type) {
         case "getSetting":
-            return getSetting(e);
+            return getSetting(e, msg.name);
         case "setSetting":
             return setSetting(e);
         case "goTheatreMode":
@@ -170,7 +175,7 @@ const loadComments = async () => {
         a.target = '_blank';
         a.textContent = a.href;
         v.append(a, ` (${(vid.confidence * 100).toFixed(1)}%)`);
-        h2[0].nextElementSibling.append(h2[0].nextElementSibling.querySelector('span[class]')?.cloneNode(true), v);
+        h2[0].nextElementSibling.append(h2[0].nextElementSibling.querySelector('span[class]')?.cloneNode(true), v); // dot
     } catch (err) {
         console.error(err);
     }
