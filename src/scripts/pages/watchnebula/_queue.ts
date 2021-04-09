@@ -29,6 +29,7 @@ export function addToStore(name: string, ...args: any[]) {
     if (store[name])
         return Promise.resolve(store[name]); // already in
     // either use data from arguments (all must be given) or request from api based on given name
+    console.debug('Added video', args);
     return (args.length === 4 ? Promise.resolve(args as string[]) : requestData(name))
         .then(([length, thumbnail, title, creator]) => store[name] = { length, thumbnail, title, creator });
 }

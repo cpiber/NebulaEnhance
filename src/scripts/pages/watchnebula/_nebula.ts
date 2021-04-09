@@ -80,6 +80,20 @@ const message = (menu: HTMLElement, e: MessageEvent) => {
     }
 }
 
+const queueBottonLocation = (img: HTMLElement) => {
+    if (window.location.host === "watchnebula.com") {
+        return img.parentElement;
+    } else {
+        return img.parentElement.parentElement;
+    }
+}
+const queueOtherLocation = (img: HTMLElement) => {
+    if (window.location.host === "watchnebula.com") {
+        return img.nextElementSibling;
+    } else {
+        return img.parentElement.nextElementSibling;
+    }
+}
 const imgLink = (e: HTMLElement) => {
     // check if element is the image in a video link
     if (e.tagName !== 'IMG')
@@ -96,14 +110,14 @@ const hover = (e: MouseEvent) => {
     createLink(e.target as HTMLElement);
 };
 const createLink = (img: HTMLElement) => {
-    if (img.parentElement.querySelector('.enhancer-queueButton') !== null)
+    if (queueBottonLocation(img).querySelector('.enhancer-queueButton') !== null)
         return; // queue button exists
     // create queue button
     const later = document.createElement('div');
-    const time = img.nextElementSibling;
+    const time = queueOtherLocation(img);
     later.innerHTML = `<span class="${time?.querySelector('span')?.className}">${addToQueue}</span>${iconWatchLater}`;
     later.className = `${time?.className} enhancer-queueButton`;
-    img.parentElement.appendChild(later);
+    queueBottonLocation(img).appendChild(later);
 };
 const mutation = (func: () => void) => {
     let timeout = 0;
@@ -123,7 +137,7 @@ const click = async (e: MouseEvent) => {
     const name = link.getAttribute('href').substr(8);
     // extract and store information on video
     await addToStore(name,
-        img.nextElementSibling?.lastChild.textContent,
+        queueOtherLocation(img)?.lastChild.textContent,
         img.src,
         link.lastElementChild?.children[1]?.textContent,
         link.lastElementChild?.lastElementChild?.firstElementChild?.textContent);
