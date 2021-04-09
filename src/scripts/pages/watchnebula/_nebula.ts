@@ -115,7 +115,9 @@ const createLink = (img: HTMLElement) => {
     // create queue button
     const later = document.createElement('div');
     const time = queueOtherLocation(img);
-    later.innerHTML = `<span class="${time?.querySelector('span')?.className}">${addToQueue}</span>${iconWatchLater}`;
+    if (!time || !time.querySelector('span'))
+        return; // ignore profile pic
+    later.innerHTML = `<span class="${time.querySelector('span').className}">${addToQueue}</span>${iconWatchLater}`;
     later.className = `${time?.className} enhancer-queueButton`;
     queueBottonLocation(img).appendChild(later);
 };
