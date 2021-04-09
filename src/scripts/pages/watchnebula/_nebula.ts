@@ -54,8 +54,8 @@ export const nebula = async () => {
 
 // @ts-ignore
 const replyMessage = (e: MessageEvent, name: string, data: any, err?: any) => name && e.source.postMessage(c({ type: name, res: data, err: err }), e.origin);
-const setSetting = (e: MessageEvent) => videosettings[e.data.setting as keyof typeof videosettings] = e.data.value;
-const getSetting = (e: MessageEvent, name: string) => replyMessage(e, name, e.data.setting ? videosettings[e.data.setting as keyof typeof videosettings] : videosettings);
+const setSetting = (setting: string, value: number) => videosettings[setting as keyof typeof videosettings] = value;
+const getSetting = (e: MessageEvent, name: string, setting: string) => replyMessage(e, name, setting ? videosettings[setting as keyof typeof videosettings] : videosettings);
 let theatreMode = false;
 const message = (menu: HTMLElement, e: MessageEvent) => {
     if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")
@@ -68,9 +68,9 @@ const message = (menu: HTMLElement, e: MessageEvent) => {
     const msg = (typeof d === "string" ? { type: d } : d) as { type: string, [key: string]: any };
     switch (msg.type) {
         case "getSetting":
-            return getSetting(e, msg.name);
+            return getSetting(e, msg.name, msg.setting);
         case "setSetting":
-            return setSetting(e);
+            return setSetting(msg.setting, +msg.value);
         case "goTheatreMode":
             return goTheatreMode(menu);
         case "cancelTheatreMode":

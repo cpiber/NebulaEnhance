@@ -24,7 +24,6 @@ export const sendMessage = <T>(name: string, data?: any, expectAnswer = true) =>
     return new Promise<T>((resolve, reject) => {
         const e = `enhancer-message-${Math.random().toString().substr(2, 8)}`;
         const c = (ev: MessageEvent) => {
-            console.log(ev);
             if (!ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:[^.]+\.)?nebula.app)/)) return;
             const msg = (typeof ev.data === "string" ? { type: ev.data } : ev.data) as { type: string, [key: string]: any };
             if (msg.type !== e) return;
