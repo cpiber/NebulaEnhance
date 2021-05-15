@@ -7,9 +7,9 @@ import TheatreButton from "./_TheatreButton";
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
 function getFromStorage<T>(key: string | string[]): Promise<T>;
 function getFromStorage<T>(key: string | string[] | { [key: string]: any }) { return sendEvent<T>('storageGet', { get: key }); }
-function setSetting(key: keyof typeof videosettings, value: number) { sendMessage('setSetting', { setting: key, value }, false); }
-function getSetting(): Promise<{ [key in keyof typeof videosettings]: number }>;
-function getSetting(key: keyof typeof videosettings): Promise<number>;
+function setSetting(key: keyof typeof videosettings, value: number | string) { sendMessage('setSetting', { setting: key, value }, false); }
+function getSetting(): Promise<typeof videosettings>;
+function getSetting(key: keyof typeof videosettings): Promise<typeof videosettings[typeof key]>;
 function getSetting(key?: keyof typeof videosettings) { return sendMessage('getSetting', { setting: key }); }
 
 const defaults = {
@@ -17,7 +17,8 @@ const defaults = {
     playbackChange: 0.1,
     volume: 1,
     autoplay: false,
-    targetQualities: [] as number[]
+    targetQualities: [] as number[],
+    subtitles: ""
 };
 const init = async () => {
     const t = window.theoplayer, T = window.THEOplayer;
@@ -27,15 +28,18 @@ const init = async () => {
         volume: defaultVolume,
         autoplay,
         targetQualities,
+        subtitles: defaultSubtitles
     } = await getFromStorage(defaults);
     const {
         playbackRate: currentPlaybackRate,
         volume: currentVolume,
         quality: currentQuality,
+        subtitles: currentSubtitles
     } = await getSetting();
     const playbackRate = currentPlaybackRate || defaultPlaybackRate || 1;
     const volume = currentVolume || defaultVolume || 1;
-    console.debug(playbackRate, playbackChange, volume, targetQualities, '\tcurrent:', currentPlaybackRate, currentVolume, currentQuality, '\tdefault:', defaultPlaybackRate, defaultVolume);
+    const subtitles = currentSubtitles !== null ? currentSubtitles : defaultSubtitles;
+    console.debug(playbackRate, playbackChange, volume, targetQualities, '\tcurrent:', currentPlaybackRate, currentVolume, currentQuality, currentSubtitles, '\tdefault:', defaultPlaybackRate, defaultVolume, defaultSubtitles);
 
     // set playbackRate (auto-updates)
     t.playbackRate = playbackRate;
@@ -60,10 +64,25 @@ const init = async () => {
         }
         // listen for changes and save
         t.videoTracks[0].addEventListener('activequalitychanged', () => setSetting('quality', t.videoTracks[0].activeQuality.height));
-        t.videoTracks[0].addEventListener("targetqualitychanged", () => setSetting('quality', t.videoTracks[0].activeQuality.height));
+        t.videoTracks[0].addEventListener('targetqualitychanged', () => setSetting('quality', t.videoTracks[0].activeQuality.height));
         t.removeEventListener('playing', setQualities); // only once
     };
+    const setSubtitles = () => {
+        if (subtitles !== "") {
+            try {
+                const track = t.textTracks.find(e => e.label === subtitles);
+                if (track) track.mode = 'showing';
+                t.element.focus();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        // listen for changes and save
+        t.textTracks.addEventListener('change', () => setSetting('subtitles', t.textTracks.find(e => e.mode === 'showing')?.label || ""));
+        t.removeEventListener('playing', setSubtitles); // only once
+    };
     t.addEventListener('playing', setQualities);
+    t.addEventListener('playing', setSubtitles);
 
     // listen to changes and save
     t.addEventListener('ratechange', () => setSetting('playbackRate', t.playbackRate));

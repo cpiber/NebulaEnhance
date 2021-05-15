@@ -54,7 +54,7 @@ export const nebula = async () => {
 
 // @ts-ignore
 const replyMessage = (e: MessageEvent, name: string, data: any, err?: any) => name && e.source.postMessage(c({ type: name, res: data, err: err }), e.origin);
-const setSetting = (setting: string, value: number) => videosettings[setting as keyof typeof videosettings] = value;
+const setSetting = (setting: string, value: number | string) => videosettings[setting as keyof typeof videosettings] = value as never;
 const getSetting = (e: MessageEvent, name: string, setting: string) => replyMessage(e, name, setting ? videosettings[setting as keyof typeof videosettings] : videosettings);
 let theatreMode = false;
 const message = (menu: HTMLElement, e: MessageEvent) => {
@@ -70,7 +70,8 @@ const message = (menu: HTMLElement, e: MessageEvent) => {
         case "getSetting":
             return getSetting(e, msg.name, msg.setting);
         case "setSetting":
-            return setSetting(msg.setting, +msg.value);
+            const v = isNaN(msg.value) || msg.value == "" ? msg.value as string : +msg.value;
+            return setSetting(msg.setting, v);
         case "goTheatreMode":
             return goTheatreMode(menu);
         case "cancelTheatreMode":

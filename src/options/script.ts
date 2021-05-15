@@ -6,6 +6,7 @@ const els: { [key: string]: HTMLInputElement | HTMLTextAreaElement } = {
     volume: document.querySelector('[name="volume"]'),
     autoplay: document.querySelector('[name="autoplay"]'),
     targetQualities: document.querySelector('[name="targetQualities"]'),
+    subtitles: document.querySelector('[name="subtitles"]'),
     theatre: document.querySelector('[name="theatre"]'),
     youtube: document.querySelector('[name="youtube"]'),
     customScriptPage: document.querySelector('[name="customScriptPage"]'),

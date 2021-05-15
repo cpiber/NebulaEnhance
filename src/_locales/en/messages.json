@@ -63,6 +63,14 @@
         "message": "The (heights of) the qualities to target, e.g. <code>1080, 720</code>",
         "description": "Hint for target qualities of options page."
     },
+    "optionsSubtitlesTitle": {
+        "message": "Subtitles",
+        "description": "Label for subtitles of options page."
+    },
+    "optionsSubtitlesHint": {
+        "message": "Name of the subtitle languange to enable by default, e.g. <code>English</code>",
+        "description": "Hint for subtitles of options page."
+    },
     "optionsTheatreTitle": {
         "message": "Enable theatre mode by default",
         "description": "Label for theatre mode of options page."

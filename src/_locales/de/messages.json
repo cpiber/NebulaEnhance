@@ -60,8 +60,16 @@
         "description": "Beschriftung für Zielqualitäten der Optionen Seite."
     },
     "optionsTargetQualitiesHint": {
-        "message": "Die Höhen der Zielqualitäten des Videos, e.g. <code>1080, 720</code>",
+        "message": "Die Höhen der Zielqualitäten des Videos, z.B. <code>1080, 720</code>",
         "description": "Hilfstext für Zielqualitäten der Optionen Seite."
+    },
+    "optionsSubtitlesTitle": {
+        "message": "Untertitel",
+        "description": "Beschriftung für Untertitel der Optionen Seite."
+    },
+    "optionsSubtitlesHint": {
+        "message": "Name der Sprache, für die Untertitel automatisch aktiviert werden sollen, z.B. <code>English</code>",
+        "description": "Hilfstext für Untertitel der Optionen Seite."
     },
     "optionsTheatreTitle": {
         "message": "Theater-Modus standardmäßig aktivieren",

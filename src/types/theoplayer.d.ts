@@ -22,6 +22,7 @@ declare namespace THEOplayer {
         playbackRate: number;
         readyState: number;
         videoTracks: MediaTrackList;
+        textTracks: TextTracksList;
         volume: number;
 
         addEventListener<TType extends StringKeyOf<PlayerEventMap>>(type: TType | TType[], listener: EventListener<PlayerEventMap[TType]>): void;
@@ -56,6 +57,32 @@ declare namespace THEOplayer {
         label: string;
         language: string;
         uid: number;
+    }
+
+
+    interface TextTrackCueList extends ReadonlyArray<TextTrackCue> {
+        readonly length: number;
+        item(index: number): TextTrackCue;
+    }
+    type TextTrackReadyState = 0 | 1 | 2 | 3;
+    type TextTrackType = 'srt' | 'ttml' | 'webvtt' | 'emsg' | 'eventstream' | 'id3' | 'cea608' | 'daterange' | '';
+    interface TextTrack extends /*Track,*/ EventDispatcher<TextTrackEventMap>  {
+        readonly activeCues: TextTrackCueList | null;
+        readonly cues: TextTrackCueList | null;
+	    readonly id: string;
+	    readonly inBandMetadataTrackDispatchType: string;
+	    readonly kind: 'subtitles' | 'captions' | 'descriptions' | 'chapters' | 'metadata';
+	    label: string;
+	    readonly language: string;
+	    mode: 'disabled' | 'hidden' | 'showing';
+	    readonly readyState: TextTrackReadyState;
+	    readonly src: string;
+	    readonly type: TextTrackType;
+        readonly uid: number;
+    }
+    interface TextTracksList extends TrackList<TextTrack> {
+        readonly length: number;
+        item(index: number): TextTrack;
     }
 
     /**
@@ -95,7 +122,18 @@ declare namespace THEOplayer {
         change: Event<'change'>;
         removetrack: Event<'removetrack'>;
     }
-        
+
+    interface TextTrackEventMap extends TrackEventMap {
+        addcue: Event<'addcue'>;
+	    cuechange: Event<'cuechange'>;
+	    entercue: Event<'entercue'>;
+	    error: TextTrackErrorEvent;
+	    exitcue: Event<'exitcue'>;
+	    readystatechange: Event<'readystatechange'>;
+	    removecue: Event<'removecue'>;
+	    typechange: Event<'typechange'>;
+    }
+    
     interface UpdateQualityEvent extends Event<'update'> {
         readonly quality: Quality;
     }
@@ -151,4 +189,6 @@ declare namespace THEOplayer {
     interface UIRelatedContent {}
     interface SocialSharing {}
     interface UpNextManager {}
+    interface ErrorEvent extends Event<'error'> {}
+    interface TextTrackErrorEvent extends ErrorEvent {}
 }
