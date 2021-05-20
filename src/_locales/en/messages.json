@@ -154,5 +154,9 @@
     "pageShareStartHere": {
         "message": "Start at this title",
         "description": "Whether to start with the current title when sharing."
+    },
+    "pageQueueClearConfirm": {
+        "message": "Really clear queue?",
+        "description": "Confirmation question for clearing queue"
     }
 }

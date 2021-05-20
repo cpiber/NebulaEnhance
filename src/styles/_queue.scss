@@ -98,7 +98,8 @@
     }
 
     .elements {
-        max-height: 270px;
+        scroll-behavior: smooth;
+        max-height: 90px * 2.5;
         overflow: hidden auto;
 
         .element {
@@ -118,6 +119,7 @@
                 text-align: center;
                 width: 22px;
                 flex-shrink: 0;
+                cursor: move;
             }
 
             img {

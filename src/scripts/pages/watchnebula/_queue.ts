@@ -6,6 +6,7 @@ const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
 const share = getBrowserInstance().i18n.getMessage('pageShareQueue');
 const link = getBrowserInstance().i18n.getMessage('pageShareLink');
 const starthere = getBrowserInstance().i18n.getMessage('pageShareStartHere');
+const confirmClear = getBrowserInstance().i18n.getMessage('pageQueueClearConfirm');
 export const videoUrlMatch = /^\/videos\/(.+?)\/?$/;
 
 Array.prototype.equals = function <T>(this: Array<T>, other: Array<T>) { return this.every((v, i) => v === other[i]); }
@@ -35,15 +36,29 @@ export function addToStore(name: string, ...args: any[]) {
         .then(([length, thumbnail, title, creator]) => store[name] = { length, thumbnail, title, creator });
 }
 export const isEmptyQueue = () => queue.length === 0;
+let enqueueAnim = false;
 export const enqueue = (name: string, pos?: number) => {
     if (!store[name])
         throw "Not in store!";
     if (pos !== undefined)
         queue.splice2(pos, 0, [name]);
-    else
+    else if (queue[queue.length - 1] !== name)
         queue.splice2(queue.length, 0, [name]);
     popupel.classList.remove('hidden');
     calcBottom(popupel.classList.contains('down'));
+
+    // play little animation to show something was added
+    if (enqueueAnim)
+        return;
+    enqueueAnim = !enqueueAnim;
+    setTimeout(() => {
+        const top = queueel.scrollTop;
+        queueel.scrollTop += 10;
+        window.setTimeout(() => {
+            queueel.scrollTop = top;
+            window.setTimeout(() => enqueueAnim = !enqueueAnim, 500);
+        }, 200);
+    }, 0);
 };
 export const enqueueNow = (name: string) => {
     if (queue[queuepos] !== name && queue[queuepos + 1] !== name)
@@ -208,7 +223,7 @@ const clickTop = (e: MouseEvent) => {
     e.preventDefault();
     const c = (e.target as HTMLElement).closest('.close');
     if (c !== null)
-        return clearQueue();
+        return confirm(confirmClear) ? clearQueue() : null;
     const s = (e.target as HTMLElement).closest('.share');
     if (s !== null)
         return setShare();

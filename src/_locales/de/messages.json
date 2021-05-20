@@ -154,5 +154,9 @@
     "pageShareStartHere": {
         "message": "Mit diesem Titel starten",
         "description": "Ob mit dem aktuellen Titel begonnen werden soll (Teilen)."
+    },
+    "pageQueueClearConfirm": {
+        "message": "Warteschlange wirklich leeren?",
+        "description": "Bestätigungs-Frage zum Leeren der Warteschlange"
     }
 }
