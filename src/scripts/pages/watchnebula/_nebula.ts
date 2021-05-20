@@ -1,7 +1,7 @@
 import { videosettings, ytvideo } from "../../_shared";
 import { c, getBrowserInstance, injectScript } from "../../_sharedBrowser";
 import iconWatchLater from "./../../../icons/watchlater.svg";
-import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue } from "./_queue";
+import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue, videoUrlMatch } from "./_queue";
 import { init as initDrag } from "./_queueDrag";
 
 const videoselector = 'a[href^="/videos/"]';
@@ -160,7 +160,7 @@ const click = async (e: MouseEvent) => {
 };
 
 const hashChange = () => {
-    const current = window.location.pathname.match(/^\/videos\/(.+?)\/?$/);
+    const current = window.location.pathname.match(videoUrlMatch);
     const hash = window.location.hash.match(/^#([A-Za-z0-9\-_]+(?:,[A-Za-z0-9\-_]+)*)$/);
     if (!hash)
         return; // invalid video list

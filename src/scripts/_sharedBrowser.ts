@@ -14,6 +14,10 @@ export function getBrowserInstance() {
     return browser;
 }
 
+export function isChrome() {
+    return (window as any).chrome !== undefined;
+}
+
 export function injectScript(node: HTMLElement, content: string, friendly?: string, data?: any): Promise<void>;
 export function injectScript(file: string, node: HTMLElement, friendly?: string, data?: any): Promise<void>;
 export function injectScript(file: any, node: any, friendly?: string, data?: any) {

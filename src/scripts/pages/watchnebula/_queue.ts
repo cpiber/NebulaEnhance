@@ -1,11 +1,12 @@
 import iconShare from "../../../icons/share.svg";
-import { getBrowserInstance } from "../../_sharedBrowser";
+import { getBrowserInstance, isChrome } from "../../_sharedBrowser";
 import { Queue, Store, video } from "./_VideoQueue";
 
 const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
 const share = getBrowserInstance().i18n.getMessage('pageShareQueue');
 const link = getBrowserInstance().i18n.getMessage('pageShareLink');
 const starthere = getBrowserInstance().i18n.getMessage('pageShareStartHere');
+export const videoUrlMatch = /^\/videos\/(.+?)\/?$/;
 
 Array.prototype.equals = function <T>(this: Array<T>, other: Array<T>) { return this.every((v, i) => v === other[i]); }
 Number.prototype.pad = function (this: number, length: number) { return ("" + this).padStart(length, "0"); }
@@ -64,23 +65,28 @@ export const clearQueue = () => {
     popupel.classList.add('hidden');
 };
 export const gotoQueue = (index: number, go = true) => {
-    if (index < 0 || index >= queue.length) return;
+    if (index < -1 || index >= queue.length) return;
     queueel?.children[queuepos]?.classList.remove('playing');
     queuepos = index;
     if (go) {
         const url = `/videos/${queue[index]}`;
         // trick router into accepting my url without reloading page
         // if previously tricked, need to undo that (to avoid broken history)
-        if (history.state?.fake === true)
+        // on chrome, this breaks sometimes, but the history is somewhat fine (double back)
+        if (!isChrome() && history.state?.fake === true)
             window.history.back();
         setTimeout(() => {
             window.history.pushState({ fake: true }, null, url);
             window.dispatchEvent(new PopStateEvent("popstate"));
         }, 0);
     }
-    queueel?.children[index]?.classList.add('playing');
-    queueel?.children[index]?.scrollIntoView();
-    updateText();
+    if (index >= 0) {
+        queueel?.children[index]?.classList.add('playing');
+        queueel?.children[index]?.scrollIntoView();
+        updateText();
+    } else {
+        clearText();
+    }
 }
 export const gotoNextInQueue = () => gotoQueue(queuepos + 1);
 export const gotoPrevInQueue = () => gotoQueue(queuepos - 1);
@@ -176,8 +182,8 @@ export const init = () => {
 
     queueel.addEventListener('click', clickElements);
     q.querySelector('.top').addEventListener('click', clickTop);
-    if (!/chrome/i.test(navigator.userAgent))
-        window.addEventListener('message', msg);
+    window.addEventListener('message', msg);
+    window.addEventListener('popstate', popState);
 
     qsharel.querySelector('.close').addEventListener('click', () => qsharel.classList.add('hidden'));
     qshtxel.addEventListener('click', ev => (ev.target as HTMLInputElement).select());
@@ -236,6 +242,11 @@ const msg = (e: MessageEvent) => {
                 break;
         }
     } catch { }
+};
+const popState = () => {
+    const match = window.location.pathname.match(/^\/videos\/(.+?)\/?$/);
+    if (match === null) return gotoQueue(-1, false);
+    gotoQueue(queue.indexOf(match[1]), false);
 };
 const updateText = () => {
     titleel.textContent = store[queue[queuepos]]?.title;
