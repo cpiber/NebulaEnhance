@@ -12,8 +12,8 @@ export abstract class DOMArray<T> extends Array<T> {
         if (nodes !== undefined && nodes.length !== 0 && nodes.length !== elements.length)
             throw new Error('length mismatch');
         start = start < 0 ? this.length - start : start;
-        start = start < 0 ? 0 : start > this.length ? this.length : start;
-        const end = start + count > this.length ? this.length : start + count;
+        start = Math.min(Math.max(start, 0), this.length);
+        const end = Math.min(start + count, this.length);
         let s = start > 0 ? this.root.children[start - 1] : null;
         const n = nodes === undefined || nodes.length === 0;
         const delel = [];
@@ -23,10 +23,12 @@ export abstract class DOMArray<T> extends Array<T> {
         }
         for (let i = 0; i < elements?.length || 0; i++) {
             const node = n ? this.createNode(elements[i]) : nodes[i];
-            s === null ? this.root.firstChild === null ? this.root.append(node) : this.root.firstChild.before(node) : s.after(node);
+            if (s === null)
+                this.root.firstChild === null ? this.root.append(node) : this.root.firstChild.before(node);
+            else s.after(node);
             s = node;
         }
-        const del = Array.prototype.splice.call(this, start, count, ...(elements || [])) as T[];
+        const del = this.splice(start, count, ...(elements || []));
         this.update();
         return [del, delel];
     }
