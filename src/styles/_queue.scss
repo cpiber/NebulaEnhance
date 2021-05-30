@@ -84,16 +84,25 @@
             font-size: 15px;
         }
 
-        .close, .share, .prev, .next {
+        .spacer, .close, .share, .prev, .next, .reverse {
             padding: 8px;
             padding-right: 6px;
-            cursor: pointer;
         }
 
-        .share svg {
-            width: 1em;
-            height: 1em;
-            vertical-align: middle;
+        .of {
+            padding-right: 6px;
+        }
+
+        .prev {
+            padding-right: 0;
+        }
+
+        $nextscale: 0.8;
+        .prev svg {
+            transform: scale(-$nextscale, $nextscale);
+        }
+        .next svg {
+            transform: scale($nextscale);
         }
     }
 
@@ -210,15 +219,23 @@
                 transition: right 0.1s ease-in-out;
 
                 .r {
+                    display: flex;
                     width: 24px;
                     height: 24px;
                     text-align: center;
                     border: 1px solid var(--bg-color);
                     border-radius: 50%;
                     background-color: var(--bg-color);
+                    align-items: center;
+                    justify-content: center;
 
                     @include hov {
                         border-color: var(--font-color);
+                    }
+
+                    svg {
+                        height: 0.85em;
+                        margin: auto;
                     }
                 }
 
@@ -232,6 +249,14 @@
                 }
             }
         }
+    }
+
+    svg {
+        width: auto;
+        height: 1em;
+        vertical-align: middle;
+        cursor: pointer;
+        fill: currentColor;
     }
 
     @media (max-width: $tablet_big) {

@@ -1,4 +1,5 @@
 import iconPlay from "../../../icons/play.svg";
+import iconDelete from "../../../icons/delete.svg";
 import { DOMArray } from "../../_DOMArray";
 
 export type video = {
@@ -32,7 +33,7 @@ export class Queue extends DOMArray<string> {
                 <span class="title"></span>
                 <span class="creator"></span>
             </div>
-            <div class="remove"><span class="r">&#128465;</span></div>
+            <div class="remove"><span class="r">${iconDelete}</span></div>
         `;
         n.draggable = true;
         n.querySelector('.title').textContent = this.store[name].title;

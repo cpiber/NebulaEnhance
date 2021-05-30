@@ -1,3 +1,6 @@
+import iconClose from "../../../icons/close.svg";
+import iconNext from "../../../icons/next.svg";
+import iconReverse from "../../../icons/reverse.svg";
 import iconShare from "../../../icons/share.svg";
 import { getBrowserInstance, isChrome } from "../../_sharedBrowser";
 import { Queue, Store, video } from "./_VideoQueue";
@@ -160,10 +163,10 @@ export const init = () => {
             <div class="top">
                 <div class="current">
                     <span class="title">${nothingToPlay}</span>
-                    <span class="no">-</span> / <span class="of">0</span> &nbsp; &nbsp; <span class="prev" role="queue-previous">&#x23F4;</span><span class="next" role="queue-next">&#x23F5;</span>
+                    <span class="no">-</span> / <span class="of">0</span> <span class="prev" role="queue-previous">${iconNext}</span><span class="next" role="queue-next">${iconNext}</span> <span class="reverse">${iconReverse}</span>
                 </div>
                 <span class="share">${iconShare}</span>
-                <span class="close" role="queue-close">&times;</span>
+                <span class="close" role="queue-close">${iconClose}</span>
             </div>
             <div class="elements"></div>
         </div>
@@ -171,7 +174,7 @@ export const init = () => {
             <div class="enhancer-queue-share">
                 <div class="top">
                     <h2 class="current">${share}</h2>
-                    <div class="close" role="share-close">&times;</div>
+                    <div class="close" role="share-close">${iconClose}</div>
                 </div>
                 <div class="body">
                     <span>${link}:</span>
