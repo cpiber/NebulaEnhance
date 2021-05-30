@@ -53,10 +53,6 @@ Speed dial:
 
 ![Speed dial. Mausrad Scrollen um Geschwindigkeit zu ändern.](static/Screenshot1.png)
 
-Optionen Seite:
-
-![Options.](static/Screenshot2_de.png)
-
 
 # Entwickeln
 
@@ -65,4 +61,5 @@ Stellen Sie bitte sicher, dass Sie [NodeJS](https://nodejs.org/) und dessen pack
 - [pnpm](https://github.com/pnpm/pnpm) installieren: `npm install -g pnpm`
 - Abhängigkeiten installieren: `pnpm install`
 - Entwickeln: In Firefox `pnpm run start:firefox` / In Chromium `pnpm run start:chromium`
+  - Alternativ können Sie auch `pnpm run start` und `pnpm run ext:firefox` / `pnpm run ext:chromium` in separaten Terminals ausführen, um den Build Prozess und das Neuladen der Erweiterung zu trennen
 - Builden: `pnpm run build`

@@ -30,7 +30,7 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 - Theatre Mode: Make the player fit the page better
 
 **Player**
-- Default playback speed and volume
+- Default playback speed and volume, subtitles
 - Quick dial to set speed: New button in player allows to increase/decrease speed by scrolling
 - Autoplay: Start videos automatically
 - Target qualities: Set the preferred video quality or qualities
@@ -54,10 +54,6 @@ Speed dial:
 
 ![Speed dial. Scroll to change speed.](static/Screenshot1.png)
 
-Options page:
-
-![Options.](static/Screenshot2.png)
-
 
 # Developing
 
@@ -66,4 +62,5 @@ Please make sure you have [NodeJS](https://nodejs.org/) and it's package manager
 - Install [pnpm](https://github.com/pnpm/pnpm): `npm install -g pnpm`
 - Install dependencies: `pnpm install`
 - Develop: In Firefox `pnpm run start:firefox` / In Chromium `pnpm run start:chromium`
+  - Alternatively you can also run `pnpm run start` and `pnpm run ext:firefox` / `pnpm run ext:chromium` in different terminals to separate the building and reloading of the extension
 - Build: `pnpm run build`
