@@ -149,6 +149,14 @@ export const setQueue = async (newq: string[], current?: string) => {
     calcBottom(popupel.classList.contains('down'));
     return q;
 }
+export const reverseQueue = () => {
+    queue.reverse2();
+    if (queuepos !== -1) {
+        queuepos = queue.length - queuepos - 1;
+        updateText();
+        queueel.querySelector('.playing').scrollIntoView();
+    }
+}
 
 
 export const init = () => {
@@ -230,6 +238,9 @@ const clickTop = (e: MouseEvent) => {
     const s = (e.target as HTMLElement).closest('.share');
     if (s !== null)
         return setShare();
+    const r = (e.target as HTMLElement).closest('.reverse');
+    if (r !== null)
+        return reverseQueue();
     const p = (e.target as HTMLElement).closest('.prev');
     if (p !== null)
         return gotoPrevInQueue();
