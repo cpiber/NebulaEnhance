@@ -23,6 +23,10 @@
         "message": "Scripts",
         "description": "Title for the scripts subsection of options page."
     },
+    "optionsTitleOther": {
+        "message": "Other",
+        "description": "Title for the other subsection of options page."
+    },
     "optionsDefaultPlaybackRateTitle": {
         "message": "Default playback rate",
         "description": "Label for default playbackRate of options page."
@@ -115,13 +119,41 @@
         "message": "Caution! Only insert code from trustworthy sources!",
         "description": "Warning for adding custom scripts to player of options page."
     },
+    "optionsShowChangelogTitle": {
+        "message": "Show changelogs",
+        "description": "Label for showing changelog on update of options page."
+    },
+    "optionsShowChangelogHint": {
+        "message": "Whether to show changelogs after updating the extension.",
+        "description": "Hint for showing changelog on update of options page."
+    },
+    "optionsShowChangelogButton": {
+        "message": "Show changelog now",
+        "description": "Button text for showing changelog now of options page."
+    },
+    "optionsChangelogTitle": {
+        "message": "Changelog",
+        "description": "Title for changelog modal."
+    },
+    "optionsChangelogInstalled": {
+        "message": "**Thank you for installing this extension!**\n\nBelow you can find an extract of the changelog.\n\nPlease also explore the options to find out about our features!",
+        "description": "Markdown text in changelog modal body for when extension is installed."
+    },
+    "optionsChangelogYourVersion": {
+        "message": "Your Version",
+        "description": "Text to put next to current version in changelog modal."
+    },
+    "optionsChangelogAllReleases": {
+        "message": "Full list of releases",
+        "description": "Text to put below version list in changelog modal."
+    },
     "optionsButtonSaveNote": {
         "message": "Hint: Options are automatically saved.",
-        "description": "Hint for 'save' button"
+        "description": "Hint for 'save' button."
     },
     "buttonSave": {
         "message": "Save",
-        "description": "Common 'save' button"
+        "description": "Common 'save' button."
     },
     "playerSpeed": {
         "message": "Speed",

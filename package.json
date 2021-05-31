@@ -1,6 +1,6 @@
 {
   "name": "nebulaenhance",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
   "main": "index.js",
   "scripts": {
@@ -31,6 +31,8 @@
   "author": "cpiber",
   "license": "ISC",
   "dependencies": {
+    "dompurify": "^2.2.8",
+    "marked": "^2.0.6",
     "querystring": "^0.2.1",
     "webextension-polyfill": "^0.7.0"
   },
@@ -39,7 +41,9 @@
     "@rollup/plugin-node-resolve": "^11.1.1",
     "@rollup/plugin-replace": "^2.4.1",
     "@rollup/plugin-typescript": "^8.1.1",
+    "@types/dompurify": "^2.2.2",
     "@types/firefox-webext-browser": "^82.0.0",
+    "@types/marked": "^2.0.3",
     "@types/video.js": "^7.3.11",
     "autoprefixer": "^10.2.4",
     "concurrently": "^5.3.0",

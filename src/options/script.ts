@@ -1,4 +1,5 @@
 import { getBrowserInstance } from "../scripts/_sharedBrowser";
+import { showLogs } from "./_logs";
 
 const els: { [key: string]: HTMLInputElement | HTMLTextAreaElement } = {
     playbackRate: document.querySelector('[name="playbackRate"]'),
@@ -11,6 +12,7 @@ const els: { [key: string]: HTMLInputElement | HTMLTextAreaElement } = {
     youtube: document.querySelector('[name="youtube"]'),
     customScriptPage: document.querySelector('[name="customScriptPage"]'),
     customScript: document.querySelector('[name="customScript"]'),
+    showChangelogs: document.querySelector('[name="showChangelogs"]'),
 };
 const local = getBrowserInstance().storage.local;
 
@@ -101,5 +103,20 @@ els.youtube.addEventListener('change', async () => {
 });
 permissions.onRemoved.addListener(p => p.origins?.length && ((els.youtube as HTMLInputElement).checked = false));
 
+document.querySelector('#showChangelogsNow').addEventListener('click', () => showLogs(getBrowserInstance().runtime.getManifest().version));
+
 // load initial values from storage
 load(true);
+
+// changelog
+(async () => {
+    const show: boolean = (await local.get({ showChangelogs: true })).showChangelogs;
+    const version: string = (await local.get({ lastVersion: "-1" })).lastVersion;
+    const actualVersion = getBrowserInstance().runtime.getManifest().version;
+    const installed = version === "-1";
+    console.log(show, version, actualVersion, installed);
+    // show changelog or install message
+    if (installed || (show && version !== actualVersion))
+        showLogs(actualVersion, installed);
+    local.set({ lastVersion: actualVersion });
+})();

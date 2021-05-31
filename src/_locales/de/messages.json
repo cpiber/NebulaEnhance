@@ -23,6 +23,10 @@
         "message": "Skripte",
         "description": "Titel der Skripte-Sektion der Optionen Seite."
     },
+    "optionsTitleOther": {
+        "message": "Anderes",
+        "description": "Titel der Diverses-Sektion der Optionen Seite."
+    },
     "optionsDefaultPlaybackRateTitle": {
         "message": "Standard Abspielgeschwindigkeit",
         "description": "Beschriftung für Standard Abspielgeschwindigkeit der Optionen Seite."
@@ -115,13 +119,41 @@
         "message": "Achtung! Fügen Sie nur Code aus vertrauenswürdigen Quellen ein!",
         "description": "Warnung fürs Einfügen von custom scripts zum Videospieler der Optionen Seite."
     },
+    "optionsShowChangelogTitle": {
+        "message": "Changelogs anzeigen",
+        "description": "Beschriftung fürs Anzeigen von Changelogs der Optionen Seite."
+    },
+    "optionsShowChangelogHint": {
+        "message": "Ob die Changelogs nach dem Aktualisieren der Erweiterung angezeigt werden sollen.",
+        "description": "Hilfstext fürs Anzeigen von Changelogs der Optionen Seite."
+    },
+    "optionsShowChangelogButton": {
+        "message": "Changelogs jetzt anzeigen",
+        "description": "Button text um changelogs jetzt anzuzeigen der Optionen Seite."
+    },
+    "optionsChangelogTitle": {
+        "message": "Changelog",
+        "description": "Titel fürs changelog fenster."
+    },
+    "optionsChangelogInstalled": {
+        "message": "**Danke, dass Sie diese Erweiterung installiert haben!**\n\nUnten finden Sie einen Ausschnitt des Changelogs, leider nur in Englisch.\n\nNehmen Sie sich bitte Zeit, die Features der Erweitung in den Optionen kennenzulernen!",
+        "description": "Markdown text für changelog fenster Körper nach installieren der Erweiterung."
+    },
+    "optionsChangelogYourVersion": {
+        "message": "Ihre Version",
+        "description": "Text um aktuelle version zu markieren im changelog fenster."
+    },
+    "optionsChangelogAllReleases": {
+        "message": "Vollständige Liste von Versionen",
+        "description": "Text unter Versionsliste im changelog fenster."
+    },
     "optionsButtonSaveNote": {
         "message": "Optionen werden automatisch gespeichert.",
-        "description": "Notiz zu 'save' button"
+        "description": "Notiz zu 'save' button."
     },
     "buttonSave": {
         "message": "Speichern",
-        "description": "'save' button"
+        "description": "'save' button."
     },
     "playerSpeed": {
         "message": "Geschwindigkeit",

@@ -51,3 +51,11 @@ const loadCreators = (() => {
     if (!yt) return;
     loadCreators();
 })();
+
+getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
+    const show: boolean = (await getBrowserInstance().storage.local.get({ showChangelogs: true })).showChangelogs;
+    const version: string = (await getBrowserInstance().storage.local.get({ lastVersion: "-1" })).lastVersion;
+    console.log(show, version, details.reason);
+    if (details.reason === 'install' || (show && version !== getBrowserInstance().runtime.getManifest().version))
+        getBrowserInstance().runtime.openOptionsPage();
+});
