@@ -11,6 +11,9 @@ declare namespace THEOplayer {
         readonly social?: SocialSharing;
         readonly ui: v.Player;
         readonly upnext?: UpNextManager;
+        paused: boolean;
+        pause(): void;
+        play(): void;
     }
     // only partially declared
     class ChromelessPlayer {

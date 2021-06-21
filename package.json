@@ -1,6 +1,6 @@
 {
   "name": "nebulaenhance",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
   "main": "index.js",
   "scripts": {

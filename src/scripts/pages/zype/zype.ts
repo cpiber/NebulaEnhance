@@ -145,6 +145,9 @@ const getPressedKey = (playbackChange: number, e: KeyboardEvent) => {
         case 'l':
             action = () => window.theoplayer.currentTime += 10;
             break;
+        case 'k':
+            action = window.theoplayer.paused ? window.theoplayer.play : window.theoplayer.pause;
+            break;
         case '0': case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9':
             window.theoplayer.currentTime = window.theoplayer.duration * (+pressedKey) / 10;
