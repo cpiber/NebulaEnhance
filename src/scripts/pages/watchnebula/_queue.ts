@@ -12,7 +12,7 @@ const starthere = getBrowserInstance().i18n.getMessage('pageShareStartHere');
 const confirmClear = getBrowserInstance().i18n.getMessage('pageQueueClearConfirm');
 export const videoUrlMatch = /^\/videos\/(.+?)\/?$/;
 
-Array.prototype.equals = function <T>(this: Array<T>, other: Array<T>) { return this.every((v, i) => v === other[i]); }
+Array.prototype.equals = function <T>(this: Array<T>, other: Array<T>) { return this.length === other.length && this.every((v, i) => v === other[i]); }
 Number.prototype.pad = function (this: number, length: number) { return ("" + this).padStart(length, "0"); }
 
 const store: Store = {};
@@ -171,7 +171,9 @@ export const init = () => {
             <div class="top">
                 <div class="current">
                     <span class="title">${nothingToPlay}</span>
-                    <span class="no">-</span> / <span class="of">0</span> <span class="prev" role="queue-previous">${iconNext}</span><span class="next" role="queue-next">${iconNext}</span> <span class="reverse">${iconReverse}</span>
+                    <span class="no">-</span> / <span class="of">0</span>
+                    <span class="prev" role="queue-previous">${iconNext}</span><span class="next" role="queue-next">${iconNext}</span>
+                    <span class="reverse">${iconReverse}</span>
                 </div>
                 <span class="share">${iconShare}</span>
                 <span class="close" role="queue-close">${iconClose}</span>
@@ -296,7 +298,7 @@ const setShare = () => {
     const hash = queue.join(',');
     qshtxel.value = `${base}/#${hash}`;
     qsharel.classList.remove('hidden');
-}
+};
 
 
 type thumb = {

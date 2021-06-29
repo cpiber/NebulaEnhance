@@ -11,9 +11,6 @@ declare namespace THEOplayer {
         readonly social?: SocialSharing;
         readonly ui: v.Player;
         readonly upnext?: UpNextManager;
-        paused: boolean;
-        pause(): void;
-        play(): void;
     }
     // only partially declared
     class ChromelessPlayer {
@@ -27,7 +24,11 @@ declare namespace THEOplayer {
         videoTracks: MediaTrackList;
         textTracks: TextTracksList;
         volume: number;
+        muted: boolean;
+        paused: boolean;
 
+        pause(): void;
+        play(): void;
         addEventListener<TType extends StringKeyOf<PlayerEventMap>>(type: TType | TType[], listener: EventListener<PlayerEventMap[TType]>): void;
         removeEventListener<TType extends StringKeyOf<PlayerEventMap>>(type: TType | TType[], listener: EventListener<PlayerEventMap[TType]>): void;
     }

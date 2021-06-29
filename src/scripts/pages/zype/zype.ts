@@ -41,12 +41,12 @@ const init = async () => {
     const subtitles = currentSubtitles !== null ? currentSubtitles : defaultSubtitles;
     console.debug(playbackRate, playbackChange, volume, targetQualities, '\tcurrent:', currentPlaybackRate, currentVolume, currentQuality, currentSubtitles, '\tdefault:', defaultPlaybackRate, defaultVolume, defaultSubtitles);
 
+    // set autoplay (auto-updates)
+    t.autoplay = autoplay;
     // set playbackRate (auto-updates)
     t.playbackRate = playbackRate;
     // set volume (auto-updates)
     t.volume = volume;
-    // set autoplay (auto-updates)
-    t.autoplay = autoplay;
     // set qualities when starting player
     const setQualities = () => {
         try {

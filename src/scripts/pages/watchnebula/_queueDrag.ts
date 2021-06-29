@@ -47,7 +47,10 @@ const dragOverElement = (e: DragEvent) => {
     const s = i < fi ? i > 0 ? p.children[i - 1] : null : p.children[i];
     const h = +e.dataTransfer.getData('text/height');
     const node = fake(h);
-    s === null ? p.firstChild.before(node) : s.after(node);
+    if (s === null)
+        p.firstChild.before(node);
+    else
+        s.after(node);
 };
 const dragElementEnd = (e: DragEvent) => {
     const el = e.target as HTMLElement;
@@ -68,4 +71,4 @@ export const init = (e: HTMLElement) => {
     e.addEventListener('dragenter', ev => ev.preventDefault()); // allow drop
     e.addEventListener('dragover', dragOverElement); // allow drop
     e.addEventListener('dragend', dragElementEnd);
-}
+};

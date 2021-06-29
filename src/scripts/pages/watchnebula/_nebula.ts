@@ -8,8 +8,9 @@ const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
-function getFromStorage<T>(key: string | string[] | { [key: string]: any }) { return getBrowserInstance().storage.local.get(key); }
+function getFromStorage(key: string | string[] | { [key: string]: any }) { return getBrowserInstance().storage.local.get(key); }
 
+let theatreMode = false;
 export const nebula = async () => {
     const menu = document.querySelector('menu');
     window.addEventListener('message', message.bind(null, menu));
@@ -20,32 +21,34 @@ export const nebula = async () => {
     initDrag(e);
     window.addEventListener('hashchange', hashChange);
     hashChange();
+    window.addEventListener('focus', () => focusIframe());
+    focusIframe();
 
     const isAndroid: boolean = await getBrowserInstance().runtime.sendMessage("isAndroid");
     const { youtube, theatre, customScriptPage } = await getFromStorage({ youtube: false, theatre: false, customScriptPage: '' });
     console.debug(youtube, theatre);
-    if (isAndroid || youtube || theatre) {
-        const r = refreshTheatreMode.bind(null, menu);
-        const cb = mutation(() => {
-            // substitute hover listener
-            if (isAndroid)
-                Array.from(document.querySelectorAll(`${videoselector} img`)).forEach(createLink);
-            if (youtube)
-                maybeLoadComments();
-            cancelTheatreMode();
-            if (theatre && !isAndroid)
-                maybeGoTheatreMode(menu);
-            const f = document.querySelector('iframe');
-            if (!f)
-                return;
-            f.removeEventListener('fullscreenchange', r);
-            f.addEventListener('fullscreenchange', r);
-        });
-        const m = new MutationObserver(cb);
-        m.observe(document.querySelector('#root'), { subtree: true, childList: true });
-        window.addEventListener('resize', () => updateTheatreMode(menu));
-        cb();
-    }
+    theatreMode = theatre;
+    
+    const r = refreshTheatreMode.bind(null, menu);
+    const cb = mutation(() => {
+        // substitute hover listener
+        if (isAndroid)
+            Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
+        if (youtube)
+            maybeLoadComments();
+        cancelTheatreMode();
+        if (!isAndroid)
+            updateTheatreMode(menu);
+        const f = document.querySelector('iframe');
+        if (!f) return;
+        f.removeEventListener('fullscreenchange', r);
+        f.addEventListener('fullscreenchange', r);
+        f.setAttribute('allow', 'autoplay');
+    });
+    const m = new MutationObserver(cb);
+    m.observe(document.querySelector('#root'), { subtree: true, childList: true });
+    window.addEventListener('resize', () => updateTheatreMode(menu));
+    cb();
 
     // inject custom script (if available)
     if (customScriptPage)
@@ -56,7 +59,6 @@ export const nebula = async () => {
 const replyMessage = (e: MessageEvent, name: string, data: any, err?: any) => name && e.source.postMessage(c({ type: name, res: data, err: err }), e.origin);
 const setSetting = (setting: string, value: number | string) => videosettings[setting as keyof typeof videosettings] = value as never;
 const getSetting = (e: MessageEvent, name: string, setting: string) => replyMessage(e, name, setting ? videosettings[setting as keyof typeof videosettings] : videosettings);
-let theatreMode = false;
 const message = (menu: HTMLElement, e: MessageEvent) => {
     if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")
         return;
@@ -81,6 +83,7 @@ const message = (menu: HTMLElement, e: MessageEvent) => {
     }
 }
 
+const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
 const queueBottonLocation = (img: HTMLElement) => {
     if (window.location.host === "watchnebula.com") {
         return img.parentElement;
@@ -170,7 +173,7 @@ const hashChange = () => {
 };
 
 const maybeLoadComments = () => {
-    if (window.location.pathname.match(/^\/videos\/.+/))
+    if (isVideoPage())
         loadComments();
 };
 const loadComments = async () => {
@@ -199,7 +202,7 @@ const loadComments = async () => {
 };
 
 const maybeGoTheatreMode = (menu: HTMLElement) => {
-    if (window.location.pathname.match(/^\/videos\/.+/))
+    if (isVideoPage())
         setTimeout(() => goTheatreMode(menu), 0);
 };
 const goTheatreMode = (menu: HTMLElement) => {
@@ -239,4 +242,12 @@ const refreshTheatreMode = (menu: HTMLElement) => {
         return;
     cancelTheatreMode();
     setTimeout(goTheatreMode, 0, menu);
-}
+};
+
+const focusIframe = (iter = 0) => {
+    if (!isVideoPage()) return;
+    if (iter > 10) return;
+    const f = document.querySelector('iframe');
+    if (!f) setTimeout(focusIframe, 100, iter + 1);
+    else f.focus();
+};
