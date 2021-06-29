@@ -8,7 +8,7 @@ declare global {
 
     interface Array<T> {
         equals(other: Array<T>): boolean;
-        occurence(): [Array<T>, Array<number>];
+        occurence(): { values: Array<T>, occurences: Array<number>};
     }
 
     interface Number {

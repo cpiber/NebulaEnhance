@@ -13,22 +13,21 @@ type video = {
 
 Array.prototype.occurence = function <T>(this: Array<T>) {
     return [...this].sort().reduce((prev, cur) => {
-        const p = [[...prev[0]], [...prev[1]]] as typeof prev;
-        if (cur === p[0][p[0].length - 1]) {
-            p[1][p[1].length - 1]++; // increase frequency
-            return p;
+        if (cur === prev.values[prev.values.length - 1]) {
+            prev.occurences[prev.occurences.length - 1]++; // increase frequency
+            return prev;
         }
         // new element
-        p[0].push(cur);
-        p[1].push(1);
-        return p;
-    }, [[], []] as [Array<T>, Array<number>]);
+        prev.values.push(cur);
+        prev.occurences.push(1);
+        return prev;
+    }, { values: [] as Array<T>, occurences: [] as Array<number> });
 };
 const dot = (t1: number[], t2: number[]) => t1.reduce((prev, cur, index) => prev + cur * t2[index], 0);
 const norm = (t: number[]) => Math.sqrt(t.reduce((p, v) => p + v * v, 0));
 
 export const loadCreators = () =>
-    fetch('https://standard.tv')
+    fetch('https://standard.tv/creators/')
         .then(res => res.text())
         .then(body => {
             const parser = new DOMParser();
@@ -39,49 +38,6 @@ export const loadCreators = () =>
             })).filter(c => c.channel);
         })
         .then(loadYoutube);
-
-type YoutubeReply<kind, T extends YoutubeItem<any>> = {
-    kind: kind,
-    etag: string,
-    pageInfo: {
-        totalResults: number,
-        resultsPerPage: number,
-    },
-    items: T[],
-    nextPageToken?: string,
-    prevPageToken?: string,
-}
-type YoutubeItem<kind> = {
-    kind: kind,
-    etag: string,
-    id: string,
-};
-type PlaylistItemsReply<T> = YoutubeReply<"youtube#playlistItemListResponse", PlaylistItem & T>;
-type PlaylistItem = YoutubeItem<"youtube#playlistItem">;
-type PlaylistItemSnippet = {
-    snippet: {
-        publishedAt: string,
-        channelId: string,
-        title: string,
-        description: string,
-        thumbnails: {
-            [key in "default" | "medium" | "high" | "standard" | "maxres"]: {
-                url: string,
-                width: number,
-                height: number,
-            }
-        },
-        channelTitle: string,
-        playlistId: string,
-        position: number,
-        resourceId: {
-            kind: "youtube#video",
-            videoId: string,
-        },
-        videoOwnerChannelTitle: string,
-        videoOwnerChannelId: string,
-    }
-};
 const loadYoutube = (creators: creator[]) => creators.map(c => ({ ...c, uploads: 'UU' + c.channel.substr(2) }));
 
 const vidcache: { [key: string]: ytvideo } = {};
@@ -114,7 +70,7 @@ export const creatorHasVideo = (playlist: string, title: string, num: number): P
                 "mode": "cors"
             })
             .then(res => res.json())
-            .then((res: PlaylistItemsReply<PlaylistItemSnippet>) => {
+            .then((res: YouTube.PlaylistItemsReply<YouTube.PlaylistItemSnippet>) => {
                 if (!res || !res.pageInfo || !res.items || !res.items.length) {
                     console.log(res);
                     throw new Error("Invalid API response");
@@ -154,25 +110,25 @@ const toVid = (vids: string | video[], title: string) => {
     const uterms = terms.map(ts => ts.occurence());
     const uquery = query.occurence();
     // count and create dict with unique terms
-    const [dict, dc] = [...uterms.map(t => t[0]).flat(), ...uquery[0]].occurence();
+    const { values: dict, occurences: dc } = [...uterms.map(t => t.values).flat(), ...uquery.values].occurence();
     const idf = dc.map(c => Math.log(vids.length / c));
     // term frequencies (expand to dict)
     const ifreq = (n: number, arr: number[], tarr: string[]) => {
         let lastind = 0;
         return dict.map(v => v !== tarr[lastind] ? 0 /* not in doc */ : arr[lastind++] / n /* calculate frequency, goto next */);
     };
-    const tf = uterms.map((t, i) => ifreq(terms[i].length, t[1], t[0])); // length from original terms (with duplicates)
-    const qf = ifreq(query.length, uquery[1], uquery[0]);
+    const tf = uterms.map((t, i) => ifreq(terms[i].length, t.occurences, t.values)); // length from original terms (with duplicates)
+    const qf = ifreq(query.length, uquery.occurences, uquery.values);
     // tfidf
     const tfidf = tf.map(t => t.map((v, index) => v * idf[index]));
     const qfidf = qf.map((v, index) => v * idf[index]);
     const nfidf = norm(qfidf);
     // find most similar (cosine similarity maximised)
-    const sim = tfidf.map((t, i) => [dot(t, qfidf) / (norm(t) * nfidf), i])
-        .sort((a, b) => b[0] - a[0]);
+    const sim = tfidf.map((t, i) => ({ prob: dot(t, qfidf) / (norm(t) * nfidf), vid: i}))
+        .sort((a, b) => b.prob - a.prob);
     const best = sim[0];
-    console.debug(best[0], best[1], vids[best[1]]);
-    if (best[0] < 0.25) // arbitrary threshold
-        throw new Error(`Not enough confidence (${best[0]} < 0.25)`);
-    return vidcache[title] = { confidence: best[0], video: vids[best[1]].videoId };
+    console.debug(best.prob, best.vid, vids[best.vid]);
+    if (best.prob < 0.25) // arbitrary threshold
+        throw new Error(`Not enough confidence (${best.prob} < 0.25)`);
+    return vidcache[title] = { confidence: best.prob, video: vids[best.vid].videoId };
 };
