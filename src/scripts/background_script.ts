@@ -31,7 +31,6 @@ getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: st
             const c: string = message.creator;
             const c2 = s(c);
             const t: string = message.title;
-            loadCreators().then(console.log);
             return loadCreators().then(creators => 
                 creatorHasVideo(creators.find(e => e.name === c || s(e.name) === c2)?.uploads, t, videoFetch))
                 .catch(err => { console.error(err); return Promise.reject(err); });
@@ -49,7 +48,7 @@ const loadCreators = (() => {
 (async () => {
     const yt: boolean = (await getBrowserInstance().storage.local.get({ youtube: false })).youtube;
     if (!yt) return;
-    loadCreators();
+    loadCreators().then(console.log);
 })();
 
 getBrowserInstance().runtime.onInstalled.addListener(async (details) => {

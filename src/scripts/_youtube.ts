@@ -94,6 +94,8 @@ export const creatorHasVideo = (playlist: string, title: string, num: number): P
 const toVid = (vids: string | video[], title: string) => {
     if (typeof vids === "string")
         return vidcache[title] = { confidence: 1, video: vids }; // exact match
+    if (!vids.length)
+        throw new Error("No videos");
     // lowercase, remove accents, split at spaces and sentence marks, remove common words, replace [0-12] with written words
     const exclude = ['the', 'is', 'a', 'and', 'or', 'as', 'of'];
     const numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
@@ -128,7 +130,7 @@ const toVid = (vids: string | video[], title: string) => {
         .sort((a, b) => b.prob - a.prob);
     const best = sim[0];
     console.debug(best.prob, best.vid, vids[best.vid]);
-    if (best.prob < 0.25) // arbitrary threshold
-        throw new Error(`Not enough confidence (${best.prob} < 0.25)`);
+    if (best.prob < 0.15 || sim.length > 1 && best.prob - sim[1].prob < 0.05) // arbitrary threshold and distance
+        throw new Error(`Not enough confidence (${best.prob}, ${sim.length > 1 ? sim[1].prob : 0})`);
     return vidcache[title] = { confidence: best.prob, video: vids[best.vid].videoId };
 };
