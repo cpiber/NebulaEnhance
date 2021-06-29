@@ -44,7 +44,7 @@ const dragOverElement = (e: DragEvent) => {
     if (i === -1 || i === o)
         return;
     const p = el.parentElement;
-    const s = i < fi ? i > 0 ? p.children[i - 1] : null : p.children[i];
+    const s = i < fi ? (i > 0 ? p.children[i - 1] : null) : p.children[i];
     const h = +e.dataTransfer.getData('text/height');
     const node = fake(h);
     if (s === null)

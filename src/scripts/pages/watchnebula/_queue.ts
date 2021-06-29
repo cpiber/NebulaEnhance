@@ -66,7 +66,7 @@ export const enqueue = (name: string, pos?: number) => {
 export const enqueueNow = (name: string) => {
     if (queue[queuepos] !== name && queue[queuepos + 1] !== name)
         enqueue(name, queuepos + 1);
-}
+};
 export const removeFromQueue = (index: number) => {
     if (index < 0 || index >= queue.length) return;
     if (queue.length === 1) return clearQueue();
@@ -105,7 +105,7 @@ export const gotoQueue = (index: number, go = true) => {
     } else {
         clearText();
     }
-}
+};
 export const gotoNextInQueue = () => gotoQueue(queuepos + 1);
 export const gotoPrevInQueue = () => gotoQueue(queuepos - 1);
 export const toggleQueue = () => {
@@ -118,7 +118,7 @@ export const toggleQueue = () => {
     else
         popupel.classList.remove('no-transition');
     calcBottom(tggl);
-}
+};
 export const moveQueue = (orig: number, index: number) => {
     const [name, elem] = queue.splice2(orig, 1);
     queue.splice2(index, 0, name, elem);
@@ -130,7 +130,7 @@ export const moveQueue = (orig: number, index: number) => {
         updateText();
     }
     return elem[0];
-}
+};
 export const setQueue = async (newq: string[], current?: string) => {
     // check if they're already same
     if (newq.length === queue.length && newq.equals(queue))
@@ -148,7 +148,7 @@ export const setQueue = async (newq: string[], current?: string) => {
     popupel.classList.toggle('hidden', q.length === 0);
     calcBottom(popupel.classList.contains('down'));
     return q;
-}
+};
 export const reverseQueue = () => {
     queue.reverse2();
     if (queuepos !== -1) {
@@ -156,7 +156,7 @@ export const reverseQueue = () => {
         updateText();
         queueel.querySelector('.playing').scrollIntoView();
     }
-}
+};
 
 
 export const init = () => {

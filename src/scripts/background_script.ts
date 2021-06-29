@@ -1,13 +1,11 @@
 import { getBrowserInstance } from './_sharedBrowser';
 import { creator, creatorHasVideo, loadCreators as _loadCreators } from './_youtube';
 
-let videoFetch = 50;
+const videoFetch = 50;
 
-function isAndroid() {
-    return getBrowserInstance().runtime.getPlatformInfo().then(information => information.os === 'android');
-}
+const isAndroid = () => getBrowserInstance().runtime.getPlatformInfo().then(information => information.os === 'android');
 
-getBrowserInstance().browserAction.onClicked.addListener(async function () {
+getBrowserInstance().browserAction.onClicked.addListener(async () => {
     const android = await isAndroid();
     // Avoid blank page in firefox android
     // Taken from https://git.synz.io/Synzvato/decentraleyes/-/blob/master/pages/popup/popup.js#L391

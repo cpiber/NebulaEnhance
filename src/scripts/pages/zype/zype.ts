@@ -39,7 +39,9 @@ const init = async () => {
     const playbackRate = currentPlaybackRate || defaultPlaybackRate || 1;
     const volume = currentVolume || defaultVolume || 1;
     const subtitles = currentSubtitles !== null ? currentSubtitles : defaultSubtitles;
-    console.debug(playbackRate, playbackChange, volume, targetQualities, '\tcurrent:', currentPlaybackRate, currentVolume, currentQuality, currentSubtitles, '\tdefault:', defaultPlaybackRate, defaultVolume, defaultSubtitles);
+    console.debug(playbackRate, playbackChange, volume, targetQualities,
+        '\tcurrent:', currentPlaybackRate, currentVolume, currentQuality, currentSubtitles,
+        '\tdefault:', defaultPlaybackRate, defaultVolume, defaultSubtitles);
 
     // set autoplay (auto-updates)
     t.autoplay = autoplay;
@@ -110,7 +112,7 @@ const init = async () => {
     }
 };
 
-const isTheoPlayerFocused = function () {
+const isTheoPlayerFocused = () => {
     // check if theoplayer is focused
     // taken from zype.com
     let node = document.activeElement;
@@ -126,43 +128,42 @@ const getPressedKey = (playbackChange: number, e: KeyboardEvent) => {
     if (e.altKey || e.ctrlKey || e.metaKey)
         return;
     const pressedKey = e.key;
-    let action: () => void;
+    const t = window.theoplayer;
+    let action: () => void = null;
     switch (pressedKey) {
         case 'Escape':
             window.theoplayer.element.focus(); // give focus back
             break;
         case ',':
-            // "frame" back
-            action = () => window.theoplayer.currentTime -= 0.03;
+            action = () => t.currentTime -= 0.03; // "frame" back
             break;
         case '.':
-            // "frame" forward
-            action = () => window.theoplayer.currentTime += 0.03;
+            action = () => t.currentTime += 0.03; // "frame" forward
             break;
         case 'j':
-            action = () => window.theoplayer.currentTime -= 10;
+            action = () => t.currentTime -= 10;
             break;
         case 'l':
-            action = () => window.theoplayer.currentTime += 10;
+            action = () => t.currentTime += 10;
             break;
         case 'k':
-            action = window.theoplayer.paused ? window.theoplayer.play : window.theoplayer.pause;
+            action = t.paused ? t.play : t.pause;
             break;
         case '0': case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9':
-            window.theoplayer.currentTime = window.theoplayer.duration * (+pressedKey) / 10;
+            t.currentTime = t.duration * (+pressedKey) / 10;
             break;
         case 'Home':
-            window.theoplayer.currentTime = 0;
+            t.currentTime = 0;
             break;
         case 'End':
-            window.theoplayer.currentTime = window.theoplayer.duration;
+            t.currentTime = t.duration;
             break;
         case '<':
-            window.theoplayer.playbackRate = Math.round((window.theoplayer.playbackRate - playbackChange) * 100) / 100;
+            t.playbackRate = Math.round((t.playbackRate - playbackChange) * 100) / 100;
             break;
         case '>':
-            window.theoplayer.playbackRate = Math.round((window.theoplayer.playbackRate + playbackChange) * 100) / 100;
+            t.playbackRate = Math.round((t.playbackRate + playbackChange) * 100) / 100;
             break;
     }
     if (action && isTheoPlayerFocused()) {
@@ -184,6 +185,6 @@ const getPressedKey = (playbackChange: number, e: KeyboardEvent) => {
         console.debug('ready');
         clearInterval(int);
         init();
-    }
+    };
     const int = setInterval(waitForTheo, 100);
 })();

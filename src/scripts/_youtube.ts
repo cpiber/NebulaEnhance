@@ -56,18 +56,6 @@ type YoutubeItem<kind> = {
     etag: string,
     id: string,
 };
-type ChannelListReply<T> = YoutubeReply<"youtube#channelListResponse", ChannelListChannel & T>;
-type ChannelListChannel = YoutubeItem<"youtube#channel">;
-type ChannelContentDetails = {
-    contentDetails: {
-        relatedPlaylists: {
-            likes: string,
-            favorites: string,
-            uploads: string,
-            [key: string]: string,
-        }
-    }
-};
 type PlaylistItemsReply<T> = YoutubeReply<"youtube#playlistItemListResponse", PlaylistItem & T>;
 type PlaylistItem = YoutubeItem<"youtube#playlistItem">;
 type PlaylistItemSnippet = {
@@ -94,45 +82,8 @@ type PlaylistItemSnippet = {
         videoOwnerChannelId: string,
     }
 };
-const loadYoutube = (creators: creator[]) => {
-    // const load = (cs: creator[]) => {
-    //     const url = new URL('https://youtube.googleapis.com/youtube/v3/channels');
-    //     url.search = "?" + encode({
-    //         part: 'contentDetails',
-    //         id: cs.map(c => c.channel),
-    //         key: __YT_API_KEY__,
-    //         maxResults: 50,
-    //     });
-    //     return fetch(url.toString(),
-    //         {
-    //             "credentials": "omit",
-    //             "headers": {
-    //                 "Accept": "application/json, text/plain, */*",
-    //                 "Accept-Language": "en-US,en;q=0.5",
-    //                 "Cache-Control": "max-age=0"
-    //             },
-    //             "referrer": `https://watchnebula.com/`,
-    //             "method": "GET",
-    //             "mode": "cors"
-    //         })
-    //             .then(res => res.json())
-    //             .then((res: ChannelListReply<ChannelContentDetails>) => {
-    //                 if (!res || !res.pageInfo || !res.items || !res.items.length) {
-    //                     console.log(res);
-    //                     throw new Error("Invalid API response");
-    //                 }
-    //                 res.items.forEach(i => {
-    //                     const c = cs.find(e => e.channel === i.id);
-    //                     if (!c) return;
-    //                     c.uploads = i.contentDetails.relatedPlaylists.uploads;
-    //                 });
-    //                 return cs;
-    //             }).catch(console.error);
-    // };
-    // return Promise.all(array_chunks(creators, 50).map(load))
-    //     .then(arr => (arr.filter(a => a !== undefined) as creator[][]).flat().filter(c => c.uploads));
-    return creators.map(c => ({ ...c, uploads: 'UU' + c.channel.substr(2) }));
-};
+const loadYoutube = (creators: creator[]) => creators.map(c => ({ ...c, uploads: 'UU' + c.channel.substr(2) }));
+
 const vidcache: { [key: string]: ytvideo } = {};
 export const creatorHasVideo = (playlist: string, title: string, num: number): Promise<ytvideo> => {
     if (!playlist || !title)
@@ -225,6 +176,3 @@ const toVid = (vids: string | video[], title: string) => {
         throw new Error(`Not enough confidence (${best[0]} < 0.25)`);
     return vidcache[title] = { confidence: best[0], video: vids[best[1]].videoId };
 };
-
-// https://stackoverflow.com/questions/8495687/split-array-into-chunks#comment84212474_8495740
-const array_chunks = <T>(array: T[], chunk_size: number) => Array(Math.ceil(array.length / chunk_size)).fill(0).map((_, index) => index * chunk_size).map(begin => array.slice(begin, begin + chunk_size));
