@@ -56,7 +56,7 @@
         "description": "Label for Autoplay of options page."
     },
     "optionsAutoplayHint": {
-        "message": "Whether to make the video automatically play or not.",
+        "message": "Whether to make the video automatically play or not. Note that this depends on your browser, see <a href=\"https://demo.theoplayer.com/autoplay-policy\">https://demo.theoplayer.com/autoplay-policy</a>",
         "description": "Hint for Autoplay of options page."
     },
     "optionsTargetQualitiesTitle": {

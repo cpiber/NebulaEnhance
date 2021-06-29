@@ -56,7 +56,7 @@
         "description": "Beschriftung für Autoplay der Optionen Seite."
     },
     "optionsAutoplayHint": {
-        "message": "Ob das Video automatisch starten soll oder nicht.",
+        "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\">https://demo.theoplayer.com/autoplay-policy</a>",
         "description": "Hilfstext für Autoplay der Optionen Seite."
     },
     "optionsTargetQualitiesTitle": {
