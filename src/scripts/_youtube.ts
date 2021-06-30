@@ -1,5 +1,5 @@
 import { encode } from 'querystring';
-import { ytvideo } from './_shared';
+import { dot, norm, ytvideo } from './_shared';
 
 export type creator = {
     name: string,
@@ -10,21 +10,6 @@ type video = {
     title: string,
     videoId: string,
 };
-
-Array.prototype.occurence = function <T>(this: Array<T>) {
-    return [...this].sort().reduce((prev, cur) => {
-        if (cur === prev.values[prev.values.length - 1]) {
-            prev.occurences[prev.occurences.length - 1]++; // increase frequency
-            return prev;
-        }
-        // new element
-        prev.values.push(cur);
-        prev.occurences.push(1);
-        return prev;
-    }, { values: [] as Array<T>, occurences: [] as Array<number> });
-};
-const dot = (t1: number[], t2: number[]) => t1.reduce((prev, cur, index) => prev + cur * t2[index], 0);
-const norm = (t: number[]) => Math.sqrt(t.reduce((p, v) => p + v * v, 0));
 
 export const loadCreators = () =>
     fetch('https://standard.tv/creators/')
@@ -83,7 +68,7 @@ export const creatorHasVideo = (playlist: string, title: string, num: number): P
                 if (n < num && res.nextPageToken)
                     return load(res.nextPageToken, nlist);
                 return nlist;
-            })
+            });
     };
     return load().then(vids => toVid(vids, title)).catch(err => {
         console.error(err);
@@ -125,6 +110,7 @@ const toVid = (vids: string | video[], title: string) => {
     const tfidf = tf.map(t => t.map((v, index) => v * idf[index]));
     const qfidf = qf.map((v, index) => v * idf[index]);
     const nfidf = norm(qfidf);
+    tfidf.forEach(t => { if (t.length !== qfidf.length) throw new Error("Length mismatch"); });
     // find most similar (cosine similarity maximised)
     const sim = tfidf.map((t, i) => ({ prob: dot(t, qfidf) / (norm(t) * nfidf), vid: i}))
         .sort((a, b) => b.prob - a.prob);
