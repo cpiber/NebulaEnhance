@@ -84,20 +84,8 @@ const message = (menu: HTMLElement, e: MessageEvent) => {
 }
 
 const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
-const queueBottonLocation = (img: HTMLElement) => {
-    if (window.location.host === "watchnebula.com") {
-        return img.parentElement;
-    } else {
-        return img.parentElement.parentElement;
-    }
-}
-const queueOtherLocation = (img: HTMLElement) => {
-    if (window.location.host === "watchnebula.com") {
-        return img.nextElementSibling;
-    } else {
-        return img.parentElement.nextElementSibling;
-    }
-}
+const queueBottonLocation = (img: HTMLElement) => img.parentElement.parentElement;
+const queueOtherLocation = (img: HTMLElement) => img.parentElement.nextElementSibling;
 const imgLink = (e: HTMLElement) => {
     // check if element is the image in a video link
     if (e.tagName !== 'IMG')
