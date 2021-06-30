@@ -103,6 +103,12 @@ export const gotoQueue = (index: number, go = true) => {
     } else {
         clearText();
     }
+    // chrome does not do this for us
+    const yt = document.querySelector('.enhancer-yt');
+    if (yt) {
+        yt.previousElementSibling.remove();
+        yt.remove();
+    }
 };
 export const gotoNextInQueue = () => gotoQueue(queuepos + 1);
 export const gotoPrevInQueue = () => gotoQueue(queuepos - 1);

@@ -1,5 +1,5 @@
 import { videosettings, ytvideo } from "../../_shared";
-import { c, getBrowserInstance, injectScript } from "../../_sharedBrowser";
+import { c, getBrowserInstance, injectScript, isChrome } from "../../_sharedBrowser";
 import iconWatchLater from "./../../../icons/watchlater.svg";
 import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue, videoUrlMatch } from "./_queue";
 import { init as initDrag } from "./_queueDrag";
@@ -26,7 +26,7 @@ export const nebula = async () => {
 
     const isAndroid: boolean = await getBrowserInstance().runtime.sendMessage("isAndroid");
     const { youtube, theatre, customScriptPage } = await getFromStorage({ youtube: false, theatre: false, customScriptPage: '' });
-    console.debug(youtube, theatre);
+    console.debug('Youtube:', youtube, 'Theatre Mode:', theatre, 'Video page?', isVideoPage());
     theatreMode = theatre;
     
     const r = refreshTheatreMode.bind(null, menu);
@@ -36,9 +36,7 @@ export const nebula = async () => {
             Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
         if (youtube)
             maybeLoadComments();
-        cancelTheatreMode();
-        if (!isAndroid)
-            updateTheatreMode(menu);
+        domRefreshTheatreMode(isAndroid, menu);
         const f = document.querySelector('iframe');
         if (!f) return;
         f.removeEventListener('fullscreenchange', r);
@@ -47,7 +45,7 @@ export const nebula = async () => {
     });
     const m = new MutationObserver(cb);
     m.observe(document.querySelector('#root'), { subtree: true, childList: true });
-    window.addEventListener('resize', () => updateTheatreMode(menu));
+    window.addEventListener('resize', updateTheatreMode.bind(null, menu));
     cb();
 
     // inject custom script (if available)
@@ -115,10 +113,10 @@ const createLink = (img: HTMLElement) => {
 };
 const mutation = (func: () => void) => {
     let timeout = 0;
-    return function () {
+    return () => {
         clearTimeout(timeout);
         timeout = window.setTimeout(func, 500);
-    }
+    };
 };
 
 const click = async (e: MouseEvent) => {
@@ -170,7 +168,8 @@ const loadComments = async () => {
     const title = h2[0].textContent;
     const creator = h2[1].textContent;
     if (!title || !creator) return;
-    if (!h2[0].nextElementSibling || h2[0].nextElementSibling.querySelector('.enhancer-yt'))
+    const e = h2[0].nextElementSibling;
+    if (!e || e.querySelector('.enhancer-yt'))
         return; // already requested
     console.debug(`Requesting '${title}' by ${creator}`);
 
@@ -183,10 +182,11 @@ const loadComments = async () => {
         a.target = '_blank';
         a.textContent = a.href;
         v.append(a, ` (${(vid.confidence * 100).toFixed(1)}%)`);
-        h2[0].nextElementSibling.append(h2[0].nextElementSibling.querySelector('span[class]')?.cloneNode(true), v); // dot
+        e.append(e.querySelector('span[class]')?.cloneNode(true), v); // dot
     } catch (err) {
         console.error(err);
     }
+    console.debug('Loading comments done.');
 };
 
 const maybeGoTheatreMode = (menu: HTMLElement) => {
@@ -196,6 +196,8 @@ const maybeGoTheatreMode = (menu: HTMLElement) => {
 const goTheatreMode = (menu: HTMLElement) => {
     const mh = menu.getBoundingClientRect().height;
     const frame = document.querySelector('iframe');
+    if (!frame)
+        return;
     const ratio = frame.clientWidth / frame.clientHeight;
     const top = +window.getComputedStyle(frame.parentElement.parentElement).paddingTop.slice(0, -2);
     if (!ratio)
@@ -226,11 +228,24 @@ const updateTheatreMode = (menu: HTMLElement) => {
         maybeGoTheatreMode(menu);
 };
 const refreshTheatreMode = (menu: HTMLElement) => {
-    if (!theatreMode)
+    if (!theatreMode || !isVideoPage())
         return;
     cancelTheatreMode();
     setTimeout(goTheatreMode, 0, menu);
 };
+const domRefreshTheatreMode = (() => {
+    let hadIFrame = false;
+    return (isAndroid: boolean, menu: HTMLElement) => {
+        if (isAndroid)
+            return;
+        const hasIFrame = document.querySelector('iframe');
+        if (!hadIFrame && hasIFrame)
+            refreshTheatreMode(menu);
+        if (theatreMode && !hasIFrame.style.height)
+            goTheatreMode(menu);
+        hadIFrame = !!hasIFrame;
+    };
+})();
 
 const focusIframe = (iter = 0) => {
     if (!isVideoPage()) return;
