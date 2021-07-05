@@ -1,8 +1,8 @@
-{
+export default {
 	"manifest_version": 2,
 	"name": "__MSG_title__",
 	"description": "__MSG_extensionDescription__",
-	"version": "0.2.7",
+	"version": __VERSION__,
 	"icons": {
 		"128": "icons/icon_128.png",
 		"64": "icons/icon_64.png"
@@ -58,4 +58,4 @@
 	  }
 	},
 	"default_locale": "en"
-}
+};

@@ -17,6 +17,7 @@ specifiers:
   fibers: ^5.0.0
   glob: ^7.1.6
   marked: ^2.0.6
+  node-eval: ^2.0.0
   postcss: ^8.2.6
   postcss-preset-env: ^6.7.0
   querystring: ^0.2.1
@@ -52,6 +53,7 @@ devDependencies:
   dotenv: 8.2.0
   fibers: 5.0.0
   glob: 7.1.6
+  node-eval: 2.0.0
   postcss: 8.2.6
   postcss-preset-env: 6.7.0
   rimraf: 3.0.2
@@ -690,6 +692,10 @@ packages:
     resolution: {integrity: sha1-ibTRmasr7kneFk6gK4nORi1xt2c=}
     dev: true
 
+  /balanced-match/1.0.2:
+    resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
+    dev: true
+
   /base/0.11.2:
     resolution: {integrity: sha512-5T6P4xPgpp0YDFvSWwEZ4NoE3aM4QBQXDzmVbraCkFj8zHM+mba8SyqB5DbZWyR7mYHo6Y7BdQo3MoA4m0TeQg==}
     engines: {node: '>=0.10.0'}
@@ -767,7 +773,7 @@ packages:
   /brace-expansion/1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
     dependencies:
-      balanced-match: 1.0.0
+      balanced-match: 1.0.2
       concat-map: 0.0.1
     dev: true
 
@@ -3696,6 +3702,13 @@ packages:
 
   /next-tick/1.1.0:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
+    dev: true
+
+  /node-eval/2.0.0:
+    resolution: {integrity: sha512-Ap+L9HznXAVeJj3TJ1op6M6bg5xtTq8L5CU/PJxtkhea/DrIxdTknGKIECKd/v/Lgql95iuMAYvIzBNd0pmcMg==}
+    engines: {node: '>= 4'}
+    dependencies:
+      path-is-absolute: 1.0.1
     dev: true
 
   /node-forge/0.10.0:
