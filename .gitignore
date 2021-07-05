@@ -1,5 +1,6 @@
 extension-dist
 web-ext-artifacts
+__tests__
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/node

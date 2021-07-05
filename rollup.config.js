@@ -141,9 +141,50 @@ const other = (args) => {
         ],
         watch: w(args.watch)
     };
-    
     return conf;
 };
+
+
+/**
+ * TESTS BUILD
+ */
+const tests = (args) =>
+    glob.sync('tests/**/*.ts', { ignore: [ 'tests/**/_*.ts', 'tests/**/*.d.ts' ] }).map(e => {
+        const d = e.replace(/(^|\/)tests\//, '$1__tests__/');
+        // Report destination paths on console
+        if (!args.silent)
+            console.info(`\u001b[36m\[Rollup build\]\u001b[0m Converting Typescript from ${e} to javascript, exporting to: ${d.replace(/.ts$/, '.js')}`);
+        /**
+         * @type {import('rollup').RollupOptions}
+         */
+        const conf = {
+            input: e,
+            output: {
+                dir: path.dirname(d),
+                format: 'iife',
+            },
+            external: false,
+            context: "window",
+            plugins: [
+                typescript({
+                    tsconfig: "./tsconfig.json"
+                }),
+                string({
+                    include: "**/*.svg",
+                }),
+                nodeResolve({
+                    preferBuiltins: false,
+                }),
+                commonjs(),
+                replace({
+                    '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
+                    preventAssignment: true,
+                }),
+            ],
+            watch: w(args.watch)
+        };
+        return conf;
+    });
 
 
 /**
@@ -204,5 +245,7 @@ export default async args => {
         default:
         case "all":
             return [...js(args), ...css(args), other(args)];
+        case "tests":
+            return tests(args);
     }
 };
