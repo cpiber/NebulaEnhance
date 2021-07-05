@@ -1,6 +1,6 @@
 import iconPlay from "../../../icons/play.svg";
 import iconDelete from "../../../icons/delete.svg";
-import { DOMArray } from "../../_DOMArray";
+import { callback as ArrayCallback, DOMArray } from "../../_DOMArray";
 
 export type video = {
     length: string,
@@ -14,8 +14,8 @@ export type Store = { [key: string]: video };
 export class Queue extends DOMArray<string> {
     store: Store;
 
-    constructor(root: HTMLElement, store: Store) {
-        super(root);
+    constructor(root: HTMLElement, cb: ArrayCallback<string>, store: Store) {
+        super(root, cb);
         Object.setPrototypeOf(this, Queue.prototype);
         this.store = store;
     }
@@ -40,5 +40,4 @@ export class Queue extends DOMArray<string> {
         n.querySelector('.creator').textContent = `${this.store[name].creator} • ${this.store[name].length}`;
         return n;
     }
-    update() { } // placeholder
 }

@@ -15,5 +15,7 @@ declare global {
         pad(length: number): string;
     }
 
+    function cloneInto<T>(object: T, targetWindow: Window): T;
+
     const __YT_API_KEY__: string;
 }

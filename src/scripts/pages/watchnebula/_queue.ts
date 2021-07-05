@@ -209,8 +209,7 @@ export const init = () => {
     qshahel = qsharel.querySelector('input[type="checkbox"]');
     document.body.append(q);
 
-    Queue.prototype.update = function (this: Queue) { o.textContent = `${this.length}`; }
-    queue = new Queue(queueel, store);
+    queue = new Queue(queueel, function (this: Queue) { o.textContent = `${this.length}`; }, store);
 
     queueel.addEventListener('click', clickElements);
     q.querySelector('.top').addEventListener('click', clickTop);

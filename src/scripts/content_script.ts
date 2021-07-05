@@ -1,11 +1,11 @@
 import { nebula } from "./pages/watchnebula/_nebula";
-import { c, getBrowserInstance, injectScript } from "./_sharedBrowser";
+import { clone, getBrowserInstance, injectScript } from "./_sharedBrowser";
 
 const b = getBrowserInstance();
 const local = b.storage.local;
 
 // handle messaging with injected script(s)
-const replyEvent = (e: CustomEvent, data: any, err?: any) => e.detail.name && !document.dispatchEvent(new CustomEvent(e.detail.name, { detail: c({ res: data, err: err }) }));
+const replyEvent = (e: CustomEvent, data: any, err?: any) => e.detail.name && !document.dispatchEvent(new CustomEvent(e.detail.name, { detail: clone({ res: data, err: err }) }));
 const storageGet = (e: CustomEvent) => local.get(e.detail.get).then(r => replyEvent(e, typeof e.detail.get == 'string' ? r[e.detail.get] : r), (r: any) => replyEvent(e, null, r));
 const storageSet = (e: CustomEvent) => local.set(e.detail.set).then(() => replyEvent(e, null), (r: any) => replyEvent(e, null, r));
 const getMessage = (e: CustomEvent) => replyEvent(e, b.i18n.getMessage(e.detail.message, e.detail.substitutions));

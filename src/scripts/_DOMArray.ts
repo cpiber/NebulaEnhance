@@ -1,10 +1,14 @@
+export type callback<T> = (this: DOMArray<T>) => void;
+
 export abstract class DOMArray<T> extends Array<T> {
     root: HTMLElement;
+    update: callback<T>;
 
-    constructor(root: HTMLElement, ...items: T[]) {
+    constructor(root: HTMLElement, cb?: callback<T>, ...items: T[]) {
         super();
         Object.setPrototypeOf(this, DOMArray.prototype);
         this.root = root;
+        this.update = (cb ? cb : function () {}).bind(this);
         if (items.length) this.splice2(0, 0, items);
     }
 
@@ -47,5 +51,4 @@ export abstract class DOMArray<T> extends Array<T> {
     }
 
     protected abstract createNode(element: T): HTMLElement;
-    protected update() { }
 }

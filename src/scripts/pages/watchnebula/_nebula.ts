@@ -1,5 +1,5 @@
 import { videosettings, ytvideo } from "../../_shared";
-import { c, getBrowserInstance, injectScript, isChrome } from "../../_sharedBrowser";
+import { clone, getBrowserInstance, injectScript } from "../../_sharedBrowser";
 import iconWatchLater from "./../../../icons/watchlater.svg";
 import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue, videoUrlMatch } from "./_queue";
 import { init as initDrag } from "./_queueDrag";
@@ -54,7 +54,7 @@ export const nebula = async () => {
 };
 
 // @ts-ignore
-const replyMessage = (e: MessageEvent, name: string, data: any, err?: any) => name && e.source.postMessage(c({ type: name, res: data, err: err }), e.origin);
+const replyMessage = (e: MessageEvent, name: string, data: any, err?: any) => name && e.source.postMessage(clone({ type: name, res: data, err: err }), e.origin);
 const setSetting = (setting: string, value: number | string) => videosettings[setting as keyof typeof videosettings] = value as never;
 const getSetting = (e: MessageEvent, name: string, setting: string) => replyMessage(e, name, setting ? videosettings[setting as keyof typeof videosettings] : videosettings);
 const message = (menu: HTMLElement, e: MessageEvent) => {
