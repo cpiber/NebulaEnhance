@@ -161,9 +161,10 @@ const tests = (args) =>
             input: e,
             output: {
                 dir: path.dirname(d),
-                format: 'iife',
+                format: 'cjs',
+                globals: 'fetch'
             },
-            external: false,
+            external: [ 'node-fetch', 'jsdom' ],
             context: "window",
             plugins: [
                 typescript({

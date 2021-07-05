@@ -6,7 +6,7 @@ export type creator = {
     channel: string,
     uploads?: string,
 };
-type video = {
+export type video = {
     title: string,
     videoId: string,
 };
@@ -25,13 +25,7 @@ export const loadCreators = () =>
         .then(loadYoutube);
 const loadYoutube = (creators: creator[]) => creators.map(c => ({ ...c, uploads: 'UU' + c.channel.substr(2) }));
 
-const vidcache: { [key: string]: ytvideo } = {};
-export const creatorHasVideo = (playlist: string, title: string, num: number): Promise<ytvideo> => {
-    if (!playlist || !title)
-        return Promise.reject(`Playlist or title empty: ${playlist}; ${title}`);
-    title = title.toLowerCase().trim().replace(/\p{Pd}/g, '-');
-    if (title in vidcache)
-        return Promise.resolve(vidcache[title]);
+export const loadVideos = (playlist: string, title: string, num: number) => {
     let n = 0;
     const load = (page: string = null, plist: video[] = []): Promise<string | video[]> => {
         const url = new URL('https://youtube.googleapis.com/youtube/v3/playlistItems');
@@ -56,10 +50,8 @@ export const creatorHasVideo = (playlist: string, title: string, num: number): P
             })
             .then(res => res.json())
             .then((res: YouTube.PlaylistItemsReply<YouTube.PlaylistItemSnippet>) => {
-                if (!res || !res.pageInfo || !res.items || !res.items.length) {
-                    console.log(res);
+                if (!res || !res.pageInfo || !res.items || !res.items.length)
                     throw new Error("Invalid API response");
-                }
                 n += res.items.length;
                 const v = res.items.find(e => e.snippet.title.toLowerCase().trim().replace(/\p{Pd}/g, '-') === title);
                 if (v) return v.snippet.resourceId.videoId; // found the video
@@ -70,7 +62,17 @@ export const creatorHasVideo = (playlist: string, title: string, num: number): P
                 return nlist;
             });
     };
-    return load().then(vids => toVid(vids, title)).catch(err => {
+    return load();
+};
+
+const vidcache: { [key: string]: ytvideo } = {};
+export const creatorHasVideo = (playlist: string, title: string, num: number): Promise<ytvideo> => {
+    if (!playlist || !title)
+        return Promise.reject(`Playlist or title empty: ${playlist}; ${title}`);
+    title = title.toLowerCase().trim().replace(/\p{Pd}/g, '-');
+    if (title in vidcache)
+        return Promise.resolve(vidcache[title]);
+    return loadVideos(playlist, title, num).then(vids => toVid(vids, title)).catch(err => {
         console.error(err);
         return Promise.reject(err);
     });
@@ -82,11 +84,11 @@ const toVid = (vids: string | video[], title: string) => {
     if (!vids.length)
         throw new Error("No videos");
     // lowercase, remove accents, split at spaces and sentence marks, remove common words, replace [0-12] with written words
-    const exclude = ['the', 'is', 'a', 'and', 'or', 'as', 'of'];
+    const exclude = ['the', 'is', 'a', 'and', 'or', 'as', 'of', 'be'];
     const numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
     const split = (s: string) =>
         s.toLowerCase().normalize("NFD").replace(/["'\(\)\[\]\{\}\u0300-\u036f]/g, '').split(/([\s\-_.,?!:;|]|\p{Pd})+/)
-            .filter(t => t && exclude.indexOf(t) === -1).map(v => numbers[+v] || v);
+            .filter(t => t.trim() && exclude.indexOf(t) === -1).map(v => numbers[+v] || v);
     const splitV = (v: video) => split(v.title);
     // approximate
     // IFIDF - Term frequency, Inverse Document Frequency
@@ -120,3 +122,4 @@ const toVid = (vids: string | video[], title: string) => {
         throw new Error(`Not enough confidence (${best.prob}, ${sim.length > 1 ? sim[1].prob : 0})`);
     return vidcache[title] = { confidence: best.prob, video: vids[best.vid].videoId };
 };
+export const matchVideoConfidence = toVid;
