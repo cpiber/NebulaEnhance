@@ -33,7 +33,9 @@ jobs:
         version: 6.0.2
         run_install: true
     
-    - run: npm run build # runs test
+    # for headfull chrome
+    - run: sudo apt-get install xvfb
+    - run: xvfb-run --auto-servernum npm run build # runs test
       env:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
         NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
