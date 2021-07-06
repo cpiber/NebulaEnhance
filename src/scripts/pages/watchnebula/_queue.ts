@@ -81,7 +81,7 @@ export const clearQueue = () => {
     popupel.classList.add('hidden');
 };
 export const gotoQueue = (index: number, go = true) => {
-    if (index < -1 || index >= queue.length) return;
+    if (index < 0 || index >= queue.length) return;
     queueel?.children[queuepos]?.classList.remove('playing');
     queuepos = index;
     if (go) {
