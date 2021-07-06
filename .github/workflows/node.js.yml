@@ -34,3 +34,7 @@ jobs:
         run_install: true
     
     - run: npm run build # runs test
+      env:
+        YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
+        NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
+        NEBULA_USER: ${{ secrets.NEBULA_USER }}
