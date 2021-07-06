@@ -10,7 +10,8 @@
             "./src/types",
             "node_modules/@types"
         ],
-        "lib": ["esnext", "dom"],
+        "target": "ES5",
+        "lib": ["esnext", "es5", "dom"]
     },
     "include": ["src/**/*", "tests/**/*"],
     "exclude": ["node_modules"]

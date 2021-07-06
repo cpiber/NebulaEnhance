@@ -37,6 +37,19 @@ const question = q => new Promise(resolve => readline.question(q, answer => reso
 /**
  * JS BUILD
  */
+const jsplugins = () => [
+    string({
+        include: "**/*.svg",
+    }),
+    nodeResolve({
+        preferBuiltins: false,
+    }),
+    commonjs(),
+    replace({
+        '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
+        preventAssignment: true,
+    })
+];
 const js = (args) =>
     glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.ts' ] }).map(e => {
         const d = e.replace(/(^|\/)src\//, '$1extension-dist/');
@@ -61,17 +74,7 @@ const js = (args) =>
                 typescript({
                     tsconfig: process.env.BUILD ? "./tsconfig.prod.json" : "./tsconfig.json",
                 }),
-                string({
-                    include: "**/*.svg",
-                }),
-                nodeResolve({
-                    preferBuiltins: false,
-                }),
-                commonjs(),
-                replace({
-                    '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
-                    preventAssignment: true,
-                }),
+                ...jsplugins(),
                 process.env.BUILD && terser({ format: { comments: false } })
             ],
             watch: w(args.watch)
@@ -168,15 +171,10 @@ const tests = (args) =>
             context: "window",
             plugins: [
                 typescript({
-                    tsconfig: "./tsconfig.json"
+                    tsconfig: "./tsconfig.json",
+                    target: "ESNext"
                 }),
-                string({
-                    include: "**/*.svg",
-                }),
-                nodeResolve({
-                    preferBuiltins: false,
-                }),
-                commonjs(),
+                ...jsplugins(),
                 replace({
                     '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
                     preventAssignment: true,
@@ -190,6 +188,9 @@ const tests = (args) =>
 
 /**
  * HELPERS
+ */
+/**
+ * @returns {import('rollup').Plugin}
  */
 function remove() {
     return {
@@ -205,6 +206,9 @@ function remove() {
     };
 }
 
+/**
+ * @returns {import('rollup').Plugin}
+ */
 function writeManifest() {
     return {
         generateBundle(_, bundle, isWrite) {

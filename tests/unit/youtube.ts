@@ -1,13 +1,7 @@
 import fetch from 'node-fetch';
-import { JSDOM } from 'jsdom';
 import { creatorHasVideo, loadCreators, loadVideos, matchVideoConfidence, video } from '../../src/scripts/_youtube';
 
 global.fetch = fetch as unknown as typeof global.fetch;
-global.DOMParser = class {
-  parseFromString(string: string, type: DOMParserSupportedType): Document {
-    return new JSDOM(string, { contentType: type }).window._document;
-  }
-};
 
 test('loading creators works', async () => {
   const creators = await loadCreators();
