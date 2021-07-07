@@ -39,5 +39,5 @@ export const sendMessage = <T>(name: string, data?: any, expectAnswer = true) =>
 };
 
 const vjs = "vjs-button vjs-control theo-controlbar-button";
-export const SpeedClasses = `vjs-icon-circle-inner-circle ${vjs}`;
-export const TheatreClasses = `vjs-icon-square ${vjs}`;
+export const SpeedClasses = `vjs-icon-circle-inner-circle ${vjs} enhancer-speed`;
+export const TheatreClasses = `vjs-icon-square ${vjs} enhancer-theatre`;
