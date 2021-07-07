@@ -1,5 +1,9 @@
 [English](README.md) / [Deutsch](README.DE.md)
 
+[![Build + Test](https://github.com/cpiber/NebulaEnhance/actions/workflows/node.js.yml/badge.svg)](https://github.com/cpiber/NebulaEnhance/actions/workflows/node.js.yml)
+[![Dependencies](https://status.david-dm.org/gh/cpiber/NebulaEnhance.svg)](https://david-dm.org/cpiber/NebulaEnhance)
+[![DevDependencies](https://status.david-dm.org/gh/cpiber/NebulaEnhance.svg?type=dev)](https://david-dm.org/cpiber/NebulaEnhance?type=dev)
+
 
 # Enhancer for Nebula
 
@@ -56,10 +60,4 @@ Speed dial:
 
 # Entwickeln
 
-Stellen Sie bitte sicher, dass Sie [NodeJS](https://nodejs.org/) und dessen package manager [npm](https://www.npmjs.com/) installiert haben.
-
-- [pnpm](https://github.com/pnpm/pnpm) installieren: `npm install -g pnpm`
-- Abhängigkeiten installieren: `pnpm install`
-- Entwickeln: In Firefox `pnpm run start:firefox` / In Chromium `pnpm run start:chromium`
-  - Alternativ können Sie auch `pnpm run start` und `pnpm run ext:firefox` / `pnpm run ext:chromium` in separaten Terminals ausführen, um den Build Prozess und das Neuladen der Erweiterung zu trennen
-- Builden: `pnpm run build`
+Siehe [DEVELOPING.md](DEVELOPING.md) (nur in Englisch)

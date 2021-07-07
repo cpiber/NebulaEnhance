@@ -121,7 +121,7 @@ const css = (args) =>
 const other = (args) => {
     if (!args.silent)
         console.info(`\u001b[36m\[Rollup build\]\u001b[0m Copying files`);
-    (args.watch ? cpx.watch : cpx.copySync)('src/**/*.!(d.ts|ts|xcf|@(sa|sc|c)ss)', 'extension-dist');
+    (args.watch ? cpx.watch : cpx.copySync)('src/**/*.!(d.ts|ts|js|xcf|@(sa|sc|c)ss)', 'extension-dist');
 
     if (!args.silent)
         console.info(`\u001b[36m\[Rollup build\]\u001b[0m Generating manifest`);
@@ -129,7 +129,7 @@ const other = (args) => {
      * @type {import('rollup').RollupOptions}
      */
     const conf = {
-        input: './manifest.js',
+        input: './src/manifest.js',
         output: {
             dir: 'extension-dist',
             format: 'cjs',

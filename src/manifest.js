@@ -54,7 +54,7 @@ export default {
 	},
 	"browser_specific_settings": {
 	  "gecko": {
-		"id": "nebula-enhancer@piber.at"
+			"id": "nebula-enhancer@piber.at"
 	  }
 	},
 	"default_locale": "en"
