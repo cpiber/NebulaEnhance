@@ -22,6 +22,7 @@ beforeAll(async () => {
     password: __NEBULA_PASS__,
   });
   await expect(page).toClick(`${formSelector} button`, { text: 'Sign In' });
+  await page.waitForSelector('[href="/account"]'); // wait until logged in
   await page.goto('https://nebula.app/videos');
   await page.waitForSelector(videoSelector);
   somevideo = await page.evaluate(sel => document.querySelector<HTMLAnchorElement>(sel).href, videoSelector);

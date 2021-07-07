@@ -1,4 +1,3 @@
-import { encode } from 'querystring';
 import { dot, norm, ytvideo } from './_shared';
 
 export type creator = {
@@ -29,13 +28,12 @@ export const loadVideos = (playlist: string, title: string, num: number) => {
     let n = 0;
     const load = (page: string = null, plist: video[] = []): Promise<string | video[]> => {
         const url = new URL('https://youtube.googleapis.com/youtube/v3/playlistItems');
-        url.search = "?" + encode({
-            part: 'snippet',
-            playlistId: playlist,
-            key: __YT_API_KEY__,
-            maxResults: 50,
-            pageToken: page,
-        });
+        url.searchParams.set('part', 'snippet');
+        url.searchParams.set('playlistId', playlist);
+        url.searchParams.set('key', __YT_API_KEY__);
+        url.searchParams.set('maxResults', `${Math.min(num - n, 50)}`);
+        if (page)
+            url.searchParams.set('pageToken', page);
         return fetch(url.toString(),
             {
                 "credentials": "omit",
