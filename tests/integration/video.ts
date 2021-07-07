@@ -3,12 +3,17 @@ import type { ElementHandle, Frame, Browser } from '@types/puppeteer';
 
 const formSelector = '#NebulaApp > :nth-child(2) > :nth-child(2) form';
 const videoSelector = 'a[href^="/videos/"]';
-const optionsURL = 'chrome-extension://gdlammkklfkabegmbcakepnlfhcbckam/options/index.html';
+let optionsURL: string;
+const b = (browser as never as Browser);
+declare const chrome: typeof browser;
 
 jest.setTimeout(10000);
 
 let somevideo: string;
 beforeAll(async () => {
+  await page.goto('chrome://settings');
+  optionsURL = await page.evaluate(async () => (await chrome.management.getAll())[0].optionsUrl);
+
   await page.setViewport({ width: 1100, height: 600 });
   await page.goto('https://nebula.app/');
   await expect(page).toClick('button', { text: 'Sign In' });
@@ -107,7 +112,7 @@ describe('video player', () => {
 });
 
 const setSettings = async (set: { [key: string]: string | boolean}) => {
-  const pg = await (browser as never as Browser).newPage();
+  const pg = await b.newPage();
   await pg.goto(optionsURL);
   const form = await expect(pg).toMatchElement('form');
   for (const key in set) {
