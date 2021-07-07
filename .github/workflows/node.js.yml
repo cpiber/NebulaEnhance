@@ -42,3 +42,10 @@ jobs:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
         NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
         NEBULA_USER: ${{ secrets.NEBULA_USER }}
+    
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: enhancer_for_nebula
+        path: |
+          web-ext-artifacts/enhancer_for_nebula-[0-9.]+\.zip
