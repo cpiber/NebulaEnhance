@@ -39,9 +39,9 @@ jobs:
         NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
         NEBULA_USER: ${{ secrets.NEBULA_USER }}
     
-    - name: Archive production artifacts
+    - name: Archive extension
       uses: actions/upload-artifact@v2
       with:
         name: enhancer_for_nebula
         path: |
-          web-ext-artifacts/enhancer_for_nebula-*.zip
+          extension-dist/

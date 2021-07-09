@@ -109,6 +109,7 @@ export const gotoQueue = (index: number, go = true) => {
         yt.previousElementSibling.remove();
         yt.remove();
     }
+    document.querySelector('.enhancer-yt-err')?.remove();
 };
 export const gotoNextInQueue = () => gotoQueue(queuepos + 1);
 export const gotoPrevInQueue = () => gotoQueue(queuepos - 1);

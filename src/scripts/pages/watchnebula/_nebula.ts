@@ -169,7 +169,7 @@ const loadComments = async () => {
     const creator = h2[1].textContent;
     if (!title || !creator) return;
     const e = h2[0].nextElementSibling;
-    if (!e || e.querySelector('.enhancer-yt'))
+    if (!e || e.querySelector('.enhancer-yt, .enhancer-yt-err'))
         return; // already requested
     console.debug(`Requesting '${title}' by ${creator}`);
 
@@ -185,6 +185,10 @@ const loadComments = async () => {
         e.append(e.querySelector('span[class]')?.cloneNode(true), v); // dot
     } catch (err) {
         console.error(err);
+        const er = document.createElement('span');
+        er.classList.add('enhancer-yt-err');
+        er.textContent = err;
+        e.append(er);
     }
     console.debug('Loading comments done.');
 };

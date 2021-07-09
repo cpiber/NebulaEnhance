@@ -1,6 +1,4 @@
-const videoSelector = 'a[href^="/videos/"]';
-const qbuttSelector = '.enhancer-queueButton';
-const queueSelector = '.enhancer-queue';
+import { addToQueue, expectQueueLength, qbuttSelector, queueSelector, titles, videoSelector } from "./_shared";
 
 describe('videos page', () => {
   jest.setTimeout(10000);
@@ -9,15 +7,6 @@ describe('videos page', () => {
     await page.goto('https://nebula.app/videos');
     await page.waitForSelector(videoSelector);
   });
-
-  const addToQueue = async (num: number, offset = 0) => {
-    for (let index = 0; index < num; index++) {
-      await page.hover(`${videoSelector}:nth-child(${index+1+offset}) img`);
-      await page.click(`${videoSelector}:nth-child(${index+1+offset}) ${qbuttSelector}`);
-    }
-  };
-  const expectQueueLength = () => expect(page.evaluate(sel => document.querySelector(`${sel} .elements`).children.length, queueSelector)).resolves;
-  const titles = () => page.evaluate(sel => Array.from(document.querySelectorAll(`${sel} .element .title`)).map(n => n.textContent), queueSelector);
 
   test('hover video adds queue button', async () => {
     const vid = await page.waitForSelector(videoSelector);

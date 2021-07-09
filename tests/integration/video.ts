@@ -1,8 +1,18 @@
 // @ts-ignore
-import type { ElementHandle, Frame, Browser } from '@types/puppeteer';
+import type { Browser, ElementHandle, Frame } from '@types/puppeteer';
+import fetch from 'node-fetch';
+import { JSDOM } from 'jsdom';
+import { loadCreators } from '../../src/scripts/_youtube';
+import { addToQueue, queueSelector, videoSelector } from './_shared';
+
+global.fetch = fetch as unknown as typeof global.fetch;
+global.DOMParser = class {
+  parseFromString(string: string, type: DOMParserSupportedType): Document {
+    return new JSDOM(string, { contentType: type }).window.document;
+  };
+};
 
 const formSelector = '#NebulaApp > :nth-child(2) > :nth-child(2) form';
-const videoSelector = 'a[href^="/videos/"]';
 let optionsURL: string;
 const b = (browser as never as Browser);
 declare const chrome: typeof browser;
@@ -39,12 +49,12 @@ beforeAll(async () => {
     customScript: "document.body.classList.add('loaded-from-customScript')",
     customScriptPage: "document.body.classList.add('loaded-from-customScriptPage')",
   });
-});
+}, 15000);
 
 let iframe: ElementHandle<HTMLIFrameElement>;
 let frame: Frame;
 const waitForFrame = async (url = somevideo) => {
-  await page.goto(url);
+  if (url) await page.goto(url);
   iframe = await page.waitForSelector('iframe');
   frame = await iframe.contentFrame();
 };
@@ -56,7 +66,7 @@ describe('video page', () => {
 
   test('script is run', async () => {
     await page.goto('https://nebula.app/');
-    await page.waitForSelector('.loaded-from-customScriptPage');
+    await expect(page).toMatchElement('.loaded-from-customScriptPage', { timeout: 0 })
   });
 });
 
@@ -64,8 +74,8 @@ describe('video player', () => {
   beforeEach(async () => await waitForFrame());
 
   test('controls present', async () => {
-    await frame.waitForSelector('button.enhancer-speed');
-    await frame.waitForSelector('button.enhancer-theatre');
+    await expect(frame).toMatchElement('button.enhancer-speed', { timeout: 0 });
+    await expect(frame).toMatchElement('button.enhancer-theatre', { timeout: 0 });
   });
 
   test('controls use settings', async () => {
@@ -78,7 +88,7 @@ describe('video player', () => {
   });
 
   test('script is run', async () => {
-    await frame.waitForSelector('.loaded-from-customScript');
+    await expect(frame).toMatchElement('.loaded-from-customScript', { timeout: 0 });
   });
 
   test('theatre mode sets size', async () => {
@@ -90,6 +100,7 @@ describe('video player', () => {
   });
 
   test('theatre mode can be enabled by default', async () => {
+    // note that if this test fails, it could also influence other tests (that expect theatre mode to be off)
     await setSettings({
       theatre: true,
     });
@@ -109,6 +120,56 @@ describe('video player', () => {
     await frame.waitForSelector('button.enhancer-theatre');
     await page.waitForFunction((el: HTMLElement) => !el.style.height, { timeout: 1000 }, wrapper2);
     await expect(wrapper2.evaluate((el: HTMLElement) => el.style.height)).resolves.toEqual('');
+  });
+});
+
+describe('video pages 2', () => {
+  test('preferences are retained', async () => {
+    await page.goto('https://nebula.app/videos');
+    await page.waitForSelector(videoSelector);
+    await addToQueue(2);
+
+    await page.click(`${queueSelector} .element`);
+    await waitForFrame(null);
+    await frame.waitForSelector('button.enhancer-theatre');
+    await frame.$eval('button.enhancer-theatre', (el: HTMLElement) => el.click());
+    await frame.evaluate(() => {
+      window.theoplayer.playbackRate = 2;
+      window.theoplayer.volume = 0.8;
+    });
+
+    await page.click(`${queueSelector} .element:nth-child(2)`);
+    await waitForFrame(null);
+    await frame.waitForSelector('button.enhancer-theatre');
+    const wrapper = await page.waitForSelector('[id^="zype_"]');
+    await page.waitForFunction((el: HTMLElement) => !!el.style.height, { timeout: 1000 }, wrapper);
+    await expect(wrapper.evaluate((el: HTMLElement) => el.style.height)).resolves.not.toEqual('');
+    await expect(frame.evaluate(() => window.theoplayer.playbackRate)).resolves.toBe(2);
+    await expect(frame.evaluate(() => window.theoplayer.volume)).resolves.toBe(0.8);
+  });
+
+  test('youtube link is loaded', async () => {
+    await setSettings({
+      youtube: true,
+    });
+    const creators = await loadCreators();
+
+    await page.goto('https://nebula.app/videos');
+    await page.waitForSelector(videoSelector);
+
+    for (let i = 0;; i++) {
+      const c = await page.$eval(`${videoSelector}:nth-child(${i+1}) > :last-child > :last-child > :first-child`, el => el.textContent);
+      if (creators.findIndex(creator => creator.name === c)) {
+        // console.debug(`Found channel ${c}`);
+        await page.click(`${videoSelector}:nth-child(${i+1})`);
+        break;
+      }
+    }
+    await expect(page).toMatchElement('.enhancer-yt, .enhancer-yt-err', { timeout: 0 });
+
+    await setSettings({
+      youtube: true,
+    });
   });
 });
 
