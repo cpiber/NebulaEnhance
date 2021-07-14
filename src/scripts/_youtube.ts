@@ -116,7 +116,7 @@ const toVid = (vids: string | video[], title: string) => {
         .sort((a, b) => b.prob - a.prob);
     const best = sim[0];
     console.debug(best.prob, best.vid, vids[best.vid]);
-    if (best.prob < 0.15 || sim.length > 1 && best.prob - sim[1].prob < 0.05) // arbitrary threshold and distance
+    if (best.prob < 0.3 || sim.length > 1 && best.prob - sim[1].prob < 0.05) // arbitrary threshold and distance
         throw new Error(`Not enough confidence (${best.prob}, ${sim.length > 1 ? sim[1].prob : 0})`);
     return vidcache[title] = { confidence: best.prob, video: vids[best.vid].videoId };
 };

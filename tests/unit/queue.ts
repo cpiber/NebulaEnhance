@@ -1,4 +1,4 @@
-import { Queue, Store } from '../../src/scripts/pages/watchnebula/_VideoQueue';
+import { Queue, Store } from '../../src/scripts/pages/nebula/_VideoQueue';
 import { callback, DOMArray } from '../../src/scripts/_DOMArray';
 
 class TestArray extends DOMArray<string> {

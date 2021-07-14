@@ -40,7 +40,7 @@ export const isEmptyQueue = () => queue.length === 0;
 let enqueueAnim = false;
 export const enqueue = (name: string, pos?: number) => {
     if (!store[name])
-        throw "Not in store!";
+        throw new Error("Not in store!");
     if (pos !== undefined)
         queue.splice2(pos, 0, [name]);
     else if (queue[queue.length - 1] !== name)

@@ -1,4 +1,4 @@
-import { videosettings } from "../../_shared";
+import { isMobile, videosettings } from "../../_shared";
 import { sendEvent, sendMessage } from "./_sharedPage";
 import SpeedClick from "./_speedclick";
 import SpeedDial from "./_speeddial";
@@ -55,11 +55,11 @@ const init = async () => {
             // if already set quality on page, use that
             // else if only one target quality, extract that
             // default to target quality array
-            const quality = currentQuality ? currentQuality : targetQualities.length === 1 ? targetQualities[0] : targetQualities;
+            const quality = currentQuality ? currentQuality : targetQualities;
             const qualities = typeof quality === "number"
-                ? t.videoTracks[0].qualities.find(q => q.height === quality) || null
+                ? [t.videoTracks[0].qualities.find(q => q.height === quality)] || null
                 : quality.map(h => t.videoTracks[0].qualities.find(q => q.height === h)).filter(q => q !== undefined);
-            t.videoTracks[0].targetQuality = qualities;
+            t.videoTracks[0].targetQuality = qualities?.length === 1 ? qualities[0] : qualities;
             t.element.focus();
         } catch (err) {
             console.error(err);
@@ -89,27 +89,27 @@ const init = async () => {
     // listen to changes and save
     t.addEventListener('ratechange', () => setSetting('playbackRate', t.playbackRate));
     t.addEventListener('volumechange', () => setSetting('volume', t.volume));
+
+    // add button that toggles theatre mode
+    T.videojs.registerComponent("TheatreButton", TheatreButton());
+    t.ui.getChild("controlBar").addChild("TheatreButton", {});
     
-    const android = await sendEvent<boolean>('isAndroid');
-    console.debug(android, android ? 'Android' : 'Other');
-    if (!android) {
-        // add button that toggles theatre mode
-        T.videojs.registerComponent("TheatreButton", TheatreButton());
-        t.ui.getChild("controlBar").addChild("TheatreButton", {});
-        
+    const mobile = isMobile();
+    console.debug(mobile, mobile ? 'Android' : 'Other');
+    if (!mobile) {
         // add SpeedDial to allow changing speed with mouse wheel
         T.videojs.registerComponent("SpeedDial", SpeedDial(playbackRate, playbackChange));
         t.ui.getChild("controlBar").addChild("SpeedDial", {});
-        // custom keyboard shortcuts
-        document.addEventListener('keydown', getPressedKey.bind(null, playbackChange));
-        // give focus to player when no controls are open (allows for better keyboard navigation)
-        t.element.parentElement.addEventListener('click', () =>
-            t.element.parentElement.querySelectorAll('.vjs-control-bar [aria-expanded="true"]').length === 0 && t.element.focus());
     } else {
         // add button that prompts for new speed
         T.videojs.registerComponent("SpeedClick", SpeedClick());
         t.ui.getChild("controlBar").addChild("SpeedClick", {});
     }
+    // custom keyboard shortcuts
+    document.addEventListener('keydown', getPressedKey.bind(null, playbackChange));
+    // give focus to player when no controls are open (allows for better keyboard navigation)
+    t.element.parentElement.addEventListener('click', () =>
+        t.element.parentElement.querySelectorAll('.vjs-control-bar [aria-expanded="true"]').length === 0 && t.element.focus());
 };
 
 const isTheoPlayerFocused = () => {

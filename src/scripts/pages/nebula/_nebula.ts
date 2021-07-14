@@ -1,4 +1,4 @@
-import { videosettings, ytvideo } from "../../_shared";
+import { isMobile, videosettings, ytvideo } from "../../_shared";
 import { clone, getBrowserInstance, injectScript } from "../../_sharedBrowser";
 import iconWatchLater from "./../../../icons/watchlater.svg";
 import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue, videoUrlMatch } from "./_queue";
@@ -24,19 +24,19 @@ export const nebula = async () => {
     window.addEventListener('focus', () => focusIframe());
     focusIframe();
 
-    const isAndroid: boolean = await getBrowserInstance().runtime.sendMessage("isAndroid");
+    const mobile = isMobile();
     const { youtube, theatre, customScriptPage } = await getFromStorage({ youtube: false, theatre: false, customScriptPage: '' });
     console.debug('Youtube:', youtube, 'Theatre Mode:', theatre, 'Video page?', isVideoPage());
-    theatreMode = theatre;
+    theatreMode = theatre && !mobile;
     
     const r = refreshTheatreMode.bind(null, menu);
     const cb = mutation(() => {
         // substitute hover listener
-        if (isAndroid)
+        if (mobile)
             Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
         if (youtube)
             maybeLoadComments();
-        domRefreshTheatreMode(isAndroid, menu);
+        domRefreshTheatreMode(menu);
         const f = document.querySelector('iframe');
         if (!f) return;
         f.removeEventListener('fullscreenchange', r);
@@ -239,9 +239,7 @@ const refreshTheatreMode = (menu: HTMLElement) => {
 };
 const domRefreshTheatreMode = (() => {
     let hadIFrame = false;
-    return (isAndroid: boolean, menu: HTMLElement) => {
-        if (isAndroid)
-            return;
+    return (menu: HTMLElement) => {
         const hasIFrame = document.querySelector('iframe');
         if (!hadIFrame && hasIFrame)
             refreshTheatreMode(menu);

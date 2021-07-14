@@ -22,8 +22,6 @@ getBrowserInstance().browserAction.onClicked.addListener(async () => {
 getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: string]: any }, sender, sendResponse) => {
     if (typeof message === "string") message = { type: message };
     switch (message.type) {
-        case "isAndroid":
-            return isAndroid();
         case "loadCreators":
             return loadCreators();
         case "getYoutubeId":
