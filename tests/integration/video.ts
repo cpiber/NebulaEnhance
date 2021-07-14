@@ -1,16 +1,6 @@
 // @ts-ignore
 import type { Browser, ElementHandle, Frame } from '@types/puppeteer';
-import fetch from 'node-fetch';
-import { JSDOM } from 'jsdom';
-import { loadCreators } from '../../src/scripts/_youtube';
 import { addToQueue, queueSelector, videoSelector } from './_shared';
-
-global.fetch = fetch as unknown as typeof global.fetch;
-global.DOMParser = class {
-  parseFromString(string: string, type: DOMParserSupportedType): Document {
-    return new JSDOM(string, { contentType: type }).window.document;
-  };
-};
 
 const formSelector = '#NebulaApp > :nth-child(2) > :nth-child(2) form';
 let optionsURL: string;
@@ -71,7 +61,7 @@ describe('video page', () => {
 });
 
 describe('video player', () => {
-  beforeEach(async () => await waitForFrame());
+  beforeEach(() => waitForFrame());
 
   test('controls present', async () => {
     await expect(frame).toMatchElement('button.enhancer-speed', { timeout: 0 });
@@ -152,19 +142,11 @@ describe('video pages 2', () => {
     await setSettings({
       youtube: true,
     });
-    const creators = await loadCreators();
 
     await page.goto('https://nebula.app/videos');
     await page.waitForSelector(videoSelector);
 
-    for (let i = 0;; i++) {
-      const c = await page.$eval(`${videoSelector}:nth-child(${i+1}) > :last-child > :last-child > :first-child`, el => el.textContent);
-      if (creators.findIndex(creator => creator.name === c)) {
-        // console.debug(`Found channel ${c}`);
-        await page.click(`${videoSelector}:nth-child(${i+1})`);
-        break;
-      }
-    }
+    await page.click(videoSelector);
     await expect(page).toMatchElement('.enhancer-yt, .enhancer-yt-err', { timeout: 0 });
 
     await setSettings({

@@ -42,7 +42,7 @@ describe('loading youtube videos', () => {
     expect(match1.confidence).toBeGreaterThan(0.25);
     expect(match1.video).toBe("good");
     const match2 = matchVideoConfidence([
-      { title: 'a title that can be matched', videoId: "good" },
+      { title: 'a test title that can be matched well', videoId: "good" },
       { title: 'this one shouldn\'t be matched actually', videoId: "bad" },
     ], 'some test title that can hopefully be matched quite well');
     expect(match2.confidence).toBeGreaterThan(0.25);

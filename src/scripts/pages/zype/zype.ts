@@ -20,14 +20,14 @@ const defaults = {
     targetQualities: [] as number[],
     subtitles: ""
 };
-const init = async () => {
-    const t = window.theoplayer, T = window.THEOplayer;
+
+const playerSettings = async () => {
     const {
         playbackRate: defaultPlaybackRate,
         playbackChange,
         volume: defaultVolume,
         autoplay,
-        targetQualities,
+        targetQualities: defaultQuality,
         subtitles: defaultSubtitles
     } = await getFromStorage(defaults);
     const {
@@ -38,10 +38,17 @@ const init = async () => {
     } = await getSetting();
     const playbackRate = currentPlaybackRate || defaultPlaybackRate || 1;
     const volume = currentVolume || defaultVolume || 1;
-    const subtitles = currentSubtitles !== null ? currentSubtitles : defaultSubtitles;
-    console.debug(playbackRate, playbackChange, volume, targetQualities,
-        '\tcurrent:', currentPlaybackRate, currentVolume, currentQuality, currentSubtitles,
-        '\tdefault:', defaultPlaybackRate, defaultVolume, defaultSubtitles);
+    const subtitles = (currentSubtitles !== null ? currentSubtitles : defaultSubtitles).trim();
+    const quality = currentQuality ? currentQuality : defaultQuality;
+    console.debug(playbackRate, playbackChange, volume, quality,
+        "\tcurrent:", currentPlaybackRate, currentVolume, currentQuality, currentSubtitles,
+        "\tdefault:", defaultPlaybackRate, defaultVolume, defaultQuality, defaultSubtitles);
+    return { autoplay, playbackRate, playbackChange, volume, subtitles, quality };
+}
+
+const init = async () => {
+    const t = window.theoplayer, T = window.THEOplayer;
+    const { autoplay, playbackRate, playbackChange, volume, subtitles, quality } = await playerSettings();
 
     // set autoplay (auto-updates)
     t.autoplay = autoplay;
@@ -49,42 +56,35 @@ const init = async () => {
     t.playbackRate = playbackRate;
     // set volume (auto-updates)
     t.volume = volume;
-    // set qualities when starting player
-    const setQualities = () => {
+    // set qualities and subtitles when starting player
+    const set = () => {
+        t.removeEventListener('playing', set); // only once
         try {
             // if already set quality on page, use that
             // else if only one target quality, extract that
             // default to target quality array
-            const quality = currentQuality ? currentQuality : targetQualities;
             const qualities = typeof quality === "number"
-                ? [t.videoTracks[0].qualities.find(q => q.height === quality)] || null
+                ? [t.videoTracks[0].qualities.find(q => q.height === quality)]
                 : quality.map(h => t.videoTracks[0].qualities.find(q => q.height === h)).filter(q => q !== undefined);
             t.videoTracks[0].targetQuality = qualities?.length === 1 ? qualities[0] : qualities;
-            t.element.focus();
         } catch (err) {
             console.error(err);
         }
-        // listen for changes and save
-        t.videoTracks[0].addEventListener('activequalitychanged', () => setSetting('quality', t.videoTracks[0].activeQuality.height));
-        t.videoTracks[0].addEventListener('targetqualitychanged', () => setSetting('quality', t.videoTracks[0].activeQuality.height));
-        t.removeEventListener('playing', setQualities); // only once
-    };
-    const setSubtitles = () => {
-        if (subtitles !== "") {
-            try {
-                const track = t.textTracks.find(e => e.label === subtitles);
-                if (track) track.mode = 'showing';
-                t.element.focus();
-            } catch (err) {
-                console.error(err);
-            }
+        
+        try {
+            const track = subtitles !== "" ? t.textTracks.find(e => e.label === subtitles) : null;
+            if (track) track.mode = 'showing';
+        } catch (err) {
+            console.error(err);
         }
+        t.element.focus();
         // listen for changes and save
+        const updateQ = () => setSetting('quality', t.videoTracks[0].activeQuality.height);
+        t.videoTracks[0].addEventListener('activequalitychanged', updateQ);
+        t.videoTracks[0].addEventListener('targetqualitychanged', updateQ);
         t.textTracks.addEventListener('change', () => setSetting('subtitles', t.textTracks.find(e => e.mode === 'showing')?.label || ""));
-        t.removeEventListener('playing', setSubtitles); // only once
     };
-    t.addEventListener('playing', setQualities);
-    t.addEventListener('playing', setSubtitles);
+    t.addEventListener('playing', set);
 
     // listen to changes and save
     t.addEventListener('ratechange', () => setSetting('playbackRate', t.playbackRate));
@@ -96,15 +96,11 @@ const init = async () => {
     
     const mobile = isMobile();
     console.debug(mobile, mobile ? 'Android' : 'Other');
-    if (!mobile) {
-        // add SpeedDial to allow changing speed with mouse wheel
-        T.videojs.registerComponent("SpeedDial", SpeedDial(playbackRate, playbackChange));
-        t.ui.getChild("controlBar").addChild("SpeedDial", {});
-    } else {
-        // add button that prompts for new speed
-        T.videojs.registerComponent("SpeedClick", SpeedClick());
-        t.ui.getChild("controlBar").addChild("SpeedClick", {});
-    }
+    const name = !mobile ? "SpeedDial" : "SpeedClick";
+    const comp = !mobile ? SpeedDial(playbackRate, playbackChange) : SpeedClick();
+    T.videojs.registerComponent(name, comp);
+    t.ui.getChild("controlBar").addChild(name, {});
+
     // custom keyboard shortcuts
     document.addEventListener('keydown', getPressedKey.bind(null, playbackChange));
     // give focus to player when no controls are open (allows for better keyboard navigation)
@@ -127,27 +123,31 @@ const isTheoPlayerFocused = () => {
 const getPressedKey = (playbackChange: number, e: KeyboardEvent) => {
     if (e.altKey || e.ctrlKey || e.metaKey)
         return;
+    if (!isTheoPlayerFocused())
+        return;
     const pressedKey = e.key;
     const t = window.theoplayer;
-    let action: () => void = null;
     switch (pressedKey) {
         case 'Escape':
             window.theoplayer.element.focus(); // give focus back
             break;
         case ',':
-            action = () => t.currentTime -= 0.03; // "frame" back
+            t.currentTime -= 0.03; // "frame" back
             break;
         case '.':
-            action = () => t.currentTime += 0.03; // "frame" forward
+            t.currentTime += 0.03; // "frame" forward
             break;
         case 'j':
-            action = () => t.currentTime -= 10;
+            t.currentTime -= 10;
             break;
         case 'l':
-            action = () => t.currentTime += 10;
+            t.currentTime += 10;
             break;
         case 'k':
-            action = t.paused ? t.play : t.pause;
+            if (t.paused)
+                t.play();
+            else
+                t.pause();
             break;
         case '0': case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9':
@@ -165,12 +165,11 @@ const getPressedKey = (playbackChange: number, e: KeyboardEvent) => {
         case '>':
             t.playbackRate = Math.round((t.playbackRate + playbackChange) * 100) / 100;
             break;
+        default:
+            return;
     }
-    if (action && isTheoPlayerFocused()) {
-        action();
-        e.stopPropagation();
-        e.preventDefault();
-    }
+    e.stopPropagation();
+    e.preventDefault();
 };
 
 (() => {

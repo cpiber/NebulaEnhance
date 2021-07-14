@@ -15,11 +15,11 @@ import 'rollup';
 import postcss from 'rollup-plugin-postcss';
 import { string } from 'rollup-plugin-string';
 import { terser } from 'rollup-plugin-terser';
+import chalk from 'chalk';
 config();
 
-
 const w = watch => watch ? {
-        clearScreen: false,
+        clearScreen: !!process.stdout.isTTY,
     } : false;
 
 const readline = require('readline').createInterface({
@@ -55,7 +55,7 @@ const js = (args) =>
         const d = e.replace(/(^|\/)src\//, '$1extension-dist/');
         // Report destination paths on console
         if (!args.silent)
-            console.info(`\u001b[36m\[Rollup build\]\u001b[0m Converting Typescript from ${e} to javascript, exporting to: ${d.replace(/.ts$/, '.js')}`);
+            console.info(chalk`{blueBright [Rollup build]} Converting Typescript from ${e} to javascript, exporting to: ${d.replace(/.ts$/, '.js')}`);
         /**
          * @type {import('rollup').RollupOptions}
          */
@@ -89,9 +89,10 @@ const js = (args) =>
 const css = (args) =>
     glob.sync('src/**/*.@(sa|sc|c)ss', { ignore: [ 'src/**/_*.@(sa|sc|c)ss' ] }).map(e => {
         const d = e.replace(/(^|\/)src\//, '$1extension-dist/');
+        const ext = e.match(/.(sa|sc|c)ss$/)[1];
         // Report destination paths on console
         if (!args.silent)
-            console.info(`\u001b[36m\[Rollup build\]\u001b[0m Converting (sa|sc|c)ss from ${e} to css, exporting to: ${d.replace(/.(sa|sc|c)ss$/, '.css')}`);
+            console.info(chalk`{blueBright [Rollup build]} Converting ${ext}ss from ${e} to css, exporting to: ${d.replace(/.(sa|sc|c)ss$/, '.css')}`);
         /**
          * @type {import('rollup').RollupOptions}
          */
@@ -120,11 +121,11 @@ const css = (args) =>
  */
 const other = (args) => {
     if (!args.silent)
-        console.info(`\u001b[36m\[Rollup build\]\u001b[0m Copying files`);
+        console.info(chalk`{blueBright [Rollup build]} Copying files`);
     (args.watch ? cpx.watch : cpx.copySync)('src/**/*.!(d.ts|ts|js|xcf|@(sa|sc|c)ss)', 'extension-dist');
 
     if (!args.silent)
-        console.info(`\u001b[36m\[Rollup build\]\u001b[0m Generating manifest`);
+        console.info(chalk`{blueBright [Rollup build]} Generating manifest`);
     /**
      * @type {import('rollup').RollupOptions}
      */
@@ -140,7 +141,7 @@ const other = (args) => {
                 '__VERSION__': JSON.stringify(process.env.npm_package_version),
                 preventAssignment: true,
             }),
-            writeManifest()
+            writeJSON()
         ],
         watch: w(args.watch)
     };
@@ -153,10 +154,15 @@ const other = (args) => {
  */
 const tests = (args) =>
     glob.sync('tests/**/*.ts', { ignore: [ 'tests/**/_*.ts', 'tests/**/*.d.ts' ] }).map(e => {
+        if (e.endsWith('/video.ts') && (!process.env.NEBULA_PASS || !process.env.NEBULA_USER)) {
+            console.error(chalk.stderr`{redBright.bold Nebula Credentials empty.} Test video.ts won't work, skipping build`);
+            return undefined;
+        }
+
         const d = e.replace(/(^|\/)tests\//, '$1__tests__/');
         // Report destination paths on console
         if (!args.silent)
-            console.info(`\u001b[36m\[Rollup build\]\u001b[0m Converting Typescript from ${e} to javascript, exporting to: ${d.replace(/.ts$/, '.js')}`);
+            console.info(chalk`{blueBright [Rollup build]} Converting Typescript from ${e} to javascript, exporting to: ${d.replace(/.ts$/, '.js')}`);
         /**
          * @type {import('rollup').RollupOptions}
          */
@@ -185,7 +191,7 @@ const tests = (args) =>
             watch: w(args.watch)
         };
         return conf;
-    });
+    }).filter(e => e !== undefined);
 
 
 /**
@@ -211,18 +217,18 @@ function remove() {
 /**
  * @returns {import('rollup').Plugin}
  */
-function writeManifest() {
+function writeJSON(filename = 'manifest.js') {
     return {
         generateBundle(_, bundle, isWrite) {
             if (!isWrite)
                 return;
-            const manifest = nodeEval(bundle['manifest.js'].code);
+            const manifest = nodeEval(bundle[filename].code);
             this.emitFile({
                 type: 'asset',
-                fileName: 'manifest.json',
-                source: JSON.stringify(manifest)
+                fileName: filename.replace(/\.js$/, '.json'),
+                source: JSON.stringify(manifest, null, 2)
             });
-            delete bundle['manifest.js'];
+            delete bundle[filename];
         }
     };
 }
@@ -230,7 +236,7 @@ function writeManifest() {
 
 export default async args => {
     if (!process.env.YT_API_KEY) {
-        console.warn('\u001b[91m\u001b[1mYouTube API key empty!\u001b[0m')
+        console.warn(chalk.stderr.red.bold`YouTube API key empty!`);
         const input = await question('Proceed? (y/[n]) ');
         if (input.toLowerCase() != 'y')
             process.exit(-1);
@@ -238,8 +244,8 @@ export default async args => {
     readline.close();
 
     if (!args.silent)
-        console.info(`Build mode ${process.env.BUILD ? 'on' : 'off'}`);
-    
+        console.info(`Build mode ${process.env.BUILD ? 'on' : 'off'}.`);
+
     const type = args.type?.toLowerCase();
     delete args.type;
     switch (type) {
@@ -249,10 +255,10 @@ export default async args => {
             return css(args);
         case "other":
             return other(args);
-        default:
-        case "all":
-            return [...js(args), ...css(args), other(args)];
         case "tests":
             return tests(args);
+        case "all":
+        default:
+            return [...js(args), ...css(args), other(args)];
     }
 };

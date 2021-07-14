@@ -187,7 +187,7 @@ const loadComments = async () => {
         console.error(err);
         const er = document.createElement('span');
         er.classList.add('enhancer-yt-err');
-        er.textContent = err;
+        er.textContent = `${err}`;
         e.append(er);
     }
     console.debug('Loading comments done.');
@@ -195,7 +195,7 @@ const loadComments = async () => {
 
 const maybeGoTheatreMode = (menu: HTMLElement) => {
     if (isVideoPage())
-        setTimeout(() => goTheatreMode(menu), 0);
+        setTimeout(goTheatreMode, 0, menu);
 };
 const goTheatreMode = (menu: HTMLElement) => {
     const mh = menu.getBoundingClientRect().height;
