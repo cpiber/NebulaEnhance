@@ -1,6 +1,6 @@
 {
   "name": "nebulaenhance",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
   "scripts": {
     "pretest": "rollup -c --type tests",
