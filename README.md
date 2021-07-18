@@ -3,6 +3,7 @@
 [![Build + Test](https://github.com/cpiber/NebulaEnhance/actions/workflows/node.js.yml/badge.svg)](https://github.com/cpiber/NebulaEnhance/actions/workflows/node.js.yml)
 [![Dependencies](https://status.david-dm.org/gh/cpiber/NebulaEnhance.svg)](https://david-dm.org/cpiber/NebulaEnhance)
 [![DevDependencies](https://status.david-dm.org/gh/cpiber/NebulaEnhance.svg?type=dev)](https://david-dm.org/cpiber/NebulaEnhance?type=dev)
+[![codecov](https://codecov.io/gh/cpiber/NebulaEnhance/branch/master/graph/badge.svg?token=k09ukOWzD4)](https://codecov.io/gh/cpiber/NebulaEnhance)
 
 
 # Enhancer for Nebula
