@@ -9,11 +9,24 @@ class TestArray extends DOMArray<string> {
   }
 
   createNode(element: string): HTMLElement {
+    return TestArray.toElement(element);
+  }
+
+  static toElement(element: string) {
     const e = document.createElement('span');
     e.textContent = element;
     return e;
   }
+
+  static toElements(elements: string[]) {
+    return elements.map(this.toElement);
+  }
 }
+const mapAlternative = (element: string) => {
+  const e = document.createElement('span');
+  e.textContent = 'gg' + element;
+  return e;
+};
 
 describe('DOMArray', () => {
   let root: HTMLElement;
@@ -34,11 +47,7 @@ describe('DOMArray', () => {
     const items = ['1', '2', '3'];
     const arr = new TestArray(root, null, ...items);
     expect([...arr]).toEqual(items);
-    expect(Array.from(root.children)).toEqual(items.map(element => {
-      const e = document.createElement('span');
-      e.textContent = element;
-      return e;
-    }));
+    expect(Array.from(root.children)).toEqual(TestArray.toElements(items));
   });
 
   test('splicing in/out objects works and calls cb', () => {
@@ -55,21 +64,13 @@ describe('DOMArray', () => {
     items.splice(1, 1, '4', '5', '6');
     expect(cb.mock.calls.length).toBe(3);
     expect([...arr]).toEqual(items);
-    expect(Array.from(root.children)).toEqual(items.map(element => {
-      const e = document.createElement('span');
-      e.textContent = element;
-      return e;
-    }));
+    expect(Array.from(root.children)).toEqual(TestArray.toElements(items));
   });
 
   test('splicing with given elements works', () => {
     const arr = new TestArray(root);
     const items = ['1', '2', '3'];
-    const els = items.map(element => {
-      const e = document.createElement('span');
-      e.textContent = 'gg' + element;
-      return e;
-    });
+    const els = items.map(mapAlternative);
     arr.splice2(0, 0, items, els);
     expect([...arr]).toEqual(items);
     expect(Array.from(root.children)).toEqual(els);
@@ -80,11 +81,7 @@ describe('DOMArray', () => {
   test('reversing works', () => {
     const arr = new TestArray(root);
     const items = ['1', '2', '3'];
-    const els = items.map(element => {
-      const e = document.createElement('span');
-      e.textContent = 'gg' + element;
-      return e;
-    });
+    const els = items.map(mapAlternative);
     arr.splice2(0, 0, items, els);
     expect(arr.length).toBe(items.length);
     arr.reverse2();

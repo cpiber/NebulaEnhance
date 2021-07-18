@@ -55,9 +55,9 @@ describe('videos page', () => {
   test('can clear queue', async () => {
     await addToQueue(3);
     await expectQueueLength().toBe(3);
-    (await expect(page).toDisplayDialog(async () => await page.click(`${queueSelector} .close`))).dismiss();
+    (await expect(page).toDisplayDialog(() => page.click(`${queueSelector} .close`))).dismiss();
     await expectQueueLength().toBe(3);
-    (await expect(page).toDisplayDialog(async () => await page.click(`${queueSelector} .close`))).accept();
+    (await expect(page).toDisplayDialog(() => page.click(`${queueSelector} .close`))).accept();
     await expectQueueLength().toBe(0);
   });
 

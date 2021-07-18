@@ -246,8 +246,7 @@ export default async args => {
     if (!args.silent)
         console.info(`Build mode ${process.env.BUILD ? 'on' : 'off'}.`);
 
-    const type = args.type?.toLowerCase();
-    delete args.type;
+    const type = args.configType?.toLowerCase();
     switch (type) {
         case "js":
             return js(args);

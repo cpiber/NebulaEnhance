@@ -5,15 +5,15 @@ module.exports = {
     {
       displayName: 'unit',
       testMatch: [
-        path.resolve("./__tests__/unit/**/*.js")
+        path.resolve("./__tests__/unit/**/*")
       ],
       testEnvironment: "jsdom",
     },
     {
       displayName: 'integration',
-			preset: 'jest-puppeteer',
+      preset: 'jest-puppeteer',
       testMatch: [
-        path.resolve("./__tests__/integration/**/*.js")
+        path.resolve("./__tests__/integration/**/*")
       ],
     },
   ],
