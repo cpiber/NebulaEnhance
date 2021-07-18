@@ -152,46 +152,35 @@ const other = (args) => {
 /**
  * TESTS BUILD
  */
-const tests = (args) =>
-    glob.sync('tests/**/*.ts', { ignore: [ 'tests/**/_*.ts', 'tests/**/*.d.ts' ] }).map(e => {
-        if (e.endsWith('/video.ts') && (!process.env.NEBULA_PASS || !process.env.NEBULA_USER)) {
-            console.error(chalk.stderr`{redBright.bold Nebula Credentials empty.} Test video.ts won't work, skipping build`);
-            return undefined;
-        }
-
-        const d = e.replace(/(^|\/)tests\//, '$1__tests__/');
-        // Report destination paths on console
-        if (!args.silent)
-            console.info(chalk`{blueBright [Rollup build]} Converting Typescript from ${e} to javascript, exporting to: ${d.replace(/.ts$/, '.js')}`);
-        /**
-         * @type {import('rollup').RollupOptions}
-         */
-        const conf = {
-            input: e,
-            output: {
-                dir: path.dirname(d),
-                format: 'cjs',
-                globals: 'fetch'
-            },
-            external: [ 'node-fetch', 'jsdom' ],
-            context: "window",
-            plugins: [
-                typescript({
-                    tsconfig: "./tsconfig.json",
-                    target: "ESNext",
-                }),
-                ...jsplugins(),
-                replace({
-                    '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
-                    '__NEBULA_PASS__': JSON.stringify(process.env.NEBULA_PASS),
-                    '__NEBULA_USER__': JSON.stringify(process.env.NEBULA_USER),
-                    preventAssignment: true,
-                }),
-            ],
-            watch: w(args.watch)
-        };
-        return conf;
-    }).filter(e => e !== undefined);
+/**
+ * @type {import('rollup').RollupOptions}
+ */
+const testsInternal = {
+    output: {
+        format: 'cjs',
+        globals: 'fetch',
+        exports: 'auto',
+        sourcemap: true,
+    },
+    external: [ 'node-fetch', 'jsdom' ],
+    context: "window",
+    plugins: [
+        {
+            resolveId(_) { return false } // don't import any modules, let jest handle that, for coverage
+        },
+        ...jsplugins(),
+        replace({
+            '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
+            '__NEBULA_PASS__': JSON.stringify(process.env.NEBULA_PASS),
+            '__NEBULA_USER__': JSON.stringify(process.env.NEBULA_USER),
+            preventAssignment: true,
+        }),
+        typescript({
+            tsconfig: "./tsconfig.json",
+            target: "ESNext",
+        }),
+    ],
+};
 
 
 /**
@@ -245,7 +234,7 @@ export default async args => {
 
     if (!args.silent)
         console.info(`Build mode ${process.env.BUILD ? 'on' : 'off'}.`);
-
+    
     const type = args.configType?.toLowerCase();
     switch (type) {
         case "js":
@@ -254,8 +243,8 @@ export default async args => {
             return css(args);
         case "other":
             return other(args);
-        case "tests":
-            return tests(args);
+        case "tests-internal":
+            return testsInternal;
         case "all":
         default:
             return [...js(args), ...css(args), other(args)];

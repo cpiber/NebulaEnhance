@@ -8,7 +8,7 @@ export abstract class DOMArray<T> extends Array<T> {
         super();
         Object.setPrototypeOf(this, DOMArray.prototype);
         this.root = root;
-        this.update = (cb ? cb : function () {}).bind(this);
+        this.update = (cb ? cb : function () { /* placeholder */ }).bind(this);
     }
 
     splice2(start: number, count: number, elements?: T[], nodes?: HTMLElement[]): [T[], HTMLElement[]] {
@@ -16,7 +16,7 @@ export abstract class DOMArray<T> extends Array<T> {
             throw new Error('length mismatch');
         if (nodes !== undefined && nodes.findIndex(e => !e) !== -1)
             throw new Error('no elements must be null');
-        start = start < 0 ? this.length - start : start;
+        start = start < 0 ? this.length + start : start;
         start = Math.min(Math.max(start, 0), this.length);
         const end = Math.min(start + count, this.length);
         let s = start > 0 ? this.root.children[start - 1] : null;

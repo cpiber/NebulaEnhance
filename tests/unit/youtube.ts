@@ -28,6 +28,7 @@ describe('loading youtube videos', () => {
     console.debug = jest.fn();
     await expect(loadVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 50)).resolves.toHaveLength(50);
     await expect(loadVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 100)).resolves.toHaveLength(100);
+    await expect(loadVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 0)).rejects.toEqual(new Error('Invalid API response'));
     const vid = (await loadVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 1))[0] as video;
     await expect(creatorHasVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     await expect(creatorHasVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title + ' asdf', 50)).resolves.toMatchObject({ video: vid.videoId });

@@ -1,20 +1,26 @@
 const path = require('path');
 
+const transform = {
+  ".": [ 'rollup-jest', { useCache: false, args: { configType: "tests-internal", silent: true }, configFile: "./rollup.config.js" } ],
+};
+
 module.exports = {
   projects: [
     {
       displayName: 'unit',
       testMatch: [
-        path.resolve("./__tests__/unit/**/*")
+        path.resolve("./tests/unit/**/*.ts")
       ],
+      transform,
       testEnvironment: "jsdom",
     },
     {
       displayName: 'integration',
       preset: 'jest-puppeteer',
       testMatch: [
-        path.resolve("./__tests__/integration/**/*")
+        path.resolve("./tests/integration/**/*.ts")
       ],
+      transform,
     },
   ],
 };

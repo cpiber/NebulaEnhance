@@ -1,12 +1,13 @@
 {
   "name": "nebulaenhance",
   "version": "0.2.8",
+  "private": true,
   "description": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
   "scripts": {
-    "pretest": "rollup -c --configType tests",
     "test": "jest --runInBand",
     "test:unit": "jest --selectProjects unit",
     "test:ee": "jest --selectProjects integration --runInBand",
+    "coverage": "jest --selectProjects unit --coverage",
     "prebuild": "npm run clean && npm run build:all",
     "build": "web-ext build",
     "build:light": "rollup -c --configType all",
@@ -72,6 +73,7 @@
     "puppeteer": ">= 1.5.0 < 10",
     "rimraf": "^3.0.2",
     "rollup": "^2.52.8",
+    "rollup-jest": "github:cpiber/rollup-jest",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-terser": "^7.0.2",

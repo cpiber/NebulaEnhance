@@ -1,6 +1,6 @@
 // @ts-ignore
 import type { Browser, ElementHandle, Frame } from '@types/puppeteer';
-import { addToQueue, queueSelector, videoSelector } from './_shared';
+import { addToQueue, queueSelector, videoSelector } from '../shared';
 
 const formSelector = '#NebulaApp > :nth-child(2) > :nth-child(2) form';
 let optionsURL: string;

@@ -78,6 +78,28 @@ describe('DOMArray', () => {
     expect(() => arr.splice2(0, 0, ['1'], [document.createElement('span'), document.createElement('span')])).toThrow();
   });
 
+  test('putting elements in beginning works', () => {
+    const items = ['4'];
+    const items2 = ['1', '2', '3'];
+    const arr = new TestArray(root, undefined, ...items);
+    arr.splice2(0, 0, items2);
+    expect([...arr]).toEqual([...items2, ...items]);
+  });
+
+  test('slicing negative works', () => {
+    const items = ['1', '2', '3'];
+    const arr = new TestArray(root, cb, ...items);
+    expect(cb.mock.calls.length).toBe(1);
+    expect([...arr]).toEqual(items);
+    arr.splice2(-1, 1);
+    items.splice(-1, 1);
+    expect(cb.mock.calls.length).toBe(2);
+    expect([...arr]).toEqual(items);
+    arr.splice2(-5, items.length);
+    items.splice(-5, items.length);
+    expect([...arr]).toEqual(items);
+  })
+
   test('reversing works', () => {
     const arr = new TestArray(root);
     const items = ['1', '2', '3'];

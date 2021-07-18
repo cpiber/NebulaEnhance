@@ -1,4 +1,4 @@
-import { addToQueue, expectQueueLength, qbuttSelector, queueSelector, titles, videoSelector } from "./_shared";
+import { addToQueue, expectQueueLength, qbuttSelector, queueSelector, titles, videoSelector } from "../shared";
 
 describe('videos page', () => {
   jest.setTimeout(10000);
