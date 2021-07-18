@@ -45,3 +45,35 @@ jobs:
         name: enhancer_for_nebula
         path: |
           extension-dist/
+  
+
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.2.0
+    - name: Cache pnpm modules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-pnpm-modules
+      with:
+        path: ~/.pnpm-store
+        key: pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          pnpm-
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2.0.1
+      with:
+        version: 6.0.2
+        run_install: true
+      
+    - name: Generate coverage
+      run: npm run coverage
+      env:
+        YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
+        NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
+        NEBULA_USER: ${{ secrets.NEBULA_USER }}
+    - name: Upload coverage
+      uses: codecov/codecov-action@v1
