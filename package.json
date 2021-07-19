@@ -7,7 +7,7 @@
     "test": "jest --runInBand",
     "test:unit": "jest --selectProjects unit",
     "test:ee": "jest --selectProjects integration --runInBand",
-    "coverage": "jest --selectProjects unit --coverage",
+    "coverage": "COVERAGE=true jest --selectProjects unit --coverage",
     "prebuild": "npm run clean && npm run build:all",
     "build": "web-ext build",
     "build:light": "rollup -c --configType all",

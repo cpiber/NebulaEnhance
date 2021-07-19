@@ -1,7 +1,7 @@
 const path = require('path');
 
 const transform = {
-  ".": [ 'rollup-jest', { useCache: false, args: { configType: "tests-internal", silent: true }, configFile: "./rollup.config.js" } ],
+  ".": [ 'rollup-jest', { useCache: false, args: { configType: "tests-internal", silent: true, resolve: !process.env.COVERAGE }, configFile: "./rollup.config.js" } ],
 };
 
 module.exports = {

@@ -155,7 +155,7 @@ const other = (args) => {
 /**
  * @type {import('rollup').RollupOptions}
  */
-const testsInternal = {
+const testsInternal = (args) => ({
     output: {
         format: 'cjs',
         globals: 'fetch',
@@ -166,7 +166,7 @@ const testsInternal = {
     context: "window",
     plugins: [
         {
-            resolveId(_) { return false } // don't import any modules, let jest handle that, for coverage
+            resolveId(_) { return args.resolve ? null : false } // don't import any modules, let jest handle that, for coverage
         },
         ...jsplugins(),
         replace({
@@ -180,7 +180,7 @@ const testsInternal = {
             target: "ESNext",
         }),
     ],
-};
+});
 
 
 /**
@@ -244,7 +244,7 @@ export default async args => {
         case "other":
             return other(args);
         case "tests-internal":
-            return testsInternal;
+            return testsInternal(args);
         case "all":
         default:
             return [...js(args), ...css(args), other(args)];
