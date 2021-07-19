@@ -10,11 +10,11 @@ getBrowserInstance().browserAction.onClicked.addListener(() => {
     });
 });
 
-getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: string]: any }, sender, sendResponse) => {
+getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: string]: any }) => {
     if (typeof message === "string") message = { type: message };
     switch (message.type) {
         case "loadCreators":
-            return loadCreators();
+            return loadCreators().then(console.debug);
         case "getYoutubeId":
             const s = (n: string) => n.trim().replaceAll(' ', '').toLowerCase();
             const c: string = message.creator;
@@ -37,7 +37,7 @@ const loadCreators = (() => {
 (async () => {
     const yt: boolean = (await getBrowserInstance().storage.local.get({ youtube: false })).youtube;
     if (!yt) return;
-    loadCreators().then(console.log);
+    loadCreators().then(console.debug);
 })();
 
 getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
@@ -46,7 +46,7 @@ getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
     console.log(show, version, details.reason);
     if (details.reason === 'install' || (show && version !== getBrowserInstance().runtime.getManifest().version)) {
         getBrowserInstance().tabs.create({
-            'url': getBrowserInstance().runtime.getURL('options/index.html#standalone,show-changelogs'),
+            'url': getBrowserInstance().runtime.getURL('options/index.html#standalone show-changelogs'),
             'active': false,
         });
     }

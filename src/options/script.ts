@@ -2,7 +2,7 @@ import { getBrowserInstance } from "../scripts/_sharedBrowser";
 import { showLogs } from "./_logs";
 import { standalone } from "./_standalone";
 
-const cl = window.location.hash.slice(1).split(',').filter(c => !!c);
+const cl = decodeURIComponent(window.location.hash.slice(1)).split(' ').filter(c => !!c);
 if (cl.length)
     document.body.classList.add(...cl);
 
@@ -110,7 +110,6 @@ els.youtube.addEventListener('change', async () => {
     };
     const success = await (y.checked ? permissions.request : permissions.remove)(perms);
     if (!success) y.checked = !y.checked; // revert
-    // permissions.getAll().then(console.log);
     if (y.checked && success) getBrowserInstance().runtime.sendMessage('loadCreators');
 });
 permissions.onRemoved.addListener(p => p.origins?.length && (els.youtube.checked = false));
@@ -123,13 +122,18 @@ load(true);
 // changelog
 (async () => {
     standalone(document.body.classList.contains('standalone'));
+
+    const showChangelogs = document.body.classList.contains('show-changelogs');
+    document.body.classList.remove('show-changelogs');
+    window.location.hash = document.body.className;
+
     const show: boolean = (await local.get({ showChangelogs: true })).showChangelogs;
     const version: string = (await local.get({ lastVersion: "-1" })).lastVersion;
     const actualVersion = getBrowserInstance().runtime.getManifest().version;
     const installed = version === "-1";
-    console.log(show, version, actualVersion, installed);
+    console.debug(show, version, actualVersion, installed);
     // show changelog or install message
-    if (installed || (show && version !== actualVersion) || document.body.classList.contains('show-changelogs'))
+    if (installed || (show && version !== actualVersion) || showChangelogs)
         showLogs(actualVersion, installed);
     local.set({ lastVersion: actualVersion });
 })();
