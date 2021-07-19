@@ -1,4 +1,4 @@
-import { moveQueue } from "./_queue";
+import { moveQueue } from "./queue";
 
 const dragElement = (e: DragEvent) => {
   const el: HTMLElement = (e.target as HTMLElement).closest('.element');

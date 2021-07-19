@@ -1,4 +1,4 @@
-import { dot, norm, ytvideo } from './_shared';
+import { dot, norm, ytvideo } from './shared';
 
 export type creator = {
   name: string,

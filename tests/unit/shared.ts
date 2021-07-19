@@ -1,5 +1,5 @@
 /// <reference path="../../src/types/global.d.ts"/>
-import { dot, norm } from '../../src/scripts/_shared';
+import { dot, norm } from '../../src/scripts/helpers/shared';
 
 describe('dot product operations', () => {
   test('fail on unequal length', () => {

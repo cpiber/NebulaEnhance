@@ -1,18 +1,18 @@
-import { sendEvent, sendMessage, TheatreClasses } from "./_sharedPage";
+import { sendEvent, SpeedClasses } from "./sharedPage";
 
-const TheatreButton = () => {
+const SpeedDial = (playbackRate: number, playbackChange: number) => {
   const Button = window.THEOplayer.videojs.getComponent("Button");
   // @ts-ignore
-  const TheatreButton = window.THEOplayer.videojs.extend(Button, {
+  return window.THEOplayer.videojs.extend(Button, {
     constructor: function () {
       Button.apply(this, arguments);
       this.tooltipSpan = document.createElement("span");
       this.tooltipSpan.className = "theo-button-tooltip vjs-hidden";
-      let text = '';
-      sendEvent('getMessage', { message: 'playerTheatre' }).then((message: string) => text = message);
+      let speed = '';
+      sendEvent('getMessage', { message: 'playerSpeed' }).then((message: string) => speed = message);
       const updateTooltip = () => {
         setTimeout(() => {
-          this.tooltipSpan.innerText = text;
+          this.tooltipSpan.innerText = `${speed}: ${window.theoplayer.playbackRate}`;
           const c = window.getComputedStyle(this.tooltipSpan, null);
           const w = (+c.getPropertyValue('width').slice(0, -2)) - parseFloat(c.paddingLeft) - parseFloat(c.paddingRight);
           this.tooltipSpan.style.left = `${-w / 2}px`;
@@ -22,18 +22,24 @@ const TheatreButton = () => {
         this.tooltipSpan.classList.toggle("vjs-hidden");
         updateTooltip();
       };
+      const scroll = (e: WheelEvent) => {
+        e.preventDefault();
+        window.theoplayer.playbackRate = Math.round((window.theoplayer.playbackRate - Math.sign(e.deltaY) * playbackChange) * 100) / 100;
+        updateTooltip();
+      };
       this.el().addEventListener("mouseover", toggleTooltip);
       this.el().addEventListener("mouseout", toggleTooltip);
+      this.el().addEventListener("wheel", scroll);
+      this.el().addEventListener("click", updateTooltip);
       this.el().appendChild(this.tooltipSpan);
       updateTooltip();
     },
     handleClick: () => {
-      sendMessage('toggleTheatreMode', null, false);
+      window.theoplayer.playbackRate = playbackRate;
     },
     buildCSSClass: function () {
-      return TheatreClasses;
+      return SpeedClasses;
     }
   });
-  return TheatreButton;
 }
-export default TheatreButton;
+export default SpeedDial;

@@ -1,6 +1,6 @@
-@import './mixins';
-@import './queue';
-@import './queue_share';
+@import './helpers/mixins';
+@import './queue/queue';
+@import './queue/queue_share';
 
 div.enhancer-queueButton {
   top: 8px;

@@ -1,6 +1,6 @@
-import { getBrowserInstance } from "../scripts/_sharedBrowser";
-import { showLogs } from "./_logs";
-import { standalone } from "./_standalone";
+import { getBrowserInstance } from "./helpers/sharedBrowser";
+import { showLogs } from "../options/logs";
+import { standalone } from "../options/standalone";
 
 const cl = decodeURIComponent(window.location.hash.slice(1)).split(' ').filter(c => !!c);
 if (cl.length)

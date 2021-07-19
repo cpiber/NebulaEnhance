@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { creatorHasVideo, loadCreators, loadVideos, matchVideoConfidence, video } from '../../src/scripts/_youtube';
+import { creatorHasVideo, loadCreators, loadVideos, matchVideoConfidence, video } from '../../src/scripts/helpers/youtube';
 
 global.fetch = fetch as unknown as typeof global.fetch;
 

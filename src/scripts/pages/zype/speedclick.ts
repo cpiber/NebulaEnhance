@@ -1,11 +1,11 @@
-import { sendEvent, SpeedClasses } from "./_sharedPage";
+import { sendEvent, SpeedClasses } from "./sharedPage";
 
 const SpeedClick = () => {
   const Button = window.THEOplayer.videojs.getComponent("Button");
   let speed = '';
   sendEvent('getMessage', { message: 'playerNewSpeed' }).then((message: string) => speed = `${message}:`);
   // @ts-ignore
-  const SpeedClick = window.THEOplayer.videojs.extend(Button, {
+  return window.THEOplayer.videojs.extend(Button, {
     constructor: function () {
       Button.apply(this, arguments);
     },
@@ -18,6 +18,5 @@ const SpeedClick = () => {
       return SpeedClasses;
     }
   });
-  return SpeedClick;
 }
 export default SpeedClick;

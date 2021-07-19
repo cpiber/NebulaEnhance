@@ -1,8 +1,8 @@
-import { isMobile, videosettings } from "../../_shared";
-import { sendEvent, sendMessage } from "./_sharedPage";
-import SpeedClick from "./_speedclick";
-import SpeedDial from "./_speeddial";
-import TheatreButton from "./_TheatreButton";
+import { isMobile, videosettings } from "../../helpers/shared";
+import { sendEvent, sendMessage } from "./sharedPage";
+import SpeedClick from "./speedclick";
+import SpeedDial from "./speeddial";
+import TheatreButton from "./TheatreButton";
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
 function getFromStorage<T>(key: string | string[]): Promise<T>;
@@ -46,7 +46,7 @@ const playerSettings = async () => {
   return { autoplay, playbackRate, playbackChange, volume, subtitles, quality };
 }
 
-const init = async () => {
+export const init = async () => {
   const t = window.theoplayer, T = window.THEOplayer;
   const { autoplay, playbackRate, playbackChange, volume, subtitles, quality } = await playerSettings();
 
@@ -171,19 +171,3 @@ const getPressedKey = (playbackChange: number, e: KeyboardEvent) => {
   e.stopPropagation();
   e.preventDefault();
 };
-
-(() => {
-  if (document.body.classList.contains('enhancer-zype'))
-    return;
-  document.body.classList.add('enhancer-zype');
-
-  const waitForTheo = () => {
-    console.debug('waiting');
-    if (!window.theoplayer)
-      return;
-    console.debug('ready');
-    clearInterval(int);
-    init();
-  };
-  const int = setInterval(waitForTheo, 100);
-})();

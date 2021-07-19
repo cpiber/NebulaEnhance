@@ -1,5 +1,5 @@
-import { nebula } from "./pages/nebula/_nebula";
-import { clone, getBrowserInstance, injectScript } from "./_sharedBrowser";
+import { nebula } from "./pages/nebula/nebula";
+import { clone, getBrowserInstance, injectScript } from "./helpers/sharedBrowser";
 
 const b = getBrowserInstance();
 const local = b.storage.local;
@@ -13,7 +13,7 @@ const getMessage = (e: CustomEvent) => replyEvent(e, b.i18n.getMessage(e.detail.
 
 const zype = async () => {
   // inject extension's script
-  await injectScript(b.runtime.getURL('/scripts/pages/zype/zype.js'), document.body);
+  await injectScript(b.runtime.getURL('/scripts/zype.js'), document.body);
   // inject custom script (if available)
   const s: string = (await local.get({ customScript: '' })).customScript;
   if (!s) return;

@@ -51,7 +51,7 @@ const jsplugins = () => [
   })
 ];
 const js = (args) =>
-  glob.sync('src/**/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.ts' ] }).map(e => {
+  glob.sync('src/scripts/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.ts' ] }).map(e => {
     const d = e.replace(/(^|\/)src\//, '$1extension-dist/');
     // Report destination paths on console
     if (!args.silent)
@@ -87,7 +87,7 @@ const js = (args) =>
  * CSS BUILD
  */
 const css = (args) =>
-  glob.sync('src/**/*.@(sa|sc|c)ss', { ignore: [ 'src/**/_*.@(sa|sc|c)ss' ] }).map(e => {
+  glob.sync('src/styles/*.@(sa|sc|c)ss', { ignore: [ 'src/**/_*.@(sa|sc|c)ss' ] }).map(e => {
     const d = e.replace(/(^|\/)src\//, '$1extension-dist/');
     const ext = e.match(/.(sa|sc|c)ss$/)[1];
     // Report destination paths on console

@@ -1,5 +1,5 @@
-@import './mixins';
-@import './variables';
+@import '../helpers/mixins';
+@import '../helpers/variables';
 
 %hidden {
   display: none;

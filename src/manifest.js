@@ -30,7 +30,7 @@ export default {
 		}
 	],
 	"web_accessible_resources": [
-		"scripts/pages/zype/zype.js"
+		"scripts/zype.js"
 	],
 	"permissions": [
 		"storage",

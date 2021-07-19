@@ -2,9 +2,9 @@ import iconClose from "../../../icons/close.svg";
 import iconNext from "../../../icons/next.svg";
 import iconReverse from "../../../icons/reverse.svg";
 import iconShare from "../../../icons/share.svg";
-import { getBrowserInstance, isChrome } from "../../_sharedBrowser";
-import { Queue, Store, video } from "./_VideoQueue";
-import "../../_shared";
+import { getBrowserInstance, isChrome } from "../../helpers/sharedBrowser";
+import { Queue, Store, video } from "./VideoQueue";
+import "../../helpers/shared";
 
 const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
 const share = getBrowserInstance().i18n.getMessage('pageShareQueue');

@@ -1,5 +1,5 @@
-import { getBrowserInstance } from './_sharedBrowser';
-import { creator, creatorHasVideo, loadCreators as _loadCreators } from './_youtube';
+import { getBrowserInstance } from './helpers/sharedBrowser';
+import { creator, creatorHasVideo, loadCreators as _loadCreators } from './helpers/youtube';
 
 const videoFetch = 50;
 

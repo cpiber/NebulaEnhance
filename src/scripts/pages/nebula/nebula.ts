@@ -1,8 +1,8 @@
-import { isMobile, videosettings, ytvideo } from "../../_shared";
-import { clone, getBrowserInstance, injectScript } from "../../_sharedBrowser";
+import { isMobile, videosettings, ytvideo } from "../../helpers/shared";
+import { clone, getBrowserInstance, injectScript } from "../../helpers/sharedBrowser";
 import iconWatchLater from "./../../../icons/watchlater.svg";
-import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue, videoUrlMatch } from "./_queue";
-import { init as initDrag } from "./_queueDrag";
+import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue, videoUrlMatch } from "./queue";
+import { init as initDrag } from "./queueDrag";
 
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');

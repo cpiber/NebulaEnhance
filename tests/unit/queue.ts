@@ -1,5 +1,5 @@
-import { Queue, Store } from '../../src/scripts/pages/nebula/_VideoQueue';
-import { callback, DOMArray } from '../../src/scripts/_DOMArray';
+import { Queue, Store } from '../../src/scripts/pages/nebula/VideoQueue';
+import { callback, DOMArray } from '../../src/scripts/helpers/DOMArray';
 
 class TestArray extends DOMArray<string> {
   constructor(root: HTMLElement, cb?: callback<string>, ...items: string[]) {
