@@ -12,27 +12,27 @@ const getMessage = (e: CustomEvent) => replyEvent(e, b.i18n.getMessage(e.detail.
 
 
 const zype = async () => {
-    // inject extension's script
-    await injectScript(b.runtime.getURL('/scripts/pages/zype/zype.js'), document.body);
-    // inject custom script (if available)
-    const s: string = (await local.get({ customScript: '' })).customScript;
-    if (!s) return;
-    injectScript(document.body, s);
+  // inject extension's script
+  await injectScript(b.runtime.getURL('/scripts/pages/zype/zype.js'), document.body);
+  // inject custom script (if available)
+  const s: string = (await local.get({ customScript: '' })).customScript;
+  if (!s) return;
+  injectScript(document.body, s);
 };
 
 (() => {
-    document.addEventListener('enhancer-storageGet', storageGet);
-    document.addEventListener('enhancer-storageSet', storageSet);
-    document.addEventListener('enhancer-getMessage', getMessage);
+  document.addEventListener('enhancer-storageGet', storageGet);
+  document.addEventListener('enhancer-storageSet', storageSet);
+  document.addEventListener('enhancer-getMessage', getMessage);
 
-    switch (document.location.host) {
-        case "player.zype.com":
-        case "content.watchnebula.com":
-            zype();
-            break;
-        default:
-            nebula();
-            break;
-    }
+  switch (document.location.host) {
+    case "player.zype.com":
+    case "content.watchnebula.com":
+      zype();
+      break;
+    default:
+      nebula();
+      break;
+  }
 })();
 

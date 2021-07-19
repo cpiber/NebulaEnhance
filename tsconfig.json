@@ -1,19 +1,19 @@
 {
-    "compilerOptions": {
-        "module": "esnext",
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
-        "noImplicitAny": true,
-        "removeComments": false,
-        "preserveConstEnums": true,
-        "sourceMap": true,
-        "typeRoots": [
-            "./src/types",
-            "node_modules/@types"
-        ],
-        "target": "ES5",
-        "lib": ["esnext", "es5", "dom"]
-    },
-    "include": ["src/**/*", "tests/**/*"],
-    "exclude": ["node_modules"]
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "typeRoots": [
+      "./src/types",
+      "node_modules/@types"
+    ],
+    "target": "ES5",
+    "lib": ["esnext", "es5", "dom"]
+  },
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": ["node_modules"]
 }

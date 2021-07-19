@@ -1,62 +1,62 @@
 
 .enhancer-queue-share {
-    position: relative;
-    margin: auto;
-    padding: 32px;
-    width: 100%;
-    max-width: 450px;
-    background-color: var(--bg-color);
-    border-radius: 3px;
-    box-sizing: border-box;
+  position: relative;
+  margin: auto;
+  padding: 32px;
+  width: 100%;
+  max-width: 450px;
+  background-color: var(--bg-color);
+  border-radius: 3px;
+  box-sizing: border-box;
 
-    &-bg {
-        position: fixed;
-        top: 20px;
-        bottom: 20px;
-        left: 20px;
-        right: 20px;
-        display: flex;
-        align-items: center;
+  &-bg {
+    position: fixed;
+    top: 20px;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
 
-        &::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: var(--bg-color);
-            opacity: 0.8;
-        }
-
-        &.hidden {
-            @extend %hidden;
-        }
-
-        @media (max-width: $mobile) {
-            top: 4px;
-            bottom: 4px;
-            left: 4px;
-            right: 4px;
-        }
+    &::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--bg-color);
+      opacity: 0.8;
     }
-    
-    .body {
-        margin-top: 16px;
-        display: block;
-        @extend %top;
 
-        > * {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
-            margin: 4px 0;
-            cursor: pointer;
-        }
+    &.hidden {
+      @extend %hidden;
     }
 
     @media (max-width: $mobile) {
-        padding: 12px;
+      top: 4px;
+      bottom: 4px;
+      left: 4px;
+      right: 4px;
     }
+  }
+  
+  .body {
+    margin-top: 16px;
+    display: block;
+    @extend %top;
+
+    > * {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      box-sizing: border-box;
+      margin: 4px 0;
+      cursor: pointer;
+    }
+  }
+
+  @media (max-width: $mobile) {
+    padding: 12px;
+  }
 }

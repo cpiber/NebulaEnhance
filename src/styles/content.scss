@@ -3,50 +3,50 @@
 @import './queue_share';
 
 div.enhancer-queueButton {
-    top: 8px;
-    bottom: unset;
-    padding: 0px 4px;
-    line-height: 0;
-    opacity: 0;
-    transition: opacity 0.1s ease-in-out;
-    pointer-events: initial;
+  top: 8px;
+  bottom: unset;
+  padding: 0px 4px;
+  line-height: 0;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+  pointer-events: initial;
 
-    &%hover {
-        opacity: 1;
-    }
+  &%hover {
+    opacity: 1;
+  }
 
+  @include hov {
+    @extend %hover;
+  }
+  $self: &;
+  @at-root img, picture {
     @include hov {
+      & ~ #{$self} {
         @extend %hover;
+      }
     }
-    $self: &;
-    @at-root img, picture {
-        @include hov {
-            & ~ #{$self} {
-                @extend %hover;
-            }
-        }
-    }
+  }
 
+  svg {
+    width: 19px;
+    height: 19px;
+    padding: 3px;
+    fill: white;
+    fill: currentColor;
+    transition: width 0.1s ease-in-out, height 0.1s ease-in-out;
+    pointer-events: initial;
+  }
+  @include hov {
     svg {
-        width: 19px;
-        height: 19px;
-        padding: 3px;
-        fill: white;
-        fill: currentColor;
-        transition: width 0.1s ease-in-out, height 0.1s ease-in-out;
-        pointer-events: initial;
+      width: 22px;
+      height: 22px;
     }
-    @include hov {
-        svg {
-            width: 22px;
-            height: 22px;
-        }
-    }
-    @include mobile {
-        opacity: 1;
-    }
+  }
+  @include mobile {
+    opacity: 1;
+  }
 }
 
 .enhancer-yt-err {
-    display: none;
+  display: none;
 }

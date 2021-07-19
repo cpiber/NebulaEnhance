@@ -77,99 +77,99 @@ input[type="checkbox"] {
   margin: $mtop auto;
 
   &, &__wrapper, &__wrapper::before, &__inner {
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   }
 
   &__wrapper {
-    position: fixed;
+  position: fixed;
   }
 
   &__wrapper::before {
-    content: '';
-    position: absolute;
-    background-color: gray;
-    opacity: 0.6;
+  content: '';
+  position: absolute;
+  background-color: gray;
+  opacity: 0.6;
   }
 
   &__inner {
-    position: absolute;
-    margin: 0 $mleft;
-    background-color: whitesmoke;
-    border: 1px solid gray;
-    border-radius: 1px;
-    bottom: unset;
-    max-height: 100%;
+  position: absolute;
+  margin: 0 $mleft;
+  background-color: whitesmoke;
+  border: 1px solid gray;
+  border-radius: 1px;
+  bottom: unset;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  > * {
+    flex: 0;
+    padding: $ptop $pleft;
+    box-sizing: border-box;
+  }
+
+  .heading {
+    position: relative;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 15px;
 
-    > * {
-      flex: 0;
-      padding: $ptop $pleft;
-      box-sizing: border-box;
+    h1 {
+    margin: 0;
+    width: 100%;
     }
 
-    .heading {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    .close {
+    flex: 0;
 
-      h1 {
-        margin: 0;
-        width: 100%;
-      }
-
-      .close {
-        flex: 0;
-
-        svg {
-          height: 1em;
-          width: auto;
-          vertical-align: middle;
-          cursor: pointer;
-          fill: currentColor;
-        }
-      }
-
-      &::after {
-        content: '';
-        position: absolute;
-        background-color: gray;
-        height: 1px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
+    svg {
+      height: 1em;
+      width: auto;
+      vertical-align: middle;
+      cursor: pointer;
+      fill: currentColor;
     }
+    }
+
+    &::after {
+    content: '';
+    position: absolute;
+    background-color: gray;
+    height: 1px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    }
+  }
   }
 
   .body {
-    overflow: auto;
+  overflow: auto;
   }
 
   .more {
-    display: inline-block;
-    font-size: 1rem;
-    margin-left: 0.8em;
-    font-weight: normal;
-    font-style: italic;
+  display: inline-block;
+  font-size: 1rem;
+  margin-left: 0.8em;
+  font-weight: normal;
+  font-style: italic;
   }
 
   .version-title {
-    margin-bottom: 0;
+  margin-bottom: 0;
   }
 
   .version:first-child .version-title {
-    margin-top: 0;
+  margin-top: 0;
   }
 
   .all-releases {
-    font-size: 1.1em;
-    font-style: italic;
-    padding-top: $ptop;
+  font-size: 1.1em;
+  font-style: italic;
+  padding-top: $ptop;
   }
 }
 
@@ -180,22 +180,22 @@ body.standalone {
   border: 1.5px solid #706c6c;
 
   form {
-    background-color: #e3e3e3;
-    padding: 20px 28px;
+  background-color: #e3e3e3;
+  padding: 20px 28px;
   }
 
   .page-title {
-    display: flex;
-    gap: 25px;
-    align-items: center;
-    margin-bottom: 45px;
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  margin-bottom: 45px;
 
-    .icon {
-      height: 1.8em;
-    }
+  .icon {
+    height: 1.8em;
+  }
 
-    .text {
-      width: 100%;
-    }
+  .text {
+    width: 100%;
+  }
   }
 }

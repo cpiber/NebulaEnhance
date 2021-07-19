@@ -2,273 +2,273 @@
 @import './variables';
 
 %hidden {
-    display: none;
+  display: none;
 }
 %top {
-    position: relative;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    padding: 8px 12px;
-    font-size: 12px;
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 12px;
 }
 
 .enhancer-queue {
-    position: fixed;
-    bottom: 0;
-    right: 15px;
-    width: 375px;
-    transition: bottom 0.1s ease-in-out;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  width: 375px;
+  transition: bottom 0.1s ease-in-out;
 
-    &, &-inner {
-        margin: 1px;
-        margin-bottom: 0px;
-        background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
-        background-color: #333;
-        background-blend-mode: difference;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-        overflow: hidden;
+  &, &-inner {
+    margin: 1px;
+    margin-bottom: 0px;
+    background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
+    background-color: #333;
+    background-blend-mode: difference;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    overflow: hidden;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
+    background-color: #aaa;
+    background-blend-mode: difference;
+    z-index: -1;
+  }
+
+  &.hidden {
+    @extend %hidden;
+  }
+  &.no-transition {
+    transition: none;
+  }
+
+  .top::after, .element::before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    height: 1px;
+    background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
+    background-color: #bbb;
+    background-blend-mode: difference;
+  }
+
+  .top {
+    @extend %top;
+
+    &::after {
+      top: unset;
+      bottom: 1px;
     }
 
-    &::before {
-        content: '';
-        position: absolute;
-        left: 0px;
-        right: 0px;
-        top: 0px;
-        bottom: 0px;
-        background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
-        background-color: #aaa;
-        background-blend-mode: difference;
-        z-index: -1;
+    .current {
+      width: 100%;
+      overflow: hidden;
     }
 
-    &.hidden {
-        @extend %hidden;
-    }
-    &.no-transition {
-        transition: none;
-    }
-
-    .top::after, .element::before {
-        content: '';
-        position: absolute;
-        left: 0px;
-        right: 0px;
-        top: 0px;
-        height: 1px;
-        background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
-        background-color: #bbb;
-        background-blend-mode: difference;
+    .title {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 15px;
     }
 
-    .top {
-        @extend %top;
+    .spacer, .close, .share, .prev, .next, .reverse {
+      padding: 8px;
+      padding-right: 6px;
+    }
 
-        &::after {
-            top: unset;
-            bottom: 1px;
+    .of {
+      padding-right: 6px;
+    }
+
+    .prev {
+      padding-right: 0;
+    }
+
+    $nextscale: 0.8;
+    .prev svg {
+      transform: scale(-$nextscale, $nextscale);
+    }
+    .next svg {
+      transform: scale($nextscale);
+    }
+  }
+
+  .elements {
+    scroll-behavior: smooth;
+    max-height: 90px * 2.5;
+    overflow: hidden auto;
+
+    .element {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      cursor: pointer;
+
+      &.dragging {
+        transition: transform 0.01s;
+        transform: translateX(-9999px);
+      }
+
+      .drag {
+        text-align: center;
+        width: 22px;
+        flex-shrink: 0;
+        cursor: move;
+      }
+
+      img {
+        height: 90px;
+        width: auto;
+
+        @media (max-width: $mobile_small) {
+          height: auto;
+          width: 160px;
+          max-width: 35vw;
         }
+      }
 
-        .current {
+      .thumb {
+        position: relative;
+        flex-shrink: 0;
+
+        .play {
+          display: none;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+
+          svg {
             width: 100%;
-            overflow: hidden;
+            height: 100%;
+            padding: 10px;
+            fill: var(--bg-color);
+          }
         }
+      }
+      &.playing .thumb {
+        .play {
+          display: block;
+          overflow: hidden;
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: var(--font-color);
+          opacity: 0.4;
+        }
+      }
+
+      .data {
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        margin: auto 0;
+        padding: 4px 8px;
+        overflow: hidden;
 
         .title {
-            display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 15px;
+          font-size: 14px;
+          max-height: 42px;
+          display: -webkit-box; // line-clamp only works with this older version of flex
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical; 
         }
 
-        .spacer, .close, .share, .prev, .next, .reverse {
-            padding: 8px;
-            padding-right: 6px;
+        .creator {
+          font-size: 11px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
-        .of {
-            padding-right: 6px;
+        .title, .creator {
+          overflow: hidden;
+          text-align: left;
+          width: 100%;
+        }
+      }
+
+      .remove {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: -25px;
+        display: flex;
+        align-items: center;
+        transition: right 0.1s ease-in-out;
+
+        .r {
+          display: flex;
+          width: 24px;
+          height: 24px;
+          text-align: center;
+          border: 1px solid var(--bg-color);
+          border-radius: 50%;
+          background-color: var(--bg-color);
+          align-items: center;
+          justify-content: center;
+
+          @include hov {
+            border-color: var(--font-color);
+          }
+
+          svg {
+            height: 0.85em;
+            margin: auto;
+          }
         }
 
-        .prev {
-            padding-right: 0;
+        @include mobile {
+          right: 5px;
         }
-
-        $nextscale: 0.8;
-        .prev svg {
-            transform: scale(-$nextscale, $nextscale);
+      }
+      @include hov {
+        .remove {
+          right: 5px;
         }
-        .next svg {
-            transform: scale($nextscale);
-        }
+      }
     }
+  }
 
-    .elements {
-        scroll-behavior: smooth;
-        max-height: 90px * 2.5;
-        overflow: hidden auto;
+  svg {
+    width: auto;
+    height: 1em;
+    vertical-align: middle;
+    cursor: pointer;
+    fill: currentColor;
+  }
 
-        .element {
-            position: relative;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            align-items: center;
-            cursor: pointer;
-
-            &.dragging {
-                transition: transform 0.01s;
-                transform: translateX(-9999px);
-            }
-
-            .drag {
-                text-align: center;
-                width: 22px;
-                flex-shrink: 0;
-                cursor: move;
-            }
-
-            img {
-                height: 90px;
-                width: auto;
-
-                @media (max-width: $mobile_small) {
-                    height: auto;
-                    width: 160px;
-                    max-width: 35vw;
-                }
-            }
-
-            .thumb {
-                position: relative;
-                flex-shrink: 0;
-
-                .play {
-                    display: none;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-
-                    svg {
-                        width: 100%;
-                        height: 100%;
-                        padding: 10px;
-                        fill: var(--bg-color);
-                    }
-                }
-            }
-            &.playing .thumb {
-                .play {
-                    display: block;
-                    overflow: hidden;
-                }
-
-                &::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background-color: var(--font-color);
-                    opacity: 0.4;
-                }
-            }
-
-            .data {
-                display: flex;
-                flex-direction: column;
-                align-self: center;
-                margin: auto 0;
-                padding: 4px 8px;
-                overflow: hidden;
-
-                .title {
-                    font-size: 14px;
-                    max-height: 42px;
-                    display: -webkit-box; // line-clamp only works with this older version of flex
-                    -webkit-line-clamp: 2;
-                    -webkit-box-orient: vertical; 
-                }
-
-                .creator {
-                    font-size: 11px;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                }
-
-                .title, .creator {
-                    overflow: hidden;
-                    text-align: left;
-                    width: 100%;
-                }
-            }
-
-            .remove {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                right: -25px;
-                display: flex;
-                align-items: center;
-                transition: right 0.1s ease-in-out;
-
-                .r {
-                    display: flex;
-                    width: 24px;
-                    height: 24px;
-                    text-align: center;
-                    border: 1px solid var(--bg-color);
-                    border-radius: 50%;
-                    background-color: var(--bg-color);
-                    align-items: center;
-                    justify-content: center;
-
-                    @include hov {
-                        border-color: var(--font-color);
-                    }
-
-                    svg {
-                        height: 0.85em;
-                        margin: auto;
-                    }
-                }
-
-                @include mobile {
-                    right: 5px;
-                }
-            }
-            @include hov {
-                .remove {
-                    right: 5px;
-                }
-            }
-        }
-    }
-
-    svg {
-        width: auto;
-        height: 1em;
-        vertical-align: middle;
-        cursor: pointer;
-        fill: currentColor;
-    }
-
-    @media (max-width: $tablet_big) {
-        right: 63px;
-    }
-    @media (max-width: $tablet) {
-        left: 63px;
-        right: 63px;
-        width: unset;
-    }
-    @media (max-width: $mobile) {
-        left: 0;
-        right: 0;
-    }
+  @media (max-width: $tablet_big) {
+    right: 63px;
+  }
+  @media (max-width: $tablet) {
+    left: 63px;
+    right: 63px;
+    width: unset;
+  }
+  @media (max-width: $mobile) {
+    left: 0;
+    right: 0;
+  }
 }

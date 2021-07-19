@@ -1,11 +1,11 @@
 @mixin hov() {
-    &:hover, &:focus, &:active {
-        @content;
-    }
+  &:hover, &:focus, &:active {
+    @content;
+  }
 }
 
 @mixin mobile() {
-    @media (any-pointer: coarse), (any-hover: none) {
-        @content;
-    }
+  @media (any-pointer: coarse), (any-hover: none) {
+    @content;
+  }
 }
