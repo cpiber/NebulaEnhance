@@ -8,7 +8,7 @@
         "description": "Description of the extension."
     },
     "optionsTitle": {
-        "message": "Nebula Enhancer Options",
+        "message": "Options",
         "description": "Title of options page."
     },
     "optionsTitlePlayer": {
@@ -27,12 +27,16 @@
         "message": "Other",
         "description": "Title for the other subsection of options page."
     },
+    "optionsEnable": {
+        "message": "Enable",
+        "description": "Text next to enable/disable feature textbox."
+    },
     "optionsDefaultPlaybackRateTitle": {
         "message": "Default playback rate",
         "description": "Label for default playbackRate of options page."
     },
     "optionsDefaultPlaybackRateHint": {
-        "message": "The speed the player will be set to initially, e.g. <code>1.25</code>",
+        "message": "The speed the player will be set to initially, e.g. <code>1.25</code>.",
         "description": "Hint for default playbackRate of options page."
     },
     "optionsPlaybackChangeRateTitle": {
@@ -40,7 +44,7 @@
         "description": "Label for speed change rate of options page."
     },
     "optionsPlaybackChangeRateHint": {
-        "message": "The amount to change the speed when scrolling over the new speed button, e.g. <code>0.1</code>",
+        "message": "The amount to change the speed when scrolling over the new speed button, e.g. <code>0.1</code>.",
         "description": "Hint for speed change rate of options page."
     },
     "optionsDefaultVolumeTitle": {
@@ -48,7 +52,7 @@
         "description": "Label for default volume of options page."
     },
     "optionsDefaultVolumeHint": {
-        "message": "The volume the player will be set to initially, e.g. <code>0.7</code>",
+        "message": "The volume the player will be set to initially, e.g. <code>0.7</code>.",
         "description": "Hint for default volume of options page."
     },
     "optionsAutoplayTitle": {
@@ -56,7 +60,7 @@
         "description": "Label for Autoplay of options page."
     },
     "optionsAutoplayHint": {
-        "message": "Whether to make the video automatically play or not. Note that this depends on your browser, see <a href=\"https://demo.theoplayer.com/autoplay-policy\">https://demo.theoplayer.com/autoplay-policy</a>",
+        "message": "Whether to make the video automatically play or not. Note that this depends on your browser, see <a href=\"https://demo.theoplayer.com/autoplay-policy\">https://demo.theoplayer.com/autoplay-policy</a>.",
         "description": "Hint for Autoplay of options page."
     },
     "optionsTargetQualitiesTitle": {
@@ -64,7 +68,7 @@
         "description": "Label for target qualities of options page."
     },
     "optionsTargetQualitiesHint": {
-        "message": "The (heights of) the qualities to target, e.g. <code>1080, 720</code>",
+        "message": "The (heights of) the qualities to target, e.g. <code>1080, 720</code>.",
         "description": "Hint for target qualities of options page."
     },
     "optionsSubtitlesTitle": {
@@ -72,15 +76,15 @@
         "description": "Label for subtitles of options page."
     },
     "optionsSubtitlesHint": {
-        "message": "Name of the subtitle languange to enable by default, e.g. <code>English</code>",
+        "message": "Name of the subtitle languange to enable by default, e.g. <code>English</code>.",
         "description": "Hint for subtitles of options page."
     },
     "optionsTheatreTitle": {
-        "message": "Enable theatre mode by default",
+        "message": "Go into theatre mode by default",
         "description": "Label for theatre mode of options page."
     },
     "optionsTheatreHint": {
-        "message": "Whether to automatically enable theatre mode (better fitting player).",
+        "message": "Whether to automatically enable theatre mode (make player fit the page better).",
         "description": "Hint for theatre mode of options page."
     },
     "optionsLoadYoutubeTitle": {
@@ -88,7 +92,7 @@
         "description": "Label for LoadYoutube of options page."
     },
     "optionsLoadYoutubeHint": {
-        "message": "Whether to automatically try and find the matching YouTube video or not.",
+        "message": "Whether to automatically try and find the matching YouTube video or not. Works only with the 50 newest videos.",
         "description": "Hint for LoadYoutube of options page."
     },
     "optionsCustomScriptPageTitle": {
@@ -128,7 +132,7 @@
         "description": "Hint for showing changelog on update of options page."
     },
     "optionsShowChangelogButton": {
-        "message": "Show changelog now",
+        "message": "Show changelogs now",
         "description": "Button text for showing changelog now of options page."
     },
     "optionsChangelogTitle": {

@@ -8,7 +8,7 @@
         "description": "Beschreibung der Erweiterung."
     },
     "optionsTitle": {
-        "message": "Nebula Enhancer Optionen",
+        "message": "Optionen",
         "description": "Titel der Optionen Seite."
     },
     "optionsTitlePlayer": {
@@ -27,12 +27,16 @@
         "message": "Anderes",
         "description": "Titel der Diverses-Sektion der Optionen Seite."
     },
+    "optionsEnable": {
+        "message": "Aktivieren",
+        "description": "Text neben Checkbox zum aktivieren eines Features."
+    },
     "optionsDefaultPlaybackRateTitle": {
         "message": "Standard Abspielgeschwindigkeit",
         "description": "Beschriftung für Standard Abspielgeschwindigkeit der Optionen Seite."
     },
     "optionsDefaultPlaybackRateHint": {
-        "message": "Die Abspielgeschwindigkeit (Speed) zu der der Videospieler zu Beginn gesetzt wird, z.B. <code>1.25</code>",
+        "message": "Die Abspielgeschwindigkeit (Speed) zu der der Videospieler zu Beginn gesetzt wird, z.B. <code>1.25</code>.",
         "description": "Hilfstext für Standard Abspielgeschwindigkeit der Optionen Seite."
     },
     "optionsPlaybackChangeRateTitle": {
@@ -40,7 +44,7 @@
         "description": "Beschriftung für Änderungsrate der Abspielgeschwindigkeit der Optionen Seite."
     },
     "optionsPlaybackChangeRateHint": {
-        "message": "Um wieviel die Geschwindigkeit geändert werden soll beim scrollen der Maus über dem neuen Speed Knopf, z.B. <code>0.1</code>",
+        "message": "Um wieviel die Geschwindigkeit geändert werden soll beim scrollen der Maus über dem neuen Speed Knopf, z.B. <code>0.1</code>.",
         "description": "Hilfstext für Änderungsrate der Abspielgeschwindigkeit der Optionen Seite."
     },
     "optionsDefaultVolumeTitle": {
@@ -48,7 +52,7 @@
         "description": "Beschriftung für Standard Lautstärke der Optionen Seite."
     },
     "optionsDefaultVolumeHint": {
-        "message": "Die Lautstärke zu der der Videospieler zu Beginn gesetzt wird, z.B. <code>0.7</code>",
+        "message": "Die Lautstärke zu der der Videospieler zu Beginn gesetzt wird, z.B. <code>0.7</code>.",
         "description": "Hilfstext für Standard Lautstärke der Optionen Seite."
     },
     "optionsAutoplayTitle": {
@@ -56,7 +60,7 @@
         "description": "Beschriftung für Autoplay der Optionen Seite."
     },
     "optionsAutoplayHint": {
-        "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\">https://demo.theoplayer.com/autoplay-policy</a>",
+        "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\">https://demo.theoplayer.com/autoplay-policy</a>.",
         "description": "Hilfstext für Autoplay der Optionen Seite."
     },
     "optionsTargetQualitiesTitle": {
@@ -64,7 +68,7 @@
         "description": "Beschriftung für Zielqualitäten der Optionen Seite."
     },
     "optionsTargetQualitiesHint": {
-        "message": "Die Höhen der Zielqualitäten des Videos, z.B. <code>1080, 720</code>",
+        "message": "Die Höhen der Zielqualitäten des Videos, z.B. <code>1080, 720</code>.",
         "description": "Hilfstext für Zielqualitäten der Optionen Seite."
     },
     "optionsSubtitlesTitle": {
@@ -72,15 +76,15 @@
         "description": "Beschriftung für Untertitel der Optionen Seite."
     },
     "optionsSubtitlesHint": {
-        "message": "Name der Sprache, für die Untertitel automatisch aktiviert werden sollen, z.B. <code>English</code>",
+        "message": "Name der Sprache, für die Untertitel automatisch aktiviert werden sollen, z.B. <code>English</code>.",
         "description": "Hilfstext für Untertitel der Optionen Seite."
     },
     "optionsTheatreTitle": {
-        "message": "Theater-Modus standardmäßig aktivieren",
+        "message": "Standardmäßig in Theater-Modus wechseln",
         "description": "Beschriftung für Theater-Modus der Optionen Seite."
     },
     "optionsTheatreHint": {
-        "message": "Ob der Theater-Modus (angepasster Videospieler) automatisch aktiviert werden soll oder nicht.",
+        "message": "Ob der Theater-Modus automatisch aktiviert werden soll oder nicht (Videospieler wird besser an Seite angepasst).",
         "description": "Hilfstext für Theater-Modus der Optionen Seite."
     },
     "optionsLoadYoutubeTitle": {
@@ -88,7 +92,7 @@
         "description": "Beschriftung für LoadYoutube der Optionen Seite."
     },
     "optionsLoadYoutubeHint": {
-        "message": "Ob automatisch versucht werden soll, das YouTube Video zu finden.",
+        "message": "Ob automatisch versucht werden soll, das YouTube Video zu finden. Funktioniert nur für die neuesten 50 videos.",
         "description": "Hilfstext für LoadYoutube der Optionen Seite."
     },
     "optionsCustomScriptPageTitle": {
