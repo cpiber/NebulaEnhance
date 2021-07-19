@@ -54,7 +54,6 @@ NebulaEnhance
  ├── DEVELOPING.md
  ├── README.DE.md
  ├── README.md
- ├─> __tests__ (generated) -- Built tests.
  ├─> extension-dist (generated) -- Built extension.
  ├── jest-puppeteer.config.js -- Jest-Puppeteer (integration testrunner) config.
  ├── jest.config.js -- Jest (testrunner) config.
@@ -67,11 +66,11 @@ NebulaEnhance
  │   ├─> icons -- Icon files.
  │   ├── manifest.js -- Compiles to manifest.json.
  │   ├─> options -- Assets for options page.
- │   ├─> scripts -- All scripts bundled in the extension proper.
+ │   ├─> scripts -- All scripts bundled in the extension proper. Top level files are entry points.
  │   │   └─> pages
  │   │       ├─> watchnebula -- Code relevant for nebula page.
  │   │       └─> zype -- Code relevant for zype player.
- │   ├─> styles -- Stylesheets
+ │   ├─> styles -- Stylesheets. Top level files are entry points.
  │   └─> types -- Typescript type declarations.
  ├─> static -- Static content, github only. Not relevant for extension.
  ├─> tests
