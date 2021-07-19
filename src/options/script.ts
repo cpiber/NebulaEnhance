@@ -1,19 +1,31 @@
 import { getBrowserInstance } from "../scripts/_sharedBrowser";
 import { showLogs } from "./_logs";
+import { standalone } from "./_standalone";
 
-const els: { [key: string]: HTMLInputElement | HTMLTextAreaElement } = {
-    playbackRate: document.querySelector('[name="playbackRate"]'),
-    playbackChange: document.querySelector('[name="playbackChange"]'),
-    volume: document.querySelector('[name="volume"]'),
-    autoplay: document.querySelector('[name="autoplay"]'),
-    targetQualities: document.querySelector('[name="targetQualities"]'),
-    subtitles: document.querySelector('[name="subtitles"]'),
-    theatre: document.querySelector('[name="theatre"]'),
-    youtube: document.querySelector('[name="youtube"]'),
-    customScriptPage: document.querySelector('[name="customScriptPage"]'),
-    customScript: document.querySelector('[name="customScript"]'),
-    showChangelogs: document.querySelector('[name="showChangelogs"]'),
-};
+const cl = window.location.hash.slice(1).split(',').filter(c => !!c);
+if (cl.length)
+    document.body.classList.add(...cl);
+
+class Settings {
+    playbackRate: HTMLInputElement = undefined;
+    playbackChange: HTMLInputElement = undefined;
+    volume: HTMLInputElement = undefined;
+    autoplay: HTMLInputElement = undefined;
+    targetQualities: HTMLInputElement = undefined;
+    subtitles: HTMLInputElement = undefined;
+    theatre: HTMLInputElement = undefined;
+    youtube: HTMLInputElement = undefined;
+    customScriptPage: HTMLTextAreaElement = undefined;
+    customScript: HTMLTextAreaElement = undefined;
+    showChangelogs: HTMLInputElement = undefined;
+
+    constructor() {
+        Object.keys(this as Settings).forEach(prop => {
+            this[prop] = document.querySelector(`[name="${prop}"]`);
+        });
+    }
+}
+const els = new Settings();
 const local = getBrowserInstance().storage.local;
 
 const toData = (useDefaults = false) => {
@@ -42,13 +54,13 @@ const toData = (useDefaults = false) => {
 
 const save = () => local.set(toData());
 const load = (doSave = false) => local.get(toData(true)).then(data => {
-    for (const prop in els) {
+    Object.keys(els).forEach(prop => {
         if (els[prop].type === "checkbox") {
             (els[prop] as HTMLInputElement).checked = !!data[prop];
         } else {
             els[prop].value = data[prop];
         }
-    }
+    });
     // transforms
     els.targetQualities.value = (data.targetQualities as string[]).join(', ');
 
@@ -89,7 +101,7 @@ Array.from(document.querySelectorAll<HTMLElement>('[data-i18n]')).forEach(e => {
 // permissions for youtube comments
 const permissions = getBrowserInstance().permissions;
 els.youtube.addEventListener('change', async () => {
-    const y = els.youtube as HTMLInputElement;
+    const y = els.youtube;
     const perms: browser.permissions.Permissions = {
         origins: [
             "*://standard.tv/*",
@@ -101,7 +113,7 @@ els.youtube.addEventListener('change', async () => {
     // permissions.getAll().then(console.log);
     if (y.checked && success) getBrowserInstance().runtime.sendMessage('loadCreators');
 });
-permissions.onRemoved.addListener(p => p.origins?.length && ((els.youtube as HTMLInputElement).checked = false));
+permissions.onRemoved.addListener(p => p.origins?.length && (els.youtube.checked = false));
 
 document.querySelector('#showChangelogsNow').addEventListener('click', () => showLogs(getBrowserInstance().runtime.getManifest().version));
 
@@ -110,13 +122,14 @@ load(true);
 
 // changelog
 (async () => {
+    standalone(document.body.classList.contains('standalone'));
     const show: boolean = (await local.get({ showChangelogs: true })).showChangelogs;
     const version: string = (await local.get({ lastVersion: "-1" })).lastVersion;
     const actualVersion = getBrowserInstance().runtime.getManifest().version;
     const installed = version === "-1";
     console.log(show, version, actualVersion, installed);
     // show changelog or install message
-    if (installed || (show && version !== actualVersion))
+    if (installed || (show && version !== actualVersion) || document.body.classList.contains('show-changelogs'))
         showLogs(actualVersion, installed);
     local.set({ lastVersion: actualVersion });
 })();

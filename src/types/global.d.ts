@@ -11,6 +11,10 @@ declare global {
         occurence(): { values: Array<T>, occurences: Array<number>};
     }
 
+    interface ObjectConstructor {
+        keys<T extends { [key: string]: any }>(o: T): Array<keyof T>;
+    }
+
     interface Number {
         pad(length: number): string;
     }

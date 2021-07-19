@@ -3,20 +3,11 @@ import { creator, creatorHasVideo, loadCreators as _loadCreators } from './_yout
 
 const videoFetch = 50;
 
-const isAndroid = () => getBrowserInstance().runtime.getPlatformInfo().then(information => information.os === 'android');
-
-getBrowserInstance().browserAction.onClicked.addListener(async () => {
-    const android = await isAndroid();
-    // Avoid blank page in firefox android
-    // Taken from https://git.synz.io/Synzvato/decentraleyes/-/blob/master/pages/popup/popup.js#L391
-    if (android) {
-        getBrowserInstance().tabs.create({
-            'url': getBrowserInstance().runtime.getURL('options/index.html'),
-            'active': true
-        });
-    } else {
-        getBrowserInstance().runtime.openOptionsPage();
-    }
+getBrowserInstance().browserAction.onClicked.addListener(() => {
+    getBrowserInstance().tabs.create({
+        'url': getBrowserInstance().runtime.getURL('options/index.html#standalone'),
+        'active': true,
+    });
 });
 
 getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: string]: any }, sender, sendResponse) => {
@@ -53,6 +44,10 @@ getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
     const show: boolean = (await getBrowserInstance().storage.local.get({ showChangelogs: true })).showChangelogs;
     const version: string = (await getBrowserInstance().storage.local.get({ lastVersion: "-1" })).lastVersion;
     console.log(show, version, details.reason);
-    if (details.reason === 'install' || (show && version !== getBrowserInstance().runtime.getManifest().version))
-        getBrowserInstance().runtime.openOptionsPage();
+    if (details.reason === 'install' || (show && version !== getBrowserInstance().runtime.getManifest().version)) {
+        getBrowserInstance().tabs.create({
+            'url': getBrowserInstance().runtime.getURL('options/index.html#standalone,show-changelogs'),
+            'active': false,
+        });
+    }
 });

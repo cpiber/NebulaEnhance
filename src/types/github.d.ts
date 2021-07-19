@@ -17,7 +17,7 @@ declare namespace Github {
         events_url: string,
         received_events_url: string,
         type: string,
-        site_admin: false,
+        site_admin: boolean,
     }
 
     type Asset = {
@@ -48,8 +48,8 @@ declare namespace Github {
         target_commitish: string,
         name: string,
         body: string,
-        draft: false,
-        prerelease: false,
+        draft: boolean,
+        prerelease: boolean,
         created_at: string,
         published_at: string,
         author: Author,

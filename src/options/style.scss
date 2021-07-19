@@ -1,3 +1,4 @@
+$maxwidth: 750px;
 
 html, body {
   margin: 0;
@@ -5,15 +6,22 @@ html, body {
 }
 
 body {
-  padding: 12px 24px;
   margin-bottom: 12px;
+}
+
+form {
+  padding: 12px 24px;
+}
+
+label {
+  cursor: pointer;
 }
 
 h2 {
   margin-top: 60px;
 }
 h1 + h2 {
-  margin-top: initial;
+  margin-top: 2em;
 }
 
 .title {
@@ -45,6 +53,7 @@ h1 + h2 {
 .flex {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 textarea {
@@ -52,55 +61,96 @@ textarea {
   box-sizing: border-box;
 }
 
-.modal {
-  position: fixed;
+input[type="checkbox"] {
+  height: 1em;
+  margin: 0;
+}
 
-  &, &::before, &__inner {
+.modal {
+  $mtop: 12px;
+  $mleft: 20px;
+  $ptop: 25px;
+  $pleft: 30px;
+
+  position: absolute;
+  max-width: $maxwidth;
+  margin: $mtop auto;
+
+  &, &__wrapper, &__wrapper::before, &__inner {
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
   }
 
-  &::before {
+  &__wrapper {
+    position: fixed;
+  }
+
+  &__wrapper::before {
     content: '';
     position: absolute;
     background-color: gray;
     opacity: 0.6;
   }
 
-  $mtop: 40px;
-  $mleft: 30px;
-  $ptop: 25px;
-  $pleft: 30px;
   &__inner {
     position: absolute;
-    margin: $mtop $mleft;
+    margin: 0 $mleft;
     background-color: whitesmoke;
-    border-radius: 15px;
-    overflow: auto;
+    border: 1px solid gray;
+    border-radius: 1px;
     bottom: unset;
-    max-height: calc(100% - #{2 * $mtop});
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
 
     > * {
-      margin-left: $pleft;
-      margin-right: $pleft;
+      flex: 0;
+      padding: $ptop $pleft;
       box-sizing: border-box;
+    }
 
-      &:first-child {
-        margin-top: $ptop;
+    .heading {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      h1 {
+        margin: 0;
+        width: 100%;
       }
-      &:last-child {
-        margin-bottom: $ptop;
+
+      .close {
+        flex: 0;
+
+        svg {
+          height: 1em;
+          width: auto;
+          vertical-align: middle;
+          cursor: pointer;
+          fill: currentColor;
+        }
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        background-color: gray;
+        height: 1px;
+        left: 0;
+        right: 0;
+        bottom: 0;
       }
     }
   }
 
   .body {
-    margin-top: $ptop;
+    overflow: auto;
   }
 
-  .your-version {
+  .more {
     display: inline-block;
     font-size: 1rem;
     margin-left: 0.8em;
@@ -112,23 +162,40 @@ textarea {
     margin-bottom: 0;
   }
 
+  .version:first-child .version-title {
+    margin-top: 0;
+  }
+
   .all-releases {
     font-size: 1.1em;
     font-style: italic;
     padding-top: $ptop;
   }
+}
 
-  .close {
-    position: absolute;
-    top: $mtop + $ptop;
-    right: $mleft + $pleft;
+body.standalone {
+  max-width: $maxwidth;
+  margin: 12px auto;
+  background-color: #aea3a3;
+  border: 1.5px solid #706c6c;
 
-    svg {
-      height: 1em;
-      width: auto;
-      vertical-align: middle;
-      cursor: pointer;
-      fill: currentColor;
+  form {
+    background-color: #e3e3e3;
+    padding: 20px 28px;
+  }
+
+  .page-title {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    margin-bottom: 45px;
+
+    .icon {
+      height: 1.8em;
+    }
+
+    .text {
+      width: 100%;
     }
   }
 }
