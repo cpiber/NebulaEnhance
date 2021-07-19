@@ -27,7 +27,7 @@
     "build:css": "rollup -c --configType css --environment BUILD",
     "build:other": "rollup -c --configType other --environment BUILD",
     "lint": "web-ext lint",
-    "clean": "rimraf extension-dist __tests__"
+    "clean": "rimraf extension-dist"
   },
   "keywords": [
     "nebula",
