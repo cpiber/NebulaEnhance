@@ -32,6 +32,8 @@ jobs:
     
     - name: Build
       run: npm run build:all
+      env:
+        YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
 
     - name: Archive extension
       uses: actions/upload-artifact@v2
@@ -39,6 +41,7 @@ jobs:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
           extension-dist/
+        if-no-files-found: error
   
   test:
     runs-on: ubuntu-latest
