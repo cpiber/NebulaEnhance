@@ -81,7 +81,7 @@ devDependencies:
   puppeteer: 9.1.1
   rimraf: 3.0.2
   rollup: 2.52.8
-  rollup-jest: github.com/cpiber/rollup-jest/cfc93a7d46021f91f942988de11d31614e4f5056_rollup@2.52.8
+  rollup-jest: github.com/cpiber/rollup-jest/92f949d1313ab0fab29a0bd5b610f8ca2f055e22_rollup@2.52.8
   rollup-plugin-postcss: 4.0.0_postcss@8.3.5
   rollup-plugin-string: 3.0.0
   rollup-plugin-terser: 7.0.2_rollup@2.52.8
@@ -8387,9 +8387,9 @@ packages:
       jszip: 3.6.0
     dev: true
 
-  github.com/cpiber/rollup-jest/cfc93a7d46021f91f942988de11d31614e4f5056_rollup@2.52.8:
-    resolution: {tarball: https://codeload.github.com/cpiber/rollup-jest/tar.gz/cfc93a7d46021f91f942988de11d31614e4f5056}
-    id: github.com/cpiber/rollup-jest/cfc93a7d46021f91f942988de11d31614e4f5056
+  github.com/cpiber/rollup-jest/92f949d1313ab0fab29a0bd5b610f8ca2f055e22_rollup@2.52.8:
+    resolution: {tarball: https://codeload.github.com/cpiber/rollup-jest/tar.gz/92f949d1313ab0fab29a0bd5b610f8ca2f055e22}
+    id: github.com/cpiber/rollup-jest/92f949d1313ab0fab29a0bd5b610f8ca2f055e22
     name: rollup-jest
     version: 1.1.1
     engines: {node: '>=8.2.0'}

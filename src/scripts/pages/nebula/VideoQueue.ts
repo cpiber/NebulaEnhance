@@ -1,5 +1,5 @@
-import iconPlay from "../../../icons/play.svg";
 import iconDelete from "../../../icons/delete.svg";
+import iconPlay from "../../../icons/play.svg";
 import { callback as ArrayCallback, DOMArray } from "../../helpers/DOMArray";
 
 export type video = {

@@ -81,6 +81,8 @@ const toVid = (vids: string | video[], title: string) => {
     return vidcache[title] = { confidence: 1, video: vids }; // exact match
   if (!vids.length)
     throw new Error("No videos");
+  if (vids.length <= 1)
+    throw new Error("Not enough data");
   // lowercase, remove accents, split at spaces and sentence marks, remove common words, replace [0-12] with written words
   const exclude = ['the', 'is', 'a', 'and', 'or', 'as', 'of', 'be'];
   const numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
@@ -110,14 +112,15 @@ const toVid = (vids: string | video[], title: string) => {
   const tfidf = tf.map(t => t.map((v, index) => v * idf[index]));
   const qfidf = qf.map((v, index) => v * idf[index]);
   const nfidf = norm(qfidf);
-  tfidf.forEach(t => { if (t.length !== qfidf.length) throw new Error("Length mismatch"); });
+  // sanity check, this should never happen
+  // tfidf.forEach(t => { if (t.length !== qfidf.length) throw new Error("Length mismatch"); });
   // find most similar (cosine similarity maximised)
-  const sim = tfidf.map((t, i) => ({ prob: dot(t, qfidf) / (norm(t) * nfidf), vid: i}))
+  const sim = tfidf.map((t, i) => ({ prob: dot(t, qfidf) / (norm(t) * nfidf), vid: i }))
     .sort((a, b) => b.prob - a.prob);
   const best = sim[0];
   console.debug(best.prob, best.vid, vids[best.vid]);
-  if (best.prob < 0.3 || sim.length > 1 && best.prob - sim[1].prob < 0.05) // arbitrary threshold and distance
-    throw new Error(`Not enough confidence (${best.prob}, ${sim.length > 1 ? sim[1].prob : 0})`);
+  if (best.prob < 0.3 || best.prob - sim[1].prob < 0.05) // arbitrary threshold and distance
+    throw new Error(`Not enough confidence (${best.prob}, ${sim[1].prob})`);
   return vidcache[title] = { confidence: best.prob, video: vids[best.vid].videoId };
 };
 export const matchVideoConfidence = toVid;

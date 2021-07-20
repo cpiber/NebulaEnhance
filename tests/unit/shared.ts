@@ -1,5 +1,6 @@
 /// <reference path="../../src/types/global.d.ts"/>
-import { dot, norm } from '../../src/scripts/helpers/shared';
+import { JSDOM } from 'jsdom';
+import { dot, injectScript, isMobile, norm } from '../../src/scripts/helpers/shared';
 
 describe('dot product operations', () => {
   test('fail on unequal length', () => {
@@ -83,5 +84,64 @@ describe('number pad', () => {
 
   test('longer', () => {
     expect((50).pad(1)).toBe("50");
+  });
+});
+
+describe('other', () => {
+  test('isMobile verifies via media query', () => {
+    const w = window;
+    (window as any) = window || {};
+    const mock = jest.fn().mockReturnValueOnce({ matches: true }).mockReturnValueOnce({ matches: false });
+    window.matchMedia = mock;
+
+    expect(isMobile()).toBe(true);
+    expect(isMobile()).toBe(false);
+    expect(mock.mock.calls.length).toBe(2);
+    mock.mock.calls.forEach(c => {
+      expect(c[0]).toMatch(/pointer/);
+    });
+    window = w;
+  });
+
+  test('injecting with file works', async () => {
+    const log = console.log;
+    console.log = jest.fn();
+    const dom = new JSDOM(``, { url: `file://${__dirname}/index.html`, runScripts: "dangerously", resources: "usable" });
+    
+    const wrapper = dom.window.document.head;
+    await expect(injectScript('../fixtures/log.js', wrapper, null, null, dom.window as never as Window)).resolves.toBe(void 0);
+    expect((console.log as jest.Mock).mock.calls.length).toBe(1);
+    console.log = log;
+  });
+
+  test('injecting with string works', async () => {
+    const log = console.log;
+    console.log = jest.fn();
+    const wrapper = document.body.appendChild(document.createElement('div'));
+    await expect(injectScript(wrapper, 'console.log("test")')).resolves.toBe(void 0);
+    expect((console.log as jest.Mock).mock.calls.length).toBe(1);
+    console.log = log;
+  });
+
+  test('injecting with invalid file rejects', async () => {
+    const err = console.error;
+    console.error = jest.fn();
+    const dom = new JSDOM(``, { url: `file://${__dirname}/index.html`, runScripts: "dangerously", resources: "usable" });
+    
+    const wrapper = dom.window.document.head;
+    await expect(injectScript('./__invalid__.js', wrapper, null, null, dom.window as never as Window)).rejects.not.toBeUndefined();
+    console.error = err;
+  });
+
+  test('injecting with data works', async () => {
+    const log = console.log;
+    const mock = console.log = jest.fn();
+    const dom = new JSDOM(``, { url: `file://${__dirname}/index.html`, runScripts: "dangerously", resources: "usable" });
+    
+    const wrapper = dom.window.document.head;
+    await expect(injectScript('../fixtures/waitForEvent.js', wrapper, 'test', 'data', dom.window as never as Window)).resolves.toBe(void 0);
+    expect(mock.mock.calls.length).toBe(1);
+    expect(mock.mock.calls[0][0]).toBe('data');
+    console.log = log;
   });
 });

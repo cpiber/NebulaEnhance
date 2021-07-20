@@ -32,6 +32,13 @@ describe('loading youtube videos', () => {
     const vid = (await loadVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 1))[0] as video;
     await expect(creatorHasVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     await expect(creatorHasVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title + ' asdf', 50)).resolves.toMatchObject({ video: vid.videoId });
+
+    // from cache
+    const fetchMock = jest.fn();
+    global.fetch = fetchMock;
+    await expect(creatorHasVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
+    global.fetch = fetch as unknown as typeof global.fetch;
+    expect(fetchMock.mock.calls.length).toBe(0);
   });
 
   test('good confidence', () => {
@@ -55,11 +62,17 @@ describe('loading youtube videos', () => {
     expect(() => matchVideoConfidence([
       { title: 'a title that can be matched quite well', videoId: "bad1" },
       { title: 'this one shouldn\'t be matched actually', videoId: "bad2" },
-    ], 'some test title, a really bad one')).toThrow();
+    ], 'some test title, a really bad one')).toThrow(/confidence/);
     expect(() => matchVideoConfidence([
       { title: 'a test title', videoId: "good1" },
       { title: 'is a test title', videoId: "good2" },
-    ], 'test title')).toThrow();
+    ], 'test title')).toThrow(/confidence/);
+    expect(() => matchVideoConfidence([
+      { title: 'this one shouldn\'t be matched really', videoId: "bad2" },
+    ], 'test title')).toThrow(/data/);
+    expect(() => matchVideoConfidence([
+      { title: 'this one shouldn\'t be matched because of low similarity', videoId: "bad2" },
+    ], 'test title with just a single matched word')).toThrow(/data/);
   });
 
   test('no videos', () => {

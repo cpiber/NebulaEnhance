@@ -1,5 +1,5 @@
-import { isMobile, videosettings, ytvideo } from "../../helpers/shared";
-import { clone, getBrowserInstance, injectScript } from "../../helpers/sharedBrowser";
+import { injectScript, isMobile, videosettings, ytvideo } from "../../helpers/shared";
+import { clone, getBrowserInstance } from "../../helpers/sharedBrowser";
 import iconWatchLater from "./../../../icons/watchlater.svg";
 import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue, videoUrlMatch } from "./queue";
 import { init as initDrag } from "./queueDrag";
@@ -107,14 +107,14 @@ const createLink = (img: HTMLElement) => {
   const time = queueOtherLocation(img);
   if (!time || !time.querySelector('span'))
     return; // ignore profile pic
-  later.innerHTML = `<span class="${time.querySelector('span').className}">${addToQueue}</span>${iconWatchLater}`;
+  later.innerHTML = `<span class="${time.querySelector('span')?.className}">${addToQueue}</span>${iconWatchLater}`;
   later.className = `${time?.className} enhancer-queueButton`;
   queueBottonLocation(img).appendChild(later);
 };
 const mutation = (func: () => void) => {
   let timeout = 0;
   return () => {
-    clearTimeout(timeout);
+    window.clearTimeout(timeout);
     timeout = window.setTimeout(func, 500);
   };
 };

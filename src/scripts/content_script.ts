@@ -1,5 +1,6 @@
+import { injectScript } from "./helpers/shared";
+import { clone, getBrowserInstance } from "./helpers/sharedBrowser";
 import { nebula } from "./pages/nebula/nebula";
-import { clone, getBrowserInstance, injectScript } from "./helpers/sharedBrowser";
 
 const b = getBrowserInstance();
 const local = b.storage.local;

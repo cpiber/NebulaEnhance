@@ -1,0 +1,1 @@
+document.addEventListener('enhancer-load-test', ev => console.log(ev.detail));

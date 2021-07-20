@@ -29,3 +29,33 @@ export const dot = (t1: number[], t2: number[]) => t1.length === t2.length && t1
 export const norm = (t: number[]) => Math.sqrt(t.reduce((p, v) => p + v * v, 0));
 
 export const isMobile = () => window.matchMedia("(any-pointer: coarse), (any-hover: none)").matches;
+
+export function injectScript(node: HTMLElement, content: string, friendly?: string, data?: any, w?: Window): Promise<void>;
+export function injectScript(file: string, node: HTMLElement, friendly?: string, data?: any, w?: Window): Promise<void>;
+export function injectScript(arg1: HTMLElement | string, arg2: HTMLElement | string, friendly?: string, data?: any, w = window) {
+  return new Promise((resolve, reject) => {
+    const gotSrc = typeof (arg2 as HTMLElement).appendChild !== "undefined";
+    const n = gotSrc ? arg2 as HTMLElement : arg1 as HTMLElement;
+    const f = gotSrc ? arg1 as string      : arg2 as string;
+
+    const s = w.document.createElement('script');
+    s.setAttribute('type', 'text/javascript');
+    const end = () => {
+      s.remove();
+      if (data) w.document.dispatchEvent(new w.CustomEvent(`enhancer-load-${friendly}`, { detail: data }));
+      resolve(void 0);
+    };
+    s.addEventListener('load', end);
+    s.addEventListener('error', ev => {
+      s.remove();
+      reject(ev);
+    });
+    if (gotSrc)
+      s.setAttribute('src', f);
+    else
+      s.textContent = f;
+    n.appendChild(s);
+    if (!gotSrc)
+      end(); // no on-load, do it manually
+  });
+}
