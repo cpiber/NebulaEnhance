@@ -155,7 +155,7 @@ const other = (args) => {
 /**
  * @type {import('rollup').RollupOptions}
  */
-const testsInternal = (args) => ({
+const testsInternal = () => ({
   output: {
     format: 'cjs',
     globals: 'fetch',
@@ -165,19 +165,18 @@ const testsInternal = (args) => ({
   external: [ 'node-fetch', 'jsdom' ],
   context: "window",
   plugins: [
-    {
-      resolveId(_) { return args.resolve ? null : false } // don't import any modules, let jest handle that, for coverage
-    },
-    ...jsplugins(),
+    typescript({
+      tsconfig: "./tsconfig.json",
+      target: "ESNext",
+    }),
+    string({
+      include: "**/*.svg",
+    }),
     replace({
       '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
       '__NEBULA_PASS__': JSON.stringify(process.env.NEBULA_PASS),
       '__NEBULA_USER__': JSON.stringify(process.env.NEBULA_USER),
       preventAssignment: true,
-    }),
-    typescript({
-      tsconfig: "./tsconfig.json",
-      target: "ESNext",
     }),
   ],
 });
@@ -244,7 +243,7 @@ export default async args => {
     case "other":
       return other(args);
     case "tests-internal":
-      return testsInternal(args);
+      return testsInternal();
     case "all":
     default:
       return [...js(args), ...css(args), other(args)];
