@@ -74,7 +74,7 @@
     "puppeteer": ">= 1.5.0 < 10",
     "rimraf": "^3.0.2",
     "rollup": "^2.52.8",
-    "rollup-jest": "github:cpiber/rollup-jest",
+    "rollup-jest": "^1.1.2",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-terser": "^7.0.2",
