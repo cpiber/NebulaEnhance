@@ -65,12 +65,12 @@ describe('video player', () => {
   beforeEach(() => waitForFrame());
 
   test('controls present', async () => {
-    await expect(frame).toMatchElement('button.enhancer-speed', { timeout: 0 });
-    await expect(frame).toMatchElement('button.enhancer-theatre', { timeout: 0 });
+    await expect(frame).toMatchElement('.enhancer-speed', { timeout: 0 });
+    await expect(frame).toMatchElement('.enhancer-theatre', { timeout: 0 });
   });
 
   test('controls use settings', async () => {
-    const speed = await frame.waitForSelector('button.enhancer-speed');
+    const speed = await frame.waitForSelector('.enhancer-speed');
     const text = await speed.evaluate(el => el.querySelector('.theo-button-tooltip').textContent);
     expect(text).toContain("1.5");
     await expect(frame.evaluate(() => window.theoplayer.playbackRate)).resolves.toBe(1.5);
@@ -84,9 +84,9 @@ describe('video player', () => {
 
   test('theatre mode sets size', async () => {
     const wrapper = await page.waitForSelector('[id^="zype_"]');
-    await frame.waitForSelector('button.enhancer-theatre');
+    await frame.waitForSelector('.enhancer-theatre');
     await expect(wrapper.evaluate((el: HTMLElement) => el.style.height)).resolves.toEqual('');
-    await frame.$eval('button.enhancer-theatre', (el: HTMLElement) => el.click());
+    await frame.$eval('.enhancer-theatre', (el: HTMLElement) => el.click());
     await expect(wrapper.evaluate((el: HTMLElement) => el.style.height)).resolves.not.toEqual('');
   });
 
@@ -98,7 +98,7 @@ describe('video player', () => {
     await waitForFrame();
 
     const wrapper = await page.waitForSelector('[id^="zype_"]');
-    await frame.waitForSelector('button.enhancer-theatre');
+    await frame.waitForSelector('.enhancer-theatre');
     await page.waitForFunction((el: HTMLElement) => !!el.style.height, { timeout: 1000 }, wrapper);
     await expect(wrapper.evaluate((el: HTMLElement) => el.style.height)).resolves.not.toEqual('');
 
@@ -108,7 +108,7 @@ describe('video player', () => {
     await waitForFrame();
 
     const wrapper2 = await page.waitForSelector('[id^="zype_"]');
-    await frame.waitForSelector('button.enhancer-theatre');
+    await frame.waitForSelector('.enhancer-theatre');
     await page.waitForFunction((el: HTMLElement) => !el.style.height, { timeout: 1000 }, wrapper2);
     await expect(wrapper2.evaluate((el: HTMLElement) => el.style.height)).resolves.toEqual('');
   });
@@ -122,8 +122,8 @@ describe('video pages 2', () => {
 
     await page.click(`${queueSelector} .element`);
     await waitForFrame(null);
-    await frame.waitForSelector('button.enhancer-theatre');
-    await frame.$eval('button.enhancer-theatre', (el: HTMLElement) => el.click());
+    await frame.waitForSelector('.enhancer-theatre');
+    await frame.$eval('.enhancer-theatre', (el: HTMLElement) => el.click());
     await frame.evaluate(() => {
       window.theoplayer.playbackRate = 2;
       window.theoplayer.volume = 0.8;
@@ -131,7 +131,7 @@ describe('video pages 2', () => {
 
     await page.click(`${queueSelector} .element:nth-child(2)`);
     await waitForFrame(null);
-    await frame.waitForSelector('button.enhancer-theatre');
+    await frame.waitForSelector('.enhancer-theatre');
     const wrapper = await page.waitForSelector('[id^="zype_"]');
     await page.waitForFunction((el: HTMLElement) => !!el.style.height, { timeout: 1000 }, wrapper);
     await expect(wrapper.evaluate((el: HTMLElement) => el.style.height)).resolves.not.toEqual('');

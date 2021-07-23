@@ -13,7 +13,7 @@ const defaults = {
 };
 
 export const init = async () => {
-  if (!isVideoPage())
+  if (!isVideoPage() || !window.videojs)
     return;
   const player = await getAPlayer();
   
