@@ -11,11 +11,12 @@ jest.setTimeout(10000);
 
 let somevideo: string;
 beforeAll(async () => {
+  console.log('Using base', __NEBULA_BASE__);
   await page.goto('chrome://settings');
   optionsURL = await page.evaluate(async () => (await chrome.management.getAll())[0].optionsUrl);
 
   await page.setViewport({ width: 1100, height: 600 });
-  await page.goto('https://nebula.app/');
+  await page.goto(__NEBULA_BASE__);
   await expect(page).toClick('button', { text: 'Sign In' });
   await expect(page).toFillForm(formSelector, {
     email: __NEBULA_USER__,
@@ -23,7 +24,7 @@ beforeAll(async () => {
   });
   await expect(page).toClick(`${formSelector} button`, { text: 'Sign In' });
   await page.waitForSelector('[href="/account"]'); // wait until logged in
-  await page.goto('https://nebula.app/videos');
+  await page.goto(`${__NEBULA_BASE__}/videos`);
   await page.waitForSelector(videoSelector);
   somevideo = await page.evaluate(sel => document.querySelector<HTMLAnchorElement>(sel).href, videoSelector);
 
@@ -55,7 +56,7 @@ describe('video page', () => {
   });
 
   test('script is run', async () => {
-    await page.goto('https://nebula.app/');
+    await page.goto(__NEBULA_BASE__);
     await expect(page).toMatchElement('.loaded-from-customScriptPage', { timeout: 0 })
   });
 });
@@ -115,7 +116,7 @@ describe('video player', () => {
 
 describe('video pages 2', () => {
   test('preferences are retained', async () => {
-    await page.goto('https://nebula.app/videos');
+    await page.goto(`${__NEBULA_BASE__}/videos`);
     await page.waitForSelector(videoSelector);
     await addToQueue(2);
 
@@ -143,7 +144,7 @@ describe('video pages 2', () => {
       youtube: true,
     });
 
-    await page.goto('https://nebula.app/videos');
+    await page.goto(`${__NEBULA_BASE__}/videos`);
     await page.waitForSelector(videoSelector);
 
     await page.click(videoSelector);

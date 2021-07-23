@@ -3,6 +3,8 @@ name: Build & Test
 on:
   push:
   pull_request:
+  schedule:
+  - cron: '0 0 * * */2' # at 0:00 every two days
 
 jobs:
   build:
@@ -30,6 +32,8 @@ jobs:
     - name: Find version
       run: |
         npm run env | grep npm_package_version >> $GITHUB_ENV
+    - run: |
+        echo Workflow triggered by event ${{ github.event_name }}
     
     - name: Build
       run: npm run build:all # does not run tests
@@ -92,6 +96,7 @@ jobs:
     name: Coverage
     runs-on: ubuntu-latest
     needs: build # only update coverage if build passes
+    if: ${{ github.event_name != 'schedule' }}
 
     steps:
     - uses: actions/checkout@v2

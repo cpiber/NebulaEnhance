@@ -4,7 +4,7 @@ describe('videos page', () => {
   jest.setTimeout(10000);
 
   beforeEach(async () => {
-    await page.goto('https://nebula.app/videos');
+    await page.goto(`${__NEBULA_BASE__}/videos`);
     await page.waitForSelector(videoSelector);
   });
 

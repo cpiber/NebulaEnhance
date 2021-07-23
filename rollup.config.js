@@ -176,6 +176,7 @@ const testsInternal = () => ({
       '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
       '__NEBULA_PASS__': JSON.stringify(process.env.NEBULA_PASS),
       '__NEBULA_USER__': JSON.stringify(process.env.NEBULA_USER),
+      '__NEBULA_BASE__': JSON.stringify(process.env.NEBULA_BASE || 'https://nebula.app'),
       preventAssignment: true,
     }),
   ],
