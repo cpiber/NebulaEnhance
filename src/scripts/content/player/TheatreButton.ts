@@ -1,7 +1,7 @@
-import { sendEvent, sendMessage, TheatreClasses } from "./sharedPage";
+import { sendEvent, sendMessage, TheatreClasses } from "../../helpers/sharedPage";
 
 const TheatreButton = () => {
-  const Button = window.THEOplayer.videojs.getComponent("Button");
+  const Button = window.THEOplayer.videojs.getComponent("MenuButton");
   // @ts-ignore
   return window.THEOplayer.videojs.extend(Button, {
     constructor: function () {

@@ -1,7 +1,7 @@
-import { sendEvent, SpeedClasses } from "./sharedPage";
+import { sendEvent, SpeedClasses } from "../../helpers/sharedPage";
 
 const SpeedDial = (playbackRate: number, playbackChange: number) => {
-  const Button = window.THEOplayer.videojs.getComponent("Button");
+  const Button = window.THEOplayer.videojs.getComponent("MenuButton");
   // @ts-ignore
   return window.THEOplayer.videojs.extend(Button, {
     constructor: function () {

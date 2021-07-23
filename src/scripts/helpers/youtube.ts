@@ -118,7 +118,6 @@ const toVid = (vids: string | video[], title: string) => {
   const sim = tfidf.map((t, i) => ({ prob: dot(t, qfidf) / (norm(t) * nfidf), vid: i }))
     .sort((a, b) => b.prob - a.prob);
   const best = sim[0];
-  console.debug(best.prob, best.vid, vids[best.vid]);
   if (best.prob < 0.3 || best.prob - sim[1].prob < 0.05) // arbitrary threshold and distance
     throw new Error(`Not enough confidence (${best.prob}, ${sim[1].prob})`);
   return vidcache[title] = { confidence: best.prob, video: vids[best.vid].videoId };

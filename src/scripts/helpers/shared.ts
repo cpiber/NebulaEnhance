@@ -10,6 +10,8 @@ export type ytvideo = {
   video: string,
 };
 
+export const videoUrlMatch = /^\/videos\/(.+?)\/?$/;
+
 Array.prototype.occurence = function <T>(this: Array<T>) {
   return [...this].sort().reduce((prev, cur) => {
     if (cur === prev.values[prev.values.length - 1]) {
@@ -28,7 +30,16 @@ Number.prototype.pad = function (this: number, length: number) { return ("" + th
 export const dot = (t1: number[], t2: number[]) => t1.length === t2.length && t1.reduce((prev, cur, index) => prev + cur * t2[index], 0)
 export const norm = (t: number[]) => Math.sqrt(t.reduce((p, v) => p + v * v, 0));
 
+export const mutation = (func: () => void) => {
+  let timeout = 0;
+  return () => {
+    window.clearTimeout(timeout);
+    timeout = window.setTimeout(func, 500);
+  };
+};
+
 export const isMobile = () => window.matchMedia("(any-pointer: coarse), (any-hover: none)").matches;
+export const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
 
 export function injectScript(node: HTMLElement, content: string, friendly?: string, data?: any, w?: Window): Promise<void>;
 export function injectScript(file: string, node: HTMLElement, friendly?: string, data?: any, w?: Window): Promise<void>;

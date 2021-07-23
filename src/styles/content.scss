@@ -50,3 +50,14 @@ div.enhancer-queueButton {
 .enhancer-yt-err {
   display: none;
 }
+
+.vjs-control .vjs-button.enhancer-speed {
+  position: relative;
+  font-family: VideoJS; // need to set this manually again ...
+}
+
+.enhancer-tooltip {
+  position: absolute;
+  bottom: 49px;
+  transform: translate(-50%, 0);
+}

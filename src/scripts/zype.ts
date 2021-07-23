@@ -1,5 +1,6 @@
 // wrapper to keep entry script here
-import { init } from "./pages/zype/zype";
+// TODO: remove this in a week when it becomes obsolete
+import { init } from "./content/player/zype";
 
 (() => {
   if (document.body.classList.contains('enhancer-zype'))

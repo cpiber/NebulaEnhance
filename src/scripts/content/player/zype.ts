@@ -1,5 +1,5 @@
 import { isMobile, videosettings } from "../../helpers/shared";
-import { sendEvent, sendMessage } from "./sharedPage";
+import { sendEvent, sendMessage } from "../../helpers/sharedPage";
 import SpeedClick from "./speedclick";
 import SpeedDial from "./speeddial";
 import TheatreButton from "./TheatreButton";

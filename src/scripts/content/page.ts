@@ -1,7 +1,7 @@
-import { injectScript, isMobile, videosettings, ytvideo } from "../../helpers/shared";
-import { clone, getBrowserInstance } from "../../helpers/sharedBrowser";
-import iconWatchLater from "./../../../icons/watchlater.svg";
-import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue, videoUrlMatch } from "./queue";
+import { injectScript, isMobile, isVideoPage, mutation, videosettings, videoUrlMatch, ytvideo } from "../helpers/shared";
+import { clone, getBrowserInstance } from "../helpers/sharedBrowser";
+import iconWatchLater from "../../icons/watchlater.svg";
+import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue } from "./queue";
 import { init as initDrag } from "./queueDrag";
 
 const videoselector = 'a[href^="/videos/"]';
@@ -12,9 +12,10 @@ function getFromStorage(key: string | string[] | { [key: string]: any }) { retur
 
 let theatreMode = false;
 export const nebula = async () => {
+  await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
+
   const menu = document.querySelector('menu');
   window.addEventListener('message', message.bind(null, menu));
-  maybeLoadComments();
   document.body.addEventListener('mouseover', hover);
   document.body.addEventListener('click', click);
   const e = initQueue();
@@ -28,14 +29,15 @@ export const nebula = async () => {
   const { youtube, theatre, customScriptPage } = await getFromStorage({ youtube: false, theatre: false, customScriptPage: '' });
   console.debug('Youtube:', youtube, 'Theatre Mode:', theatre, 'Video page?', isVideoPage());
   theatreMode = theatre && !mobile;
+
+  maybeLoadComments(youtube);
   
   const r = refreshTheatreMode.bind(null, menu);
   const cb = mutation(() => {
     // substitute hover listener
     if (mobile)
       Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
-    if (youtube)
-      maybeLoadComments();
+    maybeLoadComments(youtube);
     domRefreshTheatreMode(menu);
     const f = document.querySelector('iframe');
     if (!f) return;
@@ -81,7 +83,6 @@ const message = (menu: HTMLElement, e: MessageEvent) => {
   }
 }
 
-const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
 const queueBottonLocation = (img: HTMLElement) => img.parentElement.parentElement;
 const queueOtherLocation = (img: HTMLElement) => img.parentElement.nextElementSibling;
 const imgLink = (e: HTMLElement) => {
@@ -110,13 +111,6 @@ const createLink = (img: HTMLElement) => {
   later.innerHTML = `<span class="${time.querySelector('span')?.className}">${addToQueue}</span>${iconWatchLater}`;
   later.className = `${time?.className} enhancer-queueButton`;
   queueBottonLocation(img).appendChild(later);
-};
-const mutation = (func: () => void) => {
-  let timeout = 0;
-  return () => {
-    window.clearTimeout(timeout);
-    timeout = window.setTimeout(func, 500);
-  };
 };
 
 const click = async (e: MouseEvent) => {
@@ -158,8 +152,8 @@ const hashChange = () => {
   setQueue(q, current ? current[1] : undefined);
 };
 
-const maybeLoadComments = () => {
-  if (isVideoPage())
+const maybeLoadComments = (yt: boolean) => {
+  if (yt && isVideoPage())
     loadComments();
 };
 const loadComments = async () => {

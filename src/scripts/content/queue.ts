@@ -1,17 +1,16 @@
-import iconClose from "../../../icons/close.svg";
-import iconNext from "../../../icons/next.svg";
-import iconReverse from "../../../icons/reverse.svg";
-import iconShare from "../../../icons/share.svg";
-import "../../helpers/shared";
-import { getBrowserInstance, isChrome } from "../../helpers/sharedBrowser";
-import { Queue, Store, video } from "./VideoQueue";
+import iconClose from "../../icons/close.svg";
+import iconNext from "../../icons/next.svg";
+import iconReverse from "../../icons/reverse.svg";
+import iconShare from "../../icons/share.svg";
+import "../helpers/shared";
+import { getBrowserInstance, isChrome } from "../helpers/sharedBrowser";
+import { Queue, Store, video } from "../helpers/VideoQueue";
 
 const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
 const share = getBrowserInstance().i18n.getMessage('pageShareQueue');
 const link = getBrowserInstance().i18n.getMessage('pageShareLink');
 const starthere = getBrowserInstance().i18n.getMessage('pageShareStartHere');
 const confirmClear = getBrowserInstance().i18n.getMessage('pageQueueClearConfirm');
-export const videoUrlMatch = /^\/videos\/(.+?)\/?$/;
 
 const store: Store = {};
 let queue: Queue = null;
@@ -92,6 +91,10 @@ export const gotoQueue = (index: number, go = true) => {
     if (!isChrome() && history.state?.fake === true)
       window.history.back();
     setTimeout(() => {
+      if (isChrome()) {
+        window.history.pushState({ fake: true }, null, '/');
+        window.dispatchEvent(new PopStateEvent("popstate"));
+      }
       window.history.pushState({ fake: true }, null, url);
       window.dispatchEvent(new PopStateEvent("popstate"));
     }, 0);
