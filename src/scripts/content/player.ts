@@ -37,6 +37,8 @@ export const initPlayer = async () => {
 };
 
 export const findAPlayer = () => {
+  if (!window.videojs || !window.videojs.players)
+    return undefined;
   const key = Object.keys(window.videojs.players).find(k => !!window.videojs.players[k]);
   if (!key)
     return undefined;
@@ -61,8 +63,12 @@ export const getAPlayer = () => new Promise<VideoJsPlayer>((resolve, reject) => 
 const getPressedKey = async (e: KeyboardEvent) => {
   if (e.altKey || e.ctrlKey || e.metaKey)
     return;
+  if (document.activeElement.tagName === "INPUT")
+    return;
   const pressedKey = e.key;
   const player = findAPlayer();
+  if (!player)
+    return;
   const { playbackChange } = await getFromStorage({ playbackChange: defaults.playbackChange });
   switch (pressedKey) {
     case ',':

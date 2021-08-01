@@ -15,9 +15,7 @@ beforeAll(async () => {
   await page.goto('chrome://settings');
   optionsURL = await page.evaluate(async () => (await chrome.management.getAll())[0].optionsUrl);
 
-  await page.setViewport({ width: 1100, height: 600 });
-  await page.goto(__NEBULA_BASE__);
-  await expect(page).toClick('button', { text: 'Sign In' });
+  await page.goto(`${__NEBULA_BASE__}/login`);
   await expect(page).toFillForm(formSelector, {
     email: __NEBULA_USER__,
     password: __NEBULA_PASS__,
@@ -50,14 +48,10 @@ const waitForFrame = async (url = somevideo) => {
   frame = await iframe.contentFrame();
 };
 
-describe('video page', () => {
-  beforeEach(async () => {
-    await page.goto(somevideo);
-  });
-
+describe('page', () => {
   test('script is run', async () => {
     await page.goto(__NEBULA_BASE__);
-    await expect(page).toMatchElement('.loaded-from-customScriptPage', { timeout: 0 })
+    await expect(page).toMatchElement('.loaded-from-customScriptPage', { timeout: 0 });
   });
 });
 
