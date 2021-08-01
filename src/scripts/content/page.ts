@@ -2,6 +2,7 @@ import { injectScript, isMobile, isVideoPage, mutation, videosettings, videoUrlM
 import { clone, getBrowserInstance } from "../helpers/sharedBrowser";
 import iconWatchLater from "../../icons/watchlater.svg";
 import { Queue } from "./queue";
+import { queueBottonLocation, durationLocation } from '../helpers/locations';
 
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
@@ -81,8 +82,6 @@ const message = (menu: HTMLElement, e: MessageEvent) => {
   }
 }
 
-const queueBottonLocation = (img: HTMLElement) => img.parentElement.parentElement;
-const queueOtherLocation = (img: HTMLElement) => img.parentElement.nextElementSibling;
 const imgLink = (e: HTMLElement) => {
   // check if element is the image in a video link
   if (e.tagName !== 'IMG')
@@ -96,14 +95,14 @@ const hover = (e: MouseEvent) => {
   const link = imgLink(e.target as HTMLElement);
   if (link === null)
     return;
-  createLink(e.target as HTMLElement);
+  createLink(e.target as HTMLImageElement);
 };
-const createLink = (img: HTMLElement) => {
+const createLink = (img: HTMLImageElement) => {
   if (queueBottonLocation(img).querySelector('.enhancer-queueButton') !== null)
     return; // queue button exists
   // create queue button
   const later = document.createElement('div');
-  const time = queueOtherLocation(img);
+  const time = durationLocation(img);
   if (!time || !time.querySelector('span'))
     return; // ignore profile pic
   later.innerHTML = `<span class="${time.querySelector('span')?.className}">${addToQueue}</span>${iconWatchLater}`;
@@ -118,14 +117,9 @@ const click = async (e: MouseEvent) => {
   const link = target.closest<HTMLAnchorElement>(videoselector);
   if (link === null)
     return;
-  const img = link.querySelector('img');
   const name = link.getAttribute('href').substr(8);
   // extract and store information on video
-  await q.addToStore(name,
-    queueOtherLocation(img)?.lastChild.textContent,
-    img.src,
-    link.lastElementChild?.children[1]?.textContent,
-    link.lastElementChild?.lastElementChild?.firstElementChild?.textContent);
+  await q.addToStore(name, link);
   // no queue and video clicked
   if (q.isEmpty() && later === null)
     return;

@@ -40,6 +40,7 @@ export const mutation = (func: () => void) => {
 
 export const isMobile = () => window.matchMedia("(any-pointer: coarse), (any-hover: none)").matches;
 export const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
+export const isVideoListPage = () => !!window.location.pathname.match(/^\/(?:|videos\/?|myshows\/?)$/);
 
 export function injectScript(node: HTMLElement, content: string, friendly?: string, data?: any, w?: Window): Promise<void>;
 export function injectScript(file: string, node: HTMLElement, friendly?: string, data?: any, w?: Window): Promise<void>;
