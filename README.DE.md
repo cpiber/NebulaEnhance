@@ -22,7 +22,7 @@ Die Erweiterung ist verfügbar in den offiziellen Add-On Stores:
 
 Die neuesten Veröffentlichungen sind [hier](https://github.com/cpiber/NebulaEnhance/releases) verfügbar.
 
-Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überprüfen müssen, bevor diese sichtbar gemacht werden in den Stores. Besonders für den Chrome Webstore kann diese länder dauern.
+Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überprüfen müssen, bevor diese sichtbar gemacht werden in den Stores. Besonders für den Chrome Webstore kann dies länder dauern.
 
 
 # Features
@@ -31,19 +31,17 @@ Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überp
 - Queue: Füge Videos einfach zu einer Warteschlange hinzu
 - Teilen: Schlange kann jetzt geteilt werden -- Teilen Sie Ihre Liste oder legen Sie Lesezeichen dafür an!
 - YouTube Link: Die Erweiterung kann versuchen, das passende YouTube-Video zu finden (Aktivierung in den Einstellungen)
-- Theater Modus: Videospieler wird besser an die Seite angepasst
+- ~~Theater Modus: Videospieler wird besser an die Seite angepasst~~ Jetzt nativ unterstützt
 
 **Videospieler**
-- Standard Abspielgeschwindigkeit und Lautstärke: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit und Lautstärke abzuspielen
+- ~~Standard Abspielgeschwindigkeit und Lautstärke: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit und Lautstärke abzuspielen~~ Jetzt nativ unterstützt
 - "Quick dial" für Abspielgeschwindigkeit: Ein neuer Knopf im Videospieler erlaubt es per Mausrad die Geschwindigkeit bequem und schnell zu verändern
 - Autoplay: Videos können automatisch gestartet werden
-- Zielqualitäten: Erlaubt es, bevorzugte Videoqualität(en) zu setzen
+- ~~Zielqualitäten: Erlaubt es, bevorzugte Videoqualität(en) zu setzen~~ Jetzt nativ unterstützt
 - Keyboard shortcuts: Tastaturkürzel für einfachere und schnellere Bedienung ([siehe Playback Sektion](https://www.mrfdev.com/youtube-keyboard-shortcuts))
 
 **Custom scripts**
-- Benutzerdefinierte Scripts, die im iFrame des Videospielers und auf der Webseite ausgeführt werden
-
-Beachten Sie, dass der Videospieler automatisch fokusiert wird, um die Tastaturkürzel funktional zu machen.
+- Benutzerdefinierte Scripts, die auf der Webseite ausgeführt werden
 
 Mehr in Planung. Falls Sie Vorschläge haben, öffnen Sie bitte eine neue [issue](https://github.com/cpiber/NebulaEnhance/issues).
 

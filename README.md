@@ -32,19 +32,17 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 - Queue: Add videos to watch queue
 - Share: Queue is shareable -- Bookmark and Share your list!
 - YouTube Link: This extension can try to find the corresponding YouTube video (enable in settings)
-- Theatre Mode: Make the player fit the page better
+- ~~Theatre Mode: Make the player fit the page better~~ Now natively supported
 
 **Player**
-- Default playback speed and volume, subtitles
+- ~~Default playback speed and volume, subtitles~~ Now natively supported
 - Quick dial to set speed: New button in player allows to increase/decrease speed by scrolling
 - Autoplay: Start videos automatically
-- Target qualities: Set the preferred video quality or qualities
+- ~~Target qualities: Set the preferred video quality or qualities~~ Now natively supported
 - Keyboard shortcuts: Shortcuts in video player ([see Playback section](https://www.mrfdev.com/youtube-keyboard-shortcuts))
 
 **Custom scripts**
-- Execute custom JavaScript code in the player's iFrame and on the web page
-
-Note that the player is automatically focused to make the keyboard shortcuts work.
+- Execute custom JavaScript code on the web page
 
 More to come. If you have any suggestions, please open a new [issue](https://github.com/cpiber/NebulaEnhance/issues).
 
