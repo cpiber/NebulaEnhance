@@ -1,5 +1,5 @@
 // wrapper to keep entry script here
-import { init } from "./content/player";
+import { init, initPlayer } from "./content/player";
 import { mutation } from "./helpers/shared";
 
 (() => {
@@ -7,8 +7,10 @@ import { mutation } from "./helpers/shared";
     return;
   document.body.classList.add('enhancer-player');
 
+  init();
+
   const cb = mutation(() => {
-    init().catch(console.error);
+    initPlayer().catch(console.error);
   });
   const m = new MutationObserver(cb);
   m.observe(document.querySelector('#root'), { subtree: true, childList: true });

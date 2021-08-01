@@ -12,10 +12,17 @@ const defaults = {
   autoplay: false,
 };
 
-export const init = async () => {
+export const init = () => {
+  document.addEventListener('keydown', getPressedKey);
+};
+
+export const initPlayer = async () => {
   if (!isVideoPage() || !window.videojs)
     return;
   const player = await getAPlayer();
+
+  if (player.controlBar.children().find(c => c.name() === 'SpeedDial'))
+    return; // already initialized this player
   
   const {
     playbackChange,
@@ -24,9 +31,6 @@ export const init = async () => {
 
   console.debug('playbackChange:', playbackChange, 'autoplay:', autoplay);
   player.autoplay(autoplay);
-
-  if (player.controlBar.children().find(c => c.name() === 'SpeedDial'))
-    return;
   
   const comp = SpeedDial(player, playbackChange);
   window.videojs.registerComponent("SpeedDial", comp);
@@ -54,3 +58,39 @@ export const getAPlayer = () => new Promise<VideoJsPlayer>((resolve, reject) => 
     }
   }, 100);
 });
+
+const getPressedKey = async (e: KeyboardEvent) => {
+  if (e.altKey || e.ctrlKey || e.metaKey)
+    return;
+  const pressedKey = e.key;
+  const player = findAPlayer();
+  const { playbackChange } = await getFromStorage({ playbackChange: defaults.playbackChange });
+  switch (pressedKey) {
+    case ',':
+      player.currentTime(player.currentTime() - 0.03); // "frame" back
+      break;
+    case '.':
+      player.currentTime(player.currentTime() + 0.03); // "frame" forward
+      break;
+    case '0': case '1': case '2': case '3': case '4':
+    case '5': case '6': case '7': case '8': case '9':
+      player.currentTime(player.duration() * (+pressedKey) / 10);
+      break;
+    case 'Home':
+      player.currentTime(0);
+      break;
+    case 'End':
+      player.currentTime(player.duration());
+      break;
+    case '<':
+      player.playbackRate(Math.round((player.playbackRate() - playbackChange) * 100) / 100);
+      break;
+    case '>':
+      player.playbackRate(Math.round((player.playbackRate() + playbackChange) * 100) / 100);
+      break;
+    default:
+      return;
+  }
+  e.stopPropagation();
+  e.preventDefault();
+};
