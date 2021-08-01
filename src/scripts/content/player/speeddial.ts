@@ -1,4 +1,4 @@
-import { sendEvent, SpeedClasses } from "../../helpers/sharedPage";
+import { sendMessage, SpeedClasses } from "../../helpers/sharedPage";
 
 const SpeedDial = (playbackRate: number, playbackChange: number) => {
   const Button = window.THEOplayer.videojs.getComponent("MenuButton");
@@ -9,7 +9,7 @@ const SpeedDial = (playbackRate: number, playbackChange: number) => {
       this.tooltipSpan = document.createElement("span");
       this.tooltipSpan.className = "theo-button-tooltip vjs-hidden";
       let speed = '';
-      sendEvent('getMessage', { message: 'playerSpeed' }).then((message: string) => speed = message);
+      sendMessage('getMessage', { message: 'playerSpeed' }).then((message: string) => speed = message);
       const updateTooltip = () => {
         setTimeout(() => {
           this.tooltipSpan.innerText = `${speed}: ${window.theoplayer.playbackRate}`;

@@ -1,4 +1,4 @@
-import { sendEvent, sendMessage, TheatreClasses } from "../../helpers/sharedPage";
+import { sendMessage, TheatreClasses } from "../../helpers/sharedPage";
 
 const TheatreButton = () => {
   const Button = window.THEOplayer.videojs.getComponent("MenuButton");
@@ -9,7 +9,7 @@ const TheatreButton = () => {
       this.tooltipSpan = document.createElement("span");
       this.tooltipSpan.className = "theo-button-tooltip vjs-hidden";
       let text = '';
-      sendEvent('getMessage', { message: 'playerTheatre' }).then((message: string) => text = message);
+      sendMessage('getMessage', { message: 'playerTheatre' }).then((message: string) => text = message);
       const updateTooltip = () => {
         setTimeout(() => {
           this.tooltipSpan.innerText = text;

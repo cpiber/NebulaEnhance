@@ -1,8 +1,9 @@
-import { injectScript, isMobile, isVideoPage, mutation, videosettings, videoUrlMatch, ytvideo } from "../helpers/shared";
-import { clone, getBrowserInstance } from "../helpers/sharedBrowser";
+import { injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from "../helpers/shared";
+import { getBrowserInstance } from "../helpers/sharedBrowser";
 import iconWatchLater from "../../icons/watchlater.svg";
 import { Queue } from "./queue";
 import { queueBottonLocation, durationLocation } from '../helpers/locations';
+import { handle } from './message';
 
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
@@ -54,25 +55,11 @@ export const nebula = async () => {
     injectScript(document.body, customScriptPage);
 };
 
-// @ts-ignore
-const replyMessage = (e: MessageEvent, name: string, data: any, err?: any) => name && e.source.postMessage(clone({ type: name, res: data, err: err }), e.origin);
-const setSetting = (setting: string, value: number | string) => videosettings[setting as keyof typeof videosettings] = value as never;
-const getSetting = (e: MessageEvent, name: string, setting: string) => replyMessage(e, name, setting ? videosettings[setting as keyof typeof videosettings] : videosettings);
 const message = (menu: HTMLElement, e: MessageEvent) => {
-  if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")
-    return;
-  let d = e.data;
-  try {
-    d = JSON.parse(d);
-  } catch (err) {
-  }
-  const msg = (typeof d === "string" ? { type: d } : d) as { type: string, [key: string]: any };
+  const msg = handle(e);
+  if (msg === true)
+    return; // one of standard events
   switch (msg.type) {
-    case "getSetting":
-      return getSetting(e, msg.name, msg.setting);
-    case "setSetting":
-      const v = isNaN(msg.value) || msg.value == "" ? msg.value as string : +msg.value;
-      return setSetting(msg.setting, v);
     case "goTheatreMode":
       return goTheatreMode(menu);
     case "cancelTheatreMode":

@@ -1,11 +1,11 @@
 import type { VideoJsPlayer } from "video.js";
 import { isVideoPage } from "../helpers/shared";
-import { sendEvent } from "../helpers/sharedPage";
+import { sendMessage } from "../helpers/sharedPage";
 import SpeedDial from "./speeddial";
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
 function getFromStorage<T>(key: string | string[]): Promise<T>;
-function getFromStorage<T>(key: string | string[] | { [key: string]: any }) { return sendEvent<T>('storageGet', { get: key }); }
+function getFromStorage<T>(key: string | string[] | { [key: string]: any }) { return sendMessage<T>('getStorage', { get: key }); }
 
 const defaults = {
   playbackChange: 0.1,
@@ -32,7 +32,7 @@ export const initPlayer = async () => {
   console.debug('playbackChange:', playbackChange, 'autoplay:', autoplay);
   player.autoplay(autoplay);
   
-  const comp = SpeedDial(player, playbackChange);
+  const comp = await SpeedDial(player, playbackChange);
   window.videojs.registerComponent("SpeedDial", comp);
   player.controlBar.addChild("SpeedDial", {});
 };

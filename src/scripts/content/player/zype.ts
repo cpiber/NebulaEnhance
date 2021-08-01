@@ -1,12 +1,12 @@
 import { isMobile, videosettings } from "../../helpers/shared";
-import { sendEvent, sendMessage } from "../../helpers/sharedPage";
+import { sendMessage } from "../../helpers/sharedPage";
 import SpeedClick from "./speedclick";
 import SpeedDial from "./speeddial";
 import TheatreButton from "./TheatreButton";
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
 function getFromStorage<T>(key: string | string[]): Promise<T>;
-function getFromStorage<T>(key: string | string[] | { [key: string]: any }) { return sendEvent<T>('storageGet', { get: key }); }
+function getFromStorage<T>(key: string | string[] | { [key: string]: any }) { return sendMessage<T>('getStorage', { get: key }); }
 function setSetting(key: keyof typeof videosettings, value: number | string) { sendMessage('setSetting', { setting: key, value }, false); }
 function getSetting(): Promise<typeof videosettings>;
 function getSetting(key: keyof typeof videosettings): Promise<typeof videosettings[typeof key]>;

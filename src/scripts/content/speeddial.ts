@@ -1,6 +1,6 @@
 import type { VideoJsPlayer } from "video.js";
 import { isMobile } from "../helpers/shared";
-import { sendEvent, SpeedClasses } from "../helpers/sharedPage";
+import { sendMessage } from "../helpers/sharedPage";
 
 type Instance<T> = T extends new (...args: any[]) => infer U ? U : never;
 type Dial = {
@@ -10,10 +10,9 @@ type Dial = {
   updatePlaybackrate: (n: number) => void,
 };
 
-const SpeedDial = (player: VideoJsPlayer, playbackChange: number) => {
-  let speedMsg = '';
-  sendEvent('getMessage', { message: 'playerNewSpeed' }).then((message: string) => speedMsg = `${message}:`);
-  let speed = '';
+const SpeedDial = async (player: VideoJsPlayer, playbackChange: number) => {
+  const speedMsg = `${await sendMessage('getMessage', { message: 'playerNewSpeed' })}:`;
+  const speed = await sendMessage('getMessage', { message: 'playerSpeed' });
   
   const MenuButton = window.videojs.getComponent("MenuButton");
   return window.videojs.extend(MenuButton, {
@@ -24,8 +23,7 @@ const SpeedDial = (player: VideoJsPlayer, playbackChange: number) => {
       this.tooltip.className = "enhancer-tooltip vjs-hidden";
       this.tooltip.innerHTML = `<div class="tippy-box"><div class="tippy-content"><span class="vjs-nebula-tooltip-label"></span><span class="vjs-nebula-tooltip-key"></span></div></div>`;
       this.tooltipSpan = this.tooltip.querySelector('span');
-
-      sendEvent('getMessage', { message: 'playerSpeed' }).then((message: string) => speed = message).then(this.controlText.bind(this));
+      this.controlText(speed);
       
       const toggleTooltip = (force?: boolean) => {
         this.tooltip.classList.toggle("vjs-hidden", force);
@@ -37,7 +35,7 @@ const SpeedDial = (player: VideoJsPlayer, playbackChange: number) => {
       };
       this.el().addEventListener("mouseenter", toggleTooltip.bind(this, false));
       this.el().addEventListener("mouseleave", toggleTooltip.bind(this, true));
-      this.el().addEventListener("wheel", scroll);
+      this.el().addEventListener("wheel", scroll.bind(this));
       window.addEventListener("resize", this.updateTooltip.bind(this));
       this.player().el().appendChild(this.tooltip);
       this.updateTooltip();
@@ -64,7 +62,7 @@ const SpeedDial = (player: VideoJsPlayer, playbackChange: number) => {
       this.setTimeout(this.updateTooltip.bind(this), 0);
     },
     buildCSSClass: function (this: Instance<typeof MenuButton> & Dial) {
-      return `${SpeedClasses} ${MenuButton.prototype.buildCSSClass.apply(this)}`;
+      return `vjs-icon-circle-inner-circle enhancer-speed ${MenuButton.prototype.buildCSSClass.apply(this)}`;
     }
   });
 }
