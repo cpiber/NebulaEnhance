@@ -1,6 +1,5 @@
 import type { VideoJsPlayer } from "video.js";
-import { isVideoPage } from "../helpers/shared";
-import { sendMessage } from "../helpers/sharedPage";
+import { isVideoPage, sendMessage } from "../helpers/shared";
 import SpeedDial from "./speeddial";
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;

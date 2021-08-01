@@ -41,6 +41,7 @@ export const mutation = (func: () => void) => {
 export const isMobile = () => window.matchMedia("(any-pointer: coarse), (any-hover: none)").matches;
 export const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
 export const isVideoListPage = () => !!window.location.pathname.match(/^\/(?:|videos\/?|myshows\/?)$/);
+export const clone = typeof cloneInto !== "undefined" ? <T>(data: T) => cloneInto(data, document.defaultView) : <T>(data: T) => data; // Firefox specific
 
 export function injectScript(node: HTMLElement, content: string, friendly?: string, data?: any, w?: Window): Promise<void>;
 export function injectScript(file: string, node: HTMLElement, friendly?: string, data?: any, w?: Window): Promise<void>;
@@ -54,7 +55,7 @@ export function injectScript(arg1: HTMLElement | string, arg2: HTMLElement | str
     s.setAttribute('type', 'text/javascript');
     const end = () => {
       s.remove();
-      if (data) w.document.dispatchEvent(new w.CustomEvent(`enhancer-load-${friendly}`, { detail: data }));
+      if (data) w.document.dispatchEvent(new w.CustomEvent(`enhancer-load-${friendly}`, clone({ detail: data })));
       resolve(void 0);
     };
     s.addEventListener('load', end);
@@ -71,3 +72,25 @@ export function injectScript(arg1: HTMLElement | string, arg2: HTMLElement | str
       end(); // no on-load, do it manually
   });
 }
+
+export const sendMessage = <T>(name: string, data?: any, expectAnswer = true) => {
+  if (!expectAnswer) {
+    window.parent.postMessage(JSON.stringify({ type: name, ...data }), "*");
+    return Promise.resolve(undefined);
+  }
+  return new Promise<T>((resolve, reject) => {
+    const e = `enhancer-message-${Math.random().toString().substr(2)}`;
+    const c = (ev: MessageEvent) => {
+      if (!ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:.+\.)?nebula.app)/)) return;
+      const msg = (typeof ev.data === "string" ? { type: ev.data } : ev.data) as { type: string, err: any, res: any };
+      if (msg.type !== e) return;
+      window.removeEventListener('message', c);
+      if (msg.err)
+        reject(msg.err)
+      else
+        resolve(msg.res);
+    };
+    window.addEventListener('message', c);
+    window.parent.postMessage(JSON.stringify({ type: name, name: e, ...data }), "*");
+  });
+};

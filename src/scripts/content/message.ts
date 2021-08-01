@@ -1,5 +1,4 @@
-import { videosettings } from '../helpers/shared';
-import { clone, getBrowserInstance } from '../helpers/sharedBrowser';
+import { clone, getBrowserInstance, videosettings } from '../helpers/sharedBrowser';
 
 const local = getBrowserInstance().storage.local;
 

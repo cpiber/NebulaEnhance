@@ -1,6 +1,6 @@
 import type { VideoJsPlayer } from "video.js";
 import { isMobile } from "../helpers/shared";
-import { sendMessage } from "../helpers/sharedPage";
+import { sendMessage } from "../helpers/shared";
 
 type Instance<T> = T extends new (...args: any[]) => infer U ? U : never;
 type Dial = {

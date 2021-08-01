@@ -1,9 +1,8 @@
-import { injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from "../helpers/shared";
-import { getBrowserInstance } from "../helpers/sharedBrowser";
 import iconWatchLater from "../../icons/watchlater.svg";
-import { Queue } from "./queue";
-import { queueBottonLocation, durationLocation } from '../helpers/locations';
+import { durationLocation, queueBottonLocation } from '../helpers/locations';
+import { getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from "../helpers/sharedBrowser";
 import { handle } from './message';
+import { Queue } from "./queue";
 
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
