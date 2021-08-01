@@ -1,11 +1,10 @@
-import type { VideoJsPlayer } from "video.js";
 import type videojs from "video.js";
 
-type ctr = new (player: VideoJsPlayer, options?: videojs.ComponentOptions, ready?: videojs.Component.ReadyCallback) => videojs.Component;
+type ctr = new (player: videojs.Player, options?: videojs.ComponentOptions, ready?: videojs.Component.ReadyCallback) => videojs.Component;
 
 declare namespace v {
-  const players: { [key: string]: VideoJsPlayer };
-  const extend: (base: ctr, more: { [key: string]: any }) => ctr;
+  const players: { [key: string]: videojs.Player };
+  const extend: <T extends { [key: string]: any }>(base: ctr, more: T) => ctr & T;
 }
 
 declare global {

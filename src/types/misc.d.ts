@@ -1,0 +1,1 @@
+type FnArgs<F extends Function> = F extends (this: any, ...args: infer R) => any ? R : never;

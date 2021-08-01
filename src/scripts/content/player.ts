@@ -1,6 +1,6 @@
-import { isMobile, isVideoPage } from "../helpers/shared";
-import { sendEvent } from "../helpers/sharedPage";
 import type { VideoJsPlayer } from "video.js";
+import { isVideoPage } from "../helpers/shared";
+import { sendEvent } from "../helpers/sharedPage";
 import SpeedDial from "./speeddial";
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
@@ -28,7 +28,7 @@ export const init = async () => {
   if (player.controlBar.children().find(c => c.name() === 'SpeedDial'))
     return;
   
-  const comp = SpeedDial(player, player.playbackRate(), playbackChange);
+  const comp = SpeedDial(player, playbackChange);
   window.videojs.registerComponent("SpeedDial", comp);
   player.controlBar.addChild("SpeedDial", {});
 };

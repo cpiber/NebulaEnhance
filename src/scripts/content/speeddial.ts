@@ -1,6 +1,6 @@
-import { sendEvent, SpeedClasses } from "../helpers/sharedPage";
 import type { VideoJsPlayer } from "video.js";
 import { isMobile } from "../helpers/shared";
+import { sendEvent, SpeedClasses } from "../helpers/sharedPage";
 
 type Instance<T> = T extends new (...args: any[]) => infer U ? U : never;
 type Dial = {
@@ -10,7 +10,7 @@ type Dial = {
   updatePlaybackrate: (n: number) => void,
 };
 
-const SpeedDial = (player: VideoJsPlayer, playbackRate: number, playbackChange: number) => {
+const SpeedDial = (player: VideoJsPlayer, playbackChange: number) => {
   let speedMsg = '';
   sendEvent('getMessage', { message: 'playerNewSpeed' }).then((message: string) => speedMsg = `${message}:`);
   let speed = '';
@@ -18,7 +18,7 @@ const SpeedDial = (player: VideoJsPlayer, playbackRate: number, playbackChange: 
   const MenuButton = window.videojs.getComponent("MenuButton");
   return window.videojs.extend(MenuButton, {
     constructor: function (this: Instance<typeof MenuButton> & Dial) {
-      MenuButton.apply(this, arguments);
+      MenuButton.apply(this, arguments as FnArgs<typeof MenuButton>);
       
       this.tooltip = document.createElement("div");
       this.tooltip.className = "enhancer-tooltip vjs-hidden";

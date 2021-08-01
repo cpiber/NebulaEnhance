@@ -1,4 +1,4 @@
-import { moveQueue } from "./queue";
+import type { Queue } from './index';
 
 const dragElement = (e: DragEvent) => {
   const el: HTMLElement = (e.target as HTMLElement).closest('.element');
@@ -16,7 +16,7 @@ const dragElement = (e: DragEvent) => {
   el.before(fake(h));
   el.parentElement.scrollTop = scroll;
 };
-const dropElement = (e: DragEvent) => {
+const dropElement = (q: Queue, e: DragEvent) => {
   e.preventDefault();
   const el = (e.target as HTMLElement).closest('.element');
   if (el === null)
@@ -27,7 +27,7 @@ const dropElement = (e: DragEvent) => {
     return;
   el.parentElement.querySelector('.fake')?.remove();
   if (i > o) i--;
-  const elem = moveQueue(o, i);
+  const elem = q.move(o, i);
   elem.classList.remove('dragging');
   elem.style.marginTop = '';
 };
@@ -65,10 +65,10 @@ const fake = (h: number) => {
   return node;
 };
 
-export const init = (e: HTMLElement) => {
-  e.addEventListener('dragstart', dragElement);
-  e.addEventListener('drop', dropElement);
-  e.addEventListener('dragenter', ev => ev.preventDefault()); // allow drop
-  e.addEventListener('dragover', dragOverElement); // allow drop
-  e.addEventListener('dragend', dragElementEnd);
-};
+export function initDrag(this: Queue) {
+  this.elementsEl.addEventListener('dragstart', dragElement);
+  this.elementsEl.addEventListener('drop', dropElement.bind(null, this));
+  this.elementsEl.addEventListener('dragenter', ev => ev.preventDefault()); // allow drop
+  this.elementsEl.addEventListener('dragover', dragOverElement); // allow drop
+  this.elementsEl.addEventListener('dragend', dragElementEnd);
+}

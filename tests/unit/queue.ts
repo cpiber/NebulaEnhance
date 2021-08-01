@@ -1,4 +1,4 @@
-import { Queue, Store } from '../../src/scripts/helpers/VideoQueue';
+import { VideoArray, Store } from '../../src/scripts/helpers/VideoQueue';
 import { callback, DOMArray } from '../../src/scripts/helpers/DOMArray';
 
 class TestArray extends DOMArray<string> {
@@ -130,11 +130,11 @@ describe('DOMArray', () => {
 describe('VideoQueue', () => {
   let root: HTMLElement;
   let store: Store;
-  let queue: Queue;
+  let queue: VideoArray;
   beforeEach(() => {
     root = document.createElement('div');
     store = {};
-    queue = new Queue(root, null, store);
+    queue = new VideoArray(root, null, store);
   });
 
   test('elements include necessary elements', () => {

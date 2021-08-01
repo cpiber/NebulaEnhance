@@ -11,12 +11,12 @@ export type video = {
 
 export type Store = { [key: string]: video };
 
-export class Queue extends DOMArray<string> {
+export class VideoArray extends DOMArray<string> {
   store: Store;
 
   constructor(root: HTMLElement, cb: ArrayCallback<string>, store: Store) {
     super(root, cb);
-    Object.setPrototypeOf(this, Queue.prototype);
+    Object.setPrototypeOf(this, VideoArray.prototype);
     this.store = store;
   }
 

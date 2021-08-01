@@ -1,8 +1,7 @@
 import { injectScript, isMobile, isVideoPage, mutation, videosettings, videoUrlMatch, ytvideo } from "../helpers/shared";
 import { clone, getBrowserInstance } from "../helpers/sharedBrowser";
 import iconWatchLater from "../../icons/watchlater.svg";
-import { addToStore, enqueue, enqueueNow, gotoNextInQueue, init as initQueue, isEmptyQueue, setQueue } from "./queue";
-import { init as initDrag } from "./queueDrag";
+import { Queue } from "./queue";
 
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
@@ -18,8 +17,7 @@ export const nebula = async () => {
   window.addEventListener('message', message.bind(null, menu));
   document.body.addEventListener('mouseover', hover);
   document.body.addEventListener('click', click);
-  const e = initQueue();
-  initDrag(e);
+  Queue.get(); // initialize
   window.addEventListener('hashchange', hashChange);
   hashChange();
   window.addEventListener('focus', () => focusIframe());
@@ -114,6 +112,7 @@ const createLink = (img: HTMLElement) => {
 };
 
 const click = async (e: MouseEvent) => {
+  const q = Queue.get();
   const target = e.target as HTMLElement;
   const later = target.closest('.enhancer-queueButton');
   const link = target.closest<HTMLAnchorElement>(videoselector);
@@ -122,23 +121,23 @@ const click = async (e: MouseEvent) => {
   const img = link.querySelector('img');
   const name = link.getAttribute('href').substr(8);
   // extract and store information on video
-  await addToStore(name,
+  await q.addToStore(name,
     queueOtherLocation(img)?.lastChild.textContent,
     img.src,
     link.lastElementChild?.children[1]?.textContent,
     link.lastElementChild?.lastElementChild?.firstElementChild?.textContent);
   // no queue and video clicked
-  if (isEmptyQueue() && later === null)
+  if (q.isEmpty() && later === null)
     return;
   // always prevent going to video
   e.preventDefault();
   if (later !== null) {
     // queue button clicked
-    enqueue(name);
+    q.enqueue(name);
   } else {
     // video clicked
-    enqueueNow(name);
-    gotoNextInQueue();
+    q.enqueueNow(name);
+    q.gotoNext();
   }
 };
 
@@ -149,7 +148,7 @@ const hashChange = () => {
     return; // invalid video list
   // extract comma separated list of friendly-names from hash
   const q = hash[1].split(',');
-  setQueue(q, current ? current[1] : undefined);
+  Queue.get().set(q, current ? current[1] : undefined);
 };
 
 const maybeLoadComments = (yt: boolean) => {

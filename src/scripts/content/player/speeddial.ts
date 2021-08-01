@@ -5,7 +5,7 @@ const SpeedDial = (playbackRate: number, playbackChange: number) => {
   // @ts-ignore
   return window.THEOplayer.videojs.extend(Button, {
     constructor: function () {
-      Button.apply(this, arguments);
+      Button.apply(this, arguments as FnArgs<typeof Button>);
       this.tooltipSpan = document.createElement("span");
       this.tooltipSpan.className = "theo-button-tooltip vjs-hidden";
       let speed = '';

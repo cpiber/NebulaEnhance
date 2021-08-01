@@ -7,7 +7,7 @@ const SpeedClick = () => {
   // @ts-ignore
   return window.THEOplayer.videojs.extend(Button, {
     constructor: function () {
-      Button.apply(this, arguments);
+      Button.apply(this, arguments as FnArgs<typeof Button>);
     },
     handleClick: () => {
       const r = +window.prompt(speed, `${window.theoplayer.playbackRate}`);
