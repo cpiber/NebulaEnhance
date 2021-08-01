@@ -130,13 +130,17 @@ const other = (args) => {
    * @type {import('rollup').RollupOptions}
    */
   const conf = {
-    input: './src/manifest.js',
+    input: './src/manifest.ts',
     output: {
       dir: 'extension-dist',
       format: 'cjs',
       exports: 'default'
     },
     plugins: [
+      typescript({
+        tsconfig: process.env.BUILD ? "./tsconfig.prod.json" : "./tsconfig.json",
+        sourceMap: false,
+      }),
       replace({
         '__VERSION__': JSON.stringify(process.env.npm_package_version),
         preventAssignment: true,
@@ -215,7 +219,7 @@ function writeJSON(filename = 'manifest.js') {
       this.emitFile({
         type: 'asset',
         fileName: filename.replace(/\.js$/, '.json'),
-        source: JSON.stringify(manifest, null, 2)
+        source: JSON.stringify(manifest, null, process.env.BUILD ? undefined : 2),
       });
       delete bundle[filename];
     }
