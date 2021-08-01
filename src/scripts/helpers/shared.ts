@@ -73,7 +73,7 @@ export function injectScript(arg1: HTMLElement | string, arg2: HTMLElement | str
   });
 }
 
-export const sendMessage = <T>(name: string, data?: any, expectAnswer = true) => {
+export const sendMessage = <T>(name: string, data?: { [key: string]: any }, expectAnswer = true, skipOriginCheck = false) => {
   if (!expectAnswer) {
     window.parent.postMessage(JSON.stringify({ type: name, ...data }), "*");
     return Promise.resolve(undefined);
@@ -81,16 +81,26 @@ export const sendMessage = <T>(name: string, data?: any, expectAnswer = true) =>
   return new Promise<T>((resolve, reject) => {
     const e = `enhancer-message-${Math.random().toString().substr(2)}`;
     const c = (ev: MessageEvent) => {
-      if (!ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:.+\.)?nebula.app)/)) return;
-      const msg = (typeof ev.data === "string" ? { type: ev.data } : ev.data) as { type: string, err: any, res: any };
-      if (msg.type !== e) return;
-      window.removeEventListener('message', c);
-      if (msg.err)
-        reject(msg.err)
-      else
-        resolve(msg.res);
+      sendMessageCB(resolve, reject, e, skipOriginCheck, c, ev);
     };
     window.addEventListener('message', c);
     window.parent.postMessage(JSON.stringify({ type: name, name: e, ...data }), "*");
   });
+};
+
+const sendMessageCB = (resolve: (value: any) => void, reject: (value: any) => void, eventName: string,
+    skipOriginCheck: boolean, self: (ev: MessageEvent) => void, ev: MessageEvent) => {
+  if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:.+\.)?nebula.app)/)) return;
+  let d = ev.data;
+  try {
+    d = JSON.parse(d);
+  } catch (err) {
+  }
+  const msg = (typeof d === "string" ? { type: d } : d) as { type: string, err: any, res: any };
+  if (msg.type !== eventName) return;
+  window.removeEventListener('message', self);
+  if (msg.err)
+    reject(msg.err)
+  else
+    resolve(msg.res);
 };
