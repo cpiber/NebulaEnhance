@@ -55,6 +55,7 @@ export const handle = (e: MessageEvent) => {
     default:
       return msg;
   }
+  // use raw promises here because we don't care about the return value, let the rest of the handler continue
   promise.then(val => replyMessage(e, msg.name, val, null)).catch(err => replyMessage(e, msg.name, null, err));
   return true;
 };

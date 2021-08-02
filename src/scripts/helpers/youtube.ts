@@ -1,40 +1,43 @@
 import { dot, norm, ytvideo } from './shared';
 
-export type creator = {
+export type Creator = {
   name: string,
   channel: string,
-  uploads?: string,
+  uploads: string,
 };
-export type video = {
+export type Video = {
   title: string,
   videoId: string,
 };
 
-export const loadCreators = () =>
-  fetch('https://standard.tv/creators/')
-    .then(res => res.text())
-    .then(body => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(body, "text/html");
-      return Array.from(doc.querySelectorAll('#creator-wall .youtube-creator')).map(c => ({
-        name: c.querySelector('img').alt,
-        channel: c.getAttribute('data-video'),
-      })).filter(c => c.channel);
-    })
-    .then(loadYoutube);
-const loadYoutube = (creators: creator[]) => creators.map(c => ({ ...c, uploads: 'UU' + c.channel.substr(2) }));
+export const normalizeString = (str: string) => str.toLowerCase().normalize("NFD").replace(/\p{Pd}/g, '-').replace(/["'\(\)\[\]\{\}\u0300-\u036f]/g, '')
 
-export const loadVideos = (playlist: string, title: string, num: number) => {
-  let n = 0;
-  const load = (page: string = null, plist: video[] = []): Promise<string | video[]> => {
+export const loadCreators = async () => {
+  const res = await fetch('https://standard.tv/creators/');
+  const body = await res.text();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(body, "text/html");
+  const creators = Array.from(doc.querySelectorAll('#creator-wall .youtube-creator')).map(c => ({
+    name: c.querySelector('img').alt,
+    channel: c.getAttribute('data-video'),
+  })).filter(c => c.channel);
+  return loadYoutube(creators);
+};
+const loadYoutube = (creators: Omit<Creator, 'uploads'>[]) => creators.map(c => ({ ...c, uploads: 'UU' + c.channel.substr(2) }));
+
+export const loadVideos = async (playlist: string, title: string, num: number) => {
+  const videos: Video[] = [];
+  let page = null;
+
+  do {
     const url = new URL('https://youtube.googleapis.com/youtube/v3/playlistItems');
     url.searchParams.set('part', 'snippet');
     url.searchParams.set('playlistId', playlist);
     url.searchParams.set('key', __YT_API_KEY__);
-    url.searchParams.set('maxResults', `${Math.min(num - n, 50)}`);
+    url.searchParams.set('maxResults', `${Math.min(num - videos.length, 50)}`);
     if (page)
       url.searchParams.set('pageToken', page);
-    return fetch(url.toString(),
+    const data = await fetch(url.toString(),
       {
         "credentials": "omit",
         "headers": {
@@ -42,41 +45,34 @@ export const loadVideos = (playlist: string, title: string, num: number) => {
           "Accept-Language": "en-US,en;q=0.5",
           "Cache-Control": "max-age=0"
         },
-        "referrer": `https://watchnebula.com/`,
+        "referrer": `https://nebula.app/`,
         "method": "GET",
         "mode": "cors"
-      })
-      .then(res => res.json())
-      .then((res: YouTube.PlaylistItemsReply<YouTube.PlaylistItemSnippet>) => {
-        if (!res || !res.pageInfo || !res.items || !res.items.length)
-          throw new Error("Invalid API response");
-        n += res.items.length;
-        const v = res.items.find(e => e.snippet.title.toLowerCase().trim().replace(/\p{Pd}/g, '-') === title);
-        if (v) return v.snippet.resourceId.videoId; // found the video
-        const vids = res.items.map(i => ({ title: i.snippet.title, videoId: i.snippet.resourceId.videoId }));
-        const nlist = [...plist, ...vids];
-        if (n < num && res.nextPageToken)
-          return load(res.nextPageToken, nlist);
-        return nlist;
       });
-  };
-  return load();
+    const res: YouTube.PlaylistItemsReply<YouTube.PlaylistItemSnippet> = await data.json();
+    if (!res || !res.pageInfo || !res.items || !res.items.length)
+      throw new Error("Invalid API response");
+    const v = res.items.find(i => normalizeString(i.snippet.title) === title);
+    if (v) return v.snippet.resourceId.videoId; // found the video
+    const vids = res.items.map(i => ({ title: i.snippet.title, videoId: i.snippet.resourceId.videoId }));
+    Array.prototype.push.apply(videos, vids);
+    page = res.nextPageToken;
+  } while (videos.length < num && page);
+  return videos;
 };
 
 const vidcache: { [key: string]: ytvideo } = {};
-export const creatorHasVideo = (playlist: string, title: string, num: number): Promise<ytvideo> => {
+export const creatorHasVideo = async (playlist: string, title: string, num: number): Promise<ytvideo> => {
   if (!playlist || !title)
     return Promise.reject(`Playlist or title empty: ${playlist}; ${title}`);
-  title = title.toLowerCase().trim().replace(/\p{Pd}/g, '-');
+  title = normalizeString(title);
   if (title in vidcache)
-    return Promise.resolve(vidcache[title]);
-  return loadVideos(playlist, title, num).then(vids => toVid(vids, title)).catch(err => {
-    console.error(err);
-    return Promise.reject(err);
-  });
+    return vidcache[title];
+  const vids = await loadVideos(playlist, title, num);
+  return toVid(vids, title);
 };
 
-const toVid = (vids: string | video[], title: string) => {
+const toVid = (vids: string | Video[], title: string) => {
   if (typeof vids === "string")
     return vidcache[title] = { confidence: 1, video: vids }; // exact match
   if (!vids.length)
@@ -86,10 +82,9 @@ const toVid = (vids: string | video[], title: string) => {
   // lowercase, remove accents, split at spaces and sentence marks, remove common words, replace [0-12] with written words
   const exclude = ['the', 'is', 'a', 'and', 'or', 'as', 'of', 'be'];
   const numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
-  const split = (s: string) =>
-    s.toLowerCase().normalize("NFD").replace(/["'\(\)\[\]\{\}\u0300-\u036f]/g, '').split(/([\s\-_.,?!:;|]|\p{Pd})+/)
-      .filter(t => t.trim() && exclude.indexOf(t) === -1).map(v => numbers[+v] || v);
-  const splitV = (v: video) => split(v.title);
+  const split = (s: string) => normalizeString(s).split(/([\s\-_.,?!:;|]|\p{Pd})+/)
+    .filter(t => t.trim() && exclude.indexOf(t) === -1).map(v => numbers[+v] || v);
+  const splitV = (v: Video) => split(v.title);
   // approximate
   // IFIDF - Term frequency, Inverse Document Frequency
   // normalize terms in documents and query

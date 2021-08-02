@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { creatorHasVideo, loadCreators, loadVideos, matchVideoConfidence, video } from '../../src/scripts/helpers/youtube';
+import { creatorHasVideo, loadCreators, loadVideos, matchVideoConfidence, Video } from '../../src/scripts/helpers/youtube';
 
 global.fetch = fetch as unknown as typeof global.fetch;
 
@@ -29,7 +29,7 @@ describe('loading youtube videos', () => {
     await expect(loadVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 50)).resolves.toHaveLength(50);
     await expect(loadVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 100)).resolves.toHaveLength(100);
     await expect(loadVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 0)).rejects.toEqual(new Error('Invalid API response'));
-    const vid = (await loadVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 1))[0] as video;
+    const vid = (await loadVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 1))[0] as Video;
     await expect(creatorHasVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     await expect(creatorHasVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title + ' asdf', 50)).resolves.toMatchObject({ video: vid.videoId });
 

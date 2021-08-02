@@ -53,7 +53,8 @@ const toData = (useDefaults = false) => {
 }
 
 const save = () => local.set(toData());
-const load = (doSave = false) => local.get(toData(true)).then(data => {
+const load = async (doSave = false) => {
+  const data = await local.get(toData(true));
   Object.keys(els).forEach(prop => {
     if (els[prop].type === "checkbox") {
       (els[prop] as HTMLInputElement).checked = !!data[prop];
@@ -66,7 +67,7 @@ const load = (doSave = false) => local.get(toData(true)).then(data => {
 
   if (doSave)
     save();
-});
+};
 const delayedSave = (e: Event) => {
   const el = (e.target as HTMLInputElement | HTMLTextAreaElement);
   const timeout = +el.dataset.timeout || 0;

@@ -56,12 +56,13 @@ const releaseToMore = (cv: string, r: Github.Release) => [
 ].join(', ');
 
 export const showLogs = async (currentVersion: string, installed = false) => {
-  const releases: Github.Release[] = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases?per_page=3`, {
+  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases?per_page=3`, {
     "headers": {
       "Accept": "application/vnd.github.v3+json"
     },
     "method": "GET"
-  }).then(res => res.json()).catch(console.error);
+  });
+  const releases: Github.Release[] = await res.json();
   if (!releases)
     return;
   const cv = `v${currentVersion}`;

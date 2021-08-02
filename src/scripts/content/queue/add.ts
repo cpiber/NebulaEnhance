@@ -33,7 +33,7 @@ type cat = {
 };
 const requestData = async (name: string) => {
   // fetch video data from api and extract video object
-  const data = await fetch(
+  const res = await fetch(
     `https://api.zype.com/videos?friendly_title=${name}&per_page=1&api_key=JlSv9XTImxelHi-eAHUVDy_NUM3uAtEogEpEdFoWHEOl9SKf5gl9pCHB1AYbY3QF`,
     {
       "credentials": "omit",
@@ -42,11 +42,12 @@ const requestData = async (name: string) => {
         "Accept-Language": "en-US,en;q=0.5",
         "Cache-Control": "max-age=0"
       },
-      "referrer": `https://watchnebula.com/videos/${name}`,
+      "referrer": `https://nebula.app/videos/${name}`,
       "method": "GET",
       "mode": "cors"
     }
-  ).then(res => res.json());
+  );
+  const data = await res.json();
 
   if (!data?.response?.length || data.response.length !== 1)
     throw new Error(`Invalid response: ${JSON.stringify(data)}`);
