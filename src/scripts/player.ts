@@ -1,4 +1,3 @@
-// wrapper to keep entry script here
 import { init } from "./page/player";
 
 (() => {

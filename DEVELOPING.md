@@ -67,14 +67,17 @@ NebulaEnhance
  │   ├── manifest.js -- Compiles to manifest.json.
  │   ├─> options -- Assets for options page.
  │   ├─> scripts -- All scripts bundled in the extension proper. Top level files are entry points.
- │   │   └─> pages
- │   │       ├─> watchnebula -- Code relevant for nebula page.
- │   │       └─> zype -- Code relevant for zype player.
+ │   │   ├─> content -- Code relevant for nebula page.
+ │   │   ├─> helpers -- Shared code.
+ │   │   ├─> options -- Code for options page.
+ │   │   └─> page -- Code to be injected into page.
  │   ├─> styles -- Stylesheets. Top level files are entry points.
  │   └─> types -- Typescript type declarations.
  ├─> static -- Static content, github only. Not relevant for extension.
  ├─> tests
+ │   ├─> fixtures -- External files to be used during tests instead of actual content
  │   ├─> integration -- Integration tests
+ │   ├─> mocks -- Module mocks
  │   └─> unit -- Unit tests
  ├── tsconfig.js -- Typescript config.
  ├── tsconfig.prod.js -- Typescript config for production build.
