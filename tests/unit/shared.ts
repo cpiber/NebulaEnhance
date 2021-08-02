@@ -251,7 +251,7 @@ describe('message sending', () => {
   }));
 
   test('sending message can receive data', t(async () => {
-    await expect(sendMessage('test', { test: 'data1' }, true, true)).resolves.toBe('ret');
+    await expect(sendMessage('test', { test: 'data1' }, true, true)).resolves.toBe('ret1');
   }, (e: MessageEvent) => {
     const d = JSON.parse(e.data);
     expect(d.test).toBe('data1');

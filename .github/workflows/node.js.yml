@@ -86,8 +86,11 @@ jobs:
     - name: Install xvfb
       run: sudo apt-get install xvfb
     - name: Run all tests
-      run: xvfb-run --auto-servernum npm run test -- --ci
+      uses: mattallty/jest-github-action@v1
+      with:
+        test-command: xvfb-run --auto-servernum npm run test -- --ci
       env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
         NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
         NEBULA_USER: ${{ secrets.NEBULA_USER }}
