@@ -8,15 +8,11 @@ export function goto(this: Queue, index: number, go = true) {
   if (go) {
     const url = `/videos/${this.queue[index]}`;
     // trick router into accepting my url without reloading page
-    // if previously tricked, need to undo that (to avoid broken history)
-    // on chrome, this breaks sometimes, but the history is somewhat fine (double back)
-    if (!isChrome() && history.state?.fake === true)
-      window.history.back();
+    // sadly, we can't really remove the fake states, it completely breaks
+    // we also need a fake '/', otherwise the player vanishes
     setTimeout(() => {
-      if (isChrome()) {
-        window.history.pushState({ fake: true }, null, '/');
-        window.dispatchEvent(new PopStateEvent("popstate"));
-      }
+      window.history.pushState({ fake: true }, null, '/');
+      window.dispatchEvent(new PopStateEvent("popstate"));
       window.history.pushState({ fake: true }, null, url);
       window.dispatchEvent(new PopStateEvent("popstate"));
     }, 0);

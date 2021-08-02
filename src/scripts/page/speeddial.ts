@@ -1,6 +1,5 @@
 import type { VideoJsPlayer } from "video.js";
-import { isMobile } from "../helpers/shared";
-import { sendMessage } from "../helpers/shared";
+import { isMobile, sendMessage } from "../helpers/shared";
 
 type Instance<T> = T extends new (...args: any[]) => infer U ? U : never;
 type Dial = {
@@ -52,6 +51,8 @@ const SpeedDial = async (player: VideoJsPlayer, playbackChange: number) => {
       }
     },
     updateTooltip: function (this: Instance<typeof MenuButton> & Dial) {
+      if (!this.el())
+        return;
       this.tooltipSpan.innerText = `${speed}: ${player.playbackRate()}`;
       const w = +window.getComputedStyle(this.el()).width.slice(0, -2);
       this.tooltip.style.left = `${(this.el() as HTMLElement).offsetLeft + w/2}px`;

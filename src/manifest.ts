@@ -53,7 +53,7 @@ export default {
 		default_title: "__MSG_title__"
 	},
 	options_ui: {
-		page: "options/index.html",
+		page: "options.html",
 		browser_style: true,
 		chrome_style: true
 	},

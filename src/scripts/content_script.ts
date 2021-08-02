@@ -1,4 +1,4 @@
-import { nebula } from "./content/page";
+import { nebula } from "./content";
 import { getBrowserInstance, injectScript } from "./helpers/sharedBrowser";
 
 const b = getBrowserInstance();

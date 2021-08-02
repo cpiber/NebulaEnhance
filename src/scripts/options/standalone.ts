@@ -1,4 +1,4 @@
-import { getBrowserInstance } from "../scripts/helpers/sharedBrowser";
+import { getBrowserInstance } from "../helpers/sharedBrowser";
 
 export const standalone = (alone: boolean) => {
   if (!alone) return;

@@ -4,6 +4,7 @@ import { html } from './html';
 import { goto, gotoNext, gotoPrev } from './go';
 import { move, reverse, set, toggle } from './transform';
 import { addToStore } from './add';
+import { handleMessage } from './listener';
 
 /**
  * Dummy class for method declarations
@@ -25,6 +26,7 @@ export class QueueMethods {
   set: typeof set;
   reverse: typeof reverse;
   addToStore: typeof addToStore;
+  handleMessage: typeof handleMessage;
 }
 
 export function initElement(this: Queue) {
@@ -56,4 +58,5 @@ export function initMethods(this: Queue) {
   this.set = set.bind(this);
   this.reverse = reverse.bind(this);
   this.addToStore = addToStore.bind(this) as typeof addToStore;
+  this.handleMessage = handleMessage.bind(this);
 }

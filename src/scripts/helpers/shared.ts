@@ -30,11 +30,11 @@ Number.prototype.pad = function (this: number, length: number) { return ("" + th
 export const dot = (t1: number[], t2: number[]) => t1.length === t2.length && t1.reduce((prev, cur, index) => prev + cur * t2[index], 0)
 export const norm = (t: number[]) => Math.sqrt(t.reduce((p, v) => p + v * v, 0));
 
-export const mutation = (func: () => void) => {
+export const mutation = (func: () => void, time = 500) => {
   let timeout = 0;
   return () => {
     window.clearTimeout(timeout);
-    timeout = window.setTimeout(func, 500);
+    timeout = window.setTimeout(func, time);
   };
 };
 

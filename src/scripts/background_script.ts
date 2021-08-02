@@ -5,7 +5,7 @@ const videoFetch = 50;
 
 getBrowserInstance().browserAction.onClicked.addListener(() => {
   getBrowserInstance().tabs.create({
-    'url': getBrowserInstance().runtime.getURL('options/index.html#standalone'),
+    'url': getBrowserInstance().runtime.getURL('options.html#standalone'),
     'active': true,
   });
 });
@@ -43,10 +43,10 @@ const loadCreators = (() => {
 getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
   const show: boolean = (await getBrowserInstance().storage.local.get({ showChangelogs: true })).showChangelogs;
   const version: string = (await getBrowserInstance().storage.local.get({ lastVersion: "-1" })).lastVersion;
-  console.log(show, version, details.reason);
+  console.debug(show, version, details.reason);
   if (details.reason === 'install' || (show && version !== getBrowserInstance().runtime.getManifest().version)) {
     getBrowserInstance().tabs.create({
-      'url': getBrowserInstance().runtime.getURL('options/index.html#standalone show-changelogs'),
+      'url': getBrowserInstance().runtime.getURL('options.html#standalone show-changelogs'),
       'active': false,
     });
   }

@@ -1,4 +1,5 @@
 import { clone, getBrowserInstance, videosettings } from '../helpers/sharedBrowser';
+import { Queue } from './queue';
 
 const local = getBrowserInstance().storage.local;
 
@@ -18,7 +19,7 @@ const parse = (e: MessageEvent) => {
   } catch (err) {
   }
   const msg = (typeof d === "string" ? { type: d } : d) as { type: string, [key: string]: any };
-  if (msg.type.startsWith('enhancer-message-'))
+  if (msg.type?.startsWith('enhancer-message-'))
     return null; // reply
   return msg;
 };
@@ -31,6 +32,9 @@ export const handle = (e: MessageEvent) => {
   const msg = parse(e);
   if (msg === null)
     return true;
+  
+  if (msg.type?.startsWith('queue'))
+    return Queue.get().handleMessage(e, msg);
   
   let promise: Promise<any> = null;
   switch (msg.type) {

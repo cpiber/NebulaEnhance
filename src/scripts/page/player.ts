@@ -1,5 +1,6 @@
 import type { VideoJsPlayer } from "video.js";
 import { isVideoPage, sendMessage } from "../helpers/shared";
+import { init as initDispatch, loadPrefix } from './dispatcher';
 import SpeedDial from "./speeddial";
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
@@ -13,14 +14,16 @@ const defaults = {
 
 export const init = () => {
   document.addEventListener('keydown', getPressedKey);
+  document.addEventListener(`${loadPrefix}-video`, initPlayer);
+  initDispatch();
 };
 
 export const initPlayer = async () => {
-  if (!isVideoPage() || !window.videojs)
+  if (!isVideoPage())
     return;
   const player = await getAPlayer();
 
-  if (player.controlBar.children().find(c => c.name() === 'SpeedDial'))
+  if (!player || player.controlBar.children().find(c => c.name() === 'SpeedDial'))
     return; // already initialized this player
   
   const {
@@ -34,6 +37,10 @@ export const initPlayer = async () => {
   const comp = await SpeedDial(player, playbackChange);
   window.videojs.registerComponent("SpeedDial", comp);
   player.controlBar.addChild("SpeedDial", {});
+
+  player.on('ended', () => {
+    sendMessage('queueGotoNext', null, false);
+  });
 };
 
 export const findAPlayer = () => {

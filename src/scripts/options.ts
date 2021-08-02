@@ -1,5 +1,5 @@
-import { showLogs } from "../options/logs";
-import { standalone } from "../options/standalone";
+import { showLogs } from "./options/logs";
+import { standalone } from "./options/standalone";
 import { getBrowserInstance } from "./helpers/sharedBrowser";
 
 const cl = decodeURIComponent(window.location.hash.slice(1)).split(' ').filter(c => !!c);

@@ -1,8 +1,9 @@
 import iconWatchLater from "../../icons/watchlater.svg";
 import { durationLocation, queueBottonLocation } from '../helpers/locations';
 import { getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from "../helpers/sharedBrowser";
-import { handle } from './message';
+import { loadPrefix } from '../page/dispatcher';
 import { Queue } from "./queue";
+import { handle } from './message';
 
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
@@ -26,16 +27,14 @@ export const nebula = async () => {
 
   const mobile = isMobile();
   const { youtube, theatre, customScriptPage } = await getFromStorage({ youtube: false, theatre: false, customScriptPage: '' });
-  console.debug('Youtube:', youtube, 'Theatre Mode:', theatre, 'Video page?', isVideoPage());
+  console.debug('Youtube:', youtube, 'Theatre Mode:', theatre);
   theatreMode = theatre && !mobile;
 
   maybeLoadComments(youtube);
   
   const r = refreshTheatreMode.bind(null, menu);
-  const cb = mutation(() => {
-    // substitute hover listener
-    if (mobile)
-      Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
+  
+  document.addEventListener(`${loadPrefix}-video`, () => {
     maybeLoadComments(youtube);
     domRefreshTheatreMode(menu);
     const f = document.querySelector('iframe');
@@ -43,6 +42,12 @@ export const nebula = async () => {
     f.removeEventListener('fullscreenchange', r);
     f.addEventListener('fullscreenchange', r);
     f.setAttribute('allow', 'autoplay');
+  });
+
+  const cb = mutation(() => {
+    // substitute hover listener
+    if (isMobile())
+      Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
   });
   const m = new MutationObserver(cb);
   m.observe(document.querySelector('#root'), { subtree: true, childList: true });

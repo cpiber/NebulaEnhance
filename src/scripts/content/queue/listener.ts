@@ -63,6 +63,15 @@ export function msg(this: Queue, e: MessageEvent) {
   } catch { }
 }
 
+export function handleMessage(this: Queue, e: MessageEvent, msg: { type: string, [key: string]: any }): true {
+  switch (msg.type) {
+    case "queueGotoNext":
+      this.gotoNext();
+      break;
+  }
+  return true;
+}
+
 export function popState(this: Queue) {
   const match = window.location.pathname.match(/^\/videos\/(.+?)\/?$/);
   if (match === null) return this.goto(-1, false);
