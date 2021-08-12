@@ -14,8 +14,6 @@ export const load = async (doSave = false) => {
       els[prop].value = data[prop];
     }
   });
-  // transforms
-  els.targetQualities.value = (data.targetQualities as string[]).join(', ');
 
   if (doSave)
     save();

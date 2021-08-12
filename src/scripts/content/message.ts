@@ -11,7 +11,7 @@ const replyMessage = (e: MessageEvent, name: string, data: any, err?: any) => na
   );
 
 const parse = (e: MessageEvent) => {
-  if (!e.origin.match(/^https?:\/\/(?:player.zype.com|(?:.+\.)?nebula.app)$/))
+  if (!e.origin.match(/^https?:\/\/(?:.+\.)?nebula.app$/))
     return null;
   let d = e.data;
   try {

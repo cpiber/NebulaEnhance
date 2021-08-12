@@ -11,67 +11,38 @@ const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
 function getFromStorage(key: string | string[] | { [key: string]: any }) { return getBrowserInstance().storage.local.get(key); }
 
-let theatreMode = false;
 export const nebula = async () => {
   await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
 
-  const menu = document.querySelector('menu');
-  window.addEventListener('message', message.bind(null, menu));
+  window.addEventListener('message', handle);
   document.body.addEventListener('mouseover', hover);
   document.body.addEventListener('click', click);
   Queue.get(); // initialize
   window.addEventListener('hashchange', hashChange);
   hashChange();
-  window.addEventListener('focus', () => focusIframe());
-  focusIframe();
 
-  const mobile = isMobile();
-  const { youtube, theatre, customScriptPage } = await getFromStorage({ youtube: false, theatre: false, customScriptPage: '' });
-  console.debug('Youtube:', youtube, 'Theatre Mode:', theatre);
-  theatreMode = theatre && !mobile;
+  const { youtube, customScriptPage } = await getFromStorage({ youtube: false, customScriptPage: '' });
+  console.debug('Youtube:', youtube);
 
   maybeLoadComments(youtube);
   
-  const r = refreshTheatreMode.bind(null, menu);
-  
   document.addEventListener(`${loadPrefix}-video`, () => {
     maybeLoadComments(youtube);
-    domRefreshTheatreMode(menu);
-    const f = document.querySelector('iframe');
-    if (!f) return;
-    f.removeEventListener('fullscreenchange', r);
-    f.addEventListener('fullscreenchange', r);
-    f.setAttribute('allow', 'autoplay');
   });
 
   const cb = mutation(() => {
     // substitute hover listener
     if (isMobile())
       Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
-  });
+  }, 1000);
   const m = new MutationObserver(cb);
   m.observe(document.querySelector('#root'), { subtree: true, childList: true });
-  window.addEventListener('resize', updateTheatreMode.bind(null, menu));
   cb();
 
   // inject custom script (if available)
   if (customScriptPage)
     injectScript(document.body, customScriptPage);
 };
-
-const message = (menu: HTMLElement, e: MessageEvent) => {
-  const msg = handle(e);
-  if (msg === true)
-    return; // one of standard events
-  switch (msg.type) {
-    case "goTheatreMode":
-      return goTheatreMode(menu);
-    case "cancelTheatreMode":
-      return cancelTheatreMode();
-    case "toggleTheatreMode":
-      return theatreMode ? cancelTheatreMode() : goTheatreMode(menu);
-  }
-}
 
 const imgLink = (e: HTMLElement) => {
   // check if element is the image in a video link
@@ -169,68 +140,4 @@ const loadComments = async () => {
     e.append(er);
   }
   console.debug('Loading comments done.');
-};
-
-const maybeGoTheatreMode = (menu: HTMLElement) => {
-  if (isVideoPage())
-    setTimeout(goTheatreMode, 0, menu);
-};
-const goTheatreMode = (menu: HTMLElement) => {
-  const mh = menu.getBoundingClientRect().height;
-  const frame = document.querySelector('iframe');
-  if (!frame)
-    return;
-  const ratio = frame.clientWidth / frame.clientHeight;
-  const top = +window.getComputedStyle(frame.parentElement.parentElement).paddingTop.slice(0, -2);
-  if (!ratio)
-    return;
-  let newheight = window.innerHeight - 2 * mh - 2 * top;
-  let newwidth = ratio * newheight;
-  if (newwidth > window.innerWidth - top * 2) {
-    const ratio2 = frame.clientHeight / frame.clientWidth;
-    newwidth = window.innerWidth - top * 2;
-    newheight = ratio2 * newwidth;
-  }
-  if (!newheight || !newwidth)
-    return;
-  frame.parentElement.style.height = `${newheight}px`;
-  frame.parentElement.style.width = `${newwidth}px`;
-  theatreMode = true;
-};
-const cancelTheatreMode = () => {
-  const frame = document.querySelector('iframe');
-  if (!frame)
-    return;
-  frame.parentElement.style.height = '';
-  frame.parentElement.style.width = '';
-  theatreMode = false;
-};
-const updateTheatreMode = (menu: HTMLElement) => {
-  if (theatreMode)
-    maybeGoTheatreMode(menu);
-};
-const refreshTheatreMode = (menu: HTMLElement) => {
-  if (!theatreMode || !isVideoPage())
-    return;
-  cancelTheatreMode();
-  setTimeout(goTheatreMode, 0, menu);
-};
-const domRefreshTheatreMode = (() => {
-  let hadIFrame = false;
-  return (menu: HTMLElement) => {
-    const hasIFrame = document.querySelector('iframe');
-    if (!hadIFrame && hasIFrame)
-      refreshTheatreMode(menu);
-    if (theatreMode && !hasIFrame.style.height)
-      goTheatreMode(menu);
-    hadIFrame = !!hasIFrame;
-  };
-})();
-
-const focusIframe = (iter = 0) => {
-  if (!isVideoPage()) return;
-  if (iter > 10) return;
-  const f = document.querySelector('iframe');
-  if (!f) setTimeout(focusIframe, 100, iter + 1);
-  else f.focus();
 };

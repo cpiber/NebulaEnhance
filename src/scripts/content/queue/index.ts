@@ -2,7 +2,7 @@ import { getBrowserInstance } from '../../helpers/sharedBrowser';
 import { Store, VideoArray } from '../../helpers/VideoQueue';
 import { initDrag } from './drag';
 import { initElement, initMethods, QueueMethods } from './init';
-import { clickElements, clickTop, msg, popState } from './listener';
+import { clickElements, clickTop, popState } from './listener';
 
 const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
 
@@ -35,7 +35,6 @@ export class Queue extends QueueMethods {
 
     this.elementsEl.addEventListener('click', clickElements.bind(this));
     q.querySelector('.top').addEventListener('click', clickTop.bind(this));
-    window.addEventListener('message', msg.bind(this));
     window.addEventListener('popstate', popState.bind(this));
 
     this.shareEl.querySelector('.close').addEventListener('click', () => this.shareEl.classList.add('hidden'));

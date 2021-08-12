@@ -19,8 +19,6 @@ export default {
 	content_scripts: [
 		{
 			matches: [
-				"*://*.player.zype.com/embed/*",
-				"*://*.player.zype.com//embed/*",
 				"*://*.watchnebula.com/*",
 				"*://*.nebula.app/*"
 			],
@@ -34,7 +32,6 @@ export default {
 		}
 	],
 	web_accessible_resources: [
-		"scripts/zype.js",
 		"scripts/player.js"
 	],
 	permissions: [

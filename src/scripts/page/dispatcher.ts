@@ -10,7 +10,7 @@ const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
 export const init = () => {
   const cb = mutation(() => {
     loading();
-  }, 1000);
+  });
   const m = new MutationObserver(cb);
   m.observe(document.querySelector('#root'), { subtree: true, childList: true });
   cb();

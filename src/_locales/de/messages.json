@@ -31,14 +31,6 @@
     "message": "Aktivieren",
     "description": "Text neben Checkbox zum aktivieren eines Features."
   },
-  "optionsDefaultPlaybackRateTitle": {
-    "message": "Standard Abspielgeschwindigkeit",
-    "description": "Beschriftung für Standard Abspielgeschwindigkeit der Optionen Seite."
-  },
-  "optionsDefaultPlaybackRateHint": {
-    "message": "Die Abspielgeschwindigkeit (Speed) zu der der Videospieler zu Beginn gesetzt wird, z.B. <code>1.25</code>.",
-    "description": "Hilfstext für Standard Abspielgeschwindigkeit der Optionen Seite."
-  },
   "optionsPlaybackChangeRateTitle": {
     "message": "Geschwindigkeits-Änderungsrate",
     "description": "Beschriftung für Änderungsrate der Abspielgeschwindigkeit der Optionen Seite."
@@ -47,14 +39,6 @@
     "message": "Um wieviel die Geschwindigkeit geändert werden soll beim scrollen der Maus über dem neuen Speed Knopf, z.B. <code>0.1</code>.",
     "description": "Hilfstext für Änderungsrate der Abspielgeschwindigkeit der Optionen Seite."
   },
-  "optionsDefaultVolumeTitle": {
-    "message": "Standard Lautstärke",
-    "description": "Beschriftung für Standard Lautstärke der Optionen Seite."
-  },
-  "optionsDefaultVolumeHint": {
-    "message": "Die Lautstärke zu der der Videospieler zu Beginn gesetzt wird, z.B. <code>0.7</code>.",
-    "description": "Hilfstext für Standard Lautstärke der Optionen Seite."
-  },
   "optionsAutoplayTitle": {
     "message": "Autoplay",
     "description": "Beschriftung für Autoplay der Optionen Seite."
@@ -62,30 +46,6 @@
   "optionsAutoplayHint": {
     "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">https://demo.theoplayer.com/autoplay-policy</a>.",
     "description": "Hilfstext für Autoplay der Optionen Seite."
-  },
-  "optionsTargetQualitiesTitle": {
-    "message": "Zielqualitäten",
-    "description": "Beschriftung für Zielqualitäten der Optionen Seite."
-  },
-  "optionsTargetQualitiesHint": {
-    "message": "Die Höhen der Zielqualitäten des Videos, z.B. <code>1080, 720</code>.",
-    "description": "Hilfstext für Zielqualitäten der Optionen Seite."
-  },
-  "optionsSubtitlesTitle": {
-    "message": "Untertitel",
-    "description": "Beschriftung für Untertitel der Optionen Seite."
-  },
-  "optionsSubtitlesHint": {
-    "message": "Name der Sprache, für die Untertitel automatisch aktiviert werden sollen, z.B. <code>English</code>.",
-    "description": "Hilfstext für Untertitel der Optionen Seite."
-  },
-  "optionsTheatreTitle": {
-    "message": "Standardmäßig in Theater-Modus wechseln",
-    "description": "Beschriftung für Theater-Modus der Optionen Seite."
-  },
-  "optionsTheatreHint": {
-    "message": "Ob der Theater-Modus automatisch aktiviert werden soll oder nicht (Videospieler wird besser an Seite angepasst).",
-    "description": "Hilfstext für Theater-Modus der Optionen Seite."
   },
   "optionsLoadYoutubeTitle": {
     "message": "YouTube Videolink laden",
@@ -106,18 +66,6 @@
   "optionsCustomScriptPagePlaceholder": {
     "message": "Script zum Ausführen auf der Nebula Seite",
     "description": "Platzhalter fürs Einfügen von custom scripts zur Webseite der Optionen Seite."
-  },
-  "optionsCustomScriptZypeTitle": {
-    "message": "Custom Script für Videospieler",
-    "description": "Beschriftung fürs Einfügen von custom scripts zum Videospieler der Optionen Seite."
-  },
-  "optionsCustomScriptZypeHint": {
-    "message": "Erlaubt es, benutzerdefinierten JavaScript Code im iFrame des Videospielers auszuführen.",
-    "description": "Hilfstext fürs Einfügen von custom scripts zum Videospieler der Optionen Seite."
-  },
-  "optionsCustomScriptZypePlaceholder": {
-    "message": "Script zum Ausführen auf der Seite des Videospielers",
-    "description": "Platzhalter fürs Einfügen von custom scripts zum Videospieler der Optionen Seite."
   },
   "optionsCustomScriptWarning": {
     "message": "Achtung! Fügen Sie nur Code aus vertrauenswürdigen Quellen ein!",

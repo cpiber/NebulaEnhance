@@ -38,31 +38,6 @@ export function clickTop(this: Queue, e: MouseEvent) {
   this.toggle();
 }
 
-const next = Object.assign(function (this: Queue) {
-  if (!next.waitEnd)
-    return;
-  this.gotoNext();
-  next.waitEnd = false;
-  window.clearTimeout(next.timeout);
-}, { waitEnd: false, timeout: 0 });
-
-export function msg(this: Queue, e: MessageEvent) {
-  if (e.origin !== "https://player.zype.com" && e.origin !== "http://player.zype.com")
-    return;
-  try {
-    const m = JSON.parse(e.data);
-    switch (m.event) {
-      case "zype:complete":
-        next.timeout = window.setTimeout(next.bind(this), 5000); // timeout to ensure next is reached even without second event
-        next.waitEnd = true;
-        break;
-      case "zype:pause":
-        if (next.waitEnd) next.apply(this); // only if complete reached
-        break;
-    }
-  } catch { }
-}
-
 export function handleMessage(this: Queue, e: MessageEvent, msg: { type: string, [key: string]: any }): true {
   switch (msg.type) {
     case "queueGotoNext":

@@ -31,14 +31,6 @@
     "message": "Enable",
     "description": "Text next to enable/disable feature textbox."
   },
-  "optionsDefaultPlaybackRateTitle": {
-    "message": "Default playback rate",
-    "description": "Label for default playbackRate of options page."
-  },
-  "optionsDefaultPlaybackRateHint": {
-    "message": "The speed the player will be set to initially, e.g. <code>1.25</code>.",
-    "description": "Hint for default playbackRate of options page."
-  },
   "optionsPlaybackChangeRateTitle": {
     "message": "Playback speed change rate",
     "description": "Label for speed change rate of options page."
@@ -47,14 +39,6 @@
     "message": "The amount to change the speed when scrolling over the new speed button, e.g. <code>0.1</code>.",
     "description": "Hint for speed change rate of options page."
   },
-  "optionsDefaultVolumeTitle": {
-    "message": "Default volume",
-    "description": "Label for default volume of options page."
-  },
-  "optionsDefaultVolumeHint": {
-    "message": "The volume the player will be set to initially, e.g. <code>0.7</code>.",
-    "description": "Hint for default volume of options page."
-  },
   "optionsAutoplayTitle": {
     "message": "Autoplay",
     "description": "Label for Autoplay of options page."
@@ -62,30 +46,6 @@
   "optionsAutoplayHint": {
     "message": "Whether to make the video automatically play or not. Note that this depends on your browser, see <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">https://demo.theoplayer.com/autoplay-policy</a>.",
     "description": "Hint for Autoplay of options page."
-  },
-  "optionsTargetQualitiesTitle": {
-    "message": "Target qualities",
-    "description": "Label for target qualities of options page."
-  },
-  "optionsTargetQualitiesHint": {
-    "message": "The (heights of) the qualities to target, e.g. <code>1080, 720</code>.",
-    "description": "Hint for target qualities of options page."
-  },
-  "optionsSubtitlesTitle": {
-    "message": "Subtitles",
-    "description": "Label for subtitles of options page."
-  },
-  "optionsSubtitlesHint": {
-    "message": "Name of the subtitle languange to enable by default, e.g. <code>English</code>.",
-    "description": "Hint for subtitles of options page."
-  },
-  "optionsTheatreTitle": {
-    "message": "Go into theatre mode by default",
-    "description": "Label for theatre mode of options page."
-  },
-  "optionsTheatreHint": {
-    "message": "Whether to automatically enable theatre mode (make player fit the page better).",
-    "description": "Hint for theatre mode of options page."
   },
   "optionsLoadYoutubeTitle": {
     "message": "Load YouTube link",
@@ -106,18 +66,6 @@
   "optionsCustomScriptPagePlaceholder": {
     "message": "Script to execute on webpage",
     "description": "Placeholder for adding custom scripts to webpage of options page."
-  },
-  "optionsCustomScriptZypeTitle": {
-    "message": "Custom Script for player",
-    "description": "Label for adding custom scripts to player of options page."
-  },
-  "optionsCustomScriptZypeHint": {
-    "message": "Allows to add custom JavaScript code to be executed in the player's iFrame.",
-    "description": "Hint for adding custom scripts to player of options page."
-  },
-  "optionsCustomScriptZypePlaceholder": {
-    "message": "Script to execute on player page",
-    "description": "Placeholder for adding custom scripts to player of options page."
   },
   "optionsCustomScriptWarning": {
     "message": "Caution! Only insert code from trustworthy sources!",

@@ -33,6 +33,8 @@ export const initPlayer = async () => {
 
   console.debug('playbackChange:', playbackChange, 'autoplay:', autoplay);
   player.autoplay(autoplay);
+  if (autoplay)
+    player.play();
   
   const comp = await SpeedDial(player, playbackChange);
   window.videojs.registerComponent("SpeedDial", comp);
