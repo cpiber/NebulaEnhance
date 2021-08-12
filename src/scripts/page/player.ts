@@ -48,16 +48,16 @@ export const initPlayer = async () => {
 export const findAPlayer = () => {
   if (!window.videojs || !window.videojs.players)
     return undefined;
-  const key = Object.keys(window.videojs.players).find(k => !!window.videojs.players[k]);
-  if (!key)
+  const player = document.querySelector('.video-js');
+  if (!player)
     return undefined;
-  return window.videojs.players[key];
+  return window.videojs.players[player.id];
 };
 
-export const getAPlayer = () => new Promise<VideoJsPlayer>((resolve, reject) => {
+export const getAPlayer = (maxiter: number | null = 10) => new Promise<VideoJsPlayer>((resolve, reject) => {
   let iter = 0;
   const i = window.setInterval(() => {
-    if (iter++ > 10) {
+    if (maxiter !== null && iter++ > maxiter) {
       window.clearInterval(i);
       reject('No player found');
     }
