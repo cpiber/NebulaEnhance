@@ -1,10 +1,7 @@
-import { getBrowserInstance } from '../../helpers/sharedExt';
 import { Store, VideoArray } from '../../helpers/VideoQueue';
 import { initDrag } from './drag';
 import { initElement, initMethods, QueueMethods } from './init';
 import { clickElements, clickTop, popState } from './listener';
-
-const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
 
 export class Queue extends QueueMethods {
   protected static instance: Queue;
@@ -17,6 +14,9 @@ export class Queue extends QueueMethods {
   protected elementsEl: HTMLElement;
   protected titleEl: HTMLElement;
   protected numberEl: HTMLElement;
+  protected totalEl: HTMLElement;
+  protected prevEl: HTMLElement;
+  protected nextEl: HTMLElement;
   protected shareEl: HTMLElement;
   protected shareLinkEl: HTMLInputElement;
   protected shareHereEl: HTMLInputElement;
@@ -29,9 +29,9 @@ export class Queue extends QueueMethods {
     // remove existing elements from extension reload
     Array.from(document.querySelectorAll('.enhancer-queue')).forEach(n => n.remove());
 
-    const { q, o } = initElement.apply(this);
+    const q = initElement.apply(this);
 
-    this.queue = new VideoArray(this.elementsEl, function (this: VideoArray) { o.textContent = `${this.length}`; }, this.store);
+    this.queue = new VideoArray(this.elementsEl, this.updateText.bind(this), this.store);
 
     this.elementsEl.addEventListener('click', clickElements.bind(this));
     q.querySelector('.top').addEventListener('click', clickTop.bind(this));
@@ -53,16 +53,6 @@ export class Queue extends QueueMethods {
       this.containerEl.style.bottom = `-${this.elementsEl.getBoundingClientRect().height}px`;
     else
       this.containerEl.style.bottom = '';
-  }
-
-  updateText() {
-    this.titleEl.textContent = this.store[this.queue[this.queuepos]]?.title;
-    this.numberEl.textContent = this.queuepos >= 0 ? `${this.queuepos + 1}` : '-';
-  }
-
-  clearText() {
-    this.titleEl.textContent = nothingToPlay;
-    this.numberEl.textContent = '-';
   }
 
   setShare() {

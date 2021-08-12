@@ -1,7 +1,7 @@
 import type { Queue } from './index';
 import { clear, enqueue, enqueueNow, remove } from './enqueue';
 import { html } from './html';
-import { goto, gotoNext, gotoPrev } from './go';
+import { goto, gotoNext, gotoPrev, updateText } from './go';
 import { move, reverse, set, toggle } from './transform';
 import { addToStore } from './add';
 import { handleMessage } from './listener';
@@ -27,6 +27,7 @@ export class QueueMethods {
   reverse: typeof reverse;
   addToStore: typeof addToStore;
   handleMessage: typeof handleMessage;
+  updateText: typeof updateText;
 }
 
 export function initElement(this: Queue) {
@@ -35,14 +36,16 @@ export function initElement(this: Queue) {
   q.className = 'enhancer-queue hidden';
   q.innerHTML = html;
   this.elementsEl = q.querySelector('.elements');
-  const o = q.querySelector('.of');
   this.titleEl = q.querySelector('.title');
   this.numberEl = q.querySelector('.no');
+  this.totalEl = q.querySelector('.of');
+  this.prevEl = q.querySelector('.prev');
+  this.nextEl = q.querySelector('.next');
   this.shareEl = q.querySelector('.enhancer-queue-share-bg');
   this.shareLinkEl = this.shareEl.querySelector('input[type="text"]');
   this.shareHereEl = this.shareEl.querySelector('input[type="checkbox"]');
   document.body.append(q);
-  return { q, o };
+  return q;
 }
 
 export function initMethods(this: Queue) {
@@ -59,4 +62,5 @@ export function initMethods(this: Queue) {
   this.reverse = reverse.bind(this);
   this.addToStore = addToStore.bind(this) as typeof addToStore;
   this.handleMessage = handleMessage.bind(this);
+  this.updateText = updateText.bind(this);
 }

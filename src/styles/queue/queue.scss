@@ -104,6 +104,16 @@
     .next svg {
       transform: scale($nextscale);
     }
+
+    .prev, .next {
+      pointer-events: none;
+      opacity: 0.55;
+
+      &.clickable {
+        pointer-events: inherit;
+        opacity: 1;
+      }
+    }
   }
 
   .elements {

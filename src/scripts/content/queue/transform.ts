@@ -21,8 +21,8 @@ export function move(this: Queue, orig: number, index: number) {
     if (this.queuepos === orig) this.queuepos = index;
     else if (orig > this.queuepos && index <= this.queuepos) this.queuepos++;
     else if (orig < this.queuepos && index >= this.queuepos) this.queuepos--;
-    this.updateText();
   }
+  this.updateText();
   return elem[0];
 }
 
@@ -39,7 +39,7 @@ export async function set(this: Queue, newq: string[] | Nebula.Video[], current?
     // use timeout to make sure dom is updated
     setTimeout(() => this.goto(this.queue.indexOf(current), false), 0);
   else
-    this.clearText(); // new queue, nothing playing
+    this.updateText(); // new queue, nothing playing
   this.containerEl.classList.toggle('hidden', q.length === 0);
   this.calcBottom(this.containerEl.classList.contains('down'));
   return q;

@@ -53,6 +53,5 @@ export function remove(this: Queue, index: number) {
 export function clear(this: Queue, ) {
   this.queuepos = -1;
   this.queue.splice2(0, this.queue.length);
-  this.clearText();
   this.containerEl.classList.add('hidden');
 }

@@ -1,5 +1,7 @@
-import { isChrome } from '../../helpers/sharedExt';
+import { getBrowserInstance } from '../../helpers/sharedExt';
 import type { Queue } from './index';
+
+const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
 
 export function goto(this: Queue, index: number, go = true) {
   if (index < 0 || index >= this.queue.length) return;
@@ -20,10 +22,8 @@ export function goto(this: Queue, index: number, go = true) {
   if (index >= 0) {
     this.elementsEl.children[index]?.classList.add('playing');
     this.elementsEl.children[index]?.scrollIntoView();
-    this.updateText();
-  } else {
-    this.clearText();
   }
+  this.updateText();
   // chrome does not do this for us
   const yt = document.querySelector('.enhancer-yt');
   if (yt) {
@@ -39,4 +39,12 @@ export function gotoNext(this: Queue) {
 
 export function gotoPrev(this: Queue) {
   return this.goto(this.queuepos - 1);
+}
+
+export function updateText(this: Queue) {
+  this.titleEl.textContent = this.queuepos >= 0 ? this.store[this.queue[this.queuepos]]?.title : nothingToPlay;
+  this.numberEl.textContent = this.queuepos >= 0 ? `${this.queuepos + 1}` : '-';
+  this.totalEl.textContent = `${this.queue.length}`;
+  this.prevEl.classList.toggle('clickable', this.queuepos > 0);
+  this.nextEl.classList.toggle('clickable', this.queuepos < this.queue.length - 1);
 }
