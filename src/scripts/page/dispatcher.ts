@@ -5,7 +5,8 @@ export const navigatePrefix = `${eventPrefix}-navigate` as const;
 export const loadPrefix = `${eventPrefix}-load` as const;
 export const knownPages = ['myshows', 'videos', 'podcasts', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs'] as const;
 
-const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
+export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
+export const creatorRegex = /^\/([^\/]+)(?:\/(.+))?\/?$/;
 
 export const init = () => {
   const cb = mutation(() => {
@@ -40,7 +41,7 @@ const navigation = () => {
   const kmatch = newpath.match(knownRegex);
   if (kmatch)
     return naviage(kmatch[1], oldurl, { more: kmatch[2] });
-  const cmatch = newpath.match(/^\/([^\/]+)(?:\/(.+))?\/?$/);
+  const cmatch = newpath.match(creatorRegex);
   return naviage('creator', oldurl, { who: cmatch[1], more: cmatch[2] });
 };
 
@@ -60,6 +61,7 @@ const loading = () => {
     return;
   switch (currentDetail.detail.page) {
     case 'video':
+    case 'creator':
       if (document.querySelectorAll('h2').length >= 2)
         load();
       break;

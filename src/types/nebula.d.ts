@@ -40,11 +40,20 @@ declare namespace Nebula {
     instagram: string,
     facebook: string,
     merch: string,
-    merch_collection: null,
+    merch_collection: string,
     share_url: string,
     engagement: Engagement,
     playlists: Playlist[],
     zype_id: string,
+  }
+
+  type VideoRequest = {
+    details: Channel,
+    episodes: {
+      next: string,
+      previous: string,
+      results: Video[],
+    },
   }
 
   type Category = {

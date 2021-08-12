@@ -1,10 +1,15 @@
 import { creatorLocation, durationLocation, titleLocation } from '../../helpers/locations';
-import { getCookie } from '../../helpers/shared';
 import { video } from '../../helpers/VideoQueue';
 import { getVideo } from '../api';
 import type { Queue } from './index';
 
-export async function addToStore(this: Queue, name: string, el?: HTMLElement): Promise<video> {
+export async function addToStore(this: Queue, name: string, el?: HTMLElement): Promise<video>;
+export async function addToStore(this: Queue, name: Nebula.Video[]): Promise<video[]>;
+export async function addToStore(this: Queue, name: string | Nebula.Video[], el?: HTMLElement): Promise<video | video[]> {
+  if (typeof name !== "string") {
+    return name.map(v => this.store[v.slug] = extractData(v));
+  }
+
   console.debug('Added video', name);
   if (!(el instanceof HTMLElement)) {
     if (this.store[name])
@@ -25,6 +30,10 @@ const requestData = async (name: string) => {
 
   if (!data?.slug || data.slug !== name)
     throw new Error(`Invalid response: ${JSON.stringify(data)}`);
+  return extractData(data);
+};
+
+export const extractData = (data: Nebula.Video) => {
   const minutes = Math.floor(data.duration / 60);
   const t = Object.keys(data.assets.thumbnail);
   const highest = t[t.length - 1];

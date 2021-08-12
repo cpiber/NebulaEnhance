@@ -47,6 +47,17 @@ div.enhancer-queueButton {
   }
 }
 
+a.enhancer-queueButtonAll {
+  color: inherit;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    fill: white;
+    fill: currentColor;
+  }
+}
+
 .enhancer-yt-err {
   display: none;
 }

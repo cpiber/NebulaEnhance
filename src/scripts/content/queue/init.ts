@@ -55,7 +55,7 @@ export function initMethods(this: Queue) {
   this.gotoPrev = gotoPrev.bind(this);
   this.toggle = toggle.bind(this);
   this.move = move.bind(this);
-  this.set = set.bind(this);
+  this.set = set.bind(this) as typeof set;
   this.reverse = reverse.bind(this);
   this.addToStore = addToStore.bind(this) as typeof addToStore;
   this.handleMessage = handleMessage.bind(this);

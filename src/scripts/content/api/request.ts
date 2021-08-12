@@ -1,6 +1,7 @@
+import type { Queue } from '../queue';
 import { opt, refreshToken } from './store';
 
-const request = async (url: string, init?: RequestInit) => {
+const request = async <T = any>(url: string, init?: RequestInit) => {
   if (opt.auth === null)
     await refreshToken();
 
@@ -22,13 +23,45 @@ const request = async (url: string, init?: RequestInit) => {
     const body = await req.json();
 
     if (body.detail !== 'Signature has expired')
-      return body;
+      return body as T;
     
     await refreshToken();
   }
 };
 
-export const getVideo = (name: string) => request(`https://content.watchnebula.com/video/${name}/`, { 
+export const getVideo = (name: string) => request<Nebula.Video>(`https://content.watchnebula.com/video/${name}/`, { 
   "referrer": `https://nebula.app/videos/${name}`,
   "method": "GET",
-}) as Promise<Nebula.Video>;
+});
+
+export const getChannelVideos = async (name: string) => {
+  const vids: Nebula.Video[] = [];
+  let url = `https://content.watchnebula.com/video/channels/${name}`;
+
+  while (url) {
+    const body = await request<Nebula.VideoRequest>(url, {
+      "referrer": `https://nebula.app/${name}`,
+      "method": "GET",
+    });
+    url = body.episodes.next;
+    Array.prototype.push.apply(vids, body.episodes.results);
+  }
+  return vids;
+};
+
+export const enqueueChannelVideos = async (q: Queue, name: string) => {
+  let url = `https://content.watchnebula.com/video/channels/${name}`;
+  // q.clear();
+
+  while (url) {
+    const body = await request<Nebula.VideoRequest>(url, {
+      "referrer": `https://nebula.app/${name}`,
+      "method": "GET",
+    });
+    url = body.episodes.next;
+    const vids = body.episodes.results;
+    const slugs = vids.map(v => v.slug);
+    await q.addToStore(vids);
+    q.enqueue(slugs);
+  }
+}

@@ -1,9 +1,10 @@
 import iconWatchLater from "../../icons/watchlater.svg";
 import { durationLocation, queueBottonLocation } from '../helpers/locations';
 import { getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from "../helpers/sharedExt";
-import { loadPrefix } from '../page/dispatcher';
-import { Queue } from "./queue";
+import { creatorRegex, loadPrefix } from '../page/dispatcher';
+import { enqueueChannelVideos } from './api';
 import { handle } from './message';
+import { Queue } from "./queue";
 
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
@@ -28,6 +29,9 @@ export const nebula = async () => {
   
   document.addEventListener(`${loadPrefix}-video`, () => {
     maybeLoadComments(youtube);
+  });
+  document.addEventListener(`${loadPrefix}-creator`, () => {
+    createLinkForAll();
   });
 
   const cb = mutation(() => {
@@ -75,6 +79,19 @@ const createLink = (img: HTMLImageElement) => {
 const click = async (e: MouseEvent) => {
   const q = Queue.get();
   const target = e.target as HTMLElement;
+
+  const addAll = target.closest('.enhancer-queueButtonAll');
+  if (addAll !== null) {
+    e.preventDefault();
+    const creator = window.location.pathname.match(creatorRegex)[1];
+    document.body.style.cursor = "wait";
+    (document.activeElement as HTMLElement).blur();
+    // Queue.get().set(await getChannelVideos(creator));
+    await enqueueChannelVideos(Queue.get(), creator);
+    document.body.style.cursor = "";
+    return;
+  }
+
   const later = target.closest('.enhancer-queueButton');
   const link = target.closest<HTMLAnchorElement>(videoselector);
   if (link === null)
@@ -140,4 +157,18 @@ const loadComments = async () => {
     e.append(er);
   }
   console.debug('Loading comments done.');
+};
+
+const createLinkForAll = () => {
+  document.querySelector('.enhancer-queueButtonAll')?.remove();
+  const container = document.querySelector('picture + div > p + div');
+  if (!container)
+    return;
+  
+  const link = !container.children.length ? document.createElement('a') : container.children[0].cloneNode(true) as HTMLLinkElement;
+  link.style.color = link.querySelector('svg')?.getAttribute('fill');
+  link.innerHTML = iconWatchLater;
+  link.href = '#';
+  link.classList.add('enhancer-queueButton', 'enhancer-queueButtonAll');
+  container.appendChild(link);
 };
