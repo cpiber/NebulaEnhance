@@ -1,8 +1,14 @@
 import { addToQueue, expectQueueLength, qbuttSelector, queueSelector, titles, videoSelector } from "../shared";
 
-describe('videos page', () => {
-  jest.setTimeout(10000);
+jest.setTimeout(10000);
 
+beforeAll(async () => {
+  await page.goto(__NEBULA_BASE__);
+  await page.waitForSelector('.CookieConsent-Button');
+  await page.click('.CookieConsent-Button');
+});
+
+describe('videos page', () => {
   beforeEach(async () => {
     await page.goto(`${__NEBULA_BASE__}/videos`);
     await page.waitForSelector(videoSelector);

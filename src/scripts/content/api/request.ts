@@ -8,12 +8,11 @@ const request = async <T = any>(url: string, init?: RequestInit) => {
   while (true) {
     const auth = opt.auth ? { "Authorization": `Bearer ${opt.auth}` } : {};
     const i = Object.assign({}, init, {
-      "credentials": "include",
+      "credentials": "omit",
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Accept-Language": "en,en-US;q=0.5",
         "Nebula-Platform": "web",
-        "Sec-GPC": "1",
         ...auth,
       },
       "mode": "cors"

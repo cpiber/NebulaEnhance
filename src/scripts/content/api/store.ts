@@ -15,7 +15,7 @@ export const refreshToken = async () => {
   const apiAuth = apiToken ? { "Authorization": `Token ${apiToken}` } : {};
 
   const req = await fetch("https://api.watchnebula.com/api/v1/authorization/", {
-    "credentials": "include",
+    "credentials": "omit",
     "headers": {
       "Accept": "application/json, text/plain, */*",
       "Accept-Language": "en-US,en;q=0.5",
