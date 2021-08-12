@@ -1,4 +1,4 @@
-import { getBrowserInstance } from '../../helpers/sharedBrowser';
+import { getBrowserInstance } from '../../helpers/sharedExt';
 import type { Queue } from './index';
 
 const confirmClear = getBrowserInstance().i18n.getMessage('pageQueueClearConfirm');

@@ -1,4 +1,4 @@
-import { isChrome } from '../../helpers/sharedBrowser';
+import { isChrome } from '../../helpers/sharedExt';
 import type { Queue } from './index';
 
 export function goto(this: Queue, index: number, go = true) {

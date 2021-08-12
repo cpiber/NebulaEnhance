@@ -104,3 +104,16 @@ const sendMessageCB = (resolve: (value: any) => void, reject: (value: any) => vo
   else
     resolve(msg.res);
 };
+
+export const getCookie = (name: string) => {
+  const cookieArr = document.cookie.split(";");
+  for (const cookie of cookieArr) {
+    const cookiePair = cookie.split("=");
+    
+    if(name == cookiePair[0].trim()) {
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+  
+  return null;
+}

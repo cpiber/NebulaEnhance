@@ -1,4 +1,4 @@
-import { getBrowserInstance } from '../helpers/sharedBrowser';
+import { getBrowserInstance } from '../helpers/sharedExt';
 import { Settings, toData } from './settings';
 
 const els = Settings.get();

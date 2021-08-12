@@ -1,4 +1,4 @@
-import { getBrowserInstance } from "./helpers/sharedBrowser";
+import { getBrowserInstance } from "./helpers/sharedExt";
 import { load } from './options/form';
 import { showLogs } from "./options/logs";
 import { Settings } from './options/settings';

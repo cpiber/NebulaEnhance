@@ -1,4 +1,4 @@
-import { clone, getBrowserInstance, videosettings } from '../helpers/sharedBrowser';
+import { clone, getBrowserInstance, videosettings } from '../helpers/sharedExt';
 import { Queue } from './queue';
 
 const local = getBrowserInstance().storage.local;

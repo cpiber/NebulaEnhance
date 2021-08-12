@@ -1,7 +1,7 @@
 import marked from 'marked';
 import DOMPurify from 'dompurify';
 import closeIcon from '../../icons/close.svg';
-import { getBrowserInstance } from "../helpers/sharedBrowser";
+import { getBrowserInstance } from "../helpers/sharedExt";
 
 const msg = getBrowserInstance().i18n.getMessage;
 const owner = 'cpiber';

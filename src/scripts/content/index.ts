@@ -1,6 +1,6 @@
 import iconWatchLater from "../../icons/watchlater.svg";
 import { durationLocation, queueBottonLocation } from '../helpers/locations';
-import { getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from "../helpers/sharedBrowser";
+import { getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from "../helpers/sharedExt";
 import { loadPrefix } from '../page/dispatcher';
 import { Queue } from "./queue";
 import { handle } from './message';

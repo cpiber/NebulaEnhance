@@ -1,6 +1,4 @@
-// @ts-ignore
-import type { Browser } from '@types/puppeteer';
-import { findAPlayer, getAPlayer } from '../../src/scripts/page/player';
+import type { Browser } from 'puppeteer';
 import { videoSelector } from '../shared';
 
 const formSelector = '#NebulaApp > :nth-child(2) > :nth-child(2) form';

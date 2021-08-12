@@ -1,4 +1,4 @@
-import { getBrowserInstance } from '../../helpers/sharedBrowser';
+import { getBrowserInstance } from '../../helpers/sharedExt';
 import iconClose from "../../../icons/close.svg";
 import iconNext from "../../../icons/next.svg";
 import iconReverse from "../../../icons/reverse.svg";

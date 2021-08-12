@@ -1,5 +1,7 @@
 import { creatorLocation, durationLocation, titleLocation } from '../../helpers/locations';
+import { getCookie } from '../../helpers/shared';
 import { video } from '../../helpers/VideoQueue';
+import { getVideo } from '../api';
 import type { Queue } from './index';
 
 export async function addToStore(this: Queue, name: string, el?: HTMLElement): Promise<video> {
@@ -18,45 +20,18 @@ export async function addToStore(this: Queue, name: string, el?: HTMLElement): P
   };
 }
 
-type thumb = {
-  aspect_ratio: number,
-  height: number,
-  width: number,
-  url: string,
-  name: string,
-};
-type cat = {
-  _id: string,
-  category_id: string,
-  title: string,
-  value: string[],
-};
 const requestData = async (name: string) => {
-  // fetch video data from api and extract video object
-  const res = await fetch(
-    `https://api.zype.com/videos?friendly_title=${name}&per_page=1&api_key=JlSv9XTImxelHi-eAHUVDy_NUM3uAtEogEpEdFoWHEOl9SKf5gl9pCHB1AYbY3QF`,
-    {
-      "credentials": "omit",
-      "headers": {
-        "Accept": "application/json, text/plain, */*",
-        "Accept-Language": "en-US,en;q=0.5",
-        "Cache-Control": "max-age=0"
-      },
-      "referrer": `https://nebula.app/videos/${name}`,
-      "method": "GET",
-      "mode": "cors"
-    }
-  );
-  const data = await res.json();
+  const data = await getVideo(name);
 
-  if (!data?.response?.length || data.response.length !== 1)
+  if (!data?.slug || data.slug !== name)
     throw new Error(`Invalid response: ${JSON.stringify(data)}`);
-  const vid = data.response[0];
-  const minutes = Math.floor(vid.duration / 60);
+  const minutes = Math.floor(data.duration / 60);
+  const t = Object.keys(data.assets.thumbnail);
+  const highest = t[t.length - 1];
   return {
-    length: `${minutes}:${(vid.duration - minutes * 60).pad(2)}`,
-    thumbnail: (vid.thumbnails as thumb[])[0].url,
-    title: vid.title,
-    creator: (vid.categories as cat[]).find(c => c.value.length).value[0]
+    length: `${minutes}:${(data.duration - minutes * 60).pad(2)}`,
+    thumbnail: data.assets.thumbnail[highest].original,
+    title: data.title,
+    creator: data.channel_title,
   };
 };

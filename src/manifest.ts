@@ -36,7 +36,8 @@ export default {
 	],
 	permissions: [
 		"storage",
-		"*://api.zype.com/*"
+		"*://content.watchnebula.com/*",
+		"*://api.watchnebula.com/*",
 	],
 	optional_permissions: [
 		"*://standard.tv/*",

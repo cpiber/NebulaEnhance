@@ -1,4 +1,4 @@
-import { getBrowserInstance } from '../../helpers/sharedBrowser';
+import { getBrowserInstance } from '../../helpers/sharedExt';
 import { Store, VideoArray } from '../../helpers/VideoQueue';
 import { initDrag } from './drag';
 import { initElement, initMethods, QueueMethods } from './init';
