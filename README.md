@@ -1,16 +1,18 @@
+<!-- LTeX: language=en-US -->
+
 [English](README.md) / [Deutsch](README.DE.md)
 
 [![Build + Test](https://github.com/cpiber/NebulaEnhance/actions/workflows/node.js.yml/badge.svg)](https://github.com/cpiber/NebulaEnhance/actions/workflows/node.js.yml)
-[![Dependencies](https://status.david-dm.org/gh/cpiber/NebulaEnhance.svg)](https://david-dm.org/cpiber/NebulaEnhance)
-[![DevDependencies](https://status.david-dm.org/gh/cpiber/NebulaEnhance.svg?type=dev)](https://david-dm.org/cpiber/NebulaEnhance?type=dev)
-[![codecov](https://codecov.io/gh/cpiber/NebulaEnhance/branch/master/graph/badge.svg?token=k09ukOWzD4)](https://codecov.io/gh/cpiber/NebulaEnhance)
+[![Dependencies](https://badgen.net/david/dep/cpiber/NebulaEnhance/)](https://david-dm.org/cpiber/NebulaEnhance)
+[![DevDependencies](https://badgen.net/david/dev/cpiber/NebulaEnhance/)](https://david-dm.org/cpiber/NebulaEnhance?type=dev)
+[![codecov](https://badgen.net/codecov/c/github/cpiber/NebulaEnhance)](https://codecov.io/gh/cpiber/NebulaEnhance)
 
 
 # Enhancer for Nebula
 
 Heavily inspired by [Enhancer for YouTube&trade;](https://www.mrfdev.com/enhancer-for-youtube)
 
-This extension aspires to bring some useful features to the [Nebula](https://watchnebula.com) site.
+This extension aspires to bring some useful features to the [Nebula](https://nebula.app) site.
 
 
 
@@ -18,8 +20,8 @@ This extension aspires to bring some useful features to the [Nebula](https://wat
 
 This extension is available on the official add-on stores:
 
-- Firefox: [Get from Mozilla](https://addons.mozilla.org/en-US/firefox/addon/enhancer-for-nebula/)
-- Chromium: [Get from Chrome Webstore](https://chrome.google.com/webstore/detail/enhancer-for-nebula/niaholaehmipmbpoagjmdlocnhakeonl?hl=de)
+- Firefox: [![amo](https://badgen.net/amo/v/enhancer-for-nebula)](https://addons.mozilla.org/en-US/firefox/addon/enhancer-for-nebula/) 
+- Chromium: [![chrome](https://badgen.net/chrome-web-store/v/niaholaehmipmbpoagjmdlocnhakeonl)](https://chrome.google.com/webstore/detail/enhancer-for-nebula/niaholaehmipmbpoagjmdlocnhakeonl)
 
 The most recent releases are available [here](https://github.com/cpiber/NebulaEnhance/releases).
 

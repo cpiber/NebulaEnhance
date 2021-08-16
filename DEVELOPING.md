@@ -64,7 +64,7 @@ NebulaEnhance
  ├─> src
  │   ├─> _locales -- Locale files (see https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization)
  │   ├─> icons -- Icon files.
- │   ├── manifest.js -- Compiles to manifest.json.
+ │   ├── manifest.ts -- Compiles to manifest.json.
  │   ├─> options -- Assets for options page.
  │   ├─> scripts -- All scripts bundled in the extension proper. Top level files are entry points.
  │   │   ├─> content -- Code relevant for nebula page.
