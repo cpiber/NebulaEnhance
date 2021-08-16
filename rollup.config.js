@@ -162,11 +162,9 @@ const other = (args) => {
 const testsInternal = () => ({
   output: {
     format: 'cjs',
-    globals: 'fetch',
     exports: 'auto',
     sourcemap: true,
   },
-  external: [ 'node-fetch', 'jsdom' ],
   context: "window",
   plugins: [
     typescript({
