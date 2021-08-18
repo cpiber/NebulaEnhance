@@ -32,7 +32,7 @@ export async function set(this: Queue, newq: string[] | Nebula.Video[], current?
   if (newq.length === 0)
     return this.clear();
 
-  const q = newq.findIndex(e => typeof e !== "string") === -1 ? await setStr.call(this, newq as string[]) : setVid.call(this, newq as Nebula.Video[]);
+  const q = newq.findIndex(e => typeof e !== 'string') === -1 ? await setStr.call(this, newq as string[]) : setVid.call(this, newq as Nebula.Video[]);
   
   this.queue.splice2(0, this.queue.length, q); // replace current queue
   if (current)

@@ -1,4 +1,4 @@
-/// <reference path="../../src/types/global.d.ts"/>
+import '../../src/types/global.d.ts';
 import { JSDOM } from 'jsdom';
 import { clone, dot, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, sendMessage } from '../../src/scripts/helpers/shared';
 
@@ -68,22 +68,22 @@ describe('array equality', () => {
 
 describe('number pad', () => {
   test('strange length', () => {
-    expect((5).pad(-5)).toBe("5");
-    expect((5).pad(0)).toBe("5");
+    expect((5).pad(-5)).toBe('5');
+    expect((5).pad(0)).toBe('5');
   });
 
   test('shorter', () => {
-    expect((5).pad(2)).toBe("05");
-    expect((50).pad(5)).toBe("00050");
+    expect((5).pad(2)).toBe('05');
+    expect((50).pad(5)).toBe('00050');
   });
 
   test('exact', () => {
-    expect((5).pad(1)).toBe("5");
-    expect((50).pad(2)).toBe("50");
+    expect((5).pad(1)).toBe('5');
+    expect((50).pad(2)).toBe('50');
   });
 
   test('longer', () => {
-    expect((50).pad(1)).toBe("50");
+    expect((50).pad(1)).toBe('50');
   });
 });
 
@@ -182,7 +182,7 @@ describe('script injection', () => {
   test('injecting with file works', async () => {
     const log = console.log;
     console.log = jest.fn();
-    const dom = new JSDOM(``, { url: `file://${__dirname}/index.html`, runScripts: "dangerously", resources: "usable" });
+    const dom = new JSDOM('', { url: `file://${__dirname}/index.html`, runScripts: 'dangerously', resources: 'usable' });
     
     const wrapper = dom.window.document.head;
     await expect(injectScript('../fixtures/log.js', wrapper, null, null, dom.window as never as Window)).resolves.toBe(void 0);
@@ -202,7 +202,7 @@ describe('script injection', () => {
   test('injecting with invalid file rejects', async () => {
     const err = console.error;
     console.error = jest.fn();
-    const dom = new JSDOM(``, { url: `file://${__dirname}/index.html`, runScripts: "dangerously", resources: "usable" });
+    const dom = new JSDOM('', { url: `file://${__dirname}/index.html`, runScripts: 'dangerously', resources: 'usable' });
     
     const wrapper = dom.window.document.head;
     await expect(injectScript('./__invalid__.js', wrapper, null, null, dom.window as never as Window)).rejects.not.toBeUndefined();
@@ -212,7 +212,7 @@ describe('script injection', () => {
   test('injecting with data works', async () => {
     const log = console.log;
     const mock = console.log = jest.fn();
-    const dom = new JSDOM(``, { url: `file://${__dirname}/index.html`, runScripts: "dangerously", resources: "usable" });
+    const dom = new JSDOM('', { url: `file://${__dirname}/index.html`, runScripts: 'dangerously', resources: 'usable' });
     
     const wrapper = dom.window.document.head;
     await expect(injectScript('../fixtures/waitForEvent.js', wrapper, 'test', 'data', dom.window as never as Window)).resolves.toBe(void 0);
@@ -232,6 +232,7 @@ describe('message sending', () => {
   });
 
   const t = (setup: () => void | Promise<void>, ...checks: ((e: MessageEvent) => void | Promise<void>)[]) => () => Promise.all([
+    /* eslint-disable-next-line no-async-promise-executor */
     new Promise(async resolve => {
       let i = 0;
       mock.mockImplementation(async (e: MessageEvent) => {
@@ -289,7 +290,7 @@ describe('message sending', () => {
   }, (e: MessageEvent) => {
     const d = JSON.parse(e.data);
     expect(d.hi).toBe('there');
-    window.postMessage(d.name, "*");
+    window.postMessage(d.name, '*');
   }, (e: MessageEvent) => {
     expect(e.data).toContain('enhancer-message-');
   }));

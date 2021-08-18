@@ -40,7 +40,7 @@ export function clickTop(this: Queue, e: MouseEvent) {
 
 export function handleMessage(this: Queue, e: MessageEvent, msg: { type: string, [key: string]: any }): true {
   switch (msg.type) {
-    case "queueGotoNext":
+    case 'queueGotoNext':
       this.gotoNext();
       break;
   }

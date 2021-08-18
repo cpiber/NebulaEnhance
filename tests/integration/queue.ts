@@ -1,4 +1,4 @@
-import { addToQueue, expectQueueLength, qbuttSelector, queueSelector, titles, videoSelector } from "../shared";
+import { addToQueue, expectQueueLength, qbuttSelector, queueSelector, titles, videoSelector } from '../shared';
 
 jest.setTimeout(10000);
 
@@ -53,8 +53,8 @@ describe('videos page', () => {
     expect(
       await page.evaluate(sel =>
         Array.from(document.querySelector(`${sel} .elements`).children)
-        .map(e => !e.querySelector('.creator').textContent.match(/.+ • \d+:\d{2}/))
-        .reduce((prev, cur) => prev || cur, false), queueSelector)
+          .map(e => !e.querySelector('.creator').textContent.match(/.+ • \d+:\d{2}/))
+          .reduce((prev, cur) => prev || cur, false), queueSelector),
     ).toBe(false);
   });
 
@@ -70,11 +70,11 @@ describe('videos page', () => {
   test('can remove individual videos', async () => {
     await addToQueue(4);
     await expectQueueLength().toBe(4);
-    await expect(page.evaluate(sel => document.querySelector(`${sel} .top .of`).textContent, queueSelector)).resolves.toBe("4");
+    await expect(page.evaluate(sel => document.querySelector(`${sel} .top .of`).textContent, queueSelector)).resolves.toBe('4');
     // page.click doesn't work, because the element is hidden and hovering first does not help
     await page.evaluate(sel => document.querySelector<HTMLSpanElement>(`${sel} .element:nth-child(2) .r`).click(), queueSelector);
     await expectQueueLength().toBe(3);
-    await expect(page.evaluate(sel => document.querySelector(`${sel} .top .of`).textContent, queueSelector)).resolves.toBe("3");
+    await expect(page.evaluate(sel => document.querySelector(`${sel} .top .of`).textContent, queueSelector)).resolves.toBe('3');
     await page.evaluate(sel => document.querySelector<HTMLSpanElement>(`${sel} .element:nth-child(1) .r`).click(), queueSelector);
     await expectQueueLength().toBe(2);
     await page.evaluate(sel => document.querySelector<HTMLSpanElement>(`${sel} .element:nth-child(2) .r`).click(), queueSelector);
@@ -91,7 +91,7 @@ describe('videos page', () => {
     await expect(page.url()).toMatch(/videos/);
     await expect(page.title()).resolves.toContain(title);
     await expect(page.evaluate(sel => document.querySelector(`${sel} .top .title`).textContent, queueSelector)).resolves.toBe(title);
-    await expect(page.evaluate(sel => document.querySelector(`${sel} .top .no`).textContent, queueSelector)).resolves.toBe("1");
+    await expect(page.evaluate(sel => document.querySelector(`${sel} .top .no`).textContent, queueSelector)).resolves.toBe('1');
     await page.waitForSelector(`${queueSelector} .element .play`, { visible: true });
   });
 

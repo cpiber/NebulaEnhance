@@ -10,13 +10,14 @@ export type Video = {
   videoId: string,
 };
 
-export const normalizeString = (str: string) => str.toLowerCase().normalize("NFD").replace(/\p{Pd}/g, '-').replace(/["'\(\)\[\]\{\}\u0300-\u036f]/g, '')
+/* eslint-disable-next-line no-misleading-character-class */
+export const normalizeString = (str: string) => str.toLowerCase().normalize('NFD').replace(/\p{Pd}/g, '-').replace(/["'()[\]{}\u0300-\u036f]/g, '');
 
 export const loadCreators = async () => {
   const res = await fetch('https://standard.tv/creators/');
   const body = await res.text();
   const parser = new DOMParser();
-  const doc = parser.parseFromString(body, "text/html");
+  const doc = parser.parseFromString(body, 'text/html');
   const creators = Array.from(doc.querySelectorAll('#creator-wall .youtube-creator')).map(c => ({
     name: c.querySelector('img').alt,
     channel: c.getAttribute('data-video'),
@@ -39,19 +40,19 @@ export const loadVideos = async (playlist: string, title: string, num: number) =
       url.searchParams.set('pageToken', page);
     const data = await fetch(url.toString(),
       {
-        "credentials": "omit",
-        "headers": {
-          "Accept": "application/json, text/plain, */*",
-          "Accept-Language": "en-US,en;q=0.5",
-          "Cache-Control": "max-age=0"
+        credentials: 'omit',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Accept-Language': 'en-US,en;q=0.5',
+          'Cache-Control': 'max-age=0',
         },
-        "referrer": `https://nebula.app/`,
-        "method": "GET",
-        "mode": "cors"
+        referrer: 'https://nebula.app/',
+        method: 'GET',
+        mode: 'cors',
       });
     const res: YouTube.PlaylistItemsReply<YouTube.PlaylistItemSnippet> = await data.json();
     if (!res || !res.pageInfo || !res.items || !res.items.length)
-      throw new Error("Invalid API response");
+      throw new Error('Invalid API response');
     const v = res.items.find(i => normalizeString(i.snippet.title) === title);
     if (v) return v.snippet.resourceId.videoId; // found the video
     const vids = res.items.map(i => ({ title: i.snippet.title, videoId: i.snippet.resourceId.videoId }));
@@ -73,12 +74,12 @@ export const creatorHasVideo = async (playlist: string, title: string, num: numb
 };
 
 const toVid = (vids: string | Video[], title: string) => {
-  if (typeof vids === "string")
+  if (typeof vids === 'string')
     return vidcache[title] = { confidence: 1, video: vids }; // exact match
   if (!vids.length)
-    throw new Error("No videos");
+    throw new Error('No videos');
   if (vids.length <= 1)
-    throw new Error("Not enough data");
+    throw new Error('Not enough data');
   // lowercase, remove accents, split at spaces and sentence marks, remove common words, replace [0-12] with written words
   const exclude = ['the', 'is', 'a', 'and', 'or', 'as', 'of', 'be'];
   const numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];

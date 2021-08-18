@@ -1,6 +1,6 @@
-import iconDelete from "../../icons/delete.svg";
-import iconPlay from "../../icons/play.svg";
-import { callback as ArrayCallback, DOMArray } from "./DOMArray";
+import iconDelete from '../../icons/delete.svg';
+import iconPlay from '../../icons/play.svg';
+import { callback as ArrayCallback, DOMArray } from './DOMArray';
 
 export type video = {
   length: string,

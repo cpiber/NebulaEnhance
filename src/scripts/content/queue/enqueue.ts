@@ -3,17 +3,17 @@ import type { Queue } from './index';
 let enqueueAnim = false;
 
 export function enqueue (this: Queue, name: string | string[], pos?: number) {
-  if (typeof name === "string") {
+  if (typeof name === 'string') {
     if (!this.store[name])
-      throw new Error("Not in store!");
+      throw new Error('Not in store!');
   } else {
     name.forEach(n => {
       if (!this.store[n])
-        throw new Error("Not in store!");
+        throw new Error('Not in store!');
     });
   }
   
-  const q = typeof name === "string" ? [name] : name;
+  const q = typeof name === 'string' ? [name] : name;
   if (pos !== undefined)
     this.queue.splice2(pos, 0, q);
   else if (this.queue[this.queue.length - 1] !== name)
@@ -50,7 +50,7 @@ export function remove(this: Queue, index: number) {
   }
 }
 
-export function clear(this: Queue, ) {
+export function clear(this: Queue ) {
   this.queuepos = -1;
   this.queue.splice2(0, this.queue.length);
   this.containerEl.classList.add('hidden');

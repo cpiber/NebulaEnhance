@@ -1,5 +1,5 @@
-import type { VideoJsPlayer } from "video.js";
-import { isMobile, sendMessage } from "../helpers/shared";
+import type { VideoJsPlayer } from 'video.js';
+import { isMobile, sendMessage } from '../helpers/shared';
 
 type Instance<T> = T extends new (...args: any[]) => infer U ? U : never;
 type Dial = {
@@ -13,29 +13,29 @@ const SpeedDial = async (player: VideoJsPlayer, playbackChange: number) => {
   const speedMsg = `${await sendMessage('getMessage', { message: 'playerNewSpeed' })}:`;
   const speed = await sendMessage('getMessage', { message: 'playerSpeed' });
   
-  const MenuButton = window.videojs.getComponent("MenuButton");
+  const MenuButton = window.videojs.getComponent('MenuButton');
   return window.videojs.extend(MenuButton, {
     constructor: function (this: Instance<typeof MenuButton> & Dial) {
       MenuButton.apply(this, arguments as FnArgs<typeof MenuButton>);
       
-      this.tooltip = document.createElement("div");
-      this.tooltip.className = "enhancer-tooltip vjs-hidden";
-      this.tooltip.innerHTML = `<div class="tippy-box"><div class="tippy-content"><span class="vjs-nebula-tooltip-label"></span><span class="vjs-nebula-tooltip-key"></span></div></div>`;
+      this.tooltip = document.createElement('div');
+      this.tooltip.className = 'enhancer-tooltip vjs-hidden';
+      this.tooltip.innerHTML = '<div class="tippy-box"><div class="tippy-content"><span class="vjs-nebula-tooltip-label"></span><span class="vjs-nebula-tooltip-key"></span></div></div>';
       this.tooltipSpan = this.tooltip.querySelector('span');
       this.controlText(speed);
       
       const toggleTooltip = (force?: boolean) => {
-        this.tooltip.classList.toggle("vjs-hidden", force);
+        this.tooltip.classList.toggle('vjs-hidden', force);
         this.updateTooltip();
       };
       const scroll = (e: WheelEvent) => {
         e.preventDefault();
         this.updatePlaybackrate(Math.round((player.playbackRate() - Math.sign(e.deltaY) * playbackChange) * 100) / 100);
       };
-      this.el().addEventListener("mouseenter", toggleTooltip.bind(this, false));
-      this.el().addEventListener("mouseleave", toggleTooltip.bind(this, true));
-      this.el().addEventListener("wheel", scroll.bind(this));
-      window.addEventListener("resize", this.updateTooltip.bind(this));
+      this.el().addEventListener('mouseenter', toggleTooltip.bind(this, false));
+      this.el().addEventListener('mouseleave', toggleTooltip.bind(this, true));
+      this.el().addEventListener('wheel', scroll.bind(this));
+      window.addEventListener('resize', this.updateTooltip.bind(this));
       this.player().el().appendChild(this.tooltip);
       this.updateTooltip();
     },
@@ -64,7 +64,7 @@ const SpeedDial = async (player: VideoJsPlayer, playbackChange: number) => {
     },
     buildCSSClass: function (this: Instance<typeof MenuButton> & Dial) {
       return `vjs-icon-circle-inner-circle enhancer-speed ${MenuButton.prototype.buildCSSClass.apply(this)}`;
-    }
+    },
   });
-}
+};
 export default SpeedDial;

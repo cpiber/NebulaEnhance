@@ -1,7 +1,7 @@
 import marked from 'marked';
 import DOMPurify from 'dompurify';
 import closeIcon from '../../icons/close.svg';
-import { getBrowserInstance } from "../helpers/sharedExt";
+import { getBrowserInstance } from '../helpers/sharedExt';
 
 const msg = getBrowserInstance().i18n.getMessage;
 const owner = 'cpiber';
@@ -57,10 +57,10 @@ const releaseToMore = (cv: string, r: Github.Release) => [
 
 export const showLogs = async (currentVersion: string, installed = false) => {
   const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases?per_page=3`, {
-    "headers": {
-      "Accept": "application/vnd.github.v3+json"
+    headers: {
+      Accept: 'application/vnd.github.v3+json',
     },
-    "method": "GET"
+    method: 'GET',
   });
   const releases: Github.Release[] = await res.json();
   if (!releases)

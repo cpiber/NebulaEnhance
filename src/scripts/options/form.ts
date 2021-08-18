@@ -8,7 +8,7 @@ export const save = () => local.set(toData());
 export const load = async (doSave = false) => {
   const data = await local.get(toData(true));
   Object.keys(els).forEach(prop => {
-    if (els[prop].type === "checkbox") {
+    if (els[prop].type === 'checkbox') {
       (els[prop] as HTMLInputElement).checked = !!data[prop];
     } else {
       els[prop].value = data[prop];
@@ -23,7 +23,7 @@ const delayedSave = (e: Event) => {
   const el = (e.target as HTMLInputElement | HTMLTextAreaElement);
   const timeout = +el.dataset.timeout || 0;
   clearTimeout(timeout);
-  el.dataset.timeout = "" + setTimeout(save, 400);
+  el.dataset.timeout = '' + setTimeout(save, 400);
 };
 
 const form = document.querySelector('form');

@@ -26,10 +26,10 @@ beforeAll(async () => {
   somevideo = await page.evaluate(sel => document.querySelector<HTMLAnchorElement>(sel).href, videoSelector);
 
   await setSettings({
-    playbackChange: "0.5",
+    playbackChange: '0.5',
     autoplay: true,
     youtube: false,
-    customScriptPage: "document.body.classList.add('loaded-from-customScriptPage')",
+    customScriptPage: 'document.body.classList.add(\'loaded-from-customScriptPage\')',
   });
 }, 15000);
 
@@ -54,7 +54,7 @@ describe('video player', () => {
 
   test('controls use settings', async () => {
     await page.waitForSelector('.enhancer-speed');
-    await expect(page.$eval('.enhancer-tooltip .vjs-nebula-tooltip-label', el => el.textContent)).resolves.toContain("Speed");
+    await expect(page.$eval('.enhancer-tooltip .vjs-nebula-tooltip-label', el => el.textContent)).resolves.toContain('Speed');
     await expect(page.evaluate((p: string) => window.videojs.players[p].autoplay(), player)).resolves.toBe(true);
   });
 });
@@ -82,7 +82,7 @@ const setSettings = async (set: { [key: string]: string | boolean}) => {
   await pg.goto(optionsURL);
   const form = await expect(pg).toMatchElement('form');
   for (const key in set) {
-    if (typeof(set[key]) !== "boolean")
+    if (typeof(set[key]) !== 'boolean')
       continue;
     // need to check booleans manually
     await form.$eval(`[name="${key}"]`, (el: HTMLInputElement, val: boolean) => el.checked = val, set[key]);

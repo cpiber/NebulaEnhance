@@ -1,4 +1,4 @@
-import { nebula } from "./content";
+import { nebula } from './content';
 
 nebula();
 

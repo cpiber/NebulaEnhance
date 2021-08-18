@@ -6,7 +6,7 @@ export const loadPrefix = `${eventPrefix}-load` as const;
 export const knownPages = ['myshows', 'videos', 'podcasts', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs'] as const;
 
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
-export const creatorRegex = /^\/([^\/]+)(?:\/(.+))?\/?$/;
+export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
 
 export const init = () => {
   const cb = mutation(() => {
@@ -25,7 +25,7 @@ export const init = () => {
   navigation();
 };
 
-let currenturl = "";
+let currenturl = '';
 const navigation = () => {
   if (window.location.href === currenturl)
     return;

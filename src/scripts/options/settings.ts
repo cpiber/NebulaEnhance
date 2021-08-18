@@ -23,11 +23,11 @@ export const toData = (useDefaults = false) => {
   const data: { [key in keyof typeof els]?: string | number | string[] | number[] | boolean } = {};
   Object.keys(els).forEach(key => {
     let val: string | number | boolean = !useDefaults ? els[key].value : els[key].dataset.default;
-    if (els[key].type === "number") {
+    if (els[key].type === 'number') {
       val = +val;
       if (isNaN(val) || val == 0)
         val = +els[key].dataset.default;
-    } else if (els[key].type === "checkbox") {
+    } else if (els[key].type === 'checkbox') {
       val = !useDefaults ? (els[key] as HTMLInputElement).checked : !!val;
     }
     data[key] = val;

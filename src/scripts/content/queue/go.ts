@@ -14,9 +14,9 @@ export function goto(this: Queue, index: number, go = true) {
     // we also need a fake '/', otherwise the player vanishes
     setTimeout(() => {
       window.history.pushState({ fake: true }, null, '/');
-      window.dispatchEvent(new PopStateEvent("popstate"));
+      window.dispatchEvent(new PopStateEvent('popstate'));
       window.history.pushState({ fake: true }, null, url);
-      window.dispatchEvent(new PopStateEvent("popstate"));
+      window.dispatchEvent(new PopStateEvent('popstate'));
     }, 0);
   }
   if (index >= 0) {

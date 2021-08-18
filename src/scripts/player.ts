@@ -1,4 +1,4 @@
-import { init } from "./page/player";
+import { init } from './page/player';
 
 (() => {
   if (document.body.classList.contains('enhancer-player'))

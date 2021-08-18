@@ -1,8 +1,8 @@
-import { getBrowserInstance } from "./helpers/sharedExt";
+import { getBrowserInstance } from './helpers/sharedExt';
 import { load } from './options/form';
-import { showLogs } from "./options/logs";
+import { showLogs } from './options/logs';
 import { Settings } from './options/settings';
-import { standalone } from "./options/standalone";
+import { standalone } from './options/standalone';
 
 const cl = decodeURIComponent(window.location.hash.slice(1)).split(' ').filter(c => !!c);
 if (cl.length)
@@ -17,9 +17,9 @@ els.youtube.addEventListener('change', async () => {
   const y = els.youtube;
   const perms: browser.permissions.Permissions = {
     origins: [
-      "*://standard.tv/*",
-      "*://*.googleapis.com/*"
-    ]
+      '*://standard.tv/*',
+      '*://*.googleapis.com/*',
+    ],
   };
   const success = await (y.checked ? permissions.request : permissions.remove)(perms);
   if (!success) y.checked = !y.checked; // revert
@@ -41,9 +41,9 @@ load(true);
   window.location.hash = document.body.className;
 
   const show: boolean = (await local.get({ showChangelogs: true })).showChangelogs;
-  const version: string = (await local.get({ lastVersion: "-1" })).lastVersion;
+  const version: string = (await local.get({ lastVersion: '-1' })).lastVersion;
   const actualVersion = getBrowserInstance().runtime.getManifest().version;
-  const installed = version === "-1";
+  const installed = version === '-1';
   console.debug(show, version, actualVersion, installed);
   // show changelog or install message
   if (installed || (show && version !== actualVersion) || showChangelogs)

@@ -8,18 +8,18 @@ getBrowserInstance().browserAction.onClicked.addListener(() => {
 });
 
 getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [key: string]: any }) => {
-  if (typeof message === "string") message = { type: message };
+  if (typeof message === 'string') message = { type: message };
   switch (message.type) {
-    case "loadCreators":
+    case 'loadCreators':
       return console.debug(await loadCreators());
-    case "getYoutubeId":
+    case 'getYoutubeId':
       return getYoutubeId(message);
   }
 });
 
 getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
   const show: boolean = (await getBrowserInstance().storage.local.get({ showChangelogs: true })).showChangelogs;
-  const version: string = (await getBrowserInstance().storage.local.get({ lastVersion: "-1" })).lastVersion;
+  const version: string = (await getBrowserInstance().storage.local.get({ lastVersion: '-1' })).lastVersion;
   console.debug(show, version, details.reason);
   if (details.reason === 'install' || (show && version !== getBrowserInstance().runtime.getManifest().version))
     openOptions(false, 'show-changelogs');
@@ -49,7 +49,7 @@ const getYoutubeId = async (message: { [key: string]: any }) => {
 
 const openOptions = (active = true, ...args: string[]) => {
   getBrowserInstance().tabs.create({
-    'url': getBrowserInstance().runtime.getURL(`options.html#standalone ${args.join(' ')}`),
+    url: getBrowserInstance().runtime.getURL(`options.html#standalone ${args.join(' ')}`),
     active,
   });
 };

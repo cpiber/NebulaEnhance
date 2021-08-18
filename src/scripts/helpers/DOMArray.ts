@@ -42,7 +42,7 @@ export abstract class DOMArray<T> extends Array<T> {
     if (this.root.children.length <= 1) return this;
     const n = this.root.children.length - 1;
     for (let i = n - 1; i >= 0; --i) {
-      let e = this.root.children[i];
+      const e = this.root.children[i];
       this.root.children[i].remove();
       this.root.append(e);
     }

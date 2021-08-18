@@ -44,34 +44,34 @@ describe('loading youtube videos', () => {
   test('good confidence', () => {
     console.debug = jest.fn();
     const match1 = matchVideoConfidence([
-      { title: 'a title that can be matched quite well', videoId: "good" },
-      { title: 'this one shouldn\'t be matched actually', videoId: "bad" },
+      { title: 'a title that can be matched quite well', videoId: 'good' },
+      { title: 'this one shouldn\'t be matched actually', videoId: 'bad' },
     ], 'some test title that can hopefully be matched quite well');
     expect(match1.confidence).toBeGreaterThan(0.25);
-    expect(match1.video).toBe("good");
+    expect(match1.video).toBe('good');
     const match2 = matchVideoConfidence([
-      { title: 'a test title that can be matched well', videoId: "good" },
-      { title: 'this one shouldn\'t be matched actually', videoId: "bad" },
+      { title: 'a test title that can be matched well', videoId: 'good' },
+      { title: 'this one shouldn\'t be matched actually', videoId: 'bad' },
     ], 'some test title that can hopefully be matched quite well');
     expect(match2.confidence).toBeGreaterThan(0.25);
-    expect(match2.video).toBe("good");
+    expect(match2.video).toBe('good');
   });
 
   test('bad confidence', () => {
     console.debug = jest.fn();
     expect(() => matchVideoConfidence([
-      { title: 'a title that can be matched quite well', videoId: "bad1" },
-      { title: 'this one shouldn\'t be matched actually', videoId: "bad2" },
+      { title: 'a title that can be matched quite well', videoId: 'bad1' },
+      { title: 'this one shouldn\'t be matched actually', videoId: 'bad2' },
     ], 'some test title, a really bad one')).toThrow(/confidence/);
     expect(() => matchVideoConfidence([
-      { title: 'a test title', videoId: "good1" },
-      { title: 'is a test title', videoId: "good2" },
+      { title: 'a test title', videoId: 'good1' },
+      { title: 'is a test title', videoId: 'good2' },
     ], 'test title')).toThrow(/confidence/);
     expect(() => matchVideoConfidence([
-      { title: 'this one shouldn\'t be matched really', videoId: "bad2" },
+      { title: 'this one shouldn\'t be matched really', videoId: 'bad2' },
     ], 'test title')).toThrow(/data/);
     expect(() => matchVideoConfidence([
-      { title: 'this one shouldn\'t be matched because of low similarity', videoId: "bad2" },
+      { title: 'this one shouldn\'t be matched because of low similarity', videoId: 'bad2' },
     ], 'test title with just a single matched word')).toThrow(/data/);
   });
 

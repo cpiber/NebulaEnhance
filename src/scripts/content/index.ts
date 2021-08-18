@@ -1,16 +1,18 @@
-import iconWatchLater from "../../icons/watchlater.svg";
+import iconWatchLater from '../../icons/watchlater.svg';
 import { durationLocation, queueBottonLocation } from '../helpers/locations';
-import { getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from "../helpers/sharedExt";
+import { getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../helpers/sharedExt';
 import { creatorRegex, loadPrefix } from '../page/dispatcher';
 import { enqueueChannelVideos } from './api';
 import { handle } from './message';
-import { Queue } from "./queue";
+import { Queue } from './queue';
 
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
-function getFromStorage(key: string | string[] | { [key: string]: any }) { return getBrowserInstance().storage.local.get(key); }
+function getFromStorage(key: string | string[] | { [key: string]: any }) {
+  return getBrowserInstance().storage.local.get(key); 
+}
 
 export const nebula = async () => {
   await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
@@ -84,11 +86,11 @@ const click = async (e: MouseEvent) => {
   if (addAll !== null) {
     e.preventDefault();
     const creator = window.location.pathname.match(creatorRegex)[1];
-    document.body.style.cursor = "wait";
+    document.body.style.cursor = 'wait';
     (document.activeElement as HTMLElement).blur();
     // Queue.get().set(await getChannelVideos(creator));
     await enqueueChannelVideos(Queue.get(), creator);
-    document.body.style.cursor = "";
+    document.body.style.cursor = '';
     return;
   }
 

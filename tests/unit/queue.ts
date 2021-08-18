@@ -98,7 +98,7 @@ describe('DOMArray', () => {
     arr.splice2(-5, items.length);
     items.splice(-5, items.length);
     expect([...arr]).toEqual(items);
-  })
+  });
 
   test('reversing works', () => {
     const arr = new TestArray(root);

@@ -1,8 +1,8 @@
 import { getBrowserInstance } from '../../helpers/sharedExt';
-import iconClose from "../../../icons/close.svg";
-import iconNext from "../../../icons/next.svg";
-import iconReverse from "../../../icons/reverse.svg";
-import iconShare from "../../../icons/share.svg";
+import iconClose from '../../../icons/close.svg';
+import iconNext from '../../../icons/next.svg';
+import iconReverse from '../../../icons/reverse.svg';
+import iconShare from '../../../icons/share.svg';
 
 const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
 const share = getBrowserInstance().i18n.getMessage('pageShareQueue');

@@ -1,11 +1,13 @@
-import type { VideoJsPlayer } from "video.js";
-import { isVideoPage, sendMessage } from "../helpers/shared";
+import type { VideoJsPlayer } from 'video.js';
+import { isVideoPage, sendMessage } from '../helpers/shared';
 import { init as initDispatch, loadPrefix } from './dispatcher';
-import SpeedDial from "./speeddial";
+import SpeedDial from './speeddial';
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
 function getFromStorage<T>(key: string | string[]): Promise<T>;
-function getFromStorage<T>(key: string | string[] | { [key: string]: any }) { return sendMessage<T>('getStorage', { get: key }); }
+function getFromStorage<T>(key: string | string[] | { [key: string]: any }) {
+  return sendMessage<T>('getStorage', { get: key }); 
+}
 
 const defaults = {
   playbackChange: 0.1,
@@ -37,8 +39,8 @@ export const initPlayer = async () => {
     player.play();
   
   const comp = await SpeedDial(player, playbackChange);
-  window.videojs.registerComponent("SpeedDial", comp);
-  player.controlBar.addChild("SpeedDial", {});
+  window.videojs.registerComponent('SpeedDial', comp);
+  player.controlBar.addChild('SpeedDial', {});
 
   player.on('ended', () => {
     sendMessage('queueGotoNext', null, false);
@@ -72,7 +74,7 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<VideoJsPl
 const getPressedKey = async (e: KeyboardEvent) => {
   if (e.altKey || e.ctrlKey || e.metaKey)
     return;
-  if (document.activeElement.tagName === "INPUT")
+  if (document.activeElement.tagName === 'INPUT')
     return;
   const pressedKey = e.key;
   const player = findAPlayer();
