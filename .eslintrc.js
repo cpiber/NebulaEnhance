@@ -60,6 +60,7 @@ module.exports = {
       },
       rules: {
         'no-global-assign': 'off',
+        '@typescript-eslint/triple-slash-reference': 'off',
       },
     },
     {

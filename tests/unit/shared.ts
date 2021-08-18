@@ -1,4 +1,4 @@
-import '../../src/types/global.d.ts';
+/// <reference path="../../src/types/global.d.ts"/>
 import { JSDOM } from 'jsdom';
 import { clone, dot, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, sendMessage } from '../../src/scripts/helpers/shared';
 
