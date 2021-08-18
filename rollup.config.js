@@ -19,12 +19,12 @@ import chalk from 'chalk';
 config();
 
 const w = watch => watch ? {
-    clearScreen: !!process.stdout.isTTY,
-  } : false;
+  clearScreen: !!process.stdout.isTTY,
+} : false;
 
 const readline = require('readline').createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 /**
  * @param {string} q question prompt
@@ -39,16 +39,16 @@ const question = q => new Promise(resolve => readline.question(q, answer => reso
  */
 const jsplugins = () => [
   string({
-    include: "**/*.svg",
+    include: '**/*.svg',
   }),
   nodeResolve({
     preferBuiltins: false,
   }),
   commonjs(),
   replace({
-    '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
+    __YT_API_KEY__: JSON.stringify(process.env.YT_API_KEY),
     preventAssignment: true,
-  })
+  }),
 ];
 const js = (args) =>
   glob.sync('src/scripts/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.ts' ] }).map(e => {
@@ -69,15 +69,15 @@ const js = (args) =>
         outro: process.env.BUILD ? '' : '}catch(e){console.error(e)}',
       },
       external: false,
-      context: "window",
+      context: 'window',
       plugins: [
         typescript({
-          tsconfig: process.env.BUILD ? "./tsconfig.prod.json" : "./tsconfig.json",
+          tsconfig: process.env.BUILD ? './tsconfig.prod.json' : './tsconfig.json',
         }),
         ...jsplugins(),
-        process.env.BUILD && terser({ format: { comments: false } })
+        process.env.BUILD && terser({ format: { comments: false } }),
       ],
-      watch: w(args.watch)
+      watch: w(args.watch),
     };
     return conf;
   });
@@ -106,11 +106,11 @@ const css = (args) =>
           plugins: [autoprefixer(), presetEnv()],
           extract: true,
           sourceMap: !process.env.BUILD,
-          fiber: require('fibers')
+          fiber: require('fibers'),
         }),
         remove(),
       ],
-      watch: w(args.watch)
+      watch: w(args.watch),
     };
     return conf;
   });
@@ -134,20 +134,20 @@ const other = (args) => {
     output: {
       dir: 'extension-dist',
       format: 'cjs',
-      exports: 'default'
+      exports: 'default',
     },
     plugins: [
       typescript({
-        tsconfig: process.env.BUILD ? "./tsconfig.prod.json" : "./tsconfig.json",
+        tsconfig: process.env.BUILD ? './tsconfig.prod.json' : './tsconfig.json',
         sourceMap: false,
       }),
       replace({
-        '__VERSION__': JSON.stringify(process.env.npm_package_version),
+        __VERSION__: JSON.stringify(process.env.npm_package_version),
         preventAssignment: true,
       }),
-      writeJSON()
+      writeJSON(),
     ],
-    watch: w(args.watch)
+    watch: w(args.watch),
   };
   return conf;
 };
@@ -165,20 +165,20 @@ const testsInternal = () => ({
     exports: 'auto',
     sourcemap: true,
   },
-  context: "window",
+  context: 'window',
   plugins: [
     typescript({
-      tsconfig: "./tsconfig.json",
-      target: "ESNext",
+      tsconfig: './tsconfig.json',
+      target: 'ESNext',
     }),
     string({
-      include: "**/*.svg",
+      include: '**/*.svg',
     }),
     replace({
-      '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
-      '__NEBULA_PASS__': JSON.stringify(process.env.NEBULA_PASS),
-      '__NEBULA_USER__': JSON.stringify(process.env.NEBULA_USER),
-      '__NEBULA_BASE__': JSON.stringify(process.env.NEBULA_BASE || 'https://nebula.app'),
+      __YT_API_KEY__: JSON.stringify(process.env.YT_API_KEY),
+      __NEBULA_PASS__: JSON.stringify(process.env.NEBULA_PASS),
+      __NEBULA_USER__: JSON.stringify(process.env.NEBULA_USER),
+      __NEBULA_BASE__: JSON.stringify(process.env.NEBULA_BASE || 'https://nebula.app'),
       preventAssignment: true,
     }),
   ],
@@ -201,7 +201,7 @@ function remove() {
         if (bundle[prop].code === '\n' || bundle[prop].code.trim() === 'var undefined$1 = undefined;\n\nexport default undefined$1;')
           delete bundle[prop];
       }
-    }
+    },
   };
 }
 
@@ -220,7 +220,7 @@ function writeJSON(filename = 'manifest.js') {
         source: JSON.stringify(manifest, null, process.env.BUILD ? undefined : 2),
       });
       delete bundle[filename];
-    }
+    },
   };
 }
 
@@ -239,15 +239,15 @@ export default async args => {
   
   const type = args.configType?.toLowerCase();
   switch (type) {
-    case "js":
+    case 'js':
       return js(args);
-    case "css":
+    case 'css':
       return css(args);
-    case "other":
+    case 'other':
       return other(args);
-    case "tests-internal":
+    case 'tests-internal':
       return testsInternal();
-    case "all":
+    case 'all':
     default:
       return [...js(args), ...css(args), other(args)];
   }

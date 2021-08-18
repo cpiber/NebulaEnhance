@@ -67,7 +67,7 @@ declare namespace Nebula {
   }
 
   // incomplete
-  type Playlist = {}
+  type Playlist = Record<string, never>
 
   type Asset<Sizes extends string = ImageSizes> = {
     [key in Sizes]: {

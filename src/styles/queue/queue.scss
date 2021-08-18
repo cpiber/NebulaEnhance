@@ -22,7 +22,7 @@
 
   &, &-inner {
     margin: 1px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
     background-color: #333;
     background-blend-mode: difference;
@@ -34,10 +34,10 @@
   &::before {
     content: '';
     position: absolute;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
     background-color: #aaa;
     background-blend-mode: difference;
@@ -47,16 +47,25 @@
   &.hidden {
     @extend %hidden;
   }
+
   &.no-transition {
     transition: none;
+  }
+
+  svg {
+    width: auto;
+    height: 1em;
+    vertical-align: middle;
+    cursor: pointer;
+    fill: currentColor;
   }
 
   .top::after, .element::before {
     content: '';
     position: absolute;
-    left: 0px;
-    right: 0px;
-    top: 0px;
+    left: 0;
+    right: 0;
+    top: 0;
     height: 1px;
     background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
     background-color: #bbb;
@@ -98,9 +107,11 @@
     }
 
     $nextscale: 0.8;
+
     .prev svg {
       transform: scale(-$nextscale, $nextscale);
     }
+
     .next svg {
       transform: scale($nextscale);
     }
@@ -172,6 +183,7 @@
           }
         }
       }
+
       &.playing .thumb {
         .play {
           display: block;
@@ -203,7 +215,7 @@
           max-height: 42px;
           display: -webkit-box; // line-clamp only works with this older version of flex
           -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical; 
+          -webkit-box-orient: vertical;
         }
 
         .creator {
@@ -259,14 +271,6 @@
         }
       }
     }
-  }
-
-  svg {
-    width: auto;
-    height: 1em;
-    vertical-align: middle;
-    cursor: pointer;
-    fill: currentColor;
   }
 
   @media (max-width: $tablet_big) {

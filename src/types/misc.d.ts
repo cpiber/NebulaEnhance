@@ -3,9 +3,10 @@ import type { knownPages, loadPrefix, navigatePrefix } from '../scripts/page/dis
 type prefixes = typeof navigatePrefix | typeof loadPrefix;
 
 declare global {
+  /* eslint-disable-next-line @typescript-eslint/ban-types */
   type FnArgs<F extends Function> = F extends (this: any, ...args: infer R) => any ? R : never;
   
-  type NavigateOrLoadEvent<K extends string, D extends { [key: string]: any } = {}> = CustomEvent<{ page: K, from: string } & D>;
+  type NavigateOrLoadEvent<K extends string, D extends { [key: string]: any } = { [key: string]: any }> = CustomEvent<{ page: K, from: string } & D>;
   type PageEvent<K extends string> = NavigateOrLoadEvent<K, { more: string | undefined }>;
   type VideoEvent = NavigateOrLoadEvent<'video', { video: string }>;
   type HomeEvent = NavigateOrLoadEvent<'home'>;

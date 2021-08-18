@@ -64,10 +64,13 @@ module.exports = {
       },
     },
     {
-      files: ['.eslintrc.js'],
+      files: ['*.js'],
       env: {
         browser: false,
         node: true,
+      },
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
       },
     },
   ],

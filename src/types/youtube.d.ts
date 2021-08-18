@@ -15,8 +15,8 @@ declare namespace YouTube {
     etag: string,
     id: string,
   };
-  type PlaylistItemsReply<T> = YoutubeReply<"youtube#playlistItemListResponse", PlaylistItem & T>;
-  type PlaylistItem = YoutubeItem<"youtube#playlistItem">;
+  type PlaylistItemsReply<T> = YoutubeReply<'youtube#playlistItemListResponse', PlaylistItem & T>;
+  type PlaylistItem = YoutubeItem<'youtube#playlistItem'>;
   type PlaylistItemSnippet = {
     snippet: {
       publishedAt: string,
@@ -24,7 +24,7 @@ declare namespace YouTube {
       title: string,
       description: string,
       thumbnails: {
-        [key in "default" | "medium" | "high" | "standard" | "maxres"]: {
+        [key in 'default' | 'medium' | 'high' | 'standard' | 'maxres']: {
           url: string,
           width: number,
           height: number,
@@ -34,7 +34,7 @@ declare namespace YouTube {
       playlistId: string,
       position: number,
       resourceId: {
-        kind: "youtube#video",
+        kind: 'youtube#video',
         videoId: string,
       },
       videoOwnerChannelTitle: string,

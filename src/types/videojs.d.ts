@@ -1,4 +1,4 @@
-import type videojs from "video.js";
+import type videojs from 'video.js';
 
 type ctr = new (player: videojs.Player, options?: videojs.ComponentOptions, ready?: videojs.Component.ReadyCallback) => videojs.Component;
 
