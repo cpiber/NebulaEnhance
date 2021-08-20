@@ -113,10 +113,8 @@ export const getCookie = (name: string) => {
   const cookieArr = document.cookie.split(';');
   for (const cookie of cookieArr) {
     const cookiePair = cookie.split('=');
-    
-    if(name == cookiePair[0].trim()) {
+    if(name == cookiePair[0].trim())
       return decodeURIComponent(cookiePair[1]);
-    }
   }
   
   return null;

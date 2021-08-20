@@ -1,6 +1,6 @@
 /// <reference path="../../src/types/global.d.ts"/>
 import { JSDOM } from 'jsdom';
-import { clone, dot, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, sendMessage } from '../../src/scripts/helpers/shared';
+import { clone, dot, getCookie, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, sendMessage } from '../../src/scripts/helpers/shared';
 
 describe('dot product operations', () => {
   test('fail on unequal length', () => {
@@ -294,4 +294,29 @@ describe('message sending', () => {
   }, (e: MessageEvent) => {
     expect(e.data).toContain('enhancer-message-');
   }));
+});
+
+describe('cookie', () => {
+  test('get cookie', () => {
+    document.cookie = 'test=1';
+    expect(getCookie('test')).toBe('1');
+  });
+
+  test('get cookie from multiple', () => {
+    document.cookie = 'test=1';
+    document.cookie = 'test1=2';
+    document.cookie = 'test2=3';
+    expect(getCookie('test')).toBe('1');
+    expect(getCookie('test1')).toBe('2');
+    expect(getCookie('test2')).toBe('3');
+  });
+
+  test('get cookie with expiry', () => {
+    document.cookie = 'test=1; expires=1y';
+    expect(getCookie('test')).toBe('1');
+  });
+
+  test('invalid cookie', () => {
+    expect(getCookie('invalid')).toBeNull();
+  });
 });
