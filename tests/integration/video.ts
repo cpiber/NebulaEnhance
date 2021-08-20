@@ -14,6 +14,7 @@ beforeAll(async () => {
     playbackChange: '0.5',
     autoplay: true,
     youtube: false,
+    volumeEnabled: true,
     customScriptPage: 'document.body.classList.add(\'loaded-from-customScriptPage\')',
   });
 }, 15000);
@@ -26,12 +27,13 @@ describe('page', () => {
 });
 
 let player: string;
+const gotoPlayer = async () => {
+  await page.goto(somevideo);
+  await page.waitForSelector('.video-js');
+  player = await page.$eval('.video-js', el => el.id);
+};
 describe('video player', () => {
-  beforeEach(async () => {
-    await page.goto(somevideo);
-    await page.waitForSelector('.video-js');
-    player = await page.$eval('.video-js', el => el.id);
-  });
+  beforeEach(gotoPlayer);
 
   test('controls present', async () => {
     await expect(page).toMatchElement('.enhancer-speed', { timeout: 0 });
