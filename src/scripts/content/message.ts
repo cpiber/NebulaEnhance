@@ -39,19 +39,25 @@ export const handle = (e: MessageEvent) => {
   
   let promise: Promise<any> = null;
   switch (msg.type) {
-    case 'getSetting':
+    case 'getSetting': {
       const setting = msg.setting;
       promise = Promise.resolve(setting ? videosettings[setting as keyof typeof videosettings] : videosettings);
       break;
-    case 'setSetting':
+    }
+    case 'setSetting': {
+      const setting = msg.setting;
       const v = isNaN(msg.value) || msg.value == '' ? msg.value as string : +msg.value;
       videosettings[setting as keyof typeof videosettings] = v as never;
       return true;
+    }
     case 'getStorage':
       promise = local.get(msg.get);
       break;
     case 'getMessage':
       promise = Promise.resolve(getBrowserInstance().i18n.getMessage(msg.message));
+      break;
+    case 'getQueueStatus':
+      promise = Promise.resolve(clone({ canNext: Queue.get().canGoNext(), canPrev: Queue.get().canGoPrev() }));
       break;
     default:
       return msg;

@@ -80,7 +80,7 @@ export function injectScript(arg1: HTMLElement | string, arg2: HTMLElement | str
 export const sendMessage = <T>(name: string, data?: { [key: string]: any }, expectAnswer = true, skipOriginCheck = false) => {
   if (!expectAnswer) {
     window.parent.postMessage(JSON.stringify({ type: name, ...data }), '*');
-    return Promise.resolve(undefined);
+    return Promise.resolve(undefined as T);
   }
   return new Promise<T>((resolve, reject) => {
     const e = `enhancer-message-${Math.random().toString().substr(2)}`;
@@ -92,7 +92,7 @@ export const sendMessage = <T>(name: string, data?: { [key: string]: any }, expe
   });
 };
 
-const sendMessageCB = (resolve: (value: any) => void, reject: (value: any) => void, eventName: string,
+const sendMessageCB = <T>(resolve: (value: T) => void, reject: (value: any) => void, eventName: string,
   skipOriginCheck: boolean, self: (ev: MessageEvent) => void, ev: MessageEvent) => {
   if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:.+\.)?nebula.app)/)) return;
   let d = ev.data;

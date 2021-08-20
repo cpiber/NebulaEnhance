@@ -61,6 +61,14 @@ export class Queue extends QueueMethods {
     this.shareLinkEl.value = `${base}/#${hash}`;
     this.shareEl.classList.remove('hidden');
   }
+  
+  canGoPrev() {
+    return this.queuepos > 0;
+  }
+
+  canGoNext() {
+    return this.queuepos < this.queue.length - 1;
+  }
 
 
   static get() {

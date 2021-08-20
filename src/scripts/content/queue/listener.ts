@@ -43,6 +43,9 @@ export function handleMessage(this: Queue, e: MessageEvent, msg: { type: string,
     case 'queueGotoNext':
       this.gotoNext();
       break;
+    case 'queueGotoPrev':
+      this.gotoPrev();
+      break;
   }
   return true;
 }

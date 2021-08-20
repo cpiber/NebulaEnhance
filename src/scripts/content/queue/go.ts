@@ -45,6 +45,6 @@ export function updateText(this: Queue) {
   this.titleEl.textContent = this.queuepos >= 0 ? this.store[this.queue[this.queuepos]]?.title : nothingToPlay;
   this.numberEl.textContent = this.queuepos >= 0 ? `${this.queuepos + 1}` : '-';
   this.totalEl.textContent = `${this.queue.length}`;
-  this.prevEl.classList.toggle('clickable', this.queuepos > 0);
-  this.nextEl.classList.toggle('clickable', this.queuepos < this.queue.length - 1);
+  this.prevEl.classList.toggle('clickable', this.canGoPrev());
+  this.nextEl.classList.toggle('clickable', this.canGoNext());
 }

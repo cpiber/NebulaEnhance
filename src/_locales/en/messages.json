@@ -175,6 +175,14 @@
     "message": "Really clear queue?",
     "description": "Confirmation question for clearing queue."
   },
+  "pageQueueNext": {
+    "message": "Next",
+    "description": "Player hint for next in queue"
+  },
+  "pageQueuePrev": {
+    "message": "Previous",
+    "description": "Player hint for previous in queue"
+  },
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs and Feature Requests</a>",
     "description": "Credit footer."

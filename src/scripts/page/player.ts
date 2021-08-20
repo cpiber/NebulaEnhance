@@ -3,6 +3,7 @@ import { sendMessage } from '../helpers/shared';
 import { init as initDispatch, loadPrefix } from './dispatcher';
 import SpeedDial from './components/speeddial';
 import VolumeText from './components/volume';
+import QueueButton from './components/queue';
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
 function getFromStorage<T>(key: string | string[]): Promise<T>;
@@ -21,7 +22,9 @@ const defaults = {
 
 export const init = async () => {
   const { playbackChange, volumeEnabled, volumeChange, volumeLog, visitedColor } = await getFromStorage(defaults);
-  console.debug('playbackChange:', playbackChange, '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog);
+  console.debug('playbackChange:', playbackChange,
+    '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog,
+    '\nvisitedColor:', visitedColor);
 
   document.addEventListener('keydown', keydownHandler.bind(null, playbackChange));
   if (volumeEnabled)
@@ -51,17 +54,24 @@ export const initPlayer = async () => {
   if (autoplay)
     player.play();
   
-  const comp = await SpeedDial(playbackChange);
-  window.videojs.registerComponent('SpeedDial', comp);
+  if (window.videojs.getComponent('SpeedDial') === undefined)
+    await registerComponents(playbackChange);
+  
   player.controlBar.addChild('SpeedDial', {});
 
   const vidx = player.controlBar.children().findIndex(c => c.name() === 'VolumePanel');
-  window.videojs.registerComponent('VolumeText', VolumeText());
   player.controlBar.addChild('VolumeText', {}, vidx + 1);
 
   player.on('ended', () => {
     sendMessage('queueGotoNext', null, false);
   });
+
+  const { canNext, canPrev } = await sendMessage<{ canNext: boolean, canPrev: boolean }>('getQueueStatus');
+  const pidx = player.controlBar.children().findIndex(c => c.name() === 'PlayToggle');
+  if (canNext)
+    player.controlBar.addChild('QueueNext', {}, pidx + 1);
+  if (canPrev)
+    player.controlBar.addChild('QueuePrev', {}, pidx);
 };
 
 export const findAPlayer = () => {
@@ -88,6 +98,14 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<VideoJsPl
     }
   }, 100);
 });
+
+const registerComponents = async (playbackChange: number) => {
+  console.debug('registering video components');
+  window.videojs.registerComponent('SpeedDial', await SpeedDial(playbackChange));
+  window.videojs.registerComponent('VolumeText', VolumeText());
+  window.videojs.registerComponent('QueueNext', await QueueButton(true));
+  window.videojs.registerComponent('QueuePrev', await QueueButton(false));
+};
 
 const keydownHandler = (playbackChange: number, e: KeyboardEvent) => {
   if (e.altKey || e.ctrlKey || e.metaKey)
@@ -121,6 +139,12 @@ const keydownHandler = (playbackChange: number, e: KeyboardEvent) => {
       break;
     case '>':
       player.playbackRate(Math.round((player.playbackRate() + playbackChange) * 100) / 100);
+      break;
+    case 'n':
+      sendMessage('queueGotoNext', null, false);
+      break;
+    case 'p':
+      sendMessage('queueGotoPrev', null, false);
       break;
     default:
       return;

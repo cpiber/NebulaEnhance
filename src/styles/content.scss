@@ -66,13 +66,24 @@ a.enhancer-queueButtonAll {
   display: none;
 }
 
-.vjs-control .vjs-button.enhancer-speed {
+.vjs-control .vjs-button, .vjs-control.vjs-button {
+  // need to set these manually again ...
   position: relative;
-  font-family: VideoJS; // need to set this manually again ...
+  font-family: VideoJS;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 1.8em;
+    line-height: 1.67;
+    cursor: pointer;
+  }
 }
 
 .enhancer-tooltip {
   position: absolute;
-  bottom: 49px;
-  transform: translate(-50%, 0);
+  bottom: 48px;
 }

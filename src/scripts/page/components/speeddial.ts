@@ -8,8 +8,8 @@ type Dial = {
 };
 
 const SpeedDial = async (playbackChange: number) => {
-  const speedMsg = `${await sendMessage('getMessage', { message: 'playerNewSpeed' })}:`;
-  const speed = await sendMessage('getMessage', { message: 'playerSpeed' });
+  const speedMsg = `${await sendMessage<string>('getMessage', { message: 'playerNewSpeed' })}:`;
+  const speed = await sendMessage<string>('getMessage', { message: 'playerSpeed' });
   
   const MenuButton = window.videojs.getComponent('MenuButton');
   type T = Instance<typeof MenuButton> & Dial;
