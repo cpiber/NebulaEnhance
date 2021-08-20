@@ -164,8 +164,10 @@ const wheelHandler = async (volumeChange: number, volumeLog: boolean, e: WheelEv
   e.preventDefault();
 
   // use x^4 as approximation for logarithmic scale (https://www.dr-lex.be/info-stuff/volumecontrols.html)
-  const cur = volumeLog ? Math.pow(player.volume(), 1 / 4) : player.volume(); // 4th root
+  // using x^2 now because x^4 is too aggressive for this range
+  const pow = 2;
+  const cur = volumeLog ? Math.pow(player.volume(), 1 / pow) : player.volume(); // 4th root
   const v = cur - Math.sign(e.deltaY) * volumeChange;
-  const n = volumeLog ? Math.pow(v, 4) : v;
+  const n = volumeLog ? Math.pow(v, pow) : v;
   player.volume(e.deltaY * volumeChange > 0 && n < 0.01 ? 0 : n); // lower volume and below threshold -> mute
 };
