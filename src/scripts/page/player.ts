@@ -46,7 +46,7 @@ export const initPlayer = async () => {
   if (!player || player.controlBar.children().find(c => c.name() === 'SpeedDial'))
     return; // already initialized this player
   
-  const { playbackChange, autoplay } = await getFromStorage(defaults);
+  const { playbackChange, autoplay, volumeEnabled } = await getFromStorage(defaults);
   console.debug('playbackChange:', playbackChange, 'autoplay?', autoplay);
 
   window.videojs.options.autoplay = autoplay; // set default
@@ -60,7 +60,8 @@ export const initPlayer = async () => {
   player.controlBar.addChild('SpeedDial', {});
 
   const vidx = player.controlBar.children().findIndex(c => c.name() === 'VolumePanel');
-  player.controlBar.addChild('VolumeText', {}, vidx + 1);
+  if (volumeEnabled)
+    player.controlBar.addChild('VolumeText', {}, vidx + 1);
 
   player.on('ended', () => {
     sendMessage('queueGotoNext', null, false);
