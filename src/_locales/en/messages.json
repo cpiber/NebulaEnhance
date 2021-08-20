@@ -79,6 +79,10 @@
     "message": "Color to apply to links to visited videos. Can be any valid CSS color value, blank to not style; e.g. <code>#6fbce6</code>",
     "description": "Hint for visited color of options page."
   },
+  "optionsVisitedColorInvalid": {
+    "message": "Invalid color",
+    "description": "Hint for invalid visited color of options page."
+  },
   "optionsCustomScriptPageTitle": {
     "message": "Custom Script for page",
     "description": "Label for adding custom scripts to webpage of options page."

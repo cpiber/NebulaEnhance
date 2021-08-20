@@ -30,9 +30,11 @@ export const init = async () => {
   initDispatch();
 
   const c = visitedColor.split(';')[0];
+  if (!c) return;
   const s = document.createElement('style');
-  s.innerHTML = `:root { --visited-color: ${c || 'currentColor'}; }`;
+  s.innerHTML = `:root { --visited-color: ${c}; }`;
   document.head.appendChild(s);
+  document.body.classList.add('style-visited');
 };
 
 export const initPlayer = async () => {

@@ -79,6 +79,10 @@
     "message": "Textfarbe für besuchte Videos. Beliebiger valider CSS Farbwert, leer lassen um nichts zu machen; z.B. <code>#6fbce6</code>",
     "description": "Hilfstext für Link Farbe der Optionen Seite."
   },
+  "optionsVisitedColorInvalid": {
+    "message": "Invalide Farbe",
+    "description": "Hilfstext für Invalide Link Farbe der Optionen Seite."
+  },
   "optionsCustomScriptPageTitle": {
     "message": "Custom Script für Webseite",
     "description": "Beschriftung fürs Einfügen von custom scripts zur Webseite der Optionen Seite."

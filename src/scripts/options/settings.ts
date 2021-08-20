@@ -22,6 +22,8 @@ export class Settings {
   }
 }
 
+const testStyle = document.createElement('style');
+const vError = document.querySelector<HTMLSpanElement>('.visited-color-warning');
 export const toData = (useDefaults = false) => {
   const els = Settings.get();
   const data: { [key in keyof typeof els]?: string | number | string[] | number[] | boolean } = {};
@@ -36,6 +38,14 @@ export const toData = (useDefaults = false) => {
     }
     data[key] = val;
   });
+
+  data.visitedColor = (data.visitedColor as string).split(';')[0].trim();
+  els.visitedColor.value = data.visitedColor;
+
+  testStyle.style.color = '';
+  testStyle.style.color = data.visitedColor;
+  vError.style.display = testStyle.style.color === '' && data.visitedColor !== '' ? '' : 'none';
+  console.log(testStyle.style.color);
 
   return data;
 };
