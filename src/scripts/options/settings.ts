@@ -3,6 +3,9 @@ export class Settings {
 
   playbackChange: HTMLInputElement = undefined;
   autoplay: HTMLInputElement = undefined;
+  volumeEnabled: HTMLInputElement = undefined;
+  volumeLog: HTMLInputElement = undefined;
+  volumeChange: HTMLInputElement = undefined;
   youtube: HTMLInputElement = undefined;
   customScriptPage: HTMLTextAreaElement = undefined;
   showChangelogs: HTMLInputElement = undefined;
@@ -32,6 +35,9 @@ export const toData = (useDefaults = false) => {
     }
     data[key] = val;
   });
+
+  Settings.get().volumeLog.disabled = !data.volumeEnabled;
+  Settings.get().volumeChange.disabled = !data.volumeEnabled;
 
   return data;
 };

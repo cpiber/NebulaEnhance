@@ -47,6 +47,22 @@
     "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">https://demo.theoplayer.com/autoplay-policy</a>.",
     "description": "Hilfstext für Autoplay der Optionen Seite."
   },
+  "optionsVolumeScrollTitle": {
+    "message": "Volume Scroll",
+    "description": "Beschriftung für Volume Scroll der Optionen Seite."
+  },
+  "optionsVolumeScrollLog": {
+    "message": "Logarithmische Skala verwenden",
+    "description": "Log Skala Beschriftung für Volume Scroll der Optionen Seite."
+  },
+  "optionsVolumeScrollChange": {
+    "message": "Änderungsrate",
+    "description": "Änderungsrate Beschriftung für Volume Scroll der Optionen Seite.."
+  },
+  "optionsVolumeScrollHint": {
+    "message": "Ob beim Scrollen über den Videospieler die Lautstärke geändert werden soll. Optional in logarithmischer Skala (anstatt linear).",
+    "description": "Hilfstext für Volume Scroll der Optionen Seite."
+  },
   "optionsLoadYoutubeTitle": {
     "message": "YouTube Videolink laden",
     "description": "Beschriftung für LoadYoutube der Optionen Seite."

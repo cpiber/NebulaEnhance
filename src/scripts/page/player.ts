@@ -1,7 +1,8 @@
 import type { VideoJsPlayer } from 'video.js';
-import { isVideoPage, sendMessage } from '../helpers/shared';
+import { sendMessage } from '../helpers/shared';
 import { init as initDispatch, loadPrefix } from './dispatcher';
-import SpeedDial from './speeddial';
+import SpeedDial from './components/speeddial';
+import VolumeText from './components/volume';
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
 function getFromStorage<T>(key: string | string[]): Promise<T>;
@@ -12,35 +13,43 @@ function getFromStorage<T>(key: string | string[] | { [key: string]: any }) {
 const defaults = {
   playbackChange: 0.1,
   autoplay: false,
+  volumeEnabled: false,
+  volumeChange: 0.1,
+  volumeLog: false,
 };
 
-export const init = () => {
-  document.addEventListener('keydown', getPressedKey);
+export const init = async () => {
+  const { playbackChange, volumeEnabled, volumeChange, volumeLog } = await getFromStorage(defaults);
+  console.debug('playbackChange:', playbackChange, '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog);
+
+  document.addEventListener('keydown', keydownHandler.bind(null, playbackChange));
+  if (volumeEnabled)
+    document.addEventListener('wheel', wheelHandler.bind(null, volumeChange, volumeLog), { passive: false });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
   initDispatch();
 };
 
 export const initPlayer = async () => {
-  if (!isVideoPage())
-    return;
   const player = await getAPlayer();
 
   if (!player || player.controlBar.children().find(c => c.name() === 'SpeedDial'))
     return; // already initialized this player
   
-  const {
-    playbackChange,
-    autoplay,
-  } = await getFromStorage(defaults);
+  const { playbackChange, autoplay } = await getFromStorage(defaults);
+  console.debug('playbackChange:', playbackChange, 'autoplay?', autoplay);
 
-  console.debug('playbackChange:', playbackChange, 'autoplay:', autoplay);
+  window.videojs.options.autoplay = autoplay; // set default
   player.autoplay(autoplay);
   if (autoplay)
     player.play();
   
-  const comp = await SpeedDial(player, playbackChange);
+  const comp = await SpeedDial(playbackChange);
   window.videojs.registerComponent('SpeedDial', comp);
   player.controlBar.addChild('SpeedDial', {});
+
+  const vidx = player.controlBar.children().findIndex(c => c.name() === 'VolumePanel');
+  window.videojs.registerComponent('VolumeText', VolumeText());
+  player.controlBar.addChild('VolumeText', {}, vidx + 1);
 
   player.on('ended', () => {
     sendMessage('queueGotoNext', null, false);
@@ -62,6 +71,7 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<VideoJsPl
     if (maxiter !== null && iter++ > maxiter) {
       window.clearInterval(i);
       reject('No player found');
+      return;
     }
     const player = findAPlayer();
     if (player) {
@@ -71,7 +81,7 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<VideoJsPl
   }, 100);
 });
 
-const getPressedKey = async (e: KeyboardEvent) => {
+const keydownHandler = (playbackChange: number, e: KeyboardEvent) => {
   if (e.altKey || e.ctrlKey || e.metaKey)
     return;
   if (document.activeElement.tagName === 'INPUT')
@@ -80,7 +90,7 @@ const getPressedKey = async (e: KeyboardEvent) => {
   const player = findAPlayer();
   if (!player)
     return;
-  const { playbackChange } = await getFromStorage({ playbackChange: defaults.playbackChange });
+
   switch (pressedKey) {
     case ',':
       player.currentTime(player.currentTime() - 0.03); // "frame" back
@@ -109,4 +119,21 @@ const getPressedKey = async (e: KeyboardEvent) => {
   }
   e.stopPropagation();
   e.preventDefault();
+};
+
+const wheelHandler = async (volumeChange: number, volumeLog: boolean, e: WheelEvent) => {
+  const player = findAPlayer();
+  if (!player)
+    return;
+  const target = e.target as HTMLElement;
+  if (target.closest('.video-js') === null) // only consider sub-elements of player
+    return;
+  e.stopPropagation();
+  e.preventDefault();
+
+  // use x^4 as approximation for logarithmic scale (https://www.dr-lex.be/info-stuff/volumecontrols.html)
+  const cur = volumeLog ? Math.pow(player.volume(), 1 / 4) : player.volume(); // 4th root
+  const v = cur - Math.sign(e.deltaY) * volumeChange;
+  const n = volumeLog ? Math.pow(v, 4) : v;
+  player.volume(e.deltaY * volumeChange > 0 && n < 0.001 ? 0 : n); // lower volume and below threshold -> mute
 };

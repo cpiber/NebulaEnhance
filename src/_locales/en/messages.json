@@ -47,6 +47,22 @@
     "message": "Whether to make the video automatically play or not. Note that this depends on your browser, see <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">https://demo.theoplayer.com/autoplay-policy</a>.",
     "description": "Hint for Autoplay of options page."
   },
+  "optionsVolumeScrollTitle": {
+    "message": "Volume Scroll",
+    "description": "Label for Volume Scroll of options page."
+  },
+  "optionsVolumeScrollLog": {
+    "message": "Use logarithmic scale",
+    "description": "Log scale label for Volume Scroll of options page."
+  },
+  "optionsVolumeScrollChange": {
+    "message": "Change rate",
+    "description": "Change rate label for Volume Scroll of options page."
+  },
+  "optionsVolumeScrollHint": {
+    "message": "Whether to make scrolling over the player change the playback volume. Optionally in logarithmic scale (as opposed to linear).",
+    "description": "Hint for Volume Scroll of options page."
+  },
   "optionsLoadYoutubeTitle": {
     "message": "Load YouTube link",
     "description": "Label for LoadYoutube of options page."

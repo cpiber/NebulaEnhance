@@ -11,6 +11,8 @@ interface Number {
   pad(length: number): string;
 }
 
+type Instance<T> = T extends new (...args: any[]) => infer U ? U : never;
+
 declare function cloneInto<T>(object: T, targetWindow: Window): T;
 
 declare const __YT_API_KEY__: string;
