@@ -36,7 +36,12 @@
   "keywords": [
     "nebula",
     "watchnebula",
-    "enhancer"
+    "enhancer",
+    "firefox",
+    "chrome",
+    "addon",
+    "extension",
+    "webextension"
   ],
   "author": "cpiber",
   "license": "ISC",

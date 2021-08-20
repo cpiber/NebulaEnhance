@@ -13,7 +13,7 @@ Please make sure you have [NodeJS](https://nodejs.org/) and it's package manager
 
 All source files are written in TypeScript, a superset of JavaScript. This enables strict typechecking and usage of ESNext features. All new code is expected to be in TypeScript with proper annotations.
 
-There is no coding standard, but the current code is written with an indentation of 2 spaces, brackets on same line.
+There is no coding standard, but the current code is written with an indentation of 2 spaces, brackets on same line. ESLint enforces the current style loosely.
 
 If you want to add a feature, please open a new issue first to discuss.
 
@@ -38,6 +38,7 @@ Some available scripts:
 - `test`. Compile and run all tests (unit and integration).
 - `test:unit`/`test:ee`. Run unit/integration tests.
 - `clean`. Clean up all build artifacts (bundles are not affected).
+- `lint`. Lint entire code. Includes js, css and built extension (AMO).
 
 For more control over the build process, it is recommended to use `npm run start` to run the build, and `npm run ext:<browser>` in a separate terminal. This allows to restart either process independently, as well as test in both browsers without halting the build.
 
@@ -48,15 +49,18 @@ For more control over the build process, it is recommended to use `npm run start
 NebulaEnhance
  ├── .env -- Env file. Do not commit.
  ├── .env.sample -- Env file example.
+ ├── .eslintrc.js -- ESLint (js linter) config file.
  ├─> .github
  │   └─> workflows
  ├── .gitignore
+ ├── .stylelintrc.js -- StyleLint (css linter) config file.
  ├── DEVELOPING.md
  ├── README.DE.md
  ├── README.md
  ├─> extension-dist (generated) -- Built extension.
  ├── jest-puppeteer.config.js -- Jest-Puppeteer (integration testrunner) config.
  ├── jest.config.js -- Jest (testrunner) config.
+ ├── jest.setup.js -- Jest setup file, run before each test file.
  ├─> node_modules (generated) -- Installed packages.
  ├── package.json -- Package definition.
  ├── pnpm-lock.yaml -- Installed packages lock file.

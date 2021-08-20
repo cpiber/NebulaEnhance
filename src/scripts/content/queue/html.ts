@@ -16,10 +16,10 @@ export const html = `
       <span class="title">${nothingToPlay}</span>
       <span class="no">-</span> / <span class="of">0</span>
       <span class="prev" role="queue-previous">${iconNext}</span><span class="next" role="queue-next">${iconNext}</span>
-      <span class="reverse">${iconReverse}</span>
+      <span class="reverse clickable">${iconReverse}</span>
     </div>
-    <span class="share">${iconShare}</span>
-    <span class="close" role="queue-close">${iconClose}</span>
+    <span class="share clickable">${iconShare}</span>
+    <span class="close clickable" role="queue-close">${iconClose}</span>
   </div>
   <div class="elements"></div>
 </div>

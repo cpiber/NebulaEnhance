@@ -56,8 +56,11 @@
     width: auto;
     height: 1em;
     vertical-align: middle;
-    cursor: pointer;
     fill: currentColor;
+  }
+
+  .clickable {
+    cursor: pointer;
   }
 
   .top::after, .element::before {
@@ -117,11 +120,9 @@
     }
 
     .prev, .next {
-      pointer-events: none;
       opacity: 0.55;
 
       &.clickable {
-        pointer-events: inherit;
         opacity: 1;
       }
     }
