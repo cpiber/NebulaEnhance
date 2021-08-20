@@ -16,10 +16,11 @@ const defaults = {
   volumeEnabled: false,
   volumeChange: 0.1,
   volumeLog: false,
+  visitedColor: '',
 };
 
 export const init = async () => {
-  const { playbackChange, volumeEnabled, volumeChange, volumeLog } = await getFromStorage(defaults);
+  const { playbackChange, volumeEnabled, volumeChange, volumeLog, visitedColor } = await getFromStorage(defaults);
   console.debug('playbackChange:', playbackChange, '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog);
 
   document.addEventListener('keydown', keydownHandler.bind(null, playbackChange));
@@ -27,6 +28,11 @@ export const init = async () => {
     document.addEventListener('wheel', wheelHandler.bind(null, volumeChange, volumeLog), { passive: false });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
   initDispatch();
+
+  const c = visitedColor.split(';')[0];
+  const s = document.createElement('style');
+  s.innerHTML = `:root { --visited-color: ${c || 'currentColor'}; }`;
+  document.head.appendChild(s);
 };
 
 export const initPlayer = async () => {
@@ -135,5 +141,5 @@ const wheelHandler = async (volumeChange: number, volumeLog: boolean, e: WheelEv
   const cur = volumeLog ? Math.pow(player.volume(), 1 / 4) : player.volume(); // 4th root
   const v = cur - Math.sign(e.deltaY) * volumeChange;
   const n = volumeLog ? Math.pow(v, 4) : v;
-  player.volume(e.deltaY * volumeChange > 0 && n < 0.001 ? 0 : n); // lower volume and below threshold -> mute
+  player.volume(e.deltaY * volumeChange > 0 && n < 0.01 ? 0 : n); // lower volume and below threshold -> mute
 };

@@ -27,10 +27,17 @@ els.youtube.addEventListener('change', async () => {
 });
 permissions.onRemoved.addListener(p => p.origins?.length && (els.youtube.checked = false));
 
+const vChange = () => {
+  const c = els.volumeEnabled.checked;
+  Settings.get().volumeLog.disabled = !c;
+  Settings.get().volumeChange.disabled = !c;
+};
+els.volumeEnabled.addEventListener('change', vChange);
+
 document.querySelector('#showChangelogsNow').addEventListener('click', () => showLogs(getBrowserInstance().runtime.getManifest().version));
 
 // load initial values from storage
-load(true);
+load(true).then(vChange);
 
 // changelog
 (async () => {

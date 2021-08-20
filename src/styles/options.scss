@@ -183,6 +183,10 @@ body.standalone {
   form {
     background-color: #e3e3e3;
     padding: 20px 28px;
+
+    > :last-child {
+      margin-bottom: 0;
+    }
   }
 
   .page-title {

@@ -71,6 +71,14 @@
     "message": "Ob automatisch versucht werden soll, das YouTube Video zu finden. Funktioniert nur für die neuesten 50 videos.",
     "description": "Hilfstext für LoadYoutube der Optionen Seite."
   },
+  "optionsVisitedColorTitle": {
+    "message": "Link Farbe für besuchte Videos",
+    "description": "Beschriftung für Link Farbe der Optionen Seite."
+  },
+  "optionsVisitedColorHint": {
+    "message": "Textfarbe für besuchte Videos. Beliebiger valider CSS Farbwert, leer lassen um nichts zu machen; z.B. <code>#6fbce6</code>",
+    "description": "Hilfstext für Link Farbe der Optionen Seite."
+  },
   "optionsCustomScriptPageTitle": {
     "message": "Custom Script für Webseite",
     "description": "Beschriftung fürs Einfügen von custom scripts zur Webseite der Optionen Seite."
@@ -119,6 +127,10 @@
     "message": "Optionen werden automatisch gespeichert.",
     "description": "Notiz zu 'save' button."
   },
+  "optionsReloadNote": {
+    "message": "Hinweis: Damit Ihre Änderungen angewendet werden müssen Sie die Nebula Seite neuladen.",
+    "description": "Notiz/Hinweis zu Änderungen."
+  },
   "buttonSave": {
     "message": "Speichern",
     "description": "'save' button."
@@ -157,6 +169,10 @@
   },
   "pageQueueClearConfirm": {
     "message": "Warteschlange wirklich leeren?",
-    "description": "Bestätigungs-Frage zum Leeren der Warteschlange"
+    "description": "Bestätigungs-Frage zum Leeren der Warteschlange."
+  },
+  "credits": {
+    "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs und Feature Requests</a>",
+    "description": "Credit footer."
   }
 }

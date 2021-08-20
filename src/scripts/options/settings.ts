@@ -9,6 +9,7 @@ export class Settings {
   youtube: HTMLInputElement = undefined;
   customScriptPage: HTMLTextAreaElement = undefined;
   showChangelogs: HTMLInputElement = undefined;
+  visitedColor: HTMLInputElement = undefined;
 
   protected constructor() {
     Object.keys(this as Settings).forEach(prop => {
@@ -35,9 +36,6 @@ export const toData = (useDefaults = false) => {
     }
     data[key] = val;
   });
-
-  Settings.get().volumeLog.disabled = !data.volumeEnabled;
-  Settings.get().volumeChange.disabled = !data.volumeEnabled;
 
   return data;
 };
