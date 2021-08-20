@@ -1,26 +1,11 @@
-import type { Browser } from 'puppeteer';
-import { videoSelector } from '../shared';
-
-const formSelector = '#NebulaApp > :nth-child(2) > :nth-child(2) form';
-let optionsURL: string;
-const b = (browser as never as Browser);
-declare const chrome: typeof browser;
+import { login, setSettings, videoSelector } from '../shared';
 
 jest.setTimeout(10000);
 
 let somevideo: string;
 beforeAll(async () => {
-  console.log('Using base', __NEBULA_BASE__);
-  await page.goto('chrome://settings');
-  optionsURL = await page.evaluate(async () => (await chrome.management.getAll())[0].optionsUrl);
+  await login();
 
-  await page.goto(`${__NEBULA_BASE__}/login`);
-  await expect(page).toFillForm(formSelector, {
-    email: __NEBULA_USER__,
-    password: __NEBULA_PASS__,
-  });
-  await expect(page).toClick(`${formSelector} button`, { text: 'Sign In' });
-  await page.waitForSelector('[href="/account"]'); // wait until logged in
   await page.goto(`${__NEBULA_BASE__}/videos`);
   await page.waitForSelector(videoSelector);
   somevideo = await page.evaluate(sel => document.querySelector<HTMLAnchorElement>(sel).href, videoSelector);
@@ -50,12 +35,23 @@ describe('video player', () => {
 
   test('controls present', async () => {
     await expect(page).toMatchElement('.enhancer-speed', { timeout: 0 });
+    await expect(page).toMatchElement('.enhancer-volume', { timeout: 0 });
   });
 
   test('controls use settings', async () => {
     await page.waitForSelector('.enhancer-speed');
     await expect(page.$eval('.enhancer-tooltip .vjs-nebula-tooltip-label', el => el.textContent)).resolves.toContain('Speed');
     await expect(page.evaluate((p: string) => window.videojs.players[p].autoplay(), player)).resolves.toBe(true);
+  });
+
+  test('controls are updated', async () => {
+    await page.waitForSelector('.enhancer-speed');
+
+    const speed = await page.evaluate((p: string) => window.videojs.players[p].playbackRate(), player);
+    await expect(page.$eval('.enhancer-tooltip .vjs-nebula-tooltip-label', el => el.textContent)).resolves.toContain(`${speed}`);
+
+    const vol = await page.evaluate((p: string) => window.videojs.players[p].volume(), player);
+    await expect(page.$eval('.enhancer-volume', el => el.textContent)).resolves.toContain(`${(vol * 100).toFixed(0)}`);
   });
 });
 
@@ -77,18 +73,4 @@ describe('video pages 2', () => {
   });
 });
 
-const setSettings = async (set: { [key: string]: string | boolean}) => {
-  const pg = await b.newPage();
-  await pg.goto(optionsURL);
-  const form = await expect(pg).toMatchElement('form');
-  for (const key in set) {
-    if (typeof(set[key]) !== 'boolean')
-      continue;
-    // need to check booleans manually
-    await form.$eval(`[name="${key}"]`, (el: HTMLInputElement, val: boolean) => el.checked = val, set[key]);
-    delete set[key];
-  }
-  await expect(pg).toFillForm('form', set, { timeout: 1000 });
-  await expect(pg).toClick('button[type="submit"]');
-  await pg.close();
-};
+

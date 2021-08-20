@@ -1,8 +1,10 @@
-import { addToQueue, expectQueueLength, qbuttSelector, queueSelector, titles, videoSelector } from '../shared';
+import { addToQueue, expectQueueLength, login, qbuttSelector, queueSelector, titles, videoSelector } from '../shared';
 
 jest.setTimeout(10000);
 
 beforeAll(async () => {
+  await login();
+
   await page.goto(__NEBULA_BASE__);
   await page.waitForSelector('.CookieConsent-Button');
   await page.click('.CookieConsent-Button');
@@ -26,9 +28,9 @@ describe('videos page', () => {
     await expect(vid).toMatchElement(qbuttSelector);
     
     const cnt = (await page.evaluate(s => document.querySelectorAll(s).length, videoSelector));
-    await page.waitForFunction((sel, cnt) => {
+    await page.waitForFunction((sel, n) => {
       window.scrollBy(0, window.document.body.scrollHeight);
-      return document.querySelectorAll(sel).length > cnt;
+      return document.querySelectorAll(sel).length > n;
     }, {}, videoSelector, cnt);
     
     const v2 = await page.waitForSelector(`${videoSelector}:nth-child(${cnt+1})`);
@@ -56,6 +58,13 @@ describe('videos page', () => {
           .map(e => !e.querySelector('.creator').textContent.match(/.+ • \d+:\d{2}/))
           .reduce((prev, cur) => prev || cur, false), queueSelector),
     ).toBe(false);
+  });
+});
+
+describe('queue', () => {
+  beforeEach(async () => {
+    await page.goto(`${__NEBULA_BASE__}/videos`);
+    await page.waitForSelector(videoSelector);
   });
 
   test('can clear queue', async () => {
@@ -87,7 +96,7 @@ describe('videos page', () => {
     await addToQueue(2);
     await page.click(`${queueSelector} .element`);
     const title = await page.evaluate(sel => document.querySelector(`${sel} .element .title`).textContent, queueSelector);
-    await page.waitForFunction(title => document.title.indexOf(title) !== -1, { timeout: 1000 }, title);
+    await page.waitForFunction(t => document.title.indexOf(t) !== -1, { timeout: 1000 }, title);
     await expect(page.url()).toMatch(/videos/);
     await expect(page.title()).resolves.toContain(title);
     await expect(page.evaluate(sel => document.querySelector(`${sel} .top .title`).textContent, queueSelector)).resolves.toBe(title);
@@ -97,7 +106,7 @@ describe('videos page', () => {
 
   test('navigating works', async () => {
     const correct = async (num: number) => {
-      const t = await page.evaluate((sel, num) => document.querySelector(`${sel} .element:nth-child(${num}) .title`).textContent, queueSelector, num);
+      const t = await page.evaluate((sel, n) => document.querySelector(`${sel} .element:nth-child(${n}) .title`).textContent, queueSelector, num);
       await page.waitForFunction(title => document.title.indexOf(title) !== -1, { timeout: 1000 }, t);
       await expect(page.title()).resolves.toContain(t);
       await expect(page.evaluate(sel => document.querySelector(`${sel} .top .title`).textContent, queueSelector)).resolves.toBe(t);
@@ -148,5 +157,20 @@ describe('videos page', () => {
     await page.waitForSelector(queueSelector);
     await page.waitForFunction(sel => document.querySelectorAll(`${sel} .element`).length > 0, {}, queueSelector);
     await expect(titles()).resolves.toEqual(before);
+  });
+
+  test('adds proper controls', async () => {
+    await addToQueue(3);
+    await page.click(`${queueSelector} .top .next`);
+    await expect(page).toMatchElement('.enhancer-queue-control-next', { timeout: 0 });
+    await expect(page.waitForSelector('.enhancer-queue-control-prev', { timeout: 10 })).rejects.toBeDefined();
+
+    await page.click(`${queueSelector} .top .next`);
+    await expect(page).toMatchElement('.enhancer-queue-control-next', { timeout: 0 });
+    await expect(page).toMatchElement('.enhancer-queue-control-prev', { timeout: 0 });
+
+    await page.click(`${queueSelector} .top .next`);
+    await expect(page).toMatchElement('.enhancer-queue-control-prev', { timeout: 0 });
+    await expect(page.waitForSelector('.enhancer-queue-control-next', { timeout: 10 })).rejects.toBeDefined();
   });
 });

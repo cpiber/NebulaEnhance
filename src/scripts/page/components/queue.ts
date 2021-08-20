@@ -31,7 +31,7 @@ const QueueButton = async (next: boolean) => {
       this.tooltip.remove();
     },
     buildCSSClass: function (this: T) {
-      return `vjs-icon-${next ? 'next-item' : 'previous-item'} enhancer-queue-control ${MenuButton.prototype.buildCSSClass.apply(this)}`;
+      return `vjs-icon-${next ? 'next-item' : 'previous-item'} enhancer-queue-control enhancer-queue-control-${next ? 'next' : 'prev'} ${MenuButton.prototype.buildCSSClass.apply(this)}`;
     },
   });
 };
