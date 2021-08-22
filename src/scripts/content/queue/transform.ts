@@ -15,14 +15,13 @@ export function toggle(this: Queue) {
 
 export function move(this: Queue, orig: number, index: number) {
   const [name, elem] = this.queue.splice2(orig, 1);
-  this.queue.splice2(index, 0, name, elem);
   if (this.queuepos >= 0) {
     // adjust index based on new and old positions, difference always 1 (except when moving current)
     if (this.queuepos === orig) this.queuepos = index;
     else if (orig > this.queuepos && index <= this.queuepos) this.queuepos++;
     else if (orig < this.queuepos && index >= this.queuepos) this.queuepos--;
   }
-  this.updateText();
+  this.queue.splice2(index, 0, name, elem);
   return elem[0];
 }
 
@@ -38,8 +37,6 @@ export async function set(this: Queue, newq: string[] | Nebula.Video[], current?
   if (current)
     // use timeout to make sure dom is updated
     setTimeout(() => this.goto(this.queue.indexOf(current), false), 0);
-  else
-    this.updateText(); // new queue, nothing playing
   this.containerEl.classList.toggle('hidden', q.length === 0);
   this.calcBottom(this.containerEl.classList.contains('down'));
   return q;
@@ -66,10 +63,9 @@ function setVid(this: Queue, newq: Nebula.Video[]) {
 }
 
 export function reverse(this: Queue) {
-  this.queue.reverse2();
   if (this.queuepos !== -1) {
     this.queuepos = this.queue.length - this.queuepos - 1;
-    this.updateText();
+    this.queue.reverse2();
     this.elementsEl.querySelector('.playing').scrollIntoView();
   }
 }

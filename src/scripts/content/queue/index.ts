@@ -1,7 +1,9 @@
 import { Store, VideoArray } from '../../helpers/VideoQueue';
 import { initDrag } from './drag';
-import { initElement, initMethods, QueueMethods } from './init';
+import { initElement, QueueMethods } from './init';
 import { clickElements, clickTop, popState } from './listener';
+
+export type Listener = (q: Queue) => void;
 
 export class Queue extends QueueMethods {
   protected static instance: Queue;
@@ -20,11 +22,11 @@ export class Queue extends QueueMethods {
   protected shareEl: HTMLElement;
   protected shareLinkEl: HTMLInputElement;
   protected shareHereEl: HTMLInputElement;
+  protected listeners: Listener[];
 
   protected constructor() {
     super();
     Object.setPrototypeOf(this, Queue.prototype);
-    initMethods.apply(this);
 
     // remove existing elements from extension reload
     Array.from(document.querySelectorAll('.enhancer-queue')).forEach(n => n.remove());
@@ -42,6 +44,7 @@ export class Queue extends QueueMethods {
     this.shareHereEl.addEventListener('change', this.setShare.bind(this));
 
     initDrag.apply(this);
+    this.listeners = [];
   }
 
   isEmpty() {

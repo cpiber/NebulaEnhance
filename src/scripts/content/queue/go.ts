@@ -47,4 +47,5 @@ export function updateText(this: Queue) {
   this.totalEl.textContent = `${this.queue.length}`;
   this.prevEl.classList.toggle('clickable', this.canGoPrev());
   this.nextEl.classList.toggle('clickable', this.canGoNext());
+  this.emit();
 }

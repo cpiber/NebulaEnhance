@@ -3,6 +3,7 @@ import { Tooltip } from './tooltip';
 
 type Button = {
   tooltip: Tooltip,
+  toggle: (force: boolean) => void,
 };
 
 const QueueButton = async (next: boolean) => {
@@ -12,6 +13,7 @@ const QueueButton = async (next: boolean) => {
   const MenuButton = window.videojs.getComponent('MenuButton');
   type T = Instance<typeof MenuButton> & Button;
   return window.videojs.extend(MenuButton, {
+    tooltip: null,
     constructor: function (this: T) {
       MenuButton.apply(this, arguments as FnArgs<typeof MenuButton>);
       
@@ -29,6 +31,10 @@ const QueueButton = async (next: boolean) => {
       this.disable();
     },
     handleClick: click,
+    toggle: function (this: T, force: boolean) {
+      if (force) this.enable();
+      else this.disable();
+    },
     dispose: function (this: T) {
       this.tooltip.remove();
     },

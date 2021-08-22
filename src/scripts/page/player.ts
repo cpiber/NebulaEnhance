@@ -1,4 +1,4 @@
-import { sendMessage } from '../helpers/shared';
+import { sendEventHandler, sendMessage } from '../helpers/shared';
 import { init as initDispatch, loadPrefix } from './dispatcher';
 import SpeedDial from './components/speeddial';
 import VolumeText from './components/volume';
@@ -38,6 +38,8 @@ export const init = async () => {
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
   initDispatch();
 
+  sendEventHandler('queueChange', ({ canNext, canPrev }: { canNext: boolean, canPrev: boolean }) => updatePlayerControls(findAPlayer(), canNext, canPrev));
+
   const c = visitedColor.split(';')[0];
   if (!c) return;
   const s = document.createElement('style');
@@ -62,11 +64,7 @@ export const initPlayer = async () => {
   });
 
   const { canNext, canPrev } = await sendMessage<{ canNext: boolean, canPrev: boolean }>('getQueueStatus');
-  console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev);
-  if (canNext)
-    (player.controlBar.getChild('QueueNext') as Instance<Comp<typeof QueueButton>>).enable();
-  if (canPrev)
-    (player.controlBar.getChild('QueuePrev') as Instance<Comp<typeof QueueButton>>).enable();
+  updatePlayerControls(player, canNext, canPrev);
   
   player._enhancer_init = true;
 };
@@ -128,6 +126,13 @@ const setPlayerDefaults = (autoplay: boolean, volumeEnabled: boolean) => {
   const pidx = comps.findIndex(c => c === 'playToggle');
   comps.splice(pidx + 1, 0, 'queueNext');
   comps.splice(pidx, 0, 'queuePrev');
+};
+
+const updatePlayerControls = (player: VPlayer, canNext: boolean, canPrev: boolean) => {
+  if (!player) return;
+  console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev);
+  (player.controlBar.getChild('QueueNext') as Instance<Comp<typeof QueueButton>>).toggle(canNext);
+  (player.controlBar.getChild('QueuePrev') as Instance<Comp<typeof QueueButton>>).toggle(canPrev);
 };
 
 const keydownHandler = (playbackChange: number, e: KeyboardEvent) => {

@@ -1,15 +1,3 @@
-export const videosettings = {
-  playbackRate: null as number,
-  volume: null as number,
-  quality: null as number,
-  subtitles: null as string,
-};
-
-export type ytvideo = {
-  confidence: number,
-  video: string,
-};
-
 export const videoUrlMatch = /^\/videos\/(.+?)\/?$/;
 
 Array.prototype.occurence = function <T>(this: Array<T>) {
@@ -77,38 +65,6 @@ export function injectScript(arg1: HTMLElement | string, arg2: HTMLElement | str
   });
 }
 
-export const sendMessage = <T>(name: string, data?: { [key: string]: any }, expectAnswer = true, skipOriginCheck = false) => {
-  if (!expectAnswer) {
-    window.parent.postMessage(JSON.stringify({ type: name, ...data }), '*');
-    return Promise.resolve(undefined as T);
-  }
-  return new Promise<T>((resolve, reject) => {
-    const e = `enhancer-message-${Math.random().toString().substr(2)}`;
-    const c = (ev: MessageEvent) => {
-      sendMessageCB(resolve, reject, e, skipOriginCheck, c, ev);
-    };
-    window.addEventListener('message', c);
-    window.parent.postMessage(JSON.stringify({ type: name, name: e, ...data }), '*');
-  });
-};
-
-const sendMessageCB = <T>(resolve: (value: T) => void, reject: (value: any) => void, eventName: string,
-  skipOriginCheck: boolean, self: (ev: MessageEvent) => void, ev: MessageEvent) => {
-  if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:.+\.)?nebula.app)/)) return;
-  let d = ev.data;
-  try {
-    d = JSON.parse(d);
-  } catch (err) {
-  }
-  const msg = (typeof d === 'string' ? { type: d } : d) as { type: string, err: any, res: any };
-  if (msg.type !== eventName) return;
-  window.removeEventListener('message', self);
-  if (msg.err)
-    reject(msg.err);
-  else
-    resolve(msg.res);
-};
-
 export const getCookie = (name: string) => {
   const cookieArr = document.cookie.split(';');
   for (const cookie of cookieArr) {
@@ -118,4 +74,18 @@ export const getCookie = (name: string) => {
   }
   
   return null;
+};
+
+export const parseMaybeJSON = (data: string) => {
+  try {
+    return JSON.parse(data);
+  } catch (err) {
+    return data;
+  }
+};
+export const parseTypeObject = <T extends { type: string }>(data: string): T => {
+  const d = parseMaybeJSON(data);
+  if (typeof d === 'string') return { type: d } as T;
+  if (typeof d.type !== 'undefined') return d;
+  throw TypeError('not convertible to type-object');
 };

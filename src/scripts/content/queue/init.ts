@@ -5,6 +5,7 @@ import { goto, gotoNext, gotoPrev, updateText } from './go';
 import { move, reverse, set, toggle } from './transform';
 import { addToStore } from './add';
 import { handleMessage } from './listener';
+import { emit, onChange } from './events';
 
 /**
  * Dummy class for method declarations
@@ -14,20 +15,22 @@ import { handleMessage } from './listener';
  * Initializer in separate method because of type checking
  */
 export class QueueMethods {
-  enqueue: typeof enqueue;
-  enqueueNow: typeof enqueueNow;
-  remove: typeof remove;
-  clear: typeof clear;
-  goto: typeof goto;
-  gotoNext: typeof gotoNext;
-  gotoPrev: typeof gotoPrev;
-  toggle: typeof toggle;
-  move: typeof move;
-  set: typeof set;
-  reverse: typeof reverse;
-  addToStore: typeof addToStore;
-  handleMessage: typeof handleMessage;
-  updateText: typeof updateText;
+  enqueue = enqueue;
+  enqueueNow = enqueueNow;
+  remove = remove;
+  clear = clear;
+  goto = goto;
+  gotoNext = gotoNext;
+  gotoPrev = gotoPrev;
+  toggle = toggle;
+  move = move;
+  set = set;
+  reverse = reverse;
+  addToStore = addToStore;
+  handleMessage = handleMessage;
+  updateText = updateText;
+  onChange = onChange;
+  protected emit = emit;
 }
 
 export function initElement(this: Queue) {
@@ -46,21 +49,4 @@ export function initElement(this: Queue) {
   this.shareHereEl = this.shareEl.querySelector('input[type="checkbox"]');
   document.body.append(q);
   return q;
-}
-
-export function initMethods(this: Queue) {
-  this.enqueue = enqueue.bind(this);
-  this.enqueueNow = enqueueNow.bind(this);
-  this.remove = remove.bind(this);
-  this.clear = clear.bind(this);
-  this.goto = goto.bind(this);
-  this.gotoNext = gotoNext.bind(this);
-  this.gotoPrev = gotoPrev.bind(this);
-  this.toggle = toggle.bind(this);
-  this.move = move.bind(this);
-  this.set = set.bind(this) as typeof set;
-  this.reverse = reverse.bind(this);
-  this.addToStore = addToStore.bind(this) as typeof addToStore;
-  this.handleMessage = handleMessage.bind(this);
-  this.updateText = updateText.bind(this);
 }

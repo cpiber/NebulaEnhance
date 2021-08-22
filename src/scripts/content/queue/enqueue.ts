@@ -43,11 +43,9 @@ export function enqueueNow(this: Queue, name: string) {
 export function remove(this: Queue, index: number) {
   if (index < 0 || index >= this.queue.length) return;
   if (this.queue.length === 1) return this.clear();
-  this.queue.splice2(index, 1);
-  if (this.queuepos >= 0 && index <= this.queuepos) {
+  if (this.queuepos >= 0 && index <= this.queuepos)
     --this.queuepos;
-    this.updateText();
-  }
+  this.queue.splice2(index, 1);
 }
 
 export function clear(this: Queue ) {

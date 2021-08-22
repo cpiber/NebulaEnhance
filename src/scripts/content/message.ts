@@ -1,38 +1,19 @@
-import { clone, getBrowserInstance, videosettings } from '../helpers/sharedExt';
+import { getBrowserInstance, parseTypeObject, replyMessage, videosettings } from '../helpers/sharedExt';
 import { Queue } from './queue';
 
 const local = getBrowserInstance().storage.local;
-
-const replyMessage = (e: MessageEvent, name: string, data: any, err?: any) => name &&
-  /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-  // @ts-ignore
-  e.source.postMessage(
-    clone({ type: name, res: data, err: err }),
-    e.origin,
-  );
-
-const parse = (e: MessageEvent) => {
-  if (!e.origin.match(/^https?:\/\/(?:.+\.)?nebula.app$/))
-    return null;
-  let d = e.data;
-  try {
-    d = JSON.parse(d);
-  } catch (err) {
-  }
-  const msg = (typeof d === 'string' ? { type: d } : d) as { type: string, [key: string]: any };
-  if (msg.type?.startsWith('enhancer-message-'))
-    return null; // reply
-  return msg;
-};
+type Msg = { type: string, name?: string, [key: string]: any };
 
 /**
  * handle postMessage event
  * @returns `true` if event handeled, else parsed message
  */
 export const handle = (e: MessageEvent) => {
-  const msg = parse(e);
-  if (msg === null)
+  if (!e.origin.match(/^https?:\/\/(?:.+\.)?nebula.app$/))
     return true;
+  const msg = parseTypeObject<Msg>(e.data);
+  if (msg.type?.startsWith('enhancer-message-'))
+    return true; // ignore replies
   
   if (msg.type?.startsWith('queue'))
     return Queue.get().handleMessage(e, msg);
@@ -57,12 +38,23 @@ export const handle = (e: MessageEvent) => {
       promise = Promise.resolve(getBrowserInstance().i18n.getMessage(msg.message));
       break;
     case 'getQueueStatus':
-      promise = Promise.resolve(clone({ canNext: Queue.get().canGoNext(), canPrev: Queue.get().canGoPrev() }));
+      promise = Promise.resolve({ canNext: Queue.get().canGoNext(), canPrev: Queue.get().canGoPrev() });
       break;
+    case 'registerListener':
+      registerListener(e, msg);
+      return true;
     default:
       return msg;
   }
   // use raw promises here because we don't care about the return value, let the rest of the handler continue
   promise.then(val => replyMessage(e, msg.name, val, null)).catch(err => replyMessage(e, msg.name, null, err));
   return true;
+};
+
+const registerListener = (e: MessageEvent, msg: Msg) => {
+  switch (msg.event) {
+    case 'queueChange':
+      Queue.get().onChange(() => replyMessage(e, msg.name, { canNext: Queue.get().canGoNext(), canPrev: Queue.get().canGoPrev() }));
+      break;
+  }
 };
