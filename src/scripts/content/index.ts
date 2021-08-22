@@ -11,7 +11,7 @@ const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
 function getFromStorage(key: string | string[] | { [key: string]: any }) {
-  return getBrowserInstance().storage.local.get(key); 
+  return getBrowserInstance().storage.local.get(key);
 }
 
 export const nebula = async () => {
@@ -28,7 +28,7 @@ export const nebula = async () => {
   console.debug('Youtube:', youtube);
 
   maybeLoadComments(youtube);
-  
+
   document.addEventListener(`${loadPrefix}-video`, () => {
     maybeLoadComments(youtube);
   });
@@ -166,7 +166,7 @@ const createLinkForAll = () => {
   const container = document.querySelector('picture + div > p + div');
   if (!container)
     return;
-  
+
   const link = !container.children.length ? document.createElement('a') : container.children[0].cloneNode(true) as HTMLLinkElement;
   link.style.color = link.querySelector('svg')?.getAttribute('fill');
   link.innerHTML = iconWatchLater;

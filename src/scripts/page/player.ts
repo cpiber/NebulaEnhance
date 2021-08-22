@@ -10,7 +10,7 @@ type Comp<T> = T extends (...args: any[]) => Promise<infer R> ? R : T extends (.
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
 function getFromStorage<T>(key: string | string[]): Promise<T>;
 function getFromStorage<T>(key: string | string[] | { [key: string]: any }) {
-  return sendMessage<T>('getStorage', { get: key }); 
+  return sendMessage<T>('getStorage', { get: key });
 }
 
 const defaults = {
@@ -27,7 +27,7 @@ export const init = async () => {
   console.debug('playbackChange:', playbackChange, 'autoplay?', autoplay,
     '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog,
     '\nvisitedColor:', visitedColor);
-  
+
   await waitForVJS();
   await registerComponents(playbackChange);
   setPlayerDefaults(autoplay, volumeEnabled);
@@ -51,9 +51,9 @@ export const init = async () => {
 export const initPlayer = async () => {
   const player = await getAPlayer();
 
-  if (!player || player._enhancer_init)
+  if (!player || player._enhancerInit)
     return; // already initialized this player
-  
+
   const { autoplay } = await getFromStorage(defaults);
 
   if (autoplay)
@@ -65,8 +65,8 @@ export const initPlayer = async () => {
 
   const { canNext, canPrev } = await sendMessage<{ canNext: boolean, canPrev: boolean }>('getQueueStatus');
   updatePlayerControls(player, canNext, canPrev);
-  
-  player._enhancer_init = true;
+
+  player._enhancerInit = true;
 };
 
 export const waitForVJS = () => new Promise<typeof window.videojs>(resolve => {
@@ -105,10 +105,12 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<VPlayer>(
 
 const registerComponents = async (playbackChange: number) => {
   console.debug('registering video components');
+  /* eslint-disable new-cap */
   window.videojs.registerComponent('SpeedDial', await SpeedDial(playbackChange));
   window.videojs.registerComponent('VolumeText', VolumeText());
   window.videojs.registerComponent('QueueNext', await QueueButton(true));
   window.videojs.registerComponent('QueuePrev', await QueueButton(false));
+  /* eslint-enable new-cap */
 };
 
 const setPlayerDefaults = (autoplay: boolean, volumeEnabled: boolean) => {

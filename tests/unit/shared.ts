@@ -12,8 +12,8 @@ describe('dot product operations', () => {
   });
 
   test('multi-dimensional', () => {
-    const a1 = [1,2,3];
-    const a2 = [3,2,1];
+    const a1 = [ 1,2,3 ];
+    const a2 = [ 3,2,1 ];
     const d = a1[0] * a2[0] + a1[1] * a2[1] + a1[2] * a2[2];
     expect(dot(a1, a2)).toBeCloseTo(d);
   });
@@ -29,7 +29,7 @@ describe('norm (vector square-length)', () => {
   });
 
   test('multi-dimensional', () => {
-    expect(norm([1, 2, 3])).toBeCloseTo(Math.sqrt(1 * 1 + 2 * 2 + 3 * 3));
+    expect(norm([ 1, 2, 3 ])).toBeCloseTo(Math.sqrt(1 * 1 + 2 * 2 + 3 * 3));
   });
 });
 
@@ -39,15 +39,15 @@ describe('array occurence', () => {
   });
 
   test('only one value', () => {
-    expect([1, 1, 1].occurence()).toEqual({ values: [1], occurences: [3] });
+    expect([ 1, 1, 1 ].occurence()).toEqual({ values: [1], occurences: [3] });
   });
 
   test('only one value each', () => {
-    expect([1, 2, 3].occurence()).toEqual({ values: [1, 2, 3], occurences: [1, 1, 1] });
+    expect([ 1, 2, 3 ].occurence()).toEqual({ values: [ 1, 2, 3 ], occurences: [ 1, 1, 1 ] });
   });
 
   test('interleaving values', () => {
-    expect([3, 1, 2, 1, 3, 3, 2].occurence()).toEqual({ values: [1, 2, 3], occurences: [2, 2, 3] });
+    expect([ 3, 1, 2, 1, 3, 3, 2 ].occurence()).toEqual({ values: [ 1, 2, 3 ], occurences: [ 2, 2, 3 ] });
   });
 });
 
@@ -58,11 +58,11 @@ describe('array equality', () => {
 
   test('different items', () => {
     expect([1].equals([2])).toBe(false);
-    expect([1,2,3].equals([2,1,3])).toBe(false);
+    expect([ 1,2,3 ].equals([ 2,1,3 ])).toBe(false);
   });
 
   test('same values', () => {
-    expect([1, 2, 3].equals([1, 2, 3])).toBe(true);
+    expect([ 1, 2, 3 ].equals([ 1, 2, 3 ])).toBe(true);
   });
 });
 
@@ -180,10 +180,10 @@ describe('page matchers', () => {
 
 describe('script injection', () => {
   test('injecting with file works', async () => {
-    const log = console.log;
+    const { log } = console;
     console.log = jest.fn();
     const dom = new JSDOM('', { url: `file://${__dirname}/index.html`, runScripts: 'dangerously', resources: 'usable' });
-    
+
     const wrapper = dom.window.document.head;
     await expect(injectScript('../fixtures/log.js', wrapper, null, null, dom.window as never as Window)).resolves.toBe(void 0);
     expect((console.log as jest.Mock).mock.calls.length).toBe(1);
@@ -191,7 +191,7 @@ describe('script injection', () => {
   });
 
   test('injecting with string works', async () => {
-    const log = console.log;
+    const { log } = console;
     console.log = jest.fn();
     const wrapper = document.body.appendChild(document.createElement('div'));
     await expect(injectScript(wrapper, 'console.log("test")')).resolves.toBe(void 0);
@@ -203,17 +203,17 @@ describe('script injection', () => {
     const err = console.error;
     console.error = jest.fn();
     const dom = new JSDOM('', { url: `file://${__dirname}/index.html`, runScripts: 'dangerously', resources: 'usable' });
-    
+
     const wrapper = dom.window.document.head;
     await expect(injectScript('./__invalid__.js', wrapper, null, null, dom.window as never as Window)).rejects.not.toBeUndefined();
     console.error = err;
   });
 
   test('injecting with data works', async () => {
-    const log = console.log;
+    const { log } = console;
     const mock = console.log = jest.fn();
     const dom = new JSDOM('', { url: `file://${__dirname}/index.html`, runScripts: 'dangerously', resources: 'usable' });
-    
+
     const wrapper = dom.window.document.head;
     await expect(injectScript('../fixtures/waitForEvent.js', wrapper, 'test', 'data', dom.window as never as Window)).resolves.toBe(void 0);
     expect(mock.mock.calls.length).toBe(1);
@@ -305,7 +305,7 @@ describe('message event listeners', () => {
     window.removeEventListener('message', mock);
   });
 
-  test('sends a register event', () => new Promise ((resolve) => {
+  test('sends a register event', () => new Promise((resolve) => {
     mock.mockImplementation((ev) => {
       expect(JSON.parse(ev.data).event).toBe('test');
       resolve(0);
@@ -317,9 +317,9 @@ describe('message event listeners', () => {
     let name: string;
     const cb = jest.fn();
 
-    await new Promise ((resolve) => {
+    await new Promise((resolve) => {
       mock.mockImplementation(ev => {
-        name = JSON.parse(ev.data).name;
+        ({ name } = JSON.parse(ev.data));
         resolve(0);
       });
       sendEventHandler('test', cb, true);
@@ -331,7 +331,7 @@ describe('message event listeners', () => {
         cb.mockImplementationOnce(resolve);
         window.postMessage({ type: name, res: i }, '*');
       })).resolves.toBe(i);
-      expect(cb).toBeCalledTimes(i+1);
+      expect(cb).toBeCalledTimes(i + 1);
     }
   });
 });

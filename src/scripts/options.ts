@@ -9,10 +9,10 @@ if (cl.length)
   document.body.classList.add(...cl);
 
 const els = Settings.get();
-const local = getBrowserInstance().storage.local;
+const { local } = getBrowserInstance().storage;
 
 // permissions for youtube comments
-const permissions = getBrowserInstance().permissions;
+const { permissions } = getBrowserInstance();
 els.youtube.addEventListener('change', async () => {
   const y = els.youtube;
   const perms: browser.permissions.Permissions = {

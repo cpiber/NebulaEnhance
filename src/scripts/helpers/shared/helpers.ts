@@ -1,6 +1,6 @@
 export const videoUrlMatch = /^\/videos\/(.+?)\/?$/;
 
-Array.prototype.occurence = function <T>(this: Array<T>) {
+Array.prototype.occurence = function <T> (this: Array<T>) {
   return [...this].sort().reduce((prev, cur) => {
     if (cur === prev.values[prev.values.length - 1]) {
       prev.occurences[prev.occurences.length - 1]++; // increase frequency
@@ -12,11 +12,11 @@ Array.prototype.occurence = function <T>(this: Array<T>) {
     return prev;
   }, { values: [] as Array<T>, occurences: [] as Array<number> });
 };
-Array.prototype.equals = function <T>(this: Array<T>, other: Array<T>) {
-  return this.length === other.length && this.every((v, i) => v === other[i]); 
+Array.prototype.equals = function <T> (this: Array<T>, other: Array<T>) {
+  return this.length === other.length && this.every((v, i) => v === other[i]);
 };
 Number.prototype.pad = function (this: number, length: number) {
-  return ('' + this).padStart(length, '0'); 
+  return ('' + this).padStart(length, '0');
 };
 
 export const dot = (t1: number[], t2: number[]) => t1.length === t2.length && t1.reduce((prev, cur, index) => prev + cur * t2[index], 0);
@@ -41,7 +41,7 @@ export function injectScript(arg1: HTMLElement | string, arg2: HTMLElement | str
   return new Promise((resolve, reject) => {
     const gotSrc = typeof (arg2 as HTMLElement).appendChild !== 'undefined';
     const n = gotSrc ? arg2 as HTMLElement : arg1 as HTMLElement;
-    const f = gotSrc ? arg1 as string      : arg2 as string;
+    const f = gotSrc ? arg1 as string : arg2 as string;
 
     const s = w.document.createElement('script');
     s.setAttribute('type', 'text/javascript');
@@ -69,10 +69,10 @@ export const getCookie = (name: string) => {
   const cookieArr = document.cookie.split(';');
   for (const cookie of cookieArr) {
     const cookiePair = cookie.split('=');
-    if(name == cookiePair[0].trim())
+    if (name == cookiePair[0].trim())
       return decodeURIComponent(cookiePair[1]);
   }
-  
+
   return null;
 };
 
@@ -87,5 +87,5 @@ export const parseTypeObject = <T extends { type: string }>(data: string): T => 
   const d = parseMaybeJSON(data);
   if (typeof d === 'string') return { type: d } as T;
   if (typeof d.type === 'string') return d;
-  throw TypeError('not convertible to type-object');
+  throw new TypeError('not convertible to type-object');
 };

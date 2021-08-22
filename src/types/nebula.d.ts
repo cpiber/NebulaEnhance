@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 declare namespace Nebula {
   type Video = {
     slug: string,

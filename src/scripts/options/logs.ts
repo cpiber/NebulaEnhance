@@ -52,7 +52,7 @@ const buildVersion = (cv: string, r: Github.Release) => {
 
 const releaseToMore = (cv: string, r: Github.Release) => [
   ...r.tag_name === cv ? [msg('optionsChangelogYourVersion')] : [],
-  ...(['draft', 'prerelease'] as Array<keyof Github.Release>).filter(e => r[e] === true).map(s => s[0].toUpperCase() + s.slice(1)),
+  ...([ 'draft', 'prerelease' ] as Array<keyof Github.Release>).filter(e => r[e] === true).map(s => s[0].toUpperCase() + s.slice(1)),
 ].join(', ');
 
 export const showLogs = async (currentVersion: string, installed = false) => {

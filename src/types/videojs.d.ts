@@ -1,7 +1,7 @@
 import type videojs from 'video.js';
 
 type ctr = new (player: videojs.Player, options?: videojs.ComponentOptions, ready?: videojs.Component.ReadyCallback) => videojs.Component;
-export type VPlayer = videojs.Player & { _enhancer_init: boolean };
+export type VPlayer = videojs.Player & { _enhancerInit: boolean };
 
 declare namespace v {
   const players: { [key: string]: VPlayer };

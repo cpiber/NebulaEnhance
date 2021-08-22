@@ -5,7 +5,7 @@ type prefixes = typeof navigatePrefix | typeof loadPrefix;
 declare global {
   type FnArgs<F> = F extends (this: any, ...args: infer R) => any ? R : never;
   type CtrArgs<F> = F extends new (...args: infer R) => any ? R : never;
-  
+
   type NavigateOrLoadEvent<K extends string, D extends { [key: string]: any } = { [key: string]: any }> = CustomEvent<{ page: K, from: string } & D>;
   type PageEvent<K extends string> = NavigateOrLoadEvent<K, { more: string | undefined }>;
   type VideoEvent = NavigateOrLoadEvent<'video', { video: string }>;

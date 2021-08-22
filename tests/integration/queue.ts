@@ -26,14 +26,14 @@ describe('videos page', () => {
     const vid = await page.waitForSelector(videoSelector);
     await (await vid.$('img')).hover();
     await expect(vid).toMatchElement(qbuttSelector);
-    
+
     const cnt = (await page.evaluate(s => document.querySelectorAll(s).length, videoSelector));
     await page.waitForFunction((sel, n) => {
       window.scrollBy(0, window.document.body.scrollHeight);
       return document.querySelectorAll(sel).length > n;
     }, {}, videoSelector, cnt);
-    
-    const v2 = await page.waitForSelector(`${videoSelector}:nth-child(${cnt+1})`);
+
+    const v2 = await page.waitForSelector(`${videoSelector}:nth-child(${cnt + 1})`);
     expect(await page.evaluate(s => document.querySelectorAll(s).length, videoSelector)).toBeGreaterThan(cnt);
     await (await v2.$('img')).hover();
     await expect(v2).toMatchElement(qbuttSelector);

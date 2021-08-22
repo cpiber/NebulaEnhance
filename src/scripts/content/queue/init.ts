@@ -9,9 +9,9 @@ import { emit, onChange } from './events';
 
 /**
  * Dummy class for method declarations
- * 
+ *
  * A interface would require repetition, this way we can declare here and not worry about it in the main class
- * 
+ *
  * Initializer in separate method because of type checking
  */
 export class QueueMethods {

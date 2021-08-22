@@ -1,7 +1,7 @@
 import { getBrowserInstance, parseTypeObject, replyMessage, videosettings } from '../helpers/sharedExt';
 import { Queue } from './queue';
 
-const local = getBrowserInstance().storage.local;
+const { local } = getBrowserInstance().storage;
 type Msg = { type: string, name?: string, [key: string]: any };
 
 /**
@@ -14,19 +14,19 @@ export const handle = (e: MessageEvent) => {
   const msg = parseTypeObject<Msg>(e.data);
   if (msg.type?.startsWith('enhancer-message-'))
     return true; // ignore replies
-  
+
   if (msg.type?.startsWith('queue'))
     return Queue.get().handleMessage(e, msg);
-  
+
   let promise: Promise<any> = null;
   switch (msg.type) {
     case 'getSetting': {
-      const setting = msg.setting;
+      const { setting } = msg;
       promise = Promise.resolve(setting ? videosettings[setting as keyof typeof videosettings] : videosettings);
       break;
     }
     case 'setSetting': {
-      const setting = msg.setting;
+      const { setting } = msg;
       const v = isNaN(msg.value) || msg.value == '' ? msg.value as string : +msg.value;
       videosettings[setting as keyof typeof videosettings] = v as never;
       return true;

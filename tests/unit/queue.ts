@@ -1,5 +1,5 @@
-import { VideoArray, Store } from '../../src/scripts/helpers/VideoQueue';
-import { callback, DOMArray } from '../../src/scripts/helpers/DOMArray';
+import { Store, VideoArray } from '../../src/scripts/helpers/VideoQueue';
+import { DOMArray, callback } from '../../src/scripts/helpers/DOMArray';
 
 class TestArray extends DOMArray<string> {
   constructor(root: HTMLElement, cb?: callback<string>, ...items: string[]) {
@@ -44,7 +44,7 @@ describe('DOMArray', () => {
   });
 
   test('constructing correctly inserts elements', () => {
-    const items = ['1', '2', '3'];
+    const items = [ '1', '2', '3' ];
     const arr = new TestArray(root, null, ...items);
     expect([...arr]).toEqual(items);
     expect(Array.from(root.children)).toEqual(TestArray.toElements(items));
@@ -52,7 +52,7 @@ describe('DOMArray', () => {
 
   test('splicing in/out objects works and calls cb', () => {
     const arr = new TestArray(root, cb);
-    const items = ['1', '2', '3'];
+    const items = [ '1', '2', '3' ];
     arr.splice2(0, 0, items);
     expect(cb.mock.calls.length).toBe(1);
     expect([...arr]).toEqual(items);
@@ -60,7 +60,7 @@ describe('DOMArray', () => {
     items.splice(1, 1);
     expect(cb.mock.calls.length).toBe(2);
     expect([...arr]).toEqual(items);
-    arr.splice2(1, 1, ['4', '5', '6']);
+    arr.splice2(1, 1, [ '4', '5', '6' ]);
     items.splice(1, 1, '4', '5', '6');
     expect(cb.mock.calls.length).toBe(3);
     expect([...arr]).toEqual(items);
@@ -69,25 +69,25 @@ describe('DOMArray', () => {
 
   test('splicing with given elements works', () => {
     const arr = new TestArray(root);
-    const items = ['1', '2', '3'];
+    const items = [ '1', '2', '3' ];
     const els = items.map(mapAlternative);
     arr.splice2(0, 0, items, els);
     expect([...arr]).toEqual(items);
     expect(Array.from(root.children)).toEqual(els);
     expect(() => arr.splice2(0, 0, ['1'], [null])).toThrow();
-    expect(() => arr.splice2(0, 0, ['1'], [document.createElement('span'), document.createElement('span')])).toThrow();
+    expect(() => arr.splice2(0, 0, ['1'], [ document.createElement('span'), document.createElement('span') ])).toThrow();
   });
 
   test('putting elements in beginning works', () => {
     const items = ['4'];
-    const items2 = ['1', '2', '3'];
+    const items2 = [ '1', '2', '3' ];
     const arr = new TestArray(root, undefined, ...items);
     arr.splice2(0, 0, items2);
-    expect([...arr]).toEqual([...items2, ...items]);
+    expect([...arr]).toEqual([ ...items2, ...items ]);
   });
 
   test('slicing negative works', () => {
-    const items = ['1', '2', '3'];
+    const items = [ '1', '2', '3' ];
     const arr = new TestArray(root, cb, ...items);
     expect(cb.mock.calls.length).toBe(1);
     expect([...arr]).toEqual(items);
@@ -102,7 +102,7 @@ describe('DOMArray', () => {
 
   test('reversing works', () => {
     const arr = new TestArray(root);
-    const items = ['1', '2', '3'];
+    const items = [ '1', '2', '3' ];
     const els = items.map(mapAlternative);
     arr.splice2(0, 0, items, els);
     expect(arr.length).toBe(items.length);

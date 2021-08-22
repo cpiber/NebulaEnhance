@@ -39,6 +39,6 @@ export const replyMessage = (e: MessageEvent, name: string, data?: any, err?: an
   /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
   // @ts-ignore
   e.source.postMessage(
-    clone({ type: name, res: data, err: err }),
+    clone({ type: name, res: data, err }),
     e.origin,
   );

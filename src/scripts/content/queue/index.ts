@@ -1,6 +1,6 @@
 import { Store, VideoArray } from '../../helpers/VideoQueue';
 import { initDrag } from './drag';
-import { initElement, QueueMethods } from './init';
+import { QueueMethods, initElement } from './init';
 import { clickElements, clickTop, popState } from './listener';
 
 export type Listener = (q: Queue) => void;
@@ -11,7 +11,7 @@ export class Queue extends QueueMethods {
   protected store: Store = {};
   protected queue: VideoArray;
   protected queuepos = -1;
-  
+
   protected containerEl: HTMLElement;
   protected elementsEl: HTMLElement;
   protected titleEl: HTMLElement;
@@ -64,7 +64,7 @@ export class Queue extends QueueMethods {
     this.shareLinkEl.value = `${base}/#${hash}`;
     this.shareEl.classList.remove('hidden');
   }
-  
+
   canGoPrev() {
     return this.queuepos > 0;
   }

@@ -1,5 +1,5 @@
 import { getBrowserInstance } from './helpers/sharedExt';
-import { Creator, creatorHasVideo, loadCreators as _loadCreators, normalizeString } from './helpers/youtube';
+import { Creator, loadCreators as _loadCreators, creatorHasVideo, normalizeString } from './helpers/youtube';
 
 const videoFetch = 50;
 
@@ -34,12 +34,12 @@ const loadCreators = (() => {
 })();
 
 const getYoutubeId = async (message: { [key: string]: any }) => {
-  const creator: string = message.creator;
-  const normalized_creator = normalizeString(creator);
+  const { creator } = message;
+  const normalizedCreator = normalizeString(creator);
 
   try {
     const creators = await loadCreators();
-    const uploads = creators.find(e => e.name === creator || normalizeString(e.name) === normalized_creator)?.uploads;
+    const uploads = creators.find(e => e.name === creator || normalizeString(e.name) === normalizedCreator)?.uploads;
     return creatorHasVideo(uploads, message.title, videoFetch);
   } catch (err) {
     console.error(err);

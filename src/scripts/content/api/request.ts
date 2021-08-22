@@ -23,12 +23,12 @@ const request = async <T = any>(url: string, init?: RequestInit) => {
 
     if (body.detail !== 'Signature has expired')
       return body as T;
-    
+
     await refreshToken();
   }
 };
 
-export const getVideo = (name: string) => request<Nebula.Video>(`https://content.watchnebula.com/video/${name}/`, { 
+export const getVideo = (name: string) => request<Nebula.Video>(`https://content.watchnebula.com/video/${name}/`, {
   referrer: `https://nebula.app/videos/${name}`,
   method: 'GET',
 });

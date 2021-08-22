@@ -10,8 +10,9 @@ export type Video = {
   videoId: string,
 };
 
+export const normalizeString = (str: string) => str.toLowerCase().normalize('NFD').replace(/\p{Pd}/g, '-')
 /* eslint-disable-next-line no-misleading-character-class */
-export const normalizeString = (str: string) => str.toLowerCase().normalize('NFD').replace(/\p{Pd}/g, '-').replace(/["'()[\]{}\u0300-\u036f]/g, '');
+  .replace(/["'()[\]{}\u0300-\u036f]/g, '');
 
 export const loadCreators = async () => {
   const res = await fetch('https://standard.tv/creators/');
@@ -81,10 +82,11 @@ const toVid = (vids: string | Video[], title: string) => {
   if (vids.length <= 1)
     throw new Error('Not enough data');
   // lowercase, remove accents, split at spaces and sentence marks, remove common words, replace [0-12] with written words
-  const exclude = ['the', 'is', 'a', 'and', 'or', 'as', 'of', 'be'];
-  const numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+  const exclude = [ 'the', 'is', 'a', 'and', 'or', 'as', 'of', 'be' ];
+  const numbers = [ 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve' ];
   const split = (s: string) => normalizeString(s).split(/([\s\-_.,?!:;|]|\p{Pd})+/)
-    .filter(t => t.trim() && exclude.indexOf(t) === -1).map(v => numbers[+v] || v);
+    .filter(t => t.trim() && exclude.indexOf(t) === -1)
+    .map(v => numbers[+v] || v);
   const splitV = (v: Video) => split(v.title);
   // approximate
   // IFIDF - Term frequency, Inverse Document Frequency
@@ -95,7 +97,7 @@ const toVid = (vids: string | Video[], title: string) => {
   const uterms = terms.map(ts => ts.occurence());
   const uquery = query.occurence();
   // count and create dict with unique terms
-  const { values: dict, occurences: dc } = [...uterms.map(t => t.values).flat(), ...uquery.values].occurence();
+  const { values: dict, occurences: dc } = [ ...uterms.map(t => t.values).flat(), ...uquery.values ].occurence();
   const idf = dc.map(c => Math.log(vids.length / c));
   // term frequencies (expand to dict)
   const ifreq = (n: number, arr: number[], tarr: string[]) => {

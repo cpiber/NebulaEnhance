@@ -35,7 +35,7 @@ export abstract class DOMArray<T> extends Array<T> {
     }
     const del = this.splice(start, count, ...(elements || []));
     this.update();
-    return [del, delel];
+    return [ del, delel ];
   }
 
   reverse2() {

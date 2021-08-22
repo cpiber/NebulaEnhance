@@ -5,6 +5,7 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import typescript from '@rollup/plugin-typescript';
 import autoprefixer from 'autoprefixer';
+import chalk from 'chalk';
 import cpx from 'cpx';
 import { config } from 'dotenv';
 import glob from 'glob';
@@ -15,7 +16,6 @@ import 'rollup';
 import postcss from 'rollup-plugin-postcss';
 import { string } from 'rollup-plugin-string';
 import { terser } from 'rollup-plugin-terser';
-import chalk from 'chalk';
 config();
 
 const w = watch => watch ? {
@@ -87,7 +87,7 @@ const js = (args) =>
  * CSS BUILD
  */
 const css = (args) =>
-  glob.sync('src/styles/*.@(sa|sc|c)ss', { ignore: [ 'src/**/_*.@(sa|sc|c)ss' ] }).map(e => {
+  glob.sync('src/styles/*.@(sa|sc|c)ss', { ignore: ['src/**/_*.@(sa|sc|c)ss'] }).map(e => {
     const d = e.replace(/(^|\/)src\//, '$1extension-dist/');
     const ext = e.match(/.(sa|sc|c)ss$/)[1];
     // Report destination paths on console
@@ -103,7 +103,7 @@ const css = (args) =>
       },
       plugins: [
         postcss({
-          plugins: [autoprefixer(), presetEnv()],
+          plugins: [ autoprefixer(), presetEnv() ],
           extract: true,
           sourceMap: !process.env.BUILD,
           fiber: require('fibers'),
@@ -236,7 +236,7 @@ export default async args => {
 
   if (!args.silent)
     console.info(`Build mode ${process.env.BUILD ? 'on' : 'off'}.`);
-  
+
   const type = args.configType?.toLowerCase();
   switch (type) {
     case 'js':
@@ -249,6 +249,6 @@ export default async args => {
       return testsInternal();
     case 'all':
     default:
-      return [...js(args), ...css(args), other(args)];
+      return [ ...js(args), ...css(args), other(args) ];
   }
 };

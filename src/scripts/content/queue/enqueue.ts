@@ -2,7 +2,7 @@ import type { Queue } from './index';
 
 let enqueueAnim = false;
 
-export function enqueue (this: Queue, name: string | string[], pos?: number) {
+export function enqueue(this: Queue, name: string | string[], pos?: number) {
   if (typeof name === 'string') {
     if (!this.store[name])
       throw new Error('Not in store!');
@@ -12,7 +12,7 @@ export function enqueue (this: Queue, name: string | string[], pos?: number) {
         throw new Error('Not in store!');
     });
   }
-  
+
   const q = typeof name === 'string' ? [name] : name;
   if (pos !== undefined)
     this.queue.splice2(pos, 0, q);
@@ -48,7 +48,7 @@ export function remove(this: Queue, index: number) {
   this.queue.splice2(index, 1);
 }
 
-export function clear(this: Queue ) {
+export function clear(this: Queue) {
   this.queuepos = -1;
   this.queue.splice2(0, this.queue.length);
   this.containerEl.classList.add('hidden');

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 declare global {
   const __VERSION__: string;
 }

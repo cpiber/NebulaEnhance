@@ -8,7 +8,7 @@ export const refreshToken = async () => {
   const cookie = getCookie('nebula-auth');
   let apiToken = '';
   try {
-    apiToken = JSON.parse(cookie).apiToken;
+    ({ apiToken } = JSON.parse(cookie));
   } catch (e) {
     console.error(e);
   }

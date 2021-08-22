@@ -2,7 +2,7 @@ import { getBrowserInstance } from '../helpers/sharedExt';
 import { Settings, toData } from './settings';
 
 const els = Settings.get();
-const local = getBrowserInstance().storage.local;
+const { local } = getBrowserInstance().storage;
 
 export const save = () => local.set(toData());
 export const load = async (doSave = false) => {

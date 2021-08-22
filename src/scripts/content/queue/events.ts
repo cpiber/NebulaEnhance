@@ -1,4 +1,4 @@
-import type { Queue, Listener } from './index';
+import type { Listener, Queue } from './index';
 
 export function onChange(this: Queue, listener: Listener) {
   this.listeners.push(listener);
