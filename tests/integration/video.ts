@@ -42,7 +42,7 @@ describe('video player', () => {
 
   test('controls use settings', async () => {
     await page.waitForSelector('.enhancer-speed');
-    await expect(page.$eval('.enhancer-tooltip .vjs-nebula-tooltip-label', el => el.textContent)).resolves.toContain('Speed');
+    await expect(page.$eval('.enhancer-tooltip.speed .vjs-nebula-tooltip-label', el => el.textContent)).resolves.toContain('Speed');
     await expect(page.evaluate((p: string) => window.videojs.players[p].autoplay(), player)).resolves.toBe(true);
   });
 
@@ -50,7 +50,7 @@ describe('video player', () => {
     await page.waitForSelector('.enhancer-speed');
 
     const speed = await page.evaluate((p: string) => window.videojs.players[p].playbackRate(), player);
-    await expect(page.$eval('.enhancer-tooltip .vjs-nebula-tooltip-label', el => el.textContent)).resolves.toContain(`${speed}`);
+    await expect(page.$eval('.enhancer-tooltip.speed .vjs-nebula-tooltip-label', el => el.textContent)).resolves.toContain(`${speed}`);
 
     const vol = await page.evaluate((p: string) => window.videojs.players[p].volume(), player);
     await expect(page.$eval('.enhancer-volume', el => el.textContent)).resolves.toContain(`${(vol * 100).toFixed(0)}`);

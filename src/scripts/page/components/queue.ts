@@ -15,7 +15,7 @@ const QueueButton = async (next: boolean) => {
     constructor: function (this: T) {
       MenuButton.apply(this, arguments as FnArgs<typeof MenuButton>);
       
-      this.tooltip = new Tooltip(this.el.bind(this), text);
+      this.tooltip = new Tooltip(this.el.bind(this), `queue-${next ? 'next' : 'prev'}`, text);
       this.controlText(text);
 
       const toggleTooltip = (force: boolean) => {

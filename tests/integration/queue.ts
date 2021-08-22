@@ -1,4 +1,4 @@
-import { addToQueue, expectQueueLength, login, qbuttSelector, queueSelector, titles, videoSelector } from '../shared';
+import { addToQueue, expectQueueLength, login, qbuttSelector, queueSelector, titles, videoSelector, waitForPlayerInit } from '../shared';
 
 jest.setTimeout(10000);
 
@@ -162,15 +162,18 @@ describe('queue', () => {
   test('adds proper controls', async () => {
     await addToQueue(3);
     await page.click(`${queueSelector} .top .next`);
-    await expect(page).toMatchElement('.enhancer-queue-control-next', { timeout: 0 });
-    await expect(page.waitForSelector('.enhancer-queue-control-prev', { timeout: 10 })).rejects.toBeDefined();
+    await waitForPlayerInit();
+    await expect(page.$eval('.enhancer-queue-control-next', (el: HTMLButtonElement) => el.disabled)).resolves.toBeFalsy();
+    await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.disabled)).resolves.toBeTruthy();
 
     await page.click(`${queueSelector} .top .next`);
-    await expect(page).toMatchElement('.enhancer-queue-control-next', { timeout: 0 });
-    await expect(page).toMatchElement('.enhancer-queue-control-prev', { timeout: 0 });
+    await waitForPlayerInit();
+    await expect(page.$eval('.enhancer-queue-control-next', (el: HTMLButtonElement) => el.disabled)).resolves.toBeFalsy();
+    await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.disabled)).resolves.toBeFalsy();
 
     await page.click(`${queueSelector} .top .next`);
-    await expect(page).toMatchElement('.enhancer-queue-control-prev', { timeout: 0 });
-    await expect(page.waitForSelector('.enhancer-queue-control-next', { timeout: 10 })).rejects.toBeDefined();
+    await waitForPlayerInit();
+    await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.disabled)).resolves.toBeFalsy();
+    await expect(page.$eval('.enhancer-queue-control-next', (el: HTMLButtonElement) => el.disabled)).resolves.toBeTruthy();
   });
 });

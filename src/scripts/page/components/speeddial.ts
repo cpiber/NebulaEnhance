@@ -17,7 +17,7 @@ const SpeedDial = async (playbackChange: number) => {
     constructor: function (this: T) {
       MenuButton.apply(this, arguments as FnArgs<typeof MenuButton>);
       
-      this.tooltip = new Tooltip(this.el.bind(this));
+      this.tooltip = new Tooltip(this.el.bind(this), 'speed');
       this.controlText(speed);
       
       const toggleTooltip = (force?: boolean) => {

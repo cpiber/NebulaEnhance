@@ -50,3 +50,8 @@ export const setSettings = async (set: { [key: string]: string | boolean}) => {
   await expect(pg).toClick('button[type="submit"]');
   await pg.close();
 };
+
+export const waitForPlayerInit = async () => {
+  await page.waitForSelector('.video-js');
+  await page.waitForFunction(() => window.videojs.players[Object.keys(window.videojs.players).find(k => window.videojs.players[k])]._enhancer_init);
+};

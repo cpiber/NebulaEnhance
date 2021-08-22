@@ -5,9 +5,9 @@ export class Tooltip {
   private keySpan: HTMLSpanElement;
   private parent: () => Element;
 
-  constructor(parent: Element | (() => Element), text?: string) {
+  constructor(parent: Element | (() => Element), classes?: string, text?: string) {
     this.tooltip = document.createElement('div');
-    this.tooltip.className = 'enhancer-tooltip vjs-hidden';
+    this.tooltip.className = `enhancer-tooltip vjs-hidden ${classes}`;
     this.tooltip.innerHTML = `<div class="tippy-box"><div class="tippy-content"><span class="vjs-nebula-tooltip-label">${text || ''}</span> <span class="vjs-nebula-tooltip-key"></span></div></div>`;
     this.tooltipSpan = this.tooltip.querySelector('.vjs-nebula-tooltip-label');
     this.keySpan = this.tooltip.querySelector('.vjs-nebula-tooltip-key');
