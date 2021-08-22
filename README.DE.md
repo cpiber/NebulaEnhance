@@ -36,11 +36,12 @@ Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überp
 - ~~Theater Modus: Videospieler wird besser an die Seite angepasst~~ Jetzt nativ unterstützt
 
 **Videospieler**
-- ~~Standard Abspielgeschwindigkeit und Lautstärke: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit und Lautstärke abzuspielen~~ Jetzt nativ unterstützt
 - "Quick dial" für Abspielgeschwindigkeit: Ein neuer Knopf im Videospieler erlaubt es per Mausrad die Geschwindigkeit bequem und schnell zu verändern
+- Scroll über Videospieler um Lautstärke zu ändern (Aktivierung in den Einstellungen)
 - Autoplay: Videos können automatisch gestartet werden
-- ~~Zielqualitäten: Erlaubt es, bevorzugte Videoqualität(en) zu setzen~~ Jetzt nativ unterstützt
 - Keyboard Shortcuts: Tastaturkürzel für einfachere und schnellere Bedienung ([siehe Playback Sektion](https://www.mrfdev.com/youtube-keyboard-shortcuts))
+- ~~Standard Abspielgeschwindigkeit und Lautstärke: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit und Lautstärke abzuspielen~~ Jetzt nativ unterstützt
+- ~~Zielqualitäten: Erlaubt es, bevorzugte Videoqualität(en) zu setzen~~ Jetzt nativ unterstützt
 
 **Custom scripts**
 - Benutzerdefinierte Scripts, die auf der Webseite ausgeführt werden
@@ -54,9 +55,9 @@ Video Schlange:
 
 ![Queue / Video Warteschlange.](static/Screenshot3_de.png)
 
-Speed dial:
+Videospieler mit neuen Kontrollknöpfen (Video Schlange nächstes/voriges, Lautstärke Indikator, Quick Dial):
 
-![Speed dial. Mausrad Scrollen um Geschwindigkeit zu ändern.](static/Screenshot1.png)
+![Videospieler mit Kontrollknöpfen.](static/Screenshot1.png)
 
 
 # Entwickeln

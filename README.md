@@ -37,11 +37,12 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 - ~~Theatre Mode: Make the player fit the page better~~ Now natively supported
 
 **Player**
-- ~~Default playback speed and volume, subtitles~~ Now natively supported
 - Quick dial to set speed: New button in player allows to increase/decrease speed by scrolling
+- Scroll over player to set volume (enable in settings)
 - Autoplay: Start videos automatically
-- ~~Target qualities: Set the preferred video quality or qualities~~ Now natively supported
 - Keyboard shortcuts: Shortcuts in video player ([see Playback section](https://www.mrfdev.com/youtube-keyboard-shortcuts))
+- ~~Default playback speed and volume, subtitles~~ Now natively supported
+- ~~Target qualities: Set the preferred video quality or qualities~~ Now natively supported
 
 **Custom scripts**
 - Execute custom JavaScript code on the web page
@@ -55,9 +56,9 @@ Queue:
 
 ![Queue / Watch list.](static/Screenshot3.png)
 
-Speed dial:
+Player with new controls (Queue next/previous, volume indicator, quick dial):
 
-![Speed dial. Scroll to change speed.](static/Screenshot1.png)
+![Player with controls.](static/Screenshot1.png)
 
 
 # Developing
