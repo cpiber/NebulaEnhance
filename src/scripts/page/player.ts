@@ -1,5 +1,5 @@
 import type { VPlayer } from '../../types/videojs';
-import { sendEventHandler, sendMessage } from '../helpers/shared';
+import { sendMessage } from '../helpers/shared';
 import QueueButton from './components/queue';
 import SpeedDial from './components/speeddial';
 import VolumeText from './components/volume';
@@ -37,8 +37,6 @@ export const init = async () => {
     document.addEventListener('wheel', wheelHandler.bind(null, volumeChange, volumeLog), { passive: false });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
   initDispatch();
-
-  sendEventHandler('queueChange', ({ canNext, canPrev }: { canNext: boolean, canPrev: boolean }) => updatePlayerControls(findAPlayer(), canNext, canPrev));
 
   const c = visitedColor.split(';')[0];
   if (!c) return;
@@ -130,7 +128,7 @@ const setPlayerDefaults = (autoplay: boolean, volumeEnabled: boolean) => {
   comps.splice(pidx, 0, 'queuePrev');
 };
 
-const updatePlayerControls = (player: VPlayer, canNext: boolean, canPrev: boolean) => {
+export const updatePlayerControls = (player: VPlayer, canNext: boolean, canPrev: boolean) => {
   if (!player) return;
   console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev);
   (player.controlBar.getChild('QueueNext') as Instance<Comp<typeof QueueButton>>).toggle(canNext);

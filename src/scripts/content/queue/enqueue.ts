@@ -52,4 +52,5 @@ export function clear(this: Queue) {
   this.queuepos = -1;
   this.queue.splice2(0, this.queue.length);
   this.containerEl.classList.add('hidden');
+  this.containerEl.classList.remove('down');
 }
