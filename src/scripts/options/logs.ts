@@ -1,5 +1,5 @@
-import marked from 'marked';
 import DOMPurify from 'dompurify';
+import marked from 'marked';
 import closeIcon from '../../icons/close.svg';
 import { getBrowserInstance } from '../helpers/sharedExt';
 

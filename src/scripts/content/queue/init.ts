@@ -1,11 +1,11 @@
-import type { Queue } from './index';
-import { clear, enqueue, enqueueNow, remove } from './enqueue';
-import { html } from './html';
-import { goto, gotoNext, gotoPrev, updateText } from './go';
-import { move, reverse, set, toggle } from './transform';
 import { addToStore } from './add';
-import { handleMessage } from './listener';
+import { clear, enqueue, enqueueNow, remove } from './enqueue';
 import { emit, onChange } from './events';
+import { goto, gotoNext, gotoPrev, updateText } from './go';
+import { html } from './html';
+import type { Queue } from './index';
+import { handleMessage } from './listener';
+import { move, reverse, set, toggle } from './transform';
 
 /**
  * Dummy class for method declarations

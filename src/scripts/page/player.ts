@@ -1,9 +1,9 @@
+import type { VPlayer } from '../../types/videojs';
 import { sendEventHandler, sendMessage } from '../helpers/shared';
-import { init as initDispatch, loadPrefix } from './dispatcher';
+import QueueButton from './components/queue';
 import SpeedDial from './components/speeddial';
 import VolumeText from './components/volume';
-import QueueButton from './components/queue';
-import type { VPlayer } from '../../types/videojs';
+import { init as initDispatch, loadPrefix } from './dispatcher';
 
 type Comp<T> = T extends (...args: any[]) => Promise<infer R> ? R : T extends (...args: any[]) => infer R ? R : never;
 

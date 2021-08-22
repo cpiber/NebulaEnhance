@@ -1,5 +1,5 @@
-import { Store, VideoArray } from '../../src/scripts/helpers/VideoQueue';
 import { DOMArray, callback } from '../../src/scripts/helpers/DOMArray';
+import { Store, VideoArray } from '../../src/scripts/helpers/VideoQueue';
 
 class TestArray extends DOMArray<string> {
   constructor(root: HTMLElement, cb?: callback<string>, ...items: string[]) {
