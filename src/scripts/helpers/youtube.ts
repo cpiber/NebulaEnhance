@@ -27,7 +27,11 @@ export const loadCreators = async () => {
 };
 const loadYoutube = (creators: Omit<Creator, 'uploads'>[]) => creators.map(c => ({ ...c, uploads: 'UU' + c.channel.substr(2) }));
 
+const plistcache: { [key: string]: Video[] } = {};
 export const loadVideos = async (playlist: string, title: string, num: number) => {
+  if (playlist in plistcache && plistcache[playlist].length >= num)
+    return plistcache[playlist].slice(0, num);
+
   const videos: Video[] = [];
   let page = null;
 
@@ -60,7 +64,7 @@ export const loadVideos = async (playlist: string, title: string, num: number) =
     Array.prototype.push.apply(videos, vids);
     page = res.nextPageToken;
   } while (videos.length < num && page);
-  return videos;
+  return plistcache[playlist] = videos;
 };
 
 const vidcache: { [key: string]: ytvideo } = {};
