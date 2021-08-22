@@ -14,7 +14,7 @@ export function toggle(this: Queue) {
 }
 
 export function move(this: Queue, orig: number, index: number) {
-  const [name, elem] = this.queue.splice2(orig, 1);
+  const [ name, elem ] = this.queue.splice2(orig, 1);
   if (this.queuepos >= 0) {
     // adjust index based on new and old positions, difference always 1 (except when moving current)
     if (this.queuepos === orig) this.queuepos = index;
@@ -32,7 +32,7 @@ export async function set(this: Queue, newq: string[] | Nebula.Video[], current?
     return this.clear();
 
   const q = newq.findIndex(e => typeof e !== 'string') === -1 ? await setStr.call(this, newq as string[]) : setVid.call(this, newq as Nebula.Video[]);
-  
+
   this.queue.splice2(0, this.queue.length, q); // replace current queue
   if (current)
     // use timeout to make sure dom is updated
@@ -63,9 +63,8 @@ function setVid(this: Queue, newq: Nebula.Video[]) {
 }
 
 export function reverse(this: Queue) {
-  if (this.queuepos !== -1) {
+  if (this.queuepos !== -1)
     this.queuepos = this.queue.length - this.queuepos - 1;
-    this.queue.reverse2();
-    this.elementsEl.querySelector('.playing').scrollIntoView();
-  }
+  this.queue.reverse2();
+  this.elementsEl.querySelector('.playing')?.scrollIntoView();
 }
