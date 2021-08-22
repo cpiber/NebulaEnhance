@@ -17,6 +17,7 @@ module.exports = {
       moduleNameMapper,
       moduleFileExtensions,
       testEnvironment: 'jsdom',
+      testURL: 'https://nebula.app',
       setupFiles: ['./jest.setup.js'],
     },
     {

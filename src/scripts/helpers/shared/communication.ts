@@ -2,7 +2,7 @@ import { clone, parseTypeObject } from './helpers';
 
 export const sendMessage = <T>(name: string, data?: { [key: string]: any }, expectAnswer = true, skipOriginCheck = false) => {
   if (!expectAnswer) {
-    window.parent.postMessage(JSON.stringify({ type: name, ...data }), '*');
+    window.parent.postMessage(JSON.stringify({ ...data, type: name }), '*');
     return Promise.resolve(undefined as T);
   }
   return new Promise<T>((resolve, reject) => {
@@ -18,7 +18,7 @@ export const sendMessage = <T>(name: string, data?: { [key: string]: any }, expe
         resolve(msg.res);
     };
     window.addEventListener('message', c);
-    window.parent.postMessage(JSON.stringify({ type: name, name: e, ...data }), '*');
+    window.parent.postMessage(JSON.stringify({ ...data, type: name, name: e }), '*');
   });
 };
 

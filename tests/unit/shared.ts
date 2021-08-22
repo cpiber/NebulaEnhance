@@ -1,6 +1,6 @@
 /// <reference path="../../src/types/global.d.ts"/>
 import { JSDOM } from 'jsdom';
-import { clone, dot, getCookie, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, sendMessage } from '../../src/scripts/helpers/shared';
+import { clone, dot, getCookie, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
 
 describe('dot product operations', () => {
   test('fail on unequal length', () => {
@@ -227,7 +227,7 @@ describe('message sending', () => {
   beforeAll(() => {
     window.addEventListener('message', mock);
   });
-  afterAll(async () => {
+  afterAll(() => {
     window.removeEventListener('message', mock);
   });
 
@@ -246,9 +246,9 @@ describe('message sending', () => {
   ]);
 
   test('sending message without expecting answer resolves immediately', t(async () => {
-    await expect(sendMessage('test', { test: 'data' }, false, true)).resolves.toBe(undefined);
+    await expect(sendMessage('test', { type: 'bla', test: 'data' }, false, true)).resolves.toBe(undefined);
   }, (e: MessageEvent) => {
-    expect(JSON.parse(e.data).test).toBe('data');
+    expect(JSON.parse(e.data)).toEqual({ type: 'test', test: 'data' });
   }));
 
   test('sending message can receive data', t(async () => {
@@ -296,6 +296,68 @@ describe('message sending', () => {
   }));
 });
 
+describe('message event listeners', () => {
+  const mock = jest.fn();
+  beforeAll(() => {
+    window.addEventListener('message', mock);
+  });
+  afterAll(() => {
+    window.removeEventListener('message', mock);
+  });
+
+  test('sends a register event', () => new Promise ((resolve) => {
+    mock.mockImplementation((ev) => {
+      expect(JSON.parse(ev.data).event).toBe('test');
+      resolve(0);
+    });
+    sendEventHandler('test', () => { /* */ }, true);
+  }));
+
+  test('runs listeners', async () => {
+    let name: string;
+    const cb = jest.fn();
+
+    await new Promise ((resolve) => {
+      mock.mockImplementation(ev => {
+        name = JSON.parse(ev.data).name;
+        resolve(0);
+      });
+      sendEventHandler('test', cb, true);
+    });
+    mock.mockRestore(); // we post below, don't make problems
+
+    for (let i = 0; i < 4; i++) {
+      await expect(new Promise((resolve) => {
+        cb.mockImplementationOnce(resolve);
+        window.postMessage({ type: name, res: i }, '*');
+      })).resolves.toBe(i);
+      expect(cb).toBeCalledTimes(i+1);
+    }
+  });
+});
+
+describe('message reply', () => {
+  const mock = jest.fn();
+  beforeAll(() => {
+    window.addEventListener('message', mock);
+  });
+  afterAll(() => {
+    window.removeEventListener('message', mock);
+  });
+
+  const reply = (data: any, origin = '*') => (ev: MessageEvent) => {
+    const msg = parseTypeObject<{ type: string, name: string }>(ev.data);
+    // need to manually define these, because jsdom doesn't implement this behaviour
+    const e = new MessageEvent('message', { origin, source: window });
+    replyMessage(e, msg.name, data);
+  };
+
+  test('reply sends to name', async () => {
+    mock.mockImplementationOnce(reply('data'));
+    await expect(sendMessage('test', null, true, true)).resolves.toBe('data');
+  });
+});
+
 describe('cookie', () => {
   test('get cookie', () => {
     document.cookie = 'test=1';
@@ -318,5 +380,23 @@ describe('cookie', () => {
 
   test('invalid cookie', () => {
     expect(getCookie('invalid')).toBeNull();
+  });
+});
+
+describe('parsing', () => {
+  test('JSON', () => {
+    expect(parseMaybeJSON('test')).toBe('test');
+    expect(parseMaybeJSON('1')).toBe(1);
+    expect(parseMaybeJSON('[]')).toEqual([]);
+    expect(parseMaybeJSON('["test"]')).toEqual(['test']);
+    expect(parseMaybeJSON('{"test":1}')).toEqual({ test: 1 });
+    expect(parseMaybeJSON('{"test":1')).toEqual('{"test":1');
+  });
+
+  test('type-object', () => {
+    expect(parseTypeObject('test')).toEqual({ type: 'test' });
+    expect(parseTypeObject('{"type":"t"}')).toEqual({ type: 't' });
+    expect(() => parseTypeObject('{"type":1}')).toThrow(/not convertible/);
+    expect(() => parseTypeObject('[]')).toThrow(/not convertible/);
   });
 });

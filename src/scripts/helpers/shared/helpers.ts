@@ -86,6 +86,6 @@ export const parseMaybeJSON = (data: string) => {
 export const parseTypeObject = <T extends { type: string }>(data: string): T => {
   const d = parseMaybeJSON(data);
   if (typeof d === 'string') return { type: d } as T;
-  if (typeof d.type !== 'undefined') return d;
+  if (typeof d.type === 'string') return d;
   throw TypeError('not convertible to type-object');
 };

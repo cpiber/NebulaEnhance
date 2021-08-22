@@ -176,4 +176,15 @@ describe('queue', () => {
     await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.disabled)).resolves.toBeFalsy();
     await expect(page.$eval('.enhancer-queue-control-next', (el: HTMLButtonElement) => el.disabled)).resolves.toBeTruthy();
   });
+
+  test('controls update on queue change', async () => {
+    await addToQueue(3);
+    await page.click(`${queueSelector} .top .next`);
+    await waitForPlayerInit();
+    await expect(page.$eval('.enhancer-queue-control-next', (el: HTMLButtonElement) => el.disabled)).resolves.toBeFalsy();
+    await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.disabled)).resolves.toBeTruthy();
+    await (await expect(page).toDisplayDialog(() => page.click(`${queueSelector} .top .close`))).accept();
+    await expect(page.$eval('.enhancer-queue-control-next', (el: HTMLButtonElement) => el.disabled)).resolves.toBeTruthy();
+    await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.disabled)).resolves.toBeTruthy();
+  });
 });
