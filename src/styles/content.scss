@@ -79,6 +79,9 @@ a.enhancer-queueButtonAll {
     height: 100%;
     font-size: 1.8em;
     line-height: 1.67;
+  }
+
+  &:not([disabled])::before {
     cursor: pointer;
   }
 }

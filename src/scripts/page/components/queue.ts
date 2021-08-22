@@ -18,13 +18,15 @@ const QueueButton = async (next: boolean) => {
       this.tooltip = new Tooltip(this.el.bind(this), text);
       this.controlText(text);
 
-      const toggleTooltip = (force?: boolean) => {
+      const toggleTooltip = (force: boolean) => {
+        if (this.hasClass('vjs-disabled')) return;
         this.tooltip.classList.toggle('vjs-hidden', force);
         this.tooltip.update();
       };
       this.el().addEventListener('mouseenter', toggleTooltip.bind(this, false));
       this.el().addEventListener('mouseleave', toggleTooltip.bind(this, true));
       this.tooltip.appendTo(this.player().el()).setKey(next ? 'n' : 'p');
+      this.disable();
     },
     handleClick: click,
     dispose: function (this: T) {
