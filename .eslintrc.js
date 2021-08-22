@@ -1,3 +1,5 @@
+/* eslint sort-keys: ['error'] */
+
 module.exports = {
   env: {
     browser: true,
@@ -6,6 +8,28 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+  ],
+  overrides: [
+    {
+      env: {
+        jest: true,
+      },
+      files: ['tests/**/*.ts'],
+      rules: {
+        '@typescript-eslint/triple-slash-reference': 'off',
+        'no-global-assign': 'off',
+      },
+    },
+    {
+      env: {
+        browser: false,
+        node: true,
+      },
+      files: ['*.js'],
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -146,26 +170,4 @@ module.exports = {
       'never',
     ],
   },
-  overrides: [
-    {
-      files: ['tests/**/*.ts'],
-      env: {
-        jest: true,
-      },
-      rules: {
-        'no-global-assign': 'off',
-        '@typescript-eslint/triple-slash-reference': 'off',
-      },
-    },
-    {
-      files: ['*.js'],
-      env: {
-        browser: false,
-        node: true,
-      },
-      rules: {
-        '@typescript-eslint/no-var-requires': 'off',
-      },
-    },
-  ],
 };

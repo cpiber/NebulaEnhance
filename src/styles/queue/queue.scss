@@ -24,7 +24,7 @@
     margin: 1px;
     margin-bottom: 0;
     background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
-    background-color: #333;
+    background-color: #333333;
     background-blend-mode: difference;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -39,7 +39,7 @@
     top: 0;
     bottom: 0;
     background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
-    background-color: #aaa;
+    background-color: #aaaaaa;
     background-blend-mode: difference;
     z-index: -1;
   }
@@ -71,7 +71,7 @@
     top: 0;
     height: 1px;
     background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
-    background-color: #bbb;
+    background-color: #bbbbbb;
     background-blend-mode: difference;
   }
 
