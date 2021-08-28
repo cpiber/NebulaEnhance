@@ -59,6 +59,10 @@
     "message": "Logarithmische Skala verwenden",
     "description": "Log Skala Beschriftung für Volume Scroll der Optionen Seite."
   },
+  "optionsVolumeScrollShow": {
+    "message": "Lautstärkeindikator immer aktivieren",
+    "description": "Log Skala Beschriftung für Volume Scroll der Optionen Seite."
+  },
   "optionsVolumeScrollChange": {
     "message": "Änderungsrate",
     "description": "Änderungsrate Beschriftung für Volume Scroll der Optionen Seite.."

@@ -59,6 +59,10 @@
     "message": "Use logarithmic scale",
     "description": "Log scale label for Volume Scroll of options page."
   },
+  "optionsVolumeScrollShow": {
+    "message": "Always show volume indicator",
+    "description": "Label for Volume Indicator of options page."
+  },
   "optionsVolumeScrollChange": {
     "message": "Change rate",
     "description": "Change rate label for Volume Scroll of options page."

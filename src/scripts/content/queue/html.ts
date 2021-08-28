@@ -27,7 +27,7 @@ export const html = `
   <div class="enhancer-queue-share">
     <div class="top">
       <h2 class="current">${share}</h2>
-      <div class="close" role="share-close">${iconClose}</div>
+      <div class="close clickable" role="share-close">${iconClose}</div>
     </div>
     <div class="body">
       <span>${link}:</span>

@@ -6,6 +6,7 @@ export class Settings {
   autoplayQueue: HTMLInputElement = undefined;
   volumeEnabled: HTMLInputElement = undefined;
   volumeLog: HTMLInputElement = undefined;
+  volumeShow: HTMLInputElement = undefined;
   volumeChange: HTMLInputElement = undefined;
   youtube: HTMLInputElement = undefined;
   customScriptPage: HTMLTextAreaElement = undefined;
@@ -46,7 +47,6 @@ export const toData = (useDefaults = false) => {
   testStyle.style.color = '';
   testStyle.style.color = data.visitedColor;
   vError.style.display = testStyle.style.color === '' && data.visitedColor !== '' ? '' : 'none';
-  console.log(testStyle.style.color);
 
   return data;
 };

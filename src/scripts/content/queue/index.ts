@@ -62,6 +62,7 @@ export class Queue extends QueueMethods {
     const base = this.shareHereEl.checked && this.queuepos >= 0 ? `${window.location.origin}/videos/${this.queue[this.queuepos]}` : window.location.origin;
     const hash = this.queue.join(',');
     this.shareLinkEl.value = `${base}/#${hash}`;
+    this.shareHereEl.disabled = this.queuepos < 0;
     this.shareEl.classList.remove('hidden');
   }
 

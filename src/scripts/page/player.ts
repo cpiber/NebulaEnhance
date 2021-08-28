@@ -18,20 +18,21 @@ const defaults = {
   autoplay: false,
   autoplayQueue: false,
   volumeEnabled: false,
+  volumeShow: false,
   volumeChange: 0.1,
   volumeLog: false,
   visitedColor: '',
 };
 
 export const init = async () => {
-  const { playbackChange, autoplay, volumeEnabled, volumeChange, volumeLog, visitedColor } = await getFromStorage(defaults);
+  const { playbackChange, autoplay, volumeEnabled, volumeChange, volumeLog, volumeShow, visitedColor } = await getFromStorage(defaults);
   console.debug('playbackChange:', playbackChange, 'autoplay?', autoplay,
-    '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog,
+    '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog, 'show?', volumeShow,
     '\nvisitedColor:', visitedColor);
 
   await waitForVJS();
-  await registerComponents(playbackChange);
-  setPlayerDefaults(autoplay, volumeEnabled);
+  await registerComponents(playbackChange, volumeShow);
+  setPlayerDefaults(autoplay);
 
   document.addEventListener('keydown', keydownHandler.bind(null, playbackChange));
   if (volumeEnabled)
@@ -52,6 +53,9 @@ export const initPlayer = async () => {
 
   if (!player || player._enhancerInit)
     return; // already initialized this player
+
+  if (player.controlBar.getChild('SpeedDial') === undefined)
+    addPlayerControls(player);
 
   const { autoplay, autoplayQueue } = await getFromStorage(defaults);
   console.debug('autoplay?', autoplay, 'autoplayQueue?', autoplayQueue);
@@ -105,31 +109,39 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<VPlayer>(
   }, 100);
 });
 
-const registerComponents = async (playbackChange: number) => {
+const registerComponents = async (playbackChange: number, volumeShow: boolean) => {
   console.debug('registering video components');
   /* eslint-disable new-cap */
   window.videojs.registerComponent('SpeedDial', await SpeedDial(playbackChange));
-  window.videojs.registerComponent('VolumeText', VolumeText());
+  window.videojs.registerComponent('VolumeText', VolumeText(volumeShow));
   window.videojs.registerComponent('QueueNext', await QueueButton(true));
   window.videojs.registerComponent('QueuePrev', await QueueButton(false));
   /* eslint-enable new-cap */
 };
 
-const setPlayerDefaults = (autoplay: boolean, volumeEnabled: boolean) => {
+const setPlayerDefaults = (autoplay: boolean) => {
   window.videojs.options.autoplay = autoplay;
 
   const comps = window.videojs.getComponent('controlBar').prototype.options_.children;
-
   comps.push('speedDial');
-
-  if (volumeEnabled) {
-    const vidx = comps.findIndex(c => c === 'volumePanel');
-    comps.splice(vidx + 1, 0, 'volumeText');
-  }
-
+  const vidx = comps.findIndex(c => c === 'volumePanel');
+  comps.splice(vidx + 1, 0, 'volumeText');
   const pidx = comps.findIndex(c => c === 'playToggle');
   comps.splice(pidx + 1, 0, 'queueNext');
   comps.splice(pidx, 0, 'queuePrev');
+};
+
+const addPlayerControls = (player: VPlayer) => {
+  // call only if player already existed by the time defaults were set
+  console.debug('Adding player controls because not present yet');
+
+  const bar = player.controlBar;
+  bar.addChild('SpeedDial');
+  const vidx = bar.children().findIndex(c => c.name() === 'VolumePanel');
+  bar.addChild('VolumeText', {}, vidx + 1);
+  const pidx = bar.children().findIndex(c => c.name() === 'PlayToggle');
+  bar.addChild('QueueNext', {}, pidx + 1);
+  bar.addChild('QueuePrev', {}, pidx);
 };
 
 export const updatePlayerControls = (player: VPlayer, canNext: boolean, canPrev: boolean) => {
@@ -202,4 +214,6 @@ const wheelHandler = async (volumeChange: number, volumeLog: boolean, e: WheelEv
   const v = cur - Math.sign(e.deltaY) * volumeChange;
   const n = volumeLog ? Math.pow(Math.max(v, 0), pow) : v; // if log, also take care that it's not negative (x^2 increases again below x=0)
   player.volume(e.deltaY * volumeChange > 0 && n < 0.01 ? 0 : n); // lower volume and below threshold -> mute
+
+  (player.controlBar.getChild('VolumeText') as Instance<Comp<typeof VolumeText>>).show();
 };
