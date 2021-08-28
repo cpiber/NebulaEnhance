@@ -27,17 +27,21 @@ els.youtube.addEventListener('change', async () => {
 });
 permissions.onRemoved.addListener(p => p.origins?.length && (els.youtube.checked = false));
 
+const aChange = () => {
+  els.autoplayQueue.disabled = els.autoplay.checked;
+};
+els.autoplay.addEventListener('change', aChange);
 const vChange = () => {
   const c = els.volumeEnabled.checked;
-  Settings.get().volumeLog.disabled = !c;
-  Settings.get().volumeChange.disabled = !c;
+  els.volumeLog.disabled = !c;
+  els.volumeChange.disabled = !c;
 };
 els.volumeEnabled.addEventListener('change', vChange);
 
 document.querySelector('#showChangelogsNow').addEventListener('click', () => showLogs(getBrowserInstance().runtime.getManifest().version));
 
 // load initial values from storage
-load(true).then(vChange);
+load(true).then(aChange).then(vChange);
 
 // changelog
 (async () => {

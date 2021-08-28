@@ -43,8 +43,12 @@
     "message": "Autoplay",
     "description": "Beschriftung für Autoplay der Optionen Seite."
   },
+  "optionsAutoplayQueue": {
+    "message": "In Warteschlange",
+    "description": "Beschriftung für Autoplay in Schlange der Optionen Seite."
+  },
   "optionsAutoplayHint": {
-    "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">https://demo.theoplayer.com/autoplay-policy</a>.",
+    "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">https://demo.theoplayer.com/autoplay-policy</a>.<br />Optional nur mit aktiver Warteschlange.",
     "description": "Hilfstext für Autoplay der Optionen Seite."
   },
   "optionsVolumeScrollTitle": {

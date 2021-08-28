@@ -43,8 +43,12 @@
     "message": "Autoplay",
     "description": "Label for Autoplay of options page."
   },
+  "optionsAutoplayQueue": {
+    "message": "In Queue",
+    "description": "Label for Autoplay in Queue of options page."
+  },
   "optionsAutoplayHint": {
-    "message": "Whether to make the video automatically play or not. Note that this depends on your browser, see <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">https://demo.theoplayer.com/autoplay-policy</a>.",
+    "message": "Whether to make the video automatically play or not. Note that this depends on your browser, see <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">https://demo.theoplayer.com/autoplay-policy</a>.<br />Optionally only with an active queue.",
     "description": "Hint for Autoplay of options page."
   },
   "optionsVolumeScrollTitle": {

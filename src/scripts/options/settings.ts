@@ -3,6 +3,7 @@ export class Settings {
 
   playbackChange: HTMLInputElement = undefined;
   autoplay: HTMLInputElement = undefined;
+  autoplayQueue: HTMLInputElement = undefined;
   volumeEnabled: HTMLInputElement = undefined;
   volumeLog: HTMLInputElement = undefined;
   volumeChange: HTMLInputElement = undefined;

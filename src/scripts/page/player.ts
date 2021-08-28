@@ -16,6 +16,7 @@ function getFromStorage<T>(key: string | string[] | { [key: string]: any }) {
 const defaults = {
   playbackChange: 0.1,
   autoplay: false,
+  autoplayQueue: false,
   volumeEnabled: false,
   volumeChange: 0.1,
   volumeLog: false,
@@ -52,7 +53,8 @@ export const initPlayer = async () => {
   if (!player || player._enhancerInit)
     return; // already initialized this player
 
-  const { autoplay } = await getFromStorage(defaults);
+  const { autoplay, autoplayQueue } = await getFromStorage(defaults);
+  console.debug('autoplay?', autoplay, 'autoplayQueue?', autoplayQueue);
 
   if (autoplay)
     player.play();
@@ -63,6 +65,8 @@ export const initPlayer = async () => {
 
   const { canNext, canPrev } = await sendMessage<{ canNext: boolean, canPrev: boolean }>('getQueueStatus');
   updatePlayerControls(player, canNext, canPrev);
+  if (autoplayQueue && (canNext || canPrev))
+    player.play();
 
   player._enhancerInit = true;
 };
