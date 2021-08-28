@@ -7,6 +7,14 @@ html, body {
 
 body {
   margin-bottom: 12px;
+
+  &.mobile .no-mobile {
+    display: none;
+  }
+
+  &:not(.mobile) .mobile {
+    display: none;
+  }
 }
 
 form {

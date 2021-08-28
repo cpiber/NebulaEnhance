@@ -1,4 +1,4 @@
-import { getBrowserInstance } from './helpers/sharedExt';
+import { getBrowserInstance, isMobile } from './helpers/sharedExt';
 import { load } from './options/form';
 import { showLogs } from './options/logs';
 import { Settings } from './options/settings';
@@ -7,6 +7,7 @@ import { standalone } from './options/standalone';
 const cl = decodeURIComponent(window.location.hash.slice(1)).split(' ').filter(c => !!c);
 if (cl.length)
   document.body.classList.add(...cl);
+document.body.classList.toggle('mobile', isMobile());
 
 const els = Settings.get();
 const { local } = getBrowserInstance().storage;

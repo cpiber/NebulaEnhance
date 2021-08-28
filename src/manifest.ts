@@ -3,7 +3,7 @@ declare global {
   const __VERSION__: string;
 }
 
-export default {
+const manifest: browser._manifest.WebExtensionManifest = {
   manifest_version: 2,
   name: '__MSG_title__',
   description: '__MSG_extensionDescription__',
@@ -63,3 +63,4 @@ export default {
   },
   default_locale: 'en',
 };
+export default manifest;

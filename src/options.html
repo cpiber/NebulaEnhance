@@ -10,7 +10,7 @@
   <form>
     <h1 class="i18n page-title">__MSG_optionsTitle__</h1>
     <h2 class="i18n">__MSG_optionsTitlePlayer__</h2>
-    <p>
+    <p class="no-mobile">
     <label>
       <span class="title i18n">__MSG_optionsPlaybackChangeRateTitle__:</span>
       <input type="number" name="playbackChange" data-default="0.1" step="0.05" size="5" placeholder="0.1" />
@@ -25,7 +25,7 @@
     <label><span class="flex"><input type="checkbox" name="autoplayQueue" data-default="" /> <span class="i18n">__MSG_optionsAutoplayQueue__</span></span></label>
     <span class="hint i18n">__MSG_optionsAutoplayHint__</span>
     </p>
-    <p>
+    <p class="no-mobile">
     <label>
       <span class="title i18n">__MSG_optionsVolumeScrollTitle__:</span>
       <span class="flex"><input type="checkbox" name="volumeEnabled" data-default="" /> <span class="i18n">__MSG_optionsEnable__</span></span>
@@ -34,6 +34,12 @@
     <label><span class="flex"><input type="checkbox" name="volumeShow" data-default="" /> <span class="i18n">__MSG_optionsVolumeScrollShow__</span></span></label>
     <label><span class="flex"><span class="i18n">__MSG_optionsVolumeScrollChange__:</span> <input type="number" name="volumeChange" data-default="0.1" step="0.05" size="5" placeholder="0.1" min="-1" max="1" /></span></label>
     <span class="hint i18n">__MSG_optionsVolumeScrollHint__</span>
+    </p>
+    <p class="mobile">
+    <label>
+      <span class="title i18n">__MSG_optionsVolumeScrollShow__:</span>
+      <span class="flex"><input type="checkbox" name="volumeShow" data-default="" /> <span class="i18n">__MSG_optionsEnable__</span></span>
+    </label>
     </p>
     
     <h2 class="i18n">__MSG_optionsTitlePage__</h2>
