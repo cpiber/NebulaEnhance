@@ -4,9 +4,9 @@
   "private": true,
   "description": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
   "scripts": {
-    "test": "RESOLVE=relative jest --runInBand --no-cache",
-    "test:unit": "RESOLVE=relative jest --selectProjects unit --no-cache",
-    "test:ee": "RESOLVE=relative jest --selectProjects integration --runInBand --no-cache",
+    "test": "jest --runInBand --no-cache",
+    "test:unit": "jest --selectProjects unit --no-cache",
+    "test:ee": "jest --selectProjects integration --runInBand --no-cache",
     "test:watch": "jest --watch --notify",
     "coverage": "jest --selectProjects unit --coverage",
     "prebuild": "npm run clean && npm run build:all",

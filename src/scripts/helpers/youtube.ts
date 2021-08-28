@@ -29,8 +29,10 @@ const loadYoutube = (creators: Omit<Creator, 'uploads'>[]) => creators.map(c => 
 
 const plistcache: { [key: string]: Video[] } = {};
 export const loadVideos = async (playlist: string, title: string, num: number) => {
-  if (playlist in plistcache && plistcache[playlist].length >= num)
-    return plistcache[playlist].slice(0, num);
+  if (playlist in plistcache && plistcache[playlist].length >= num) {
+    const vids = plistcache[playlist].slice(0, num);
+    return vids.find(i => normalizeString(i.title) === title)?.videoId || vids;
+  }
 
   const videos: Video[] = [];
   let page = null;
