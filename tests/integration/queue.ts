@@ -107,8 +107,10 @@ describe('queue', () => {
   test('navigating works', async () => {
     const correct = async (num: number) => {
       const t = await page.evaluate((sel, n) => document.querySelector(`${sel} .element:nth-child(${n}) .title`).textContent, queueSelector, num);
-      await page.waitForFunction(title => document.title.indexOf(title) !== -1, { timeout: 1000 }, t);
-      await expect(page.title()).resolves.toContain(t);
+      // titles in nebula are weird...
+      // e.g. https://nebula.app/videos/extra-history-vlad-the-impaler-lies-extra-history contains extra space that is stripped in document title
+      await page.waitForFunction(() => document.title.indexOf('Loading') === -1 && document.title.indexOf('Nebula | Nebula') === -1, { timeout: 5000 });
+      await expect(page.title()).resolves.toContain(t.replace(/\s+/g, ' '));
       await expect(page.evaluate(sel => document.querySelector(`${sel} .top .title`).textContent, queueSelector)).resolves.toBe(t);
       await expect(page.evaluate(sel => document.querySelector(`${sel} .top .no`).textContent, queueSelector)).resolves.toBe(`${num}`);
     };
