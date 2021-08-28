@@ -1,4 +1,5 @@
 import iconDelete from '../../icons/delete.svg';
+import iconNext from '../../icons/next.svg';
 import iconPlay from '../../icons/play.svg';
 import { callback as ArrayCallback, DOMArray } from './DOMArray';
 
@@ -24,7 +25,7 @@ export class VideoArray extends DOMArray<string> {
     const n = document.createElement('div');
     n.className = 'element';
     n.innerHTML = `
-      <div class="drag">&#x2630;</div>
+      <div class="drag"><span class="up clickable">${iconNext}</span><span class="handle">&#x2630;</span><span class="down clickable">${iconNext}</span></div>
       <div class="thumb">
         <img src="${this.store[name].thumbnail}" draggable="false" />
         <div class="play">${iconPlay}</div>

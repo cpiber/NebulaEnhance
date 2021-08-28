@@ -12,10 +12,15 @@ export function clickElements(this: Queue, e: MouseEvent) {
   if (i === -1)
     return;
   const r = (e.target as HTMLElement).closest('.r');
-  if (r === null)
-    this.goto(i);
-  else
-    this.remove(i);
+  if (r !== null)
+    return this.remove(i);
+  const u = (e.target as HTMLElement).closest('.up');
+  if (u !== null)
+    return this.move(i, i - 1);
+  const d = (e.target as HTMLElement).closest('.down');
+  if (d !== null)
+    return this.move(i, i + 1);
+  this.goto(i);
 }
 
 export function clickTop(this: Queue, e: MouseEvent) {

@@ -14,6 +14,7 @@ export function toggle(this: Queue) {
 }
 
 export function move(this: Queue, orig: number, index: number) {
+  if (index < 0 || index >= this.queue.length) return;
   const [ name, elem ] = this.queue.splice2(orig, 1);
   if (this.queuepos >= 0) {
     // adjust index based on new and old positions, difference always 1 (except when moving current)
