@@ -95,7 +95,7 @@ a.enhancer-queueButtonAll {
 .enhancer-volume.vjs-time-control {
   .video-js.vjs-nebula &, .video-js.vjs-nebula &.volume-conditional.volume-show, .video-js.vjs-nebula .vjs-volume-panel.vjs-hover ~ & {
     width: 3.5em;
-    transition: width .25s ease-in-out;
+    transition: width 0.25s ease-in-out;
     overflow: hidden;
   }
 
@@ -104,6 +104,6 @@ a.enhancer-queueButtonAll {
   }
 
   .volume-display {
-    padding: 0 .15em;
+    padding: 0 0.15em;
   }
 }
