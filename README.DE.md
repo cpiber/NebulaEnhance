@@ -46,7 +46,7 @@ Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überp
 **Custom scripts**
 - Benutzerdefinierte Scripts, die auf der Webseite ausgeführt werden
 
-Mehr in Planung. Falls Sie Vorschläge haben, öffnen Sie bitte eine neue [issue](https://github.com/cpiber/NebulaEnhance/issues).
+Falls Sie Vorschläge haben, öffnen Sie bitte eine neue [issue](https://github.com/cpiber/NebulaEnhance/issues).
 
 
 # Screenshots

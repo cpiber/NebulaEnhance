@@ -47,7 +47,7 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 **Custom scripts**
 - Execute custom JavaScript code on the web page
 
-More to come. If you have any suggestions, please open a new [issue](https://github.com/cpiber/NebulaEnhance/issues).
+If you have any suggestions, please open a new [issue](https://github.com/cpiber/NebulaEnhance/issues).
 
 
 # Screenshots
