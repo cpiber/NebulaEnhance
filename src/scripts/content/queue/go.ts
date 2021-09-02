@@ -18,6 +18,7 @@ export function goto(this: Queue, index: number, go = true) {
       window.history.pushState({ fake: true }, null, url);
       window.dispatchEvent(new PopStateEvent('popstate'));
     }, 0);
+    console.debug(`Queue: Navigating to ${url}`);
   }
   if (index >= 0) {
     this.elementsEl.children[index]?.classList.add('playing');

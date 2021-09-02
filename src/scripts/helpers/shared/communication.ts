@@ -9,13 +9,15 @@ export const sendMessage = <T>(name: string, data?: { [key: string]: any }, expe
     const e = `enhancer-message-${Math.random().toString().substr(2)}`;
     const c = (ev: MessageEvent) => {
       if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:.+\.)?nebula.app)/)) return;
-      const msg = parseTypeObject<{ type: string, err?: any, res?: any }>(ev.data);
-      if (msg.type !== e) return;
-      window.removeEventListener('message', c);
-      if (msg.err)
-        reject(msg.err);
-      else
-        resolve(msg.res);
+      try {
+        const msg = parseTypeObject<{ type: string, err?: any, res?: any }>(ev.data);
+        if (msg.type !== e) return;
+        window.removeEventListener('message', c);
+        if (msg.err)
+          reject(msg.err);
+        else
+          resolve(msg.res);
+      } catch {}
     };
     window.addEventListener('message', c);
     window.parent.postMessage(JSON.stringify({ ...data, type: name, name: e }), '*');
@@ -27,9 +29,11 @@ export const sendEventHandler = (event: string, listener: Listener, skipOriginCh
   const e = `enhancer-event-${event}-${Math.random().toString().substr(2)}`;
   const c = (ev: MessageEvent) => {
     if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:.+\.)?nebula.app)/)) return;
-    const msg = parseTypeObject<{ type: string, err?: any, res?: any }>(ev.data);
-    if (msg.type !== e) return;
-    listener(msg.res, msg.err);
+    try {
+      const msg = parseTypeObject<{ type: string, err?: any, res?: any }>(ev.data);
+      if (msg.type !== e) return;
+      listener(msg.res, msg.err);
+    } catch {}
   };
   window.addEventListener('message', c);
   window.parent.postMessage(JSON.stringify({ type: 'registerListener', name: e, event }), '*');

@@ -11,7 +11,9 @@ type Msg = { type: string, name?: string, [key: string]: any };
 export const handle = (e: MessageEvent) => {
   if (!e.origin.match(/^https?:\/\/(?:.+\.)?nebula.app$/))
     return true;
-  const msg = parseTypeObject<Msg>(e.data);
+  const msg = parseTypeObject<Msg>(e.data, true);
+  if (msg === null)
+    return true; // ignore invalid messages
   if (msg.type?.startsWith('enhancer-message-'))
     return true; // ignore replies
 

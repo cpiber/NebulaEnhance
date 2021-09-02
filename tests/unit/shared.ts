@@ -398,5 +398,7 @@ describe('parsing', () => {
     expect(parseTypeObject('{"type":"t"}')).toEqual({ type: 't' });
     expect(() => parseTypeObject('{"type":1}')).toThrow(/not convertible/);
     expect(() => parseTypeObject('[]')).toThrow(/not convertible/);
+    expect(parseTypeObject('{"type":1}', true)).toBeNull();
+    expect(parseTypeObject('[]', true)).toBeNull();
   });
 });
