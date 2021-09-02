@@ -26,18 +26,20 @@ export function move(this: Queue, orig: number, index: number) {
   return elem[0];
 }
 
-export async function set(this: Queue, newq: string[], current?: string): Promise<string[]>;
-export async function set(this: Queue, newq: Nebula.Video[], current?: string): Promise<string[]>;
-export async function set(this: Queue, newq: string[] | Nebula.Video[], current?: string) {
-  if (newq.length === 0)
+export async function set(this: Queue, newq: string[], current?: string | number): Promise<string[]>;
+export async function set(this: Queue, newq: Nebula.Video[], current?: string | number): Promise<string[]>;
+export async function set(this: Queue, newq: string[] | Nebula.Video[], current?: string | number) {
+  if (!newq.length)
     return this.clear();
 
   const q = newq.findIndex(e => typeof e !== 'string') === -1 ? await setStr.call(this, newq as string[]) : setVid.call(this, newq as Nebula.Video[]);
+  if (!q)
+    return;
 
   this.queue.splice2(0, this.queue.length, q); // replace current queue
   if (current)
     // use timeout to make sure dom is updated
-    setTimeout(() => this.goto(this.queue.indexOf(current), false), 0);
+    setTimeout(() => this.goto(typeof current === 'number' ? current : this.queue.indexOf(current), false), 0);
   this.containerEl.classList.toggle('hidden', q.length === 0);
   this.calcBottom(this.containerEl.classList.contains('down'));
   return q;
@@ -68,4 +70,19 @@ export function reverse(this: Queue) {
     this.queuepos = this.queue.length - this.queuepos - 1;
   this.queue.reverse2();
   this.elementsEl.querySelector('.playing')?.scrollIntoView();
+}
+
+export function setStorage(this: Queue) {
+  const data = {
+    position: this.queuepos,
+    queue: [...this.queue],
+  };
+  try {
+    if (data.queue.length)
+      window.localStorage.setItem('enhancer-queue', JSON.stringify(data));
+    else
+      window.localStorage.removeItem('enhancer-queue');
+  } catch (err) {
+    console.error(err);
+  }
 }

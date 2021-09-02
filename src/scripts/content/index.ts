@@ -15,26 +15,25 @@ function getFromStorage(key: string | string[] | { [key: string]: any }) {
 }
 
 export const nebula = async () => {
-  await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
-
-  window.addEventListener('message', handle);
-  document.body.addEventListener('mouseover', hover);
-  document.body.addEventListener('click', click);
-  Queue.get(); // initialize
-  window.addEventListener('hashchange', hashChange);
-  hashChange();
-
   const { youtube, customScriptPage } = await getFromStorage({ youtube: false, customScriptPage: '' });
   console.debug('Youtube:', youtube);
 
-  maybeLoadComments(youtube);
+  // attach listeners
+  window.addEventListener('message', handle);
+  window.addEventListener('hashchange', hashChange);
+  document.addEventListener(`${loadPrefix}-video`, maybeLoadComments.bind(null, youtube));
+  document.addEventListener(`${loadPrefix}-creator`, createLinkForAll);
+  document.body.addEventListener('mouseover', hover);
+  document.body.addEventListener('click', click);
 
-  document.addEventListener(`${loadPrefix}-video`, () => {
-    maybeLoadComments(youtube);
-  });
-  document.addEventListener(`${loadPrefix}-creator`, () => {
-    createLinkForAll();
-  });
+  // inject web content script
+  await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
+
+  // start up own content
+  Queue.get(); // initialize
+  await hashChange();
+  await loadQueueFromStorage();
+  await maybeLoadComments(youtube);
 
   const cb = mutation(() => {
     // substitute hover listener
@@ -47,7 +46,7 @@ export const nebula = async () => {
 
   // inject custom script (if available)
   if (customScriptPage)
-    injectScript(document.body, customScriptPage);
+    await injectScript(document.body, customScriptPage);
 };
 
 const imgLink = (e: HTMLElement) => {
@@ -116,19 +115,30 @@ const click = async (e: MouseEvent) => {
   }
 };
 
-const hashChange = () => {
+const hashChange = async () => {
   const current = window.location.pathname.match(videoUrlMatch);
   const hash = window.location.hash.match(/^#([A-Za-z0-9\-_]+(?:,[A-Za-z0-9\-_]+)*)$/);
   if (!hash)
     return; // invalid video list
   // extract comma separated list of friendly-names from hash
   const q = hash[1].split(',');
-  Queue.get().set(q, current ? current[1] : undefined);
+  await Queue.get().set(q, current ? current[1] : undefined);
+  console.debug('Queue: loaded from hash');
+};
+
+const loadQueueFromStorage = async () => {
+  const data = window.localStorage.getItem('enhancer-queue');
+  if (data === null) return; // nothing in the storage
+  if (!Queue.get().isEmpty())
+    return console.debug('Queue: ignoring localStorage');
+  const parsed = JSON.parse(data);
+  await Queue.get().set(parsed.queue, parsed.position);
+  console.debug('Queue: loaded from localStorage');
 };
 
 const maybeLoadComments = (yt: boolean) => {
   if (yt && isVideoPage())
-    loadComments();
+    return loadComments();
 };
 const loadComments = async () => {
   const h2 = Array.from(document.querySelectorAll('h2'));
