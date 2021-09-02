@@ -16,6 +16,10 @@ describe('videos page', () => {
     await page.waitForSelector(videoSelector);
   });
 
+  afterEach(async () => {
+    await page.evaluate(() => window.localStorage.clear());
+  });
+
   test('hover video adds queue button', async () => {
     const vid = await page.waitForSelector(videoSelector);
     await (await vid.$('img')).hover();
@@ -65,6 +69,10 @@ describe('queue', () => {
   beforeEach(async () => {
     await page.goto(`${__NEBULA_BASE__}/videos`);
     await page.waitForSelector(videoSelector);
+  });
+
+  afterEach(async () => {
+    await page.evaluate(() => window.localStorage.clear());
   });
 
   test('can clear queue', async () => {
@@ -155,7 +163,19 @@ describe('queue', () => {
     await page.click(`${queueSelector} .top .share`);
     const url = await page.evaluate(() => document.querySelector<HTMLInputElement>('.enhancer-queue-share input[type="text"]').value);
     const before = await titles();
+    await page.evaluate(() => window.localStorage.clear());
+
     await page.goto(url);
+    await page.waitForSelector(queueSelector);
+    await page.waitForFunction(sel => document.querySelectorAll(`${sel} .element`).length > 0, {}, queueSelector);
+    await expect(titles()).resolves.toEqual(before);
+  });
+
+  test('queue is correctly saved and loaded transparently', async () => {
+    await addToQueue(3);
+    const before = await titles();
+
+    await page.reload();
     await page.waitForSelector(queueSelector);
     await page.waitForFunction(sel => document.querySelectorAll(`${sel} .element`).length > 0, {}, queueSelector);
     await expect(titles()).resolves.toEqual(before);
