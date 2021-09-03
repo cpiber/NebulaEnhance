@@ -1,4 +1,4 @@
-import { sendMessage } from '../../helpers/shared';
+import { Message, sendMessage } from '../../helpers/shared';
 import { Tooltip } from './tooltip';
 
 type Button = {
@@ -7,8 +7,8 @@ type Button = {
 };
 
 const QueueButton = async (next: boolean) => {
-  const click = next ? () => sendMessage('queueGotoNext', null, false) : () => sendMessage('queueGotoPrev', null, false);
-  const text = await sendMessage<string>('getMessage', { message: `pageQueue${next ? 'Next' : 'Prev'}` });
+  const click = next ? () => sendMessage(Message.QUEUE_NEXT, null, false) : () => sendMessage(Message.QUEUE_PREV, null, false);
+  const text = await sendMessage(Message.GET_MESSAGE, { message: `pageQueue${next ? 'Next' : 'Prev'}` });
 
   const MenuButton = window.videojs.getComponent('MenuButton');
   type T = Instance<typeof MenuButton> & Button;

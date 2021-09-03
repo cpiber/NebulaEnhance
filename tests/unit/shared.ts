@@ -1,6 +1,6 @@
 /// <reference path="../../src/types/global.d.ts"/>
 import { JSDOM } from 'jsdom';
-import { clone, dot, getCookie, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
+import { Events, Message, clone, dot, getCookie, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
 
 describe('dot product operations', () => {
   test('fail on unequal length', () => {
@@ -246,13 +246,13 @@ describe('message sending', () => {
   ]);
 
   test('sending message without expecting answer resolves immediately', t(async () => {
-    await expect(sendMessage('test', { type: 'bla', test: 'data' }, false, true)).resolves.toBe(undefined);
+    await expect(sendMessage(Message.QUEUE_NEXT, { type: 'bla', test: 'data' }, false, true)).resolves.toBe(undefined);
   }, (e: MessageEvent) => {
-    expect(JSON.parse(e.data)).toEqual({ type: 'test', test: 'data' });
+    expect(JSON.parse(e.data)).toEqual({ type: Message.QUEUE_NEXT, test: 'data' });
   }));
 
   test('sending message can receive data', t(async () => {
-    await expect(sendMessage('test', { test: 'data1' }, true, true)).resolves.toBe('ret');
+    await expect(sendMessage(Message.QUEUE_NEXT, { test: 'data1' }, true, true)).resolves.toBe('ret');
   }, (e: MessageEvent) => {
     const d = JSON.parse(e.data);
     expect(d.test).toBe('data1');
@@ -262,7 +262,7 @@ describe('message sending', () => {
   }));
 
   test('sending message can receive errors', t(async () => {
-    await expect(sendMessage('test', { test: 'data2' }, true, true)).rejects.toEqual({ error: 'err' });
+    await expect(sendMessage(Message.QUEUE_NEXT, { test: 'data2' }, true, true)).rejects.toEqual({ error: 'err' });
   }, (e: MessageEvent) => {
     const d = JSON.parse(e.data);
     expect(d.test).toBe('data2');
@@ -272,11 +272,11 @@ describe('message sending', () => {
   }));
 
   test('sending message with wrong name does not resolve promise', t(async () => {
-    await expect(sendMessage('test', { test: 'given' }, true, true)).resolves.toBe('actual');
+    await expect(sendMessage(Message.QUEUE_NEXT, { test: 'given' }, true, true)).resolves.toBe('actual');
   }, (e: MessageEvent) => {
     const d = JSON.parse(e.data);
     expect(d.test).toBe('given');
-    sendMessage('another', { use: d.name, res: { something: 'wrong' } }, false);
+    sendMessage(Message.QUEUE_PREV, { use: d.name, res: { something: 'wrong' } }, false);
   }, (e: MessageEvent) => {
     const d = JSON.parse(e.data);
     expect(d.res).toEqual({ something: 'wrong' });
@@ -286,7 +286,7 @@ describe('message sending', () => {
   }));
 
   test('accepts string-like data', t(async () => {
-    await expect(sendMessage('test', { hi: 'there' }, true, true)).resolves.toBe(undefined);
+    await expect(sendMessage(Message.QUEUE_NEXT, { hi: 'there' }, true, true)).resolves.toBe(undefined);
   }, (e: MessageEvent) => {
     const d = JSON.parse(e.data);
     expect(d.hi).toBe('there');
@@ -307,10 +307,10 @@ describe('message event listeners', () => {
 
   test('sends a register event', () => new Promise((resolve) => {
     mock.mockImplementation((ev) => {
-      expect(JSON.parse(ev.data).event).toBe('test');
+      expect(JSON.parse(ev.data).event).toBe(Events.QUEUE_CHANGE);
       resolve(0);
     });
-    sendEventHandler('test', () => { /* */ }, true);
+    sendEventHandler(Events.QUEUE_CHANGE, () => { /* */ }, true);
   }));
 
   test('runs listeners', async () => {
@@ -322,7 +322,7 @@ describe('message event listeners', () => {
         ({ name } = JSON.parse(ev.data));
         resolve(0);
       });
-      sendEventHandler('test', cb, true);
+      sendEventHandler(Events.QUEUE_CHANGE, cb, true);
     });
     mock.mockRestore(); // we post below, don't make problems
 
@@ -354,7 +354,7 @@ describe('message reply', () => {
 
   test('reply sends to name', async () => {
     mock.mockImplementationOnce(reply('data'));
-    await expect(sendMessage('test', null, true, true)).resolves.toBe('data');
+    await expect(sendMessage(Message.QUEUE_NEXT, null, true, true)).resolves.toBe('data');
   });
 });
 

@@ -1,3 +1,4 @@
+import { DRAG_HEIGHT, DRAG_INDEX } from '../../helpers/shared';
 import type { Queue } from './index';
 
 const dragElement = (e: DragEvent) => {
@@ -9,8 +10,8 @@ const dragElement = (e: DragEvent) => {
     return e.preventDefault();
   const scroll = el.parentElement.scrollTop;
   const h = el.getBoundingClientRect().height;
-  e.dataTransfer.setData('text/index', `${i}`);
-  e.dataTransfer.setData('text/height', `${h}`);
+  e.dataTransfer.setData(DRAG_INDEX, `${i}`);
+  e.dataTransfer.setData(DRAG_HEIGHT, `${h}`);
   el.style.marginTop = `-${h}px`;
   el.classList.add('dragging');
   el.before(fake(h));
@@ -22,7 +23,7 @@ const dropElement = (q: Queue, e: DragEvent) => {
   if (el === null)
     return;
   let i = Array.from(el.parentElement.children).findIndex(n => n.isSameNode(el));
-  const o = +e.dataTransfer.getData('text/index');
+  const o = +e.dataTransfer.getData(DRAG_INDEX);
   if (i === -1 || i === o)
     return;
   el.parentElement.querySelector('.fake')?.remove();
@@ -40,12 +41,12 @@ const dragOverElement = (e: DragEvent) => {
   const fi = f !== null ? Array.from(el.parentElement.children).findIndex(n => n.isSameNode(f)) : 0;
   f?.remove();
   const i = Array.from(el.parentElement.children).findIndex(n => n.isSameNode(el));
-  const o = +e.dataTransfer.getData('text/index');
+  const o = +e.dataTransfer.getData(DRAG_INDEX);
   if (i === -1 || i === o)
     return;
   const p = el.parentElement;
   const s = i < fi ? (i > 0 ? p.children[i - 1] : null) : p.children[i];
-  const h = +e.dataTransfer.getData('text/height');
+  const h = +e.dataTransfer.getData(DRAG_HEIGHT);
   const node = fake(h);
   if (s === null)
     p.firstChild.before(node);

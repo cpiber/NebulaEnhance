@@ -1,4 +1,4 @@
-import { isMobile, sendMessage } from '../../helpers/shared';
+import { Message, isMobile, sendMessage } from '../../helpers/shared';
 import { Tooltip } from './tooltip';
 
 type Dial = {
@@ -8,8 +8,8 @@ type Dial = {
 };
 
 const SpeedDial = async (playbackChange: number) => {
-  const speedMsg = `${await sendMessage<string>('getMessage', { message: 'playerNewSpeed' })}:`;
-  const speed = await sendMessage<string>('getMessage', { message: 'playerSpeed' });
+  const speedMsg = `${await sendMessage(Message.GET_MESSAGE, { message: 'playerNewSpeed' })}:`;
+  const speed = await sendMessage(Message.GET_MESSAGE, { message: 'playerSpeed' });
 
   const MenuButton = window.videojs.getComponent('MenuButton');
   type T = Instance<typeof MenuButton> & Dial;

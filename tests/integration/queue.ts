@@ -171,6 +171,18 @@ describe('queue', () => {
     await expect(titles()).resolves.toEqual(before);
   });
 
+  test('sharing and setting hash works', async () => {
+    await addToQueue(3);
+    await page.click(`${queueSelector} .top .share`);
+    const url = await page.evaluate(() => document.querySelector<HTMLInputElement>('.enhancer-queue-share input[type="text"]').value);
+    const before = await titles();
+    await page.evaluate(() => window.localStorage.clear());
+
+    await page.evaluate(hash => window.location.hash = hash, url.slice(url.indexOf('#')));
+    await page.waitForTimeout(100);
+    await expect(titles()).resolves.toEqual(before);
+  });
+
   test('queue is correctly saved and loaded transparently', async () => {
     await addToQueue(3);
     const before = await titles();

@@ -1,5 +1,5 @@
 import type { VPlayer } from '../../types/videojs';
-import { sendMessage } from '../helpers/shared';
+import { Message, sendMessage } from '../helpers/shared';
 import QueueButton from './components/queue';
 import SpeedDial from './components/speeddial';
 import VolumeText from './components/volume';
@@ -10,7 +10,7 @@ type Comp<T> = T extends (...args: any[]) => Promise<infer R> ? R : T extends (.
 function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
 function getFromStorage<T>(key: string | string[]): Promise<T>;
 function getFromStorage<T>(key: string | string[] | { [key: string]: any }) {
-  return sendMessage<T>('getStorage', { get: key });
+  return sendMessage<T>(Message.GET_STORAGE, { get: key });
 }
 
 const defaults = {
@@ -64,10 +64,10 @@ export const initPlayer = async () => {
     player.play();
 
   player.on('ended', () => {
-    sendMessage('queueGotoNext', null, false);
+    sendMessage(Message.QUEUE_NEXT, null, false);
   });
 
-  const { canNext, canPrev } = await sendMessage<{ canNext: boolean, canPrev: boolean }>('getQueueStatus');
+  const { canNext, canPrev } = await sendMessage(Message.GET_QSTATUS);
   updatePlayerControls(player, canNext, canPrev);
   if (autoplayQueue && (canNext || canPrev))
     player.play();
@@ -185,10 +185,10 @@ const keydownHandler = (playbackChange: number, e: KeyboardEvent) => {
       player.playbackRate(Math.round((player.playbackRate() + playbackChange) * 100) / 100);
       break;
     case 'n':
-      sendMessage('queueGotoNext', null, false);
+      sendMessage(Message.QUEUE_NEXT, null, false);
       break;
     case 'p':
-      sendMessage('queueGotoPrev', null, false);
+      sendMessage(Message.QUEUE_PREV, null, false);
       break;
     default:
       return;

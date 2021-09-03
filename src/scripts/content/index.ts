@@ -1,6 +1,6 @@
 import iconWatchLater from '../../icons/watchlater.svg';
 import { durationLocation, queueBottonLocation } from '../helpers/locations';
-import { getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../helpers/sharedExt';
+import { BrowserMessage, getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../helpers/sharedExt';
 import { creatorRegex, loadPrefix } from '../page/dispatcher';
 import { enqueueChannelVideos } from './api';
 import { handle } from './message';
@@ -152,7 +152,7 @@ const loadComments = async () => {
   console.debug(`Requesting '${title}' by ${creator}`);
 
   try {
-    const vid: ytvideo = await getBrowserInstance().runtime.sendMessage({ type: 'getYoutubeId', creator, title });
+    const vid: ytvideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_YTID, creator, title });
     const v = document.createElement('span');
     v.classList.add('enhancer-yt');
     const a = document.createElement('a');
@@ -177,7 +177,7 @@ const createLinkForAll = () => {
   if (!container)
     return;
 
-  const link = !container.children.length ? document.createElement('a') : container.children[0].cloneNode(true) as HTMLLinkElement;
+  const link = !container.children.length ? document.createElement('a') : container.children[0].cloneNode(true) as HTMLAnchorElement;
   link.style.color = link.querySelector('svg')?.getAttribute('fill');
   link.innerHTML = iconWatchLater;
   link.href = '#';

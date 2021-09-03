@@ -1,4 +1,4 @@
-import { getBrowserInstance } from './helpers/sharedExt';
+import { BrowserMessage, getBrowserInstance, parseTypeObject } from './helpers/sharedExt';
 import { Creator, loadCreators as _loadCreators, creatorHasVideo, normalizeString } from './helpers/youtube';
 
 const videoFetch = 50;
@@ -8,13 +8,15 @@ getBrowserInstance().browserAction.onClicked.addListener(() => {
 });
 
 getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [key: string]: any }) => {
-  if (typeof message === 'string') message = { type: message };
-  switch (message.type) {
-    case 'loadCreators':
-      return console.debug(await loadCreators());
-    case 'getYoutubeId':
-      return getYoutubeId(message);
-  }
+  try {
+    const msg = parseTypeObject(message);
+    switch (msg.type) {
+      case BrowserMessage.LOAD_CREATORS:
+        return console.debug(await loadCreators());
+      case BrowserMessage.GET_YTID:
+        return getYoutubeId(msg);
+    }
+  } catch {}
 });
 
 getBrowserInstance().runtime.onInstalled.addListener(async (details) => {

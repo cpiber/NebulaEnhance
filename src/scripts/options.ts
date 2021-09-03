@@ -1,4 +1,4 @@
-import { getBrowserInstance, isMobile } from './helpers/sharedExt';
+import { BrowserMessage, getBrowserInstance, isMobile } from './helpers/sharedExt';
 import { load } from './options/form';
 import { showLogs } from './options/logs';
 import { Settings } from './options/settings';
@@ -24,7 +24,7 @@ els.youtube.addEventListener('change', async () => {
   };
   const success = await (y.checked ? permissions.request : permissions.remove)(perms);
   if (!success) y.checked = !y.checked; // revert
-  if (y.checked && success) getBrowserInstance().runtime.sendMessage('loadCreators');
+  if (y.checked && success) getBrowserInstance().runtime.sendMessage(BrowserMessage.LOAD_CREATORS);
 });
 permissions.onRemoved.addListener(p => p.origins?.length && (els.youtube.checked = false));
 

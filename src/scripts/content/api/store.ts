@@ -1,11 +1,11 @@
-import { getCookie } from '../../helpers/shared';
+import { NEBULA_AUTH_KEY, getCookie } from '../../helpers/shared';
 
 export const opt = {
   auth: null as string,
 };
 
 export const refreshToken = async () => {
-  const cookie = getCookie('nebula-auth');
+  const cookie = getCookie(NEBULA_AUTH_KEY);
   let apiToken = '';
   try {
     ({ apiToken } = JSON.parse(cookie));

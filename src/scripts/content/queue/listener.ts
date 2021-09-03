@@ -1,4 +1,4 @@
-import { getBrowserInstance } from '../../helpers/sharedExt';
+import { Message, getBrowserInstance, videoUrlMatch } from '../../helpers/sharedExt';
 import type { Queue } from './index';
 
 const confirmClear = getBrowserInstance().i18n.getMessage('pageQueueClearConfirm');
@@ -45,10 +45,10 @@ export function clickTop(this: Queue, e: MouseEvent) {
 
 export function handleMessage(this: Queue, e: MessageEvent, msg: { type: string, [key: string]: any }): true {
   switch (msg.type) {
-    case 'queueGotoNext':
+    case Message.QUEUE_NEXT:
       this.gotoNext();
       break;
-    case 'queueGotoPrev':
+    case Message.QUEUE_PREV:
       this.gotoPrev();
       break;
   }
@@ -56,7 +56,7 @@ export function handleMessage(this: Queue, e: MessageEvent, msg: { type: string,
 }
 
 export function popState(this: Queue) {
-  const match = window.location.pathname.match(/^\/videos\/(.+?)\/?$/);
+  const match = window.location.pathname.match(videoUrlMatch);
   if (match === null) return this.goto(-1, false);
   this.goto(this.queue.indexOf(match[1]), false);
 }

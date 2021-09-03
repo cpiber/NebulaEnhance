@@ -6,9 +6,8 @@ import type { Queue } from './index';
 export async function addToStore(this: Queue, name: string, el?: HTMLElement): Promise<video>;
 export async function addToStore(this: Queue, name: Nebula.Video[]): Promise<video[]>;
 export async function addToStore(this: Queue, name: string | Nebula.Video[], el?: HTMLElement): Promise<video | video[]> {
-  if (typeof name !== 'string') {
+  if (typeof name !== 'string')
     return name.map(v => this.store[v.slug] = extractData(v));
-  }
 
   console.debug('Added video', name);
   if (!(el instanceof HTMLElement)) {

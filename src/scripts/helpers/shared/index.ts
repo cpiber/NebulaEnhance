@@ -1,4 +1,8 @@
 export * from './communication';
+export * from './constants';
 export * from './helpers';
-export * from './types';
 
+export type ytvideo = {
+  confidence: number,
+  video: string,
+};

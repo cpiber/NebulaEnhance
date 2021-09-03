@@ -83,8 +83,8 @@ export const parseMaybeJSON = (data: string) => {
     return data;
   }
 };
-export const parseTypeObject = <T extends { type: string }>(data: string, nullable = false): T => {
-  const d = parseMaybeJSON(data);
+export const parseTypeObject = <T extends { type: string }>(data: string | Record<string, any>, nullable = false): T => {
+  const d = typeof data === 'string' ? parseMaybeJSON(data) : data;
   if (typeof d === 'string') return { type: d } as T;
   if (typeof d.type === 'string') return d;
   if (nullable) return null;

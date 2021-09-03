@@ -1,4 +1,4 @@
-import { getBrowserInstance, parseTypeObject, replyMessage, videosettings } from '../helpers/sharedExt';
+import { Events, Message, getBrowserInstance, isQueueMessage, parseTypeObject, replyMessage } from '../helpers/sharedExt';
 import { Queue } from './queue';
 
 const { local } = getBrowserInstance().storage;
@@ -14,35 +14,24 @@ export const handle = (e: MessageEvent) => {
   const msg = parseTypeObject<Msg>(e.data, true);
   if (msg === null)
     return true; // ignore invalid messages
-  if (msg.type?.startsWith('enhancer-message-'))
+  if (msg.type.startsWith('enhancer-message-'))
     return true; // ignore replies
 
-  if (msg.type?.startsWith('queue'))
+  if (isQueueMessage(msg.type))
     return Queue.get().handleMessage(e, msg);
 
   let promise: Promise<any> = null;
   switch (msg.type) {
-    case 'getSetting': {
-      const { setting } = msg;
-      promise = Promise.resolve(setting ? videosettings[setting as keyof typeof videosettings] : videosettings);
-      break;
-    }
-    case 'setSetting': {
-      const { setting } = msg;
-      const v = isNaN(msg.value) || msg.value == '' ? msg.value as string : +msg.value;
-      videosettings[setting as keyof typeof videosettings] = v as never;
-      return true;
-    }
-    case 'getStorage':
+    case Message.GET_STORAGE:
       promise = local.get(msg.get);
       break;
-    case 'getMessage':
+    case Message.GET_MESSAGE:
       promise = Promise.resolve(getBrowserInstance().i18n.getMessage(msg.message));
       break;
-    case 'getQueueStatus':
+    case Message.GET_QSTATUS:
       promise = Promise.resolve({ canNext: Queue.get().canGoNext(), canPrev: Queue.get().canGoPrev() });
       break;
-    case 'registerListener':
+    case Message.REGISTER_LISTENER:
       registerListener(e, msg);
       return true;
     default:
@@ -55,7 +44,7 @@ export const handle = (e: MessageEvent) => {
 
 const registerListener = (e: MessageEvent, msg: Msg) => {
   switch (msg.event) {
-    case 'queueChange':
+    case Events.QUEUE_CHANGE:
       Queue.get().onChange(() => replyMessage(e, msg.name, { canNext: Queue.get().canGoNext(), canPrev: Queue.get().canGoPrev() }));
       break;
   }

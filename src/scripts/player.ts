@@ -1,9 +1,9 @@
-import { sendEventHandler } from './helpers/shared';
+import { Events, sendEventHandler } from './helpers/shared';
 import { findAPlayer, init, updatePlayerControls } from './page/player';
 
 (async () => {
   updatePlayerControls(findAPlayer(), false, false); // clear controls after update
-  sendEventHandler('queueChange', ({ canNext, canPrev }: { canNext: boolean, canPrev: boolean }) => updatePlayerControls(findAPlayer(), canNext, canPrev));
+  sendEventHandler(Events.QUEUE_CHANGE, ({ canNext, canPrev }) => updatePlayerControls(findAPlayer(), canNext, canPrev));
 
   if (document.body.classList.contains('enhancer-player'))
     return;
