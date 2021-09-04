@@ -47,6 +47,8 @@ export const nebula = async () => {
   // inject custom script (if available)
   if (customScriptPage)
     await injectScript(document.body, customScriptPage);
+
+  document.body.classList.add('enhancer-initialized');
 };
 
 const imgLink = (e: HTMLElement) => {

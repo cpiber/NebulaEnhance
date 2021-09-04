@@ -193,6 +193,28 @@ describe('queue', () => {
     await expect(titles()).resolves.toEqual(before);
   });
 
+  test('queue loading preserves position', async () => {
+    await addToQueue(3);
+    const before = await titles();
+    await page.click(`${queueSelector} .top .next`);
+
+    await page.reload();
+    await page.waitForSelector(queueSelector);
+    await page.waitForFunction(sel => document.querySelectorAll(`${sel} .element`).length > 0, {}, queueSelector);
+    await expect(titles()).resolves.toEqual(before);
+    await expect(page.$eval('.enhancer-queue .title', el => el.textContent)).resolves.toBe(before[0]);
+  });
+
+  test('queue ignores completed queue', async () => {
+    await addToQueue(3);
+    await page.evaluate(sel => document.querySelector<HTMLDivElement>(`${sel} .element:nth-child(3)`).click(), queueSelector);
+
+    await page.reload();
+    await page.waitForSelector(queueSelector);
+    await page.waitForSelector('body.enhancer-initialized');
+    await expect(page.evaluate(sel => document.querySelectorAll(`${sel} .element`).length, queueSelector)).resolves.toBe(0);
+  });
+
   test('adds proper controls', async () => {
     await addToQueue(3);
     await page.click(`${queueSelector} .top .next`);
