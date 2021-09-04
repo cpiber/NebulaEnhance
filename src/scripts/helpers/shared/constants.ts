@@ -17,6 +17,7 @@ export const enum Events {
 
 export const DRAG_INDEX = 'text/index';
 export const DRAG_HEIGHT = 'text/height';
+export const QUEUE_KEY = 'enhancer-queue';
 
 
 export const enum BrowserMessage {

@@ -1,6 +1,6 @@
 import iconWatchLater from '../../icons/watchlater.svg';
 import { durationLocation, queueBottonLocation } from '../helpers/locations';
-import { BrowserMessage, getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../helpers/sharedExt';
+import { BrowserMessage, QUEUE_KEY, getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../helpers/sharedExt';
 import { creatorRegex, loadPrefix } from '../page/dispatcher';
 import { enqueueChannelVideos } from './api';
 import { handle } from './message';
@@ -127,13 +127,15 @@ const hashChange = async () => {
 };
 
 const loadQueueFromStorage = async () => {
-  const data = window.localStorage.getItem('enhancer-queue');
+  const data = window.localStorage.getItem(QUEUE_KEY);
   if (data === null) return; // nothing in the storage
   if (!Queue.get().isEmpty())
     return console.debug('Queue: ignoring localStorage');
   const parsed = JSON.parse(data);
-  await Queue.get().set(parsed.queue, parsed.position);
-  console.debug('Queue: loaded from localStorage');
+  if (parsed.position + 1 >= parsed.queue.length)
+    return console.debug('Queue: ignoring queue on last video');
+  await Queue.get().set(parsed.queue, +parsed.position);
+  console.debug(`Queue: loaded from localStorage (${parsed.queue.length}/${parsed.position})`);
 };
 
 const maybeLoadComments = (yt: boolean) => {

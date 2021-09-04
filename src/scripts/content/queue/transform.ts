@@ -1,3 +1,4 @@
+import { QUEUE_KEY } from '../../helpers/shared';
 import { extractData } from './add';
 import type { Queue } from './index';
 
@@ -37,7 +38,7 @@ export async function set(this: Queue, newq: string[] | Nebula.Video[], current?
     return;
 
   this.queue.splice2(0, this.queue.length, q); // replace current queue
-  if (current)
+  if (current !== undefined)
     // use timeout to make sure dom is updated
     setTimeout(() => this.goto(typeof current === 'number' ? current : this.queue.indexOf(current), false), 0);
   this.containerEl.classList.toggle('hidden', q.length === 0);
@@ -79,9 +80,9 @@ export function setStorage(this: Queue) {
   };
   try {
     if (data.queue.length)
-      window.localStorage.setItem('enhancer-queue', JSON.stringify(data));
+      window.localStorage.setItem(QUEUE_KEY, JSON.stringify(data));
     else
-      window.localStorage.removeItem('enhancer-queue');
+      window.localStorage.removeItem(QUEUE_KEY);
   } catch (err) {
     console.error(err);
   }
