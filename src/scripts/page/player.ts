@@ -54,22 +54,17 @@ export const initPlayer = async () => {
   if (!player || player._enhancerInit)
     return; // already initialized this player
 
-  if (player.controlBar.getChild('SpeedDial') === undefined)
-    addPlayerControls(player);
+  player.on('ended', () => sendMessage(Message.QUEUE_NEXT, null, false));
 
   const { autoplay, autoplayQueue } = await getFromStorage(defaults);
   console.debug('autoplay?', autoplay, 'autoplayQueue?', autoplayQueue);
 
-  if (autoplay)
-    player.play();
+  if (player.controlBar.getChild('SpeedDial') === undefined)
+    addPlayerControls(player, autoplay);
 
-  player.on('ended', () => {
-    sendMessage(Message.QUEUE_NEXT, null, false);
-  });
-
-  const { canNext, canPrev } = await sendMessage(Message.GET_QSTATUS);
+  const { canNext, canPrev, length: queueLen } = await sendMessage(Message.GET_QSTATUS);
   updatePlayerControls(player, canNext, canPrev);
-  if (autoplayQueue && (canNext || canPrev))
+  if (autoplay || (autoplayQueue && queueLen))
     player.play();
 
   player._enhancerInit = true;
@@ -131,9 +126,11 @@ const setPlayerDefaults = (autoplay: boolean) => {
   comps.splice(pidx, 0, 'queuePrev');
 };
 
-const addPlayerControls = (player: VPlayer) => {
+const addPlayerControls = (player: VPlayer, autoplay: boolean) => {
   // call only if player already existed by the time defaults were set
   console.debug('Adding player controls because not present yet');
+
+  player.autoplay(autoplay);
 
   const bar = player.controlBar;
   bar.addChild('SpeedDial');

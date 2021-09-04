@@ -74,6 +74,14 @@ export class Queue extends QueueMethods {
     return this.queuepos < this.queue.length - 1;
   }
 
+  get position() {
+    return this.queuepos;
+  }
+
+  get length() {
+    return this.queue.length;
+  }
+
 
   static get() {
     return this.instance ? this.instance : this.instance = new this();

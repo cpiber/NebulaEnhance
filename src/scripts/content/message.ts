@@ -29,7 +29,12 @@ export const handle = (e: MessageEvent) => {
       promise = Promise.resolve(getBrowserInstance().i18n.getMessage(msg.message));
       break;
     case Message.GET_QSTATUS:
-      promise = Promise.resolve({ canNext: Queue.get().canGoNext(), canPrev: Queue.get().canGoPrev() });
+      promise = Promise.resolve({
+        canNext: Queue.get().canGoNext(),
+        canPrev: Queue.get().canGoPrev(),
+        position: Queue.get().position,
+        length: Queue.get().length,
+      });
       break;
     case Message.REGISTER_LISTENER:
       registerListener(e, msg);

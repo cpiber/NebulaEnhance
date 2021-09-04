@@ -2,7 +2,7 @@ import { Events, Message } from './constants';
 import { clone, parseTypeObject } from './helpers';
 
 export function sendMessage(name: Message.GET_MESSAGE, data: { message: string }): Promise<string>;
-export function sendMessage(name: Message.GET_QSTATUS): Promise<{ canNext: boolean, canPrev: boolean }>;
+export function sendMessage(name: Message.GET_QSTATUS): Promise<{ canNext: boolean, canPrev: boolean, position: number, length: number }>;
 export function sendMessage<T>(name: Exclude<Message, Message.GET_MESSAGE | Message.GET_QSTATUS>, data?: { [key: string]: any }, expectAnswer?: boolean, skipOriginCheck?: boolean): Promise<T>;
 export function sendMessage<T>(name: Message, data?: { [key: string]: any }, expectAnswer = true, skipOriginCheck = false) {
   if (!expectAnswer) {
