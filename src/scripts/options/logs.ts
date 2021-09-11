@@ -70,6 +70,7 @@ export const showLogs = async (currentVersion: string, installed = false) => {
   const last = document.createElement('p');
   last.className = 'all-releases';
   const full = last.appendChild(document.createElement('a'));
+  full.className = 'enhancer-button';
   full.href = `https://github.com/${owner}/${repo}/releases`;
   full.target = '_blank';
   full.innerText = msg('optionsChangelogAllReleases');

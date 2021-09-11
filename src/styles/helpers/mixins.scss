@@ -9,3 +9,25 @@
     @content;
   }
 }
+
+@mixin light() {
+  html[data-theme=light] & {
+    @content;
+  }
+  @media (prefers-color-scheme: light) {
+    html:not([data-theme]) & {
+      @content;
+    }
+  }
+}
+
+@mixin dark() {
+  html[data-theme=dark] & {
+    @content;
+  }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme]) & {
+      @content;
+    }
+  }
+}

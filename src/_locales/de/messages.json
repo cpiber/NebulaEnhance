@@ -35,6 +35,10 @@
     "message": "Geschwindigkeits-Änderungsrate",
     "description": "Beschriftung für Änderungsrate der Abspielgeschwindigkeit der Optionen Seite."
   },
+  "optionsPlaybackChangeRateLabel": {
+    "message": "Änderungsrate",
+    "description": "Label for speed change rate of options page."
+  },
   "optionsPlaybackChangeRateHint": {
     "message": "Um wieviel die Geschwindigkeit geändert werden soll beim scrollen der Maus über dem neuen Speed Knopf, z.B. <code>0.1</code>.",
     "description": "Hilfstext für Änderungsrate der Abspielgeschwindigkeit der Optionen Seite."
@@ -48,7 +52,7 @@
     "description": "Beschriftung für Autoplay in Schlange der Optionen Seite."
   },
   "optionsAutoplayHint": {
-    "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">https://demo.theoplayer.com/autoplay-policy</a>.<br />Optional nur mit aktiver Warteschlange.",
+    "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">hier</a>. Optional nur mit aktiver Warteschlange.",
     "description": "Hilfstext für Autoplay der Optionen Seite."
   },
   "optionsVolumeScrollTitle": {
@@ -82,6 +86,10 @@
   "optionsVisitedColorTitle": {
     "message": "Link Farbe für besuchte Videos",
     "description": "Beschriftung für Link Farbe der Optionen Seite."
+  },
+  "optionsVisitedColorLabel": {
+    "message": "Color",
+    "description": "Label for visited color of options page."
   },
   "optionsVisitedColorHint": {
     "message": "Textfarbe für besuchte Videos. Beliebiger valider CSS Farbwert, leer lassen um nichts zu machen; z.B. <code>#6fbce6</code>",

@@ -30,11 +30,18 @@ export const html = `
       <div class="close clickable" role="share-close">${iconClose}</div>
     </div>
     <div class="body">
-      <span>${link}:</span>
-      <input type="text" readonly />
-      <label>
-        <input type="checkbox" checked /> ${starthere}
-      </label>
+      <div class="enhancer-field">
+        <div class="enhancer-control">
+          <input type="text" readonly id="enhancer-share-link" placeholder=" " />
+          <label for="enhancer-share-link">${link}</label>
+        </div>
+      </div>
+      <div class="enhancer-field">
+        <label class="enhancer-checkbox">
+          <input type="checkbox" checked />
+          ${starthere}
+        </label>
+      </div>
     </div>
   </div>
 </div>

@@ -33,6 +33,10 @@
   },
   "optionsPlaybackChangeRateTitle": {
     "message": "Playback speed change rate",
+    "description": "Title for speed change rate of options page."
+  },
+  "optionsPlaybackChangeRateLabel": {
+    "message": "Change rate",
     "description": "Label for speed change rate of options page."
   },
   "optionsPlaybackChangeRateHint": {
@@ -48,7 +52,7 @@
     "description": "Label for Autoplay in Queue of options page."
   },
   "optionsAutoplayHint": {
-    "message": "Whether to make the video automatically play or not. Note that this depends on your browser, see <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">https://demo.theoplayer.com/autoplay-policy</a>.<br />Optionally only with an active queue.",
+    "message": "Whether to make the video automatically play or not. Note that this depends on your browser, see <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">here</a>. Optionally only with an active queue.",
     "description": "Hint for Autoplay of options page."
   },
   "optionsVolumeScrollTitle": {
@@ -80,7 +84,11 @@
     "description": "Hint for LoadYoutube of options page."
   },
   "optionsVisitedColorTitle": {
-    "message": "Visited Video Link Color",
+    "message": "Visited video link style",
+    "description": "Title for visited color of options page."
+  },
+  "optionsVisitedColorLabel": {
+    "message": "Color",
     "description": "Label for visited color of options page."
   },
   "optionsVisitedColorHint": {
@@ -140,7 +148,7 @@
     "description": "Hint for 'save' button."
   },
   "optionsReloadNote": {
-    "message": "Note: For the above changes to apply, you need to reload the nebula page.",
+    "message": "Note: For the above changes to apply, you need to reload the Nebula page.",
     "description": "Note/hint for options to apply."
   },
   "buttonSave": {

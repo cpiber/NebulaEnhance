@@ -1,50 +1,19 @@
 @import '../helpers/mixins';
 @import '../helpers/variables';
-
-$disabled_alpha: 0.55;
-
-%hidden {
-  display: none;
-}
-%top {
-  position: relative;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  padding: 8px 12px;
-  font-size: 12px;
-}
+@import '../helpers/placeholders';
+@import '../helpers/shared';
 
 .enhancer-queue {
   position: fixed;
   bottom: 0;
   right: 15px;
-  width: 375px;
+  width: 425px;
   transition: bottom 0.1s ease-in-out;
-
-  &, &-inner {
-    margin: 1px;
-    margin-bottom: 0;
-    background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
-    background-color: #333333;
-    background-blend-mode: difference;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    overflow: hidden;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
-    background-color: #aaaaaa;
-    background-blend-mode: difference;
-    z-index: -1;
-  }
+  background-color: var(--bg-color);
+  border-top-left-radius: $border_radius;
+  border-top-right-radius: $border_radius;
+  overflow: hidden;
+  @extend %box-shadow;
 
   &.hidden {
     @extend %hidden;
@@ -66,20 +35,9 @@ $disabled_alpha: 0.55;
     opacity: 1;
   }
 
-  .top::after, .element::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 1px;
-    background-image: linear-gradient(0deg, var(--bg-color), var(--bg-color));
-    background-color: #bbbbbb;
-    background-blend-mode: difference;
-  }
-
   .top {
-    @extend %top;
+    @extend %panel;
+    border-bottom: 1px solid rgba(85, 85, 85, 0.1);
 
     &::after {
       top: unset;
@@ -97,6 +55,11 @@ $disabled_alpha: 0.55;
       overflow: hidden;
       text-overflow: ellipsis;
       font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    h2 {
+      font-weight: 400;
     }
 
     .spacer, .close, .share, .prev, .next, .reverse {
@@ -135,6 +98,7 @@ $disabled_alpha: 0.55;
     scroll-behavior: smooth;
     max-height: 90px * 2.5;
     overflow: hidden auto;
+    padding: 8px 0;
 
     .element {
       position: relative;
@@ -143,6 +107,7 @@ $disabled_alpha: 0.55;
       flex-wrap: nowrap;
       align-items: center;
       cursor: pointer;
+      padding: 4px 8px;
 
       &.dragging {
         transition: transform 0.01s;
@@ -151,7 +116,7 @@ $disabled_alpha: 0.55;
 
       .drag {
         text-align: center;
-        width: 22px;
+        width: 32px;
         flex-shrink: 0;
 
         .handle {
@@ -188,6 +153,8 @@ $disabled_alpha: 0.55;
       .thumb {
         position: relative;
         flex-shrink: 0;
+        border-radius: $border_radius;
+        overflow: hidden;
 
         .play {
           display: none;
