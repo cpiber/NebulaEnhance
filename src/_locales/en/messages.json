@@ -56,7 +56,7 @@
     "description": "Hint for Autoplay of options page."
   },
   "optionsVolumeScrollTitle": {
-    "message": "Volume Scroll",
+    "message": "Volume scroll",
     "description": "Label for Volume Scroll of options page."
   },
   "optionsVolumeScrollLog": {
@@ -100,7 +100,7 @@
     "description": "Hint for invalid visited color of options page."
   },
   "optionsCustomScriptPageTitle": {
-    "message": "Custom Script for page",
+    "message": "Custom script for page",
     "description": "Label for adding custom scripts to webpage of options page."
   },
   "optionsCustomScriptPageHint": {
