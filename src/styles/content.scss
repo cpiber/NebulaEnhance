@@ -108,10 +108,10 @@ a.enhancer-queueButtonAll {
   }
 }
 
-body > .watch-on-nebula {
-  display: none !important;
-}
-
 .watch-on-nebula {
   position: relative;
+}
+
+body > .watch-on-nebula {
+  display: none !important;
 }

@@ -1,6 +1,6 @@
 import { login, setSettings, videoSelector } from '../shared';
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 let somevideo: string;
 beforeAll(async () => {

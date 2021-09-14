@@ -1,6 +1,6 @@
 import { addToQueue, expectQueueLength, login, qbuttSelector, queueSelector, titles, videoSelector, waitForPlayerInit } from '../shared';
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 beforeAll(async () => {
   await login();
@@ -104,7 +104,7 @@ describe('queue', () => {
     await addToQueue(2);
     await page.click(`${queueSelector} .element`);
     const title = await page.evaluate(sel => document.querySelector(`${sel} .element .title`).textContent, queueSelector);
-    await page.waitForFunction(t => document.title.indexOf(t) !== -1, { timeout: 1000 }, title);
+    await page.waitForFunction(t => document.title.indexOf(t) !== -1, { timeout: 10000 }, title);
     await expect(page.url()).toMatch(/videos/);
     await expect(page.title()).resolves.toContain(title);
     await expect(page.evaluate(sel => document.querySelector(`${sel} .top .title`).textContent, queueSelector)).resolves.toBe(title);
