@@ -1,4 +1,8 @@
-import { injectFunction, nebulavideo } from '../../helpers/shared';
+import { getBrowserInstance, injectFunction, nebulavideo } from '../../helpers/sharedExt';
+
+const watchOnNebula = getBrowserInstance().i18n.getMessage('pageWatchOnNebula');
+const goChannel = getBrowserInstance().i18n.getMessage('pageGoChannel');
+const videoConfidence = getBrowserInstance().i18n.getMessage('pageVideoConfidence');
 
 export const constructButton = (vid: nebulavideo) => {
   // for some reason youtube custom elements clear their inner html in construct, so we have to do it like this
@@ -19,7 +23,7 @@ export const constructButton = (vid: nebulavideo) => {
   const text = binner.appendChild(document.createElement('yt-formatted-string'));
   text.id = 'text';
   text.className = 'style-scope ytd-button-renderer style-suggestive size-default';
-  text.textContent = 'Watch on Nebula'; // TODO: localize
+  text.textContent = watchOnNebula;
   const ripple = binner.appendChild(document.createElement('paper-ripple'));
   ripple.className = 'style-scope tp-yt-paper-button';
   const tooltip = link.appendChild(document.createElement('tp-yt-paper-tooltip'));
@@ -37,8 +41,8 @@ const generateText = (vid: nebulavideo) => {
   // TODO: localize
   switch (vid.is) {
     case 'channel':
-      return 'Go to Channel';
+      return goChannel;
     case 'video':
-      return `Video-Confidence: ${vid.confidence}`;
+      return `${videoConfidence}: ${(vid.confidence * 100).toFixed(1)}%`;
   }
 };

@@ -191,6 +191,18 @@
     "message": "Previous",
     "description": "Player hint for previous in queue"
   },
+  "pageWatchOnNebula": {
+    "message": "Watch on Nebula",
+    "description": "Watch on Nebula button on youtube page"
+  },
+  "pageGoChannel": {
+    "message": "Go to channel",
+    "description": "Nebula channel tooltip on youtube page"
+  },
+  "pageVideoConfidence": {
+    "message": "Video-confidence",
+    "description": "Nebula video match confidence on youtube page"
+  },
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs and Feature Requests</a>",
     "description": "Credit footer."

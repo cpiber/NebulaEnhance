@@ -1,6 +1,6 @@
+import { getVideo } from '../../helpers/api';
 import { creatorLocation, durationLocation, titleLocation } from '../../helpers/locations';
 import { video } from '../../helpers/VideoQueue';
-import { getVideo } from '../api';
 import type { Queue } from './index';
 
 export async function addToStore(this: Queue, name: string, el?: HTMLElement): Promise<video>;

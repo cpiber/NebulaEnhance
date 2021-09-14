@@ -1,8 +1,8 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
+import { enqueueChannelVideos } from '../../helpers/api';
 import { durationLocation, queueBottonLocation } from '../../helpers/locations';
 import { BrowserMessage, QUEUE_KEY, getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix } from '../../page/dispatcher';
-import { enqueueChannelVideos } from '../api';
 import { Queue } from '../queue';
 import { handle } from './message';
 

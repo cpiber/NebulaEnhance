@@ -1,4 +1,4 @@
-import type { Queue } from '../queue';
+import type { Queue } from '../../content/queue';
 import { opt, refreshToken } from './store';
 
 const request = async <T = any>(url: string, init?: RequestInit) => {
@@ -33,11 +33,11 @@ export const getVideo = (name: string) => request<Nebula.Video>(`https://content
   method: 'GET',
 });
 
-export const getChannelVideos = async (name: string) => {
+export const getChannelVideos = async (name: string, num = Infinity) => {
   const vids: Nebula.Video[] = [];
   let url = `https://content.watchnebula.com/video/channels/${name}`;
 
-  while (url) {
+  while (url && vids.length < num) {
     const body = await request<Nebula.VideoRequest>(url, {
       referrer: `https://nebula.app/${name}`,
       method: 'GET',

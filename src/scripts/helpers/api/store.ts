@@ -1,4 +1,4 @@
-import { NEBULA_AUTH_KEY, getCookie } from '../../helpers/shared';
+import { NEBULA_AUTH_KEY, getCookie } from '../shared';
 
 export const opt = {
   auth: null as string,

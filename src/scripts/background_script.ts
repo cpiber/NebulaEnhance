@@ -1,11 +1,9 @@
-import { Creator, loadCreators as _loadCreators, creatorHasYTVideo, normalizeString } from './background';
+import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, normalizeString } from './background';
 import { BrowserMessage, getBrowserInstance, nebulavideo, parseTypeObject } from './helpers/sharedExt';
 
 const videoFetch = 50;
 
-getBrowserInstance().browserAction.onClicked.addListener(() => {
-  openOptions();
-});
+getBrowserInstance().browserAction.onClicked.addListener(() => openOptions());
 
 getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [key: string]: any }) => {
   try {
@@ -38,13 +36,13 @@ const loadCreators = (() => {
 })();
 
 const getYoutubeId = async (message: { [key: string]: any }) => {
-  const { creator } = message;
+  const { creator, title } = message;
   const normalizedCreator = normalizeString(creator);
 
   try {
     const creators = await loadCreators();
     const uploads = creators.find(e => e.name === creator || normalizeString(e.name) === normalizedCreator)?.uploads;
-    return creatorHasYTVideo(uploads, message.title, videoFetch);
+    return creatorHasYTVideo(uploads, title, videoFetch);
   } catch (err) {
     console.error(err);
     return Promise.reject(err);
@@ -55,14 +53,26 @@ const getNebulaVideo = async (message: { [key: string]: any }): Promise<nebulavi
   const { channelID, videoTitle } = message;
 
   const creators = await loadCreators();
-  console.log(creators);
   const creator = creators.find(c => c.channel === channelID);
   console.debug('creator:', creator);
   if (!creator || !creator.nebula) return;
-  return {
-    is: 'channel',
-    link: creator.nebula,
-  };
+
+  // XXX: There are creators that don't have their own channel per se, but upload to topics
+  // so it would be nice to fallback to site-wide search
+  try {
+    const video = await creatorHasNebulaVideo(creator.nebula.split('/').pop(), videoTitle, videoFetch);
+    return {
+      is: 'video',
+      confidence: video.confidence,
+      link: video.video,
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      is: 'channel',
+      link: creator.nebula,
+    };
+  }
 };
 
 const openOptions = (active = true, ...args: string[]) => {
