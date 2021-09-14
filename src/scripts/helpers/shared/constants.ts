@@ -23,6 +23,7 @@ export const QUEUE_KEY = 'enhancer-queue';
 export const enum BrowserMessage {
   LOAD_CREATORS = 'loadCreators',
   GET_YTID = 'getYoutubeId',
+  GET_VID = 'getNebulaVid',
 }
 
 

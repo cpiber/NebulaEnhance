@@ -1,5 +1,5 @@
-import { Events, Message, getBrowserInstance, isQueueMessage, parseTypeObject, replyMessage } from '../helpers/sharedExt';
-import { Queue } from './queue';
+import { Events, Message, getBrowserInstance, isQueueMessage, parseTypeObject, replyMessage } from '../../helpers/sharedExt';
+import { Queue } from '../queue';
 
 const { local } = getBrowserInstance().storage;
 type Msg = { type: string, name?: string, [key: string]: any };

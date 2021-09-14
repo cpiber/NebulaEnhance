@@ -18,7 +18,6 @@ els.youtube.addEventListener('change', async () => {
   const y = els.youtube;
   const perms: browser.permissions.Permissions = {
     origins: [
-      '*://standard.tv/*',
       '*://*.googleapis.com/*',
     ],
   };

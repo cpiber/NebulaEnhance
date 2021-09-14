@@ -1,4 +1,4 @@
-import { BrowserMessage, getBrowserInstance, parseTypeObject } from './helpers/sharedExt';
+import { BrowserMessage, getBrowserInstance, nebulavideo, parseTypeObject } from './helpers/sharedExt';
 import { Creator, loadCreators as _loadCreators, creatorHasVideo, normalizeString } from './helpers/youtube';
 
 const videoFetch = 50;
@@ -15,6 +15,8 @@ getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [k
         return console.debug(await loadCreators());
       case BrowserMessage.GET_YTID:
         return getYoutubeId(msg);
+      case BrowserMessage.GET_VID:
+        return getNebulaVideo(msg);
     }
   } catch {}
 });
@@ -47,6 +49,20 @@ const getYoutubeId = async (message: { [key: string]: any }) => {
     console.error(err);
     return Promise.reject(err);
   }
+};
+
+const getNebulaVideo = async (message: { [key: string]: any }): Promise<nebulavideo> => {
+  const { channelID, videoTitle } = message;
+
+  const creators = await loadCreators();
+  console.log(creators);
+  const creator = creators.find(c => c.channel === channelID);
+  console.debug('creator:', creator);
+  if (!creator || !creator.nebula) return;
+  return {
+    is: 'channel',
+    link: creator.nebula,
+  };
 };
 
 const openOptions = (active = true, ...args: string[]) => {

@@ -22,6 +22,7 @@ const manifest: browser._manifest.WebExtensionManifest = {
       matches: [
         '*://*.watchnebula.com/*',
         '*://*.nebula.app/*',
+        '*://*.youtube.com/*',
       ],
       js: [
         'scripts/content_script.js',
@@ -39,9 +40,9 @@ const manifest: browser._manifest.WebExtensionManifest = {
     'storage',
     '*://content.watchnebula.com/*',
     '*://api.watchnebula.com/*',
+    '*://standard.tv/*',
   ],
   optional_permissions: [
-    '*://standard.tv/*',
     '*://*.googleapis.com/*',
   ],
   browser_action: {

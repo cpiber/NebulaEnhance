@@ -1,10 +1,10 @@
-import iconWatchLater from '../../icons/watchlater.svg';
-import { durationLocation, queueBottonLocation } from '../helpers/locations';
-import { BrowserMessage, QUEUE_KEY, getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../helpers/sharedExt';
-import { creatorRegex, loadPrefix } from '../page/dispatcher';
-import { enqueueChannelVideos } from './api';
+import iconWatchLater from '../../../icons/watchlater.svg';
+import { durationLocation, queueBottonLocation } from '../../helpers/locations';
+import { BrowserMessage, QUEUE_KEY, getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { creatorRegex, loadPrefix } from '../../page/dispatcher';
+import { enqueueChannelVideos } from '../api';
+import { Queue } from '../queue';
 import { handle } from './message';
-import { Queue } from './queue';
 
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');

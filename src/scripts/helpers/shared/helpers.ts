@@ -65,6 +65,13 @@ export function injectScript(arg1: HTMLElement | string, arg2: HTMLElement | str
   });
 }
 
+export function injectFunction<T extends any[]>(node: HTMLElement, fn: (...args: T) => void, ...args: T) {
+  const script = document.createElement('script');
+  script.textContent = `(${fn})(${args.map(v => JSON.stringify(v)).join(',')})`;
+  node.appendChild(script);
+  script.remove();
+}
+
 export const getCookie = (name: string) => {
   const cookieArr = document.cookie.split(';');
   for (const cookie of cookieArr) {

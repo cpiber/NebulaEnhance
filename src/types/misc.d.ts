@@ -17,4 +17,15 @@ declare global {
     addEventListener<P extends prefixes>(type: `${P}-home`, listener: (this: Document, ev: HomeEvent) => any, options?: boolean | AddEventListenerOptions): void;
     addEventListener<P extends prefixes>(type: `${P}-creator`, listener: (this: Document, ev: CreatorEvent) => any, options?: boolean | AddEventListenerOptions): void;
   }
+
+  interface YoutubeCustomElement extends HTMLElement {
+    __domApi: HTMLElement;
+  }
+
+  interface YoutubeTooltip extends YoutubeCustomElement {
+    show: () => void;
+    hide: () => void;
+    updatePosition: () => void;
+    fitToVisibleBounds: boolean;
+  }
 }

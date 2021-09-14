@@ -2,6 +2,7 @@ import { dot, norm, ytvideo } from './shared';
 
 export type Creator = {
   name: string,
+  nebula: string,
   channel: string,
   uploads: string,
 };
@@ -21,6 +22,7 @@ export const loadCreators = async () => {
   const doc = parser.parseFromString(body, 'text/html');
   const creators = Array.from(doc.querySelectorAll('#creator-wall .youtube-creator')).map(c => ({
     name: c.querySelector('img').alt,
+    nebula: c.querySelector<HTMLAnchorElement>('.link.nebula')?.href,
     channel: c.getAttribute('data-video'),
   })).filter(c => c.channel);
   return loadYoutube(creators);

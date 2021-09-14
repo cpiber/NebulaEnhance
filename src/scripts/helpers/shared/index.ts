@@ -6,3 +6,12 @@ export type ytvideo = {
   confidence: number,
   video: string,
 };
+
+export type nebulavideo = {
+  link: string,
+} & ({
+  is: 'video',
+  confidence: number,
+} | {
+  is: 'channel',
+});
