@@ -1,5 +1,5 @@
+import { Creator, loadCreators as _loadCreators, creatorHasYTVideo, normalizeString } from './background';
 import { BrowserMessage, getBrowserInstance, nebulavideo, parseTypeObject } from './helpers/sharedExt';
-import { Creator, loadCreators as _loadCreators, creatorHasVideo, normalizeString } from './helpers/youtube';
 
 const videoFetch = 50;
 
@@ -44,7 +44,7 @@ const getYoutubeId = async (message: { [key: string]: any }) => {
   try {
     const creators = await loadCreators();
     const uploads = creators.find(e => e.name === creator || normalizeString(e.name) === normalizedCreator)?.uploads;
-    return creatorHasVideo(uploads, message.title, videoFetch);
+    return creatorHasYTVideo(uploads, message.title, videoFetch);
   } catch (err) {
     console.error(err);
     return Promise.reject(err);
