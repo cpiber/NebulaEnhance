@@ -39,6 +39,7 @@ Some available scripts:
 - `test:unit`/`test:ee`. Run unit/integration tests.
 - `clean`. Clean up all build artifacts (bundles are not affected).
 - `lint`. Lint entire code. Includes js, css and built extension (AMO).
+- `lint-fix`. Lint entire code as above and fix fixable issues.
 
 For more control over the build process, it is recommended to use `npm run start` to run the build, and `npm run ext:<browser>` in a separate terminal. This allows to restart either process independently, as well as test in both browsers without halting the build.
 

@@ -28,9 +28,10 @@
     "build:css": "rollup -c --configType css --environment BUILD",
     "build:other": "rollup -c --configType other --environment BUILD",
     "lint": "npm run lint:js && npm run lint:css && npm run lint:ext",
-    "lint:js": "eslint --fix '**/*.ts' '*.js' '.*.js'",
-    "lint:css": "stylelint --fix '**/*.scss'",
+    "lint:js": "eslint '**/*.ts' '*.js' '.*.js'",
+    "lint:css": "stylelint '**/*.scss'",
     "lint:ext": "web-ext lint",
+    "lint-fix": "npm run lint:js -- --fix && npm run lint:css -- --fix && npm run lint:ext",
     "clean": "rimraf extension-dist"
   },
   "keywords": [
