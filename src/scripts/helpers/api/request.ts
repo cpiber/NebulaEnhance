@@ -7,21 +7,23 @@ const request = async <T = any>(url: string, init?: RequestInit) => {
 
   while (true) {
     const auth = opt.auth ? { Authorization: `Bearer ${opt.auth}` } : {};
-    const i = Object.assign({}, init, {
-      credentials: 'omit',
+    const i = {
+      ...init,
+      credentials: 'omit' as const,
       headers: {
+        ...init.headers,
         'Accept': 'application/json, text/plain, */*',
         'Accept-Language': 'en,en-US;q=0.5',
         'Nebula-Platform': 'web',
         ...auth,
       },
-      mode: 'cors',
-    });
+      mode: 'cors' as const,
+    };
 
     const req = await fetch(url, i);
     const body = await req.json();
 
-    if (body.detail !== 'Signature has expired')
+    if (body.detail !== 'Signature has expired' && body.detail !== 'You do not have permission to perform this action.')
       return body as T;
 
     await refreshToken();

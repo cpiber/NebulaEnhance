@@ -4,7 +4,7 @@ import { normalizeString } from './misc';
 import { Video } from './types';
 
 const plistcache: { [key: string]: Video[] } = {};
-export const loadYTVideos = async (playlist: string, title: string, num: number) => {
+export const loadYTVideos = async (playlist: string, num: number, title: string) => {
   if (!playlist)
     throw 'Playlist empty';
   if (playlist in plistcache && plistcache[playlist].length >= num) {
@@ -48,4 +48,4 @@ export const loadYTVideos = async (playlist: string, title: string, num: number)
 };
 
 const vidcache: { [key: string]: ytvideo } = {};
-export const creatorHasYTVideo = (playlist: string, title: string, num: number) => creatorHasVideo(vidcache, () => loadYTVideos(playlist, title, num), title);
+export const creatorHasYTVideo = (playlist: string, title: string, num: number) => creatorHasVideo(vidcache, title, loadYTVideos.bind(null, playlist, num));

@@ -5,7 +5,7 @@ import { normalizeString } from './misc';
 import { Video } from './types';
 
 const plistcache: { [key: string]: Video[] } = {};
-export const loadNebulaVideos = async (channel: string, title: string, num: number) => {
+export const loadNebulaVideos = async (channel: string, num: number, title: string) => {
   if (!channel)
     throw 'Playlist empty';
   if (channel in plistcache && plistcache[channel].length >= num) {
@@ -16,8 +16,8 @@ export const loadNebulaVideos = async (channel: string, title: string, num: numb
   const videos: Video[] = (await getChannelVideos(channel, num)).map(v => ({ title: v.title, videoId: v.share_url }));
 
   plistcache[channel] = videos;
-  return videos.find(i => normalizeString(i.title) === title)?.videoId || videos;
+  return videos.find(i => normalizeString(i.title) === title)?.videoId || videos.slice(0, num);
 };
 
 const vidcache: { [key: string]: ytvideo } = {};
-export const creatorHasNebulaVideo = (channel: string, title: string, num: number) => creatorHasVideo(vidcache, () => loadNebulaVideos(channel, title, num), title);
+export const creatorHasNebulaVideo = (channel: string, title: string, num: number) => creatorHasVideo(vidcache, title, loadNebulaVideos.bind(null, channel, num));

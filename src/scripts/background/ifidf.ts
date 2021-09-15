@@ -11,13 +11,13 @@ type VideoConfidence = {
 };
 type Cache = { [key: string]: VideoConfidence };
 
-export const creatorHasVideo = async <T extends SearchableVideo>(vidcache: Cache, load: () => Promise<T[] | string>, title: string): Promise<VideoConfidence> => {
+export const creatorHasVideo = async <T extends SearchableVideo>(vidcache: Cache, title: string, load: (title: string) => Promise<T[] | string>) => {
   if (!title)
     throw 'Title empty';
   title = normalizeString(title);
   if (title in vidcache)
     return vidcache[title];
-  const vids = await load();
+  const vids = await load(title);
   return matchVideoConfidence(vidcache, vids, title);
 };
 

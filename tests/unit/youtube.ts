@@ -21,10 +21,10 @@ describe('loading youtube videos', () => {
 
   test('Half as Interesting', async () => {
     console.debug = jest.fn();
-    await expect(loadYTVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 0)).rejects.toEqual(new Error('Invalid API response'));
-    await expect(loadYTVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 50)).resolves.toHaveLength(50);
-    await expect(loadYTVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 100)).resolves.toHaveLength(100);
-    const vid = (await loadYTVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 1))[0] as Video;
+    await expect(loadYTVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', 0, '')).rejects.toEqual(new Error('Invalid API response'));
+    await expect(loadYTVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', 50, '')).resolves.toHaveLength(50);
+    await expect(loadYTVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', 100, '')).resolves.toHaveLength(100);
+    const vid = (await loadYTVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', 1, ''))[0] as Video;
     await expect(creatorHasYTVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     await expect(creatorHasYTVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title + ' asdf', 50)).resolves.toMatchObject({ video: vid.videoId });
     await expect(creatorHasYTVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 150)).resolves.toEqual({ confidence: 1, video: vid.videoId });
@@ -34,7 +34,7 @@ describe('loading youtube videos', () => {
     global.fetch = fetchMock;
     await expect(creatorHasYTVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     expect(fetchMock).not.toBeCalled();
-    await expect(loadYTVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', '', 100)).resolves.toHaveLength(100);
+    await expect(loadYTVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', 100, '')).resolves.toHaveLength(100);
     expect(fetchMock).not.toBeCalled();
     global.fetch = fetch as unknown as typeof global.fetch;
   });

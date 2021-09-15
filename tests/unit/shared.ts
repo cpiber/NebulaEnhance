@@ -1,6 +1,6 @@
 /// <reference path="../../src/types/global.d.ts"/>
 import { JSDOM } from 'jsdom';
-import { Events, Message, clone, dot, getCookie, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
+import { Events, Message, clone, dot, getCookie, injectFunction, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
 
 describe('dot product operations', () => {
   test('fail on unequal length', () => {
@@ -96,7 +96,7 @@ describe('other', () => {
 
     expect(isMobile()).toBe(true);
     expect(isMobile()).toBe(false);
-    expect(mock.mock.calls.length).toBe(2);
+    expect(mock).toBeCalledTimes(2);
     mock.mock.calls.forEach(c => {
       expect(c[0]).toMatch(/pointer/);
     });
@@ -216,8 +216,17 @@ describe('script injection', () => {
 
     const wrapper = dom.window.document.head;
     await expect(injectScript('../fixtures/waitForEvent.js', wrapper, 'test', 'data', dom.window as never as Window)).resolves.toBe(void 0);
-    expect(mock.mock.calls.length).toBe(1);
-    expect(mock.mock.calls[0][0]).toBe('data');
+    expect(mock).toBeCalledTimes(1);
+    expect(mock).toHaveBeenCalledWith('data');
+    console.log = log;
+  });
+
+  test('injecting function works with arguments', () => {
+    const { log } = console;
+    const mock = console.log = jest.fn();
+    injectFunction(document.body, data => console.log(data), 'test-data');
+    expect(mock).toHaveBeenCalledTimes(1);
+    expect(mock).toHaveBeenCalledWith('test-data');
     console.log = log;
   });
 });
