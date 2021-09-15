@@ -114,6 +114,10 @@ a.enhancer-queueButtonAll {
   cursor: pointer;
 }
 
+.video-js.vjs-nebula .vjs-control-bar > .vjs-time-control {
+  display: none; // can't remove it, someone adds it anyways
+}
+
 .watch-on-nebula {
   position: relative;
 }

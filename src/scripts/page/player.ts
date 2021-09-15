@@ -122,7 +122,7 @@ const setPlayerDefaults = (autoplay: boolean) => {
   const comps = window.videojs.getComponent('controlBar').prototype.options_.children;
   comps.push('speedDial');
   const tidx = comps.findIndex(c => c === 'currentTimeDisplay');
-  comps.splice(tidx, 3, 'time');
+  comps.splice(tidx, 0, 'time');
   const vidx = comps.findIndex(c => c === 'volumePanel');
   comps.splice(vidx + 1, 0, 'volumeText');
   const pidx = comps.findIndex(c => c === 'playToggle');
@@ -140,7 +140,6 @@ const addPlayerControls = (player: VPlayer, autoplay: boolean) => {
   bar.addChild('SpeedDial');
   const tidx = bar.children().findIndex(c => c.name() === 'CurrentTimeDisplay');
   bar.addChild('Time', {}, tidx);
-  bar.children().slice(tidx + 1, tidx + 4).forEach(bar.removeChild.bind(bar));
   const vidx = bar.children().findIndex(c => c.name() === 'VolumePanel');
   bar.addChild('VolumeText', {}, vidx + 1);
   const pidx = bar.children().findIndex(c => c.name() === 'PlayToggle');
