@@ -2,6 +2,7 @@ import type { VPlayer } from '../../types/videojs';
 import { Message, sendMessage } from '../helpers/shared';
 import QueueButton from './components/queue';
 import SpeedDial from './components/speeddial';
+import Time from './components/time';
 import VolumeText from './components/volume';
 import { init as initDispatch, loadPrefix } from './dispatcher';
 
@@ -108,6 +109,7 @@ const registerComponents = async (playbackChange: number, volumeShow: boolean) =
   console.debug('registering video components');
   /* eslint-disable new-cap */
   window.videojs.registerComponent('SpeedDial', await SpeedDial(playbackChange));
+  window.videojs.registerComponent('Time', Time());
   window.videojs.registerComponent('VolumeText', VolumeText(volumeShow));
   window.videojs.registerComponent('QueueNext', await QueueButton(true));
   window.videojs.registerComponent('QueuePrev', await QueueButton(false));
@@ -119,6 +121,8 @@ const setPlayerDefaults = (autoplay: boolean) => {
 
   const comps = window.videojs.getComponent('controlBar').prototype.options_.children;
   comps.push('speedDial');
+  const tidx = comps.findIndex(c => c === 'currentTimeDisplay');
+  comps.splice(tidx, 3, 'time');
   const vidx = comps.findIndex(c => c === 'volumePanel');
   comps.splice(vidx + 1, 0, 'volumeText');
   const pidx = comps.findIndex(c => c === 'playToggle');
@@ -134,6 +138,9 @@ const addPlayerControls = (player: VPlayer, autoplay: boolean) => {
 
   const bar = player.controlBar;
   bar.addChild('SpeedDial');
+  const tidx = bar.children().findIndex(c => c.name() === 'CurrentTimeDisplay');
+  bar.addChild('Time', {}, tidx);
+  bar.children().slice(tidx + 1, tidx + 4).forEach(bar.removeChild.bind(bar));
   const vidx = bar.children().findIndex(c => c.name() === 'VolumePanel');
   bar.addChild('VolumeText', {}, vidx + 1);
   const pidx = bar.children().findIndex(c => c.name() === 'PlayToggle');
@@ -204,10 +211,10 @@ const wheelHandler = async (volumeChange: number, volumeLog: boolean, e: WheelEv
   e.stopPropagation();
   e.preventDefault();
 
-  // use x^4 as approximation for logarithmic scale (https://www.dr-lex.be/info-stuff/volumecontrols.html)
+  // use polynomial as approximation for logarithmic scale (https://www.dr-lex.be/info-stuff/volumecontrols.html)
   // using x^2 now because x^4 is too aggressive for this range
   const pow = 2;
-  const cur = volumeLog ? Math.pow(player.volume(), 1 / pow) : player.volume(); // 4th root
+  const cur = volumeLog ? Math.pow(player.volume(), 1 / pow) : player.volume(); // root
   const v = cur - Math.sign(e.deltaY) * volumeChange;
   const n = volumeLog ? Math.pow(Math.max(v, 0), pow) : v; // if log, also take care that it's not negative (x^2 increases again below x=0)
   player.volume(e.deltaY * volumeChange > 0 && n < 0.01 ? 0 : n); // lower volume and below threshold -> mute
