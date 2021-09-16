@@ -79,6 +79,14 @@
     "message": "Ob automatisch versucht werden soll, das YouTube Video zu finden. Funktioniert nur für die neuesten 50 videos.",
     "description": "Hilfstext für LoadYoutube der Optionen Seite."
   },
+  "optionsLoadNebulaTitle": {
+    "message": "Nebula Videolink laden",
+    "description": "Beschriftung für LoadNebula der Optionen Seite."
+  },
+  "optionsLoadNebulaHint": {
+    "message": "Ob automatisch versucht werden soll, das Nebula Video zu finden. Funktioniert nur für die neuesten 20 videos.",
+    "description": "Hilfstext für LoadNebula der Optionen Seite."
+  },
   "optionsVisitedColorTitle": {
     "message": "Link Farbe für besuchte Videos",
     "description": "Beschriftung für Link Farbe der Optionen Seite."

@@ -1,7 +1,8 @@
 import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, normalizeString } from './background';
 import { BrowserMessage, getBrowserInstance, nebulavideo, parseTypeObject } from './helpers/sharedExt';
 
-const videoFetch = 50;
+const videoFetchYt = 50;
+const videoFetchNebula = 20;
 
 getBrowserInstance().browserAction.onClicked.addListener(() => openOptions());
 
@@ -42,7 +43,7 @@ const getYoutubeId = async (message: { [key: string]: any }) => {
   try {
     const creators = await loadCreators();
     const uploads = creators.find(e => e.name === creator || normalizeString(e.name) === normalizedCreator)?.uploads;
-    return creatorHasYTVideo(uploads, title, videoFetch);
+    return creatorHasYTVideo(uploads, title, videoFetchYt);
   } catch (err) {
     console.error(err);
     return Promise.reject(err);
@@ -60,7 +61,7 @@ const getNebulaVideo = async (message: { [key: string]: any }): Promise<nebulavi
   // XXX: There are creators that don't have their own channel per se, but upload to topics
   // so it would be nice to fallback to site-wide search
   try {
-    const video = await creatorHasNebulaVideo(creator.nebula.split('/').pop(), videoTitle, videoFetch);
+    const video = await creatorHasNebulaVideo(creator.nebula.split('/').pop(), videoTitle, videoFetchNebula);
     return {
       is: 'video',
       confidence: video.confidence,

@@ -16,6 +16,7 @@ export const constructButton = (vid: nebulavideo) => {
   const link = brender.appendChild(document.createElement('a'));
   link.className = 'yt-simple-endpoint style-scope ytd-button-renderer';
   link.href = vid.link;
+  if (vid.is !== 'video') link.target = '_blank';
   link.setAttribute('tabindex', '-1');
   const binner = link.appendChild(document.createElement('tp-yt-paper-button'));
   binner.id = 'button';

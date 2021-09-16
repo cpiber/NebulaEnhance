@@ -1,18 +1,13 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { durationLocation, queueBottonLocation } from '../../helpers/locations';
-import { BrowserMessage, QUEUE_KEY, getBrowserInstance, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, QUEUE_KEY, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
 
 const videoselector = 'a[href^="/videos/"]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
-
-function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
-function getFromStorage(key: string | string[] | { [key: string]: any }) {
-  return getBrowserInstance().storage.local.get(key);
-}
 
 export const nebula = async () => {
   const { youtube, customScriptPage } = await getFromStorage({ youtube: false, customScriptPage: '' });

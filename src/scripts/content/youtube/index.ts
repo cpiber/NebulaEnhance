@@ -1,18 +1,21 @@
 /**
- * This file is based on the work of Parker Addison
+ * This file is based on the work of Parker Addison (@parkeraddison)
  * @see https://github.com/parkeraddison/watch-on-nebula/blob/main/extension/scripts/content_script.js
  */
 
-import { BrowserMessage, getBrowserInstance, nebulavideo } from '../../helpers/sharedExt';
+import { BrowserMessage, getBrowserInstance, getFromStorage, nebulavideo } from '../../helpers/sharedExt';
 import { constructButton } from './html';
 
-export const youtube = () => {
+export const youtube = async () => {
+  const { watchnebula } = await getFromStorage({ watchnebula: false });
+  console.debug('Watch on Nebula:', watchnebula);
+
+  if (!watchnebula) return;
+
   setTimeout(run, 0);
 
   // To support forward/backward page navigation changes.
-  //
-  // The setTimeout must be used to ensure that this effectively runs on the *new*
-  // page.
+  // The setTimeout must be used to ensure that this effectively runs on the *new* page.
   window.addEventListener('popstate', (event) => {
     console.debug('history navigation');
     if (event.state)
@@ -20,7 +23,6 @@ export const youtube = () => {
   });
 
   // To support YouTube navigation events (clicking)
-  //
   // Similar to history navigation, the setTimeout *must* be used, or the function
   // will essentially run on the previous page.
   window.addEventListener('yt-navigate-finish', () => {
