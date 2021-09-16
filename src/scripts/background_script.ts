@@ -1,4 +1,4 @@
-import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, normalizeString } from './background';
+import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString } from './background';
 import { BrowserMessage, getBrowserInstance, nebulavideo, parseTypeObject } from './helpers/sharedExt';
 
 const videoFetchYt = 50;
@@ -56,24 +56,40 @@ const getNebulaVideo = async (message: { [key: string]: any }): Promise<nebulavi
   const creators = await loadCreators();
   const creator = creators.find(c => c.channel === channelID);
   console.debug('creator:', creator);
-  if (!creator || !creator.nebula) return;
+  if (!creator) return;
 
-  // XXX: There are creators that don't have their own channel per se, but upload to topics
-  // so it would be nice to fallback to site-wide search
+  // try search the channel's newest videos locally
+  if (creator.nebula) {
+    try {
+      const video = await creatorHasNebulaVideo(creator.nebula.split('/').pop(), videoTitle, videoFetchNebula);
+      return {
+        is: 'video',
+        confidence: video.confidence,
+        link: video.video,
+      };
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  // fall back to site-wide search
   try {
-    const video = await creatorHasNebulaVideo(creator.nebula.split('/').pop(), videoTitle, videoFetchNebula);
+    const video = await existsNebulaVideo(videoTitle, videoFetchNebula);
     return {
-      is: 'video',
+      is: 'search',
       confidence: video.confidence,
       link: video.video,
     };
   } catch (err) {
     console.error(err);
-    return {
-      is: 'channel',
-      link: creator.nebula,
-    };
   }
+
+  // last resort: link to channel
+  if (!creator.nebula) return;
+  return {
+    is: 'channel',
+    link: creator.nebula,
+  };
 };
 
 const openOptions = (active = true, ...args: string[]) => {

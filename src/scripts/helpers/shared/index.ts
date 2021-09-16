@@ -10,7 +10,7 @@ export type ytvideo = {
 export type nebulavideo = {
   link: string,
 } & ({
-  is: 'video',
+  is: 'video' | 'search',
   confidence: number,
 } | {
   is: 'channel',

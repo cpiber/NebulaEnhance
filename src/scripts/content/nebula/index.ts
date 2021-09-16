@@ -152,6 +152,7 @@ const loadComments = async () => {
 
   try {
     const vid: ytvideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_YTID, creator, title });
+    console.debug('Found video:', vid);
     const v = document.createElement('span');
     v.classList.add('enhancer-yt');
     const a = document.createElement('a');

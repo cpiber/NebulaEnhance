@@ -211,6 +211,10 @@
     "message": "Video-Match",
     "description": "Nebula video match confidence auf youtube seite"
   },
+  "pageSearchConfidence": {
+    "message": "Suchergebnis",
+    "description": "Nebula video match confidence bei suche auf youtube seite"
+  },
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs und Feature Requests</a>",
     "description": "Credit footer."

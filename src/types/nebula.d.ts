@@ -1,6 +1,12 @@
 /* eslint-disable camelcase */
 
 declare namespace Nebula {
+  type PagedRequest<T> = {
+    next: string,
+    previous: string,
+    results: T[],
+  }
+
   type Video = {
     slug: string,
     title: string,
@@ -51,12 +57,10 @@ declare namespace Nebula {
 
   type VideoRequest = {
     details: Channel,
-    episodes: {
-      next: string,
-      previous: string,
-      results: Video[],
-    },
+    episodes: PagedRequest<Video>,
   }
+
+  type VideoSearchRequest = PagedRequest<Video>
 
   type Category = {
     slug: string,

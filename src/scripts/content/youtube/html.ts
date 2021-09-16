@@ -3,6 +3,7 @@ import { getBrowserInstance, injectFunction, nebulavideo } from '../../helpers/s
 const watchOnNebula = getBrowserInstance().i18n.getMessage('pageWatchOnNebula');
 const goChannel = getBrowserInstance().i18n.getMessage('pageGoChannel');
 const videoConfidence = getBrowserInstance().i18n.getMessage('pageVideoConfidence');
+const searchConfidence = getBrowserInstance().i18n.getMessage('pageSearchConfidence');
 
 export const constructButton = (vid: nebulavideo) => {
   // for some reason youtube custom elements clear their inner html in construct, so we have to do it like this
@@ -39,11 +40,12 @@ export const constructButton = (vid: nebulavideo) => {
 };
 
 const generateText = (vid: nebulavideo) => {
-  // TODO: localize
   switch (vid.is) {
     case 'channel':
       return goChannel;
     case 'video':
       return `${videoConfidence}: ${(vid.confidence * 100).toFixed(1)}%`;
+    case 'search':
+      return `${searchConfidence}: ${(vid.confidence * 100).toFixed(1)}%`;
   }
 };

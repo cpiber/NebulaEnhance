@@ -10,6 +10,13 @@ test('loading creators works', async () => {
 });
 
 describe('matching', () => {
+  const consoleError = console.error;
+  const consoleDebug = console.debug;
+  beforeEach(() => {
+    console.error = consoleError;
+    console.debug = consoleDebug;
+  });
+
   test('good confidence', () => {
     console.debug = jest.fn();
     const match1 = matchVideoConfidence({}, [
@@ -38,10 +45,10 @@ describe('matching', () => {
     ], 'test title')).toThrow(/confidence/);
     expect(() => matchVideoConfidence({}, [
       { title: 'this one shouldn\'t be matched really', videoId: 'bad2' },
-    ], 'test title')).toThrow(/data/);
+    ], 'test title')).toThrow(/confidence/);
     expect(() => matchVideoConfidence({}, [
       { title: 'this one shouldn\'t be matched because of low similarity', videoId: 'bad2' },
-    ], 'test title with just a single matched word')).toThrow(/data/);
+    ], 'test title with just a single matched word')).toThrow(/confidence/);
   });
 
   test('no videos', () => {

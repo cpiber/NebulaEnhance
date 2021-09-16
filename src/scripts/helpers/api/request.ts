@@ -66,3 +66,20 @@ export const enqueueChannelVideos = async (q: Queue, name: string) => {
     q.enqueue(slugs);
   }
 };
+
+export const searchVideos = async (text: string, num = Infinity) => {
+  const vids: Nebula.Video[] = [];
+  const req = new URL('https://content.watchnebula.com/search/video/');
+  req.searchParams.set('text', text);
+  let url = req.toString();
+
+  while (url && vids.length < num) {
+    const body = await request<Nebula.VideoSearchRequest>(url, {
+      referrer: 'https://nebula.app/',
+      method: 'GET',
+    });
+    url = body.next;
+    Array.prototype.push.apply(vids, body.results);
+  }
+  return vids;
+};

@@ -4,13 +4,11 @@ import { normalizeString } from './misc';
 import { Video } from './types';
 
 const plistcache: { [key: string]: Video[] } = {};
-export const loadYTVideos = async (playlist: string, num: number, title: string) => {
+export const loadYTVideos = async (playlist: string, num: number) => {
   if (!playlist)
     throw 'Playlist empty';
-  if (playlist in plistcache && plistcache[playlist].length >= num) {
-    const vids = plistcache[playlist].slice(0, num);
-    return vids.find(i => normalizeString(i.title) === title)?.videoId || vids;
-  }
+  if (playlist in plistcache && plistcache[playlist].length >= num)
+    return plistcache[playlist].slice(0, num);
 
   const videos: Video[] = [];
   let page = null;
@@ -38,13 +36,12 @@ export const loadYTVideos = async (playlist: string, num: number, title: string)
     const res: YouTube.PlaylistItemsReply<YouTube.PlaylistItemSnippet> = await data.json();
     if (!res || !res.pageInfo || !res.items || !res.items.length)
       throw new Error('Invalid API response');
-    const vids = res.items.map(i => ({ title: i.snippet.title, videoId: i.snippet.resourceId.videoId }));
+    const vids = res.items.map(i => ({ title: normalizeString(i.snippet.title), videoId: i.snippet.resourceId.videoId }));
     Array.prototype.push.apply(videos, vids);
     page = res.nextPageToken;
   } while (videos.length < num && page);
 
-  plistcache[playlist] = videos;
-  return videos.find(i => normalizeString(i.title) === title)?.videoId || videos;
+  return plistcache[playlist] = videos;
 };
 
 const vidcache: { [key: string]: ytvideo } = {};

@@ -52,6 +52,7 @@ const run = () => {
     console.debug('got video information', '\nchannelID:', channelID, 'videoTitle:', videoTitle);
     const vid: nebulavideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_VID, channelID, videoTitle });
     if (!vid) return console.debug('video not on nebula');
+    console.debug('Found video:', vid);
     subscribeElement.before(constructButton(vid));
   }, 500);
 };
