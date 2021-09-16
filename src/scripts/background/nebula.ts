@@ -32,4 +32,5 @@ export const loadNebulaSearchVideos = async (text: string, num: number) => {
 
 const vidcache: { [key: string]: ytvideo } = {};
 export const creatorHasNebulaVideo = (channel: string, title: string, num: number) => creatorHasVideo(vidcache, title, loadNebulaChannelVideos.bind(null, channel, num));
-export const existsNebulaVideo = (title: string, num: number) => creatorHasVideo(vidcache, title, loadNebulaSearchVideos.bind(null, title, num));
+const searchvidcache: { [key: string]: ytvideo } = {};
+export const existsNebulaVideo = (title: string, num: number) => creatorHasVideo(searchvidcache, title, loadNebulaSearchVideos.bind(null, title, num));

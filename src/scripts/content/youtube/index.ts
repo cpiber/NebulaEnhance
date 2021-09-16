@@ -51,6 +51,7 @@ const run = () => {
     const videoTitle = titleElement.textContent;
     console.debug('got video information', '\nchannelID:', channelID, 'videoTitle:', videoTitle);
     const vid: nebulavideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_VID, channelID, videoTitle });
+    Array.from(document.querySelectorAll('.watch-on-nebula')).forEach(n => n.remove()); // sometimes the interval is killed while the request is running (double navigation)
     if (!vid) return console.debug('video not on nebula');
     console.debug('Found video:', vid);
     subscribeElement.before(constructButton(vid));

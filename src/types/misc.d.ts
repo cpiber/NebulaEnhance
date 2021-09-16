@@ -22,10 +22,11 @@ declare global {
     __domApi: HTMLElement;
   }
 
-  interface YoutubeTooltip extends YoutubeCustomElement {
+  interface YoutubeTooltip extends YoutubeCustomElement { // incomplete
     show: () => void;
     hide: () => void;
     updatePosition: () => void;
     fitToVisibleBounds: boolean;
+    marginTop: number;
   }
 }
