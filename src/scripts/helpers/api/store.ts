@@ -10,7 +10,7 @@ export const refreshToken = async () => {
   try {
     ({ apiToken } = JSON.parse(cookie));
   } catch (e) {
-    console.error(e);
+    console.debug(e);
   }
   const apiAuth = apiToken ? { Authorization: `Token ${apiToken}` } : {};
 

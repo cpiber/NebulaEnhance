@@ -1,4 +1,4 @@
-import { clone, mutation, videoUrlMatch } from '../helpers/shared';
+import { clone, videoUrlMatch } from '../helpers/shared';
 
 export const eventPrefix = 'enebula' as const;
 export const navigatePrefix = `${eventPrefix}-navigate` as const;
@@ -9,13 +9,6 @@ export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
 
 export const init = () => {
-  const cb = mutation(() => {
-    loading();
-  });
-  const m = new MutationObserver(cb);
-  m.observe(document.querySelector('#root'), { subtree: true, childList: true });
-  cb();
-
   const origPushState = history.pushState;
   history.pushState = function (data, title, url) {
     origPushState.call(history, data, title, url);
@@ -47,6 +40,7 @@ const navigation = () => {
 
 let currentDetail: { detail: { page: string, from: string, [key: string]: any } } = null;
 let currentlyloading: string = null;
+let loadInterval = 0;
 const naviage = (page: string, from: string, data: { [key: string]: any } = {}) => {
   console.debug('Navigating to page', page, 'from', from);
   const detail = clone({ detail: { page, from, ...data } });
@@ -54,11 +48,14 @@ const naviage = (page: string, from: string, data: { [key: string]: any } = {}) 
   // document.dispatchEvent(new CustomEvent(navigatePrefix, detail));
   document.dispatchEvent(new CustomEvent(`${navigatePrefix}-${page}`, detail));
   currentlyloading = window.location.href;
+
+  window.clearInterval(loadInterval);
+  loadInterval = window.setInterval(loading, 100);
 };
 
 const loading = () => {
   if (currentlyloading === null || currentlyloading !== window.location.href)
-    return;
+    return window.clearInterval(loadInterval);
   switch (currentDetail.detail.page) {
     case 'video':
     case 'creator':
@@ -77,4 +74,5 @@ const load = () => {
   document.dispatchEvent(new CustomEvent(`${loadPrefix}-${currentDetail.detail.page}`, currentDetail));
   currentDetail = null;
   currentlyloading = null;
+  window.clearInterval(loadInterval);
 };
