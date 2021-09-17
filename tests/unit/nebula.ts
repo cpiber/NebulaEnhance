@@ -27,10 +27,10 @@ describe('loading nebula videos', () => {
 
   test('non-existant channel', async () => {
     console.error = jest.fn();
-    await expect(creatorHasNebulaVideo('', '', 10)).rejects.toBeDefined();
-    await expect(creatorHasNebulaVideo('UU', '', 10)).rejects.toBeDefined();
-    await expect(creatorHasNebulaVideo('', 'test', 10)).rejects.toBeDefined();
-    await expect(creatorHasNebulaVideo('UU', 'test', 10)).rejects.toBeDefined();
+    await expect(creatorHasNebulaVideo('', '', 50)).rejects.toBeDefined();
+    await expect(creatorHasNebulaVideo('UU', '', 50)).rejects.toBeDefined();
+    await expect(creatorHasNebulaVideo('', 'test', 50)).rejects.toBeDefined();
+    await expect(creatorHasNebulaVideo('UU', 'test', 50)).rejects.toBeDefined();
   });
 
   jest.setTimeout(10000);
@@ -38,19 +38,19 @@ describe('loading nebula videos', () => {
     console.debug = jest.fn();
     console.error = jest.fn();
     await expect(loadNebulaChannelVideos('hai', 0)).resolves.toHaveLength(0);
-    await expect(loadNebulaChannelVideos('hai', 10)).resolves.toHaveLength(10);
-    await expect(loadNebulaChannelVideos('hai', 20)).resolves.toHaveLength(20);
+    await expect(loadNebulaChannelVideos('hai', 50)).resolves.toHaveLength(50);
+    await expect(loadNebulaChannelVideos('hai', 100)).resolves.toHaveLength(100);
     const vid = (await loadNebulaChannelVideos('hai', 1))[0] as Video;
-    await expect(creatorHasNebulaVideo('hai', vid.title, 10)).resolves.toEqual({ confidence: 1, video: vid.videoId });
-    await expect(creatorHasNebulaVideo('hai', vid.title + ' asdf', 10)).resolves.toMatchObject({ video: vid.videoId });
-    await expect(creatorHasNebulaVideo('hai', vid.title, 20)).resolves.toEqual({ confidence: 1, video: vid.videoId });
+    await expect(creatorHasNebulaVideo('hai', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
+    await expect(creatorHasNebulaVideo('hai', vid.title + ' asdf', 50)).resolves.toMatchObject({ video: vid.videoId });
+    await expect(creatorHasNebulaVideo('hai', vid.title, 100)).resolves.toEqual({ confidence: 1, video: vid.videoId });
 
     // from cache
     const fetchMock = jest.fn();
     global.fetch = fetchMock;
-    await expect(creatorHasNebulaVideo('hai', vid.title, 10)).resolves.toEqual({ confidence: 1, video: vid.videoId });
+    await expect(creatorHasNebulaVideo('hai', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     expect(fetchMock).not.toBeCalled();
-    await expect(loadNebulaChannelVideos('hai', 20)).resolves.toHaveLength(20);
+    await expect(loadNebulaChannelVideos('hai', 100)).resolves.toHaveLength(100);
     expect(fetchMock).not.toBeCalled();
     global.fetch = fetch as unknown as typeof global.fetch;
   });
@@ -59,20 +59,20 @@ describe('loading nebula videos', () => {
     console.debug = jest.fn();
     console.error = jest.fn();
     await expect(loadNebulaSearchVideos('test', 0)).resolves.toHaveLength(0);
-    await expect(loadNebulaSearchVideos('test', 10)).resolves.toHaveLength(10);
-    await expect(loadNebulaSearchVideos('test', 20)).resolves.toHaveLength(20);
+    await expect(loadNebulaSearchVideos('test', 50)).resolves.toHaveLength(50);
+    await expect(loadNebulaSearchVideos('test', 100)).resolves.toHaveLength(100);
     const vid = (await loadNebulaSearchVideos('test', 1))[0] as Video;
-    await expect(existsNebulaVideo(vid.title, 10)).resolves.toEqual({ confidence: 1, video: vid.videoId });
+    await expect(existsNebulaVideo(vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     const t = vid.title.substring(vid.title.indexOf(' '));
-    await expect(existsNebulaVideo(t, 10)).resolves.toMatchObject({ video: vid.videoId });
-    await expect(existsNebulaVideo(vid.title, 20)).resolves.toEqual({ confidence: 1, video: vid.videoId });
+    await expect(existsNebulaVideo(t, 50)).resolves.toMatchObject({ video: vid.videoId });
+    await expect(existsNebulaVideo(vid.title, 100)).resolves.toEqual({ confidence: 1, video: vid.videoId });
 
     // from cache
     const fetchMock = jest.fn();
     global.fetch = fetchMock;
-    await expect(existsNebulaVideo(vid.title, 10)).resolves.toEqual({ confidence: 1, video: vid.videoId });
+    await expect(existsNebulaVideo(vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     expect(fetchMock).not.toBeCalled();
-    await expect(loadNebulaSearchVideos('test', 20)).resolves.toHaveLength(20);
+    await expect(loadNebulaSearchVideos('test', 100)).resolves.toHaveLength(100);
     expect(fetchMock).not.toBeCalled();
     global.fetch = fetch as unknown as typeof global.fetch;
   });

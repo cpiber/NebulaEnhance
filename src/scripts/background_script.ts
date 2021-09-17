@@ -2,7 +2,7 @@ import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorH
 import { BrowserMessage, getBrowserInstance, nebulavideo, parseTypeObject } from './helpers/sharedExt';
 
 const videoFetchYt = 50;
-const videoFetchNebula = 20;
+const videoFetchNebula = 50;
 
 getBrowserInstance().browserAction.onClicked.addListener(() => openOptions());
 

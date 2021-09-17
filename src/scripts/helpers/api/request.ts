@@ -1,3 +1,9 @@
+/**
+ * Notes:
+ * Nebula uses JWT. For simplicity, we simply request a new token every time, instead of refreshing the current one.
+ * The 'page_size' parameter accepts up to 100.
+ */
+
 import type { Queue } from '../../content/queue';
 import { opt, refreshToken } from './store';
 
@@ -23,7 +29,9 @@ const request = async <T = any>(url: string, init?: RequestInit) => {
     const req = await fetch(url, i);
     const body = await req.json();
 
-    if (body.detail !== 'Signature has expired' && body.detail !== 'You do not have permission to perform this action.')
+    if (body.detail === 'You do not have permission to perform this action.')
+      throw new Error('Permission denied');
+    if (body.detail !== 'Signature has expired')
       return body as T;
 
     await refreshToken();
@@ -37,7 +45,9 @@ export const getVideo = (name: string) => request<Nebula.Video>(`https://content
 
 export const getChannelVideos = async (name: string, num = Infinity) => {
   const vids: Nebula.Video[] = [];
-  let url = `https://content.watchnebula.com/video/channels/${name}`;
+  const req = new URL(`https://content.watchnebula.com/video/channels/${name}/`);
+  req.searchParams.set('page_size', `${Math.min(100, num)}`);
+  let url = req.toString();
 
   while (url && vids.length < num) {
     const body = await request<Nebula.VideoRequest>(url, {
@@ -51,7 +61,9 @@ export const getChannelVideos = async (name: string, num = Infinity) => {
 };
 
 export const enqueueChannelVideos = async (q: Queue, name: string) => {
-  let url = `https://content.watchnebula.com/video/channels/${name}`;
+  const req = new URL(`https://content.watchnebula.com/video/channels/${name}/`);
+  req.searchParams.set('page_size', '100');
+  let url = req.toString();
   // q.clear();
 
   while (url) {
@@ -71,6 +83,7 @@ export const searchVideos = async (text: string, num = Infinity) => {
   const vids: Nebula.Video[] = [];
   const req = new URL('https://content.watchnebula.com/search/video/');
   req.searchParams.set('text', text);
+  req.searchParams.set('page_size', `${Math.min(100, num)}`);
   let url = req.toString();
 
   while (url && vids.length < num) {
