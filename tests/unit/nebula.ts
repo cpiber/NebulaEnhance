@@ -26,6 +26,7 @@ describe('loading nebula videos', () => {
   });
 
   test('non-existant channel', async () => {
+    console.debug = jest.fn();
     console.error = jest.fn();
     await expect(creatorHasNebulaVideo('', '', 50)).rejects.toBeDefined();
     await expect(creatorHasNebulaVideo('UU', '', 50)).rejects.toBeDefined();
@@ -106,7 +107,7 @@ describe('api', () => {
   test('no token', async () => {
     fetchMock.mockImplementationOnce(genTokenResponse);
 
-    console.error = jest.fn();
+    console.debug = jest.fn();
     const token = await refreshToken();
     expect(fetchMock).toHaveBeenCalled();
     expect(token).toBeTruthy();
@@ -130,7 +131,7 @@ describe('api', () => {
     fetchMock.mockImplementationOnce(genTokenResponse)
       .mockReturnValueOnce(Promise.resolve(new Response('{}')));
 
-    console.error = jest.fn();
+    console.debug = jest.fn();
     await getVideo('test');
     expect(refMock).toHaveBeenCalled();
   });
@@ -141,7 +142,7 @@ describe('api', () => {
       .mockImplementationOnce(genTokenResponse)
       .mockReturnValueOnce(Promise.resolve(new Response('{}')));
 
-    console.error = jest.fn();
+    console.debug = jest.fn();
     await getVideo('test');
     expect(refMock).toHaveBeenCalledTimes(2);
   });
