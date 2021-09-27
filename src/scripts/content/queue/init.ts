@@ -5,7 +5,7 @@ import { goto, gotoNext, gotoPrev, updateText } from './go';
 import { html } from './html';
 import type { Queue } from './index';
 import { handleMessage } from './listener';
-import { move, reverse, set, setStorage, toggle } from './transform';
+import { move, restoreStorage, reverse, set, setStorage, toggle } from './transform';
 
 /**
  * Dummy class for method declarations
@@ -32,6 +32,7 @@ export class QueueMethods {
   onChange = onChange;
   protected emit = emit;
   protected setStorage = setStorage;
+  restoreStorage = restoreStorage;
 }
 
 export function initElement(this: Queue) {

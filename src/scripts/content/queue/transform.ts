@@ -1,4 +1,4 @@
-import { QUEUE_KEY } from '../../helpers/shared';
+import { QUEUE_KEY } from '../../helpers/sharedExt';
 import { extractData } from './add';
 import type { Queue } from './index';
 
@@ -33,7 +33,8 @@ export async function set(this: Queue, newq: string[] | Nebula.Video[], current?
   if (!newq.length)
     return this.clear();
 
-  const q = newq.findIndex(e => typeof e !== 'string') === -1 ? await setStr.call(this, newq as string[]) : setVid.call(this, newq as Nebula.Video[]);
+  // assume all elements are of same type
+  const q = typeof newq[0] === 'string' ? await setStr.call(this, newq as string[]) : setVid.call(this, newq as Nebula.Video[]);
   if (!q)
     return;
 
@@ -77,6 +78,7 @@ export function setStorage(this: Queue) {
   const data = {
     position: this.queuepos,
     queue: [...this.queue],
+    store: this.store,
   };
   try {
     if (data.queue.length)
@@ -86,4 +88,22 @@ export function setStorage(this: Queue) {
   } catch (err) {
     console.error(err);
   }
+}
+
+// XXX: Yes, loading from localStorage is unsafe
+// There is no verification that the data is actually valid
+// For now, this is fine, but localStorage can be set by anyone, so I'd like to change this
+export async function restoreStorage(this: Queue) {
+  const data = window.localStorage.getItem(QUEUE_KEY);
+  if (data === null) return; // nothing in the storage
+  if (!this.isEmpty())
+    return console.debug('Queue: ignoring localStorage, queue not empty');
+  const parsed = JSON.parse(data);
+  if (parsed.position + 1 >= parsed.queue.length)
+    return console.debug('Queue: ignoring queue on last video');
+  try {
+    Object.keys(parsed.store).forEach((key: string) => this.store[key] = parsed.store[key]);
+  } catch {}
+  await this.set(parsed.queue, +parsed.position);
+  console.debug(`Queue: loaded from localStorage (len ${parsed.queue.length} / pos ${parsed.position})`);
 }

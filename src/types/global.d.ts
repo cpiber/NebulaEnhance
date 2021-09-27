@@ -13,6 +13,11 @@ interface Number {
 
 type Instance<T> = T extends new (...args: any[]) => infer U ? U : never;
 
-declare function cloneInto<T>(object: T, targetWindow: Window): T;
+declare function cloneInto<T>(object: T, targetWindow: Window, options?: { cloneFunctions?: boolean }): T;
+declare function exportFunction<T extends Function>(fn: T, targetWindow?: Window, options?: { defineAs?: string, }): T;
+interface Window {
+  wrappedJSObject: Window;
+}
 
 declare const __YT_API_KEY__: string;
+declare const __DEV__: boolean;

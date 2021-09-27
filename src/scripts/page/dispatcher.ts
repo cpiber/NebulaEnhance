@@ -50,7 +50,7 @@ const naviage = (page: string, from: string, data: { [key: string]: any } = {}) 
   currentlyloading = window.location.href;
 
   window.clearInterval(loadInterval);
-  loadInterval = window.setInterval(loading, 100);
+  loadInterval = window.setInterval(loading, 500);
 };
 
 const loading = () => {

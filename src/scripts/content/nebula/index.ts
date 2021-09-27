@@ -1,7 +1,7 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { durationLocation, queueBottonLocation } from '../../helpers/locations';
-import { BrowserMessage, QUEUE_KEY, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
@@ -25,9 +25,9 @@ export const nebula = async () => {
   await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
 
   // start up own content
-  Queue.get(); // initialize
+  const queue = Queue.get(); // initialize
   await hashChange();
-  await loadQueueFromStorage();
+  await Queue.get().restoreStorage();
   await maybeLoadComments(youtube);
 
   const cb = mutation(() => {
@@ -44,6 +44,18 @@ export const nebula = async () => {
     await injectScript(document.body, customScriptPage);
 
   document.body.classList.add('enhancer-initialized');
+
+  // debug code
+  // rollup optimizes everything that relies on __DEV__ out
+  // but because of potential side-effects in queue[key] and v.bind(queue),
+  // we need to explicitly guard here
+  if (!__DEV__) return;
+  devClone('queue', {});
+  Object.keys(queue).forEach(key => {
+    const v = queue[key];
+    if (typeof v === 'function') devClone(key, v.bind(queue), 'queue');
+    else devExport(key, () => queue[key], 'queue');
+  });
 };
 
 const imgLink = (e: HTMLElement) => {
@@ -121,18 +133,6 @@ const hashChange = async () => {
   const q = hash[1].split(',');
   await Queue.get().set(q, current ? current[1] : undefined);
   console.debug('Queue: loaded from hash');
-};
-
-const loadQueueFromStorage = async () => {
-  const data = window.localStorage.getItem(QUEUE_KEY);
-  if (data === null) return; // nothing in the storage
-  if (!Queue.get().isEmpty())
-    return console.debug('Queue: ignoring localStorage');
-  const parsed = JSON.parse(data);
-  if (parsed.position + 1 >= parsed.queue.length)
-    return console.debug('Queue: ignoring queue on last video');
-  await Queue.get().set(parsed.queue, +parsed.position);
-  console.debug(`Queue: loaded from localStorage (${parsed.queue.length}/${parsed.position})`);
 };
 
 const maybeLoadComments = (yt: boolean) => {

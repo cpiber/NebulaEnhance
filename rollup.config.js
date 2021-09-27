@@ -47,6 +47,7 @@ const jsplugins = () => [
   commonjs(),
   replace({
     __YT_API_KEY__: JSON.stringify(process.env.YT_API_KEY),
+    __DEV__: JSON.stringify(!process.env.BUILD),
     preventAssignment: true,
   }),
 ];
