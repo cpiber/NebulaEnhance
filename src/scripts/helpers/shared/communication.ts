@@ -46,9 +46,8 @@ export function sendEventHandler(event: Events, listener: Listener, skipOriginCh
 }
 
 export const replyMessage = (e: MessageEvent, name: string, data?: any, err?: any) => name &&
-  /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-  // @ts-ignore
   e.source.postMessage(
     clone({ type: name, res: data, err }),
+    // @ts-expect-error Why??
     e.origin,
   );

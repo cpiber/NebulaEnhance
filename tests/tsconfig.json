@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "sourceMap": false,
+    "typeRoots": [
+      "../src/types",
+      "../node_modules/@types"
+    ],
+  },
+  "include": ["**/*", "*", "../src/**/*"]
+}

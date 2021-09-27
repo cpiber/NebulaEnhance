@@ -1,20 +1,21 @@
+import { jest } from '@jest/globals';
 import fetch, { Response } from 'node-fetch';
 import type { Video } from '../../src/scripts/background';
+import * as origApiStore from '../../src/scripts/helpers/api/store';
 import { NEBULA_AUTH_KEY } from '../../src/scripts/helpers/shared';
 
 global.fetch = fetch as unknown as typeof global.fetch;
 
-jest.mock('../../src/scripts/helpers/api/store', (): typeof import('../../src/scripts/helpers/api/store') => {
-  const orig = jest.requireActual('../../src/scripts/helpers/api/store') as typeof import('../../src/scripts/helpers/api/store');
+jest.unstable_mockModule('../../src/scripts/helpers/api/store', (): typeof import('../../src/scripts/helpers/api/store') => {
   return {
-    ...orig,
-    refreshToken: jest.fn(orig.refreshToken),
+    ...origApiStore,
+    refreshToken: jest.fn(origApiStore.refreshToken),
   };
 });
-// need to do this here with a require, because rollup will hoist all imports, and we don't have a plugin to hoist jest.mock (like babel-plugin-jest-hoist)
-const { opt, refreshToken } = require('../../src/scripts/helpers/api/store') as typeof import('../../src/scripts/helpers/api/store');
-const { getVideo } = require('../../src/scripts/helpers/api') as typeof import('../../src/scripts/helpers/api');
-const { creatorHasNebulaVideo, loadNebulaChannelVideos, existsNebulaVideo, loadNebulaSearchVideos } = require('../../src/scripts/background') as typeof import('../../src/scripts/background');
+
+const { opt, refreshToken } = await import('../../src/scripts/helpers/api/store');
+const { getVideo } = await import('../../src/scripts/helpers/api');
+const { creatorHasNebulaVideo, loadNebulaChannelVideos, existsNebulaVideo, loadNebulaSearchVideos } = await import('../../src/scripts/background');
 const refMock = refreshToken as jest.MockedFunction<typeof refreshToken>;
 
 describe('loading nebula videos', () => {
@@ -47,7 +48,7 @@ describe('loading nebula videos', () => {
     await expect(creatorHasNebulaVideo('hai', vid.title, 100)).resolves.toEqual({ confidence: 1, video: vid.videoId });
 
     // from cache
-    const fetchMock = jest.fn();
+    const fetchMock = jest.fn<any, any>();
     global.fetch = fetchMock;
     await expect(creatorHasNebulaVideo('hai', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     expect(fetchMock).not.toBeCalled();
@@ -69,7 +70,7 @@ describe('loading nebula videos', () => {
     await expect(existsNebulaVideo(vid.title, 100)).resolves.toEqual({ confidence: 1, video: vid.videoId });
 
     // from cache
-    const fetchMock = jest.fn();
+    const fetchMock = jest.fn<any, any>();
     global.fetch = fetchMock;
     await expect(existsNebulaVideo(vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     expect(fetchMock).not.toBeCalled();
@@ -80,7 +81,7 @@ describe('loading nebula videos', () => {
 });
 
 describe('api', () => {
-  const fetchMock = jest.fn();
+  const fetchMock = jest.fn<any, any>();
 
   beforeAll(() => {
     global.fetch = fetchMock;

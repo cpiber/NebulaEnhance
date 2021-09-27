@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { addToQueue, expectQueueLength, login, qbuttSelector, queueSelector, titles, videoSelector, waitForPlayerInit } from '../shared';
 
 jest.setTimeout(20000);

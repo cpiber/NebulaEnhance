@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import fetch from 'node-fetch';
 import { loadCreators } from '../../src/scripts/background';
 import { matchVideoConfidence } from '../../src/scripts/background/ifidf';

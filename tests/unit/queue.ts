@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { DOMArray, callback } from '../../src/scripts/helpers/DOMArray';
 import { Store, VideoArray } from '../../src/scripts/helpers/VideoQueue';
 
@@ -30,7 +31,7 @@ const mapAlternative = (element: string) => {
 
 describe('DOMArray', () => {
   let root: HTMLElement;
-  let cb: jest.Mock;
+  let cb: ReturnType<typeof jest.fn>;
   beforeEach(() => {
     root = document.createElement('div');
     cb = jest.fn();

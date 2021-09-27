@@ -1,6 +1,11 @@
 /// <reference path="../../src/types/global.d.ts"/>
+import { jest } from '@jest/globals';
 import { JSDOM } from 'jsdom';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { Events, Message, clone, dot, getCookie, injectFunction, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 describe('dot product operations', () => {
   test('fail on unequal length', () => {
@@ -91,7 +96,7 @@ describe('other', () => {
   test('isMobile verifies via media query', () => {
     const w = window;
     (window as any) = window || {};
-    const mock = jest.fn().mockReturnValueOnce({ matches: true }).mockReturnValueOnce({ matches: false });
+    const mock = jest.fn<any, any>().mockReturnValueOnce({ matches: true }).mockReturnValueOnce({ matches: false });
     window.matchMedia = mock;
 
     expect(isMobile()).toBe(true);
@@ -306,7 +311,7 @@ describe('message sending', () => {
 });
 
 describe('message event listeners', () => {
-  const mock = jest.fn();
+  const mock = jest.fn<any, any>();
   beforeAll(() => {
     window.addEventListener('message', mock);
   });

@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import fetch from 'node-fetch';
 import { Video, creatorHasYTVideo, loadYTVideos } from '../../src/scripts/background';
 
@@ -31,7 +32,7 @@ describe('loading youtube videos', () => {
     await expect(creatorHasYTVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 150)).resolves.toEqual({ confidence: 1, video: vid.videoId });
 
     // from cache
-    const fetchMock = jest.fn();
+    const fetchMock = jest.fn<any, any>();
     global.fetch = fetchMock;
     await expect(creatorHasYTVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     expect(fetchMock).not.toBeCalled();

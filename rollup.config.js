@@ -158,19 +158,18 @@ const other = (args) => {
  * TESTS BUILD
  */
 /**
- * @type {import('rollup').RollupOptions}
+ * @return {import('rollup').RollupOptions}
  */
 const testsInternal = () => ({
   output: {
-    format: 'cjs',
+    format: 'esm',
     exports: 'auto',
-    sourcemap: true,
+    sourcemap: false, // for some reason it seems jest includes some source-map translation itself, `true` breaks for coverage
   },
   context: 'window',
   plugins: [
     typescript({
-      tsconfig: './tsconfig.json',
-      target: 'ESNext',
+      tsconfig: './tests/tsconfig.json',
     }),
     string({
       include: '**/*.svg',
