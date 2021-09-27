@@ -66,7 +66,7 @@ const js = (args) =>
         dir: path.dirname(d),
         format: 'iife',
         sourcemap: !process.env.BUILD,
-        intro: process.env.BUILD ? '' : 'try {',
+        intro: process.env.BUILD ? '' : 'try{',
         outro: process.env.BUILD ? '' : '}catch(e){console.error(e)}',
       },
       external: false,
@@ -131,7 +131,7 @@ const other = (args) => {
    * @type {import('rollup').RollupOptions}
    */
   const conf = {
-    input: './src/manifest.ts',
+    input: 'src/manifest.ts',
     output: {
       dir: 'extension-dist',
       format: 'cjs',

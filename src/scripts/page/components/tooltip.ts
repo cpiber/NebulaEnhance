@@ -6,9 +6,8 @@ export class Tooltip {
   private parent: () => Element;
 
   constructor(parent: Element | (() => Element), classes?: string, text?: string) {
-    this.tooltip = document.createElement('div');
+    this.tooltip = this.constructTooltip(text);
     this.tooltip.className = `enhancer-tooltip vjs-hidden ${classes}`;
-    this.tooltip.innerHTML = `<div class="tippy-box"><div class="tippy-content"><span class="vjs-nebula-tooltip-label">${text || ''}</span> <span class="vjs-nebula-tooltip-key"></span></div></div>`;
     this.tooltipSpan = this.tooltip.querySelector('.vjs-nebula-tooltip-label');
     this.keySpan = this.tooltip.querySelector('.vjs-nebula-tooltip-key');
     this.parent = parent instanceof Element ? () => parent : parent;
@@ -55,5 +54,20 @@ export class Tooltip {
 
   get classList() {
     return this.tooltip.classList;
+  }
+
+  private constructTooltip(text: string) {
+    const tooltip = document.createElement('div');
+    const box = tooltip.appendChild(document.createElement('div'));
+    box.className = 'tippy-box';
+    const content = box.appendChild(document.createElement('div'));
+    content.className = 'tippy-content';
+    const label = content.appendChild(document.createElement('span'));
+    label.className = 'vjs-nebula-tooltip-label';
+    label.textContent = text;
+    content.append(' ');
+    const key = content.appendChild(document.createElement('span'));
+    key.className = 'vjs-nebula-tooltip-key';
+    return tooltip;
   }
 }

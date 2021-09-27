@@ -33,21 +33,27 @@ export const mutation = <T extends any[]>(func: (...args: T) => void, time = 500
 export const isMobile = () => window.matchMedia('(any-pointer: coarse), (any-hover: none)').matches;
 export const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
 export const isVideoListPage = () => !!window.location.pathname.match(/^\/(?:|videos\/?|myshows\/?)$/);
-export const clone = typeof cloneInto !== 'undefined' ? <T>(data: T) => cloneInto(data, document.defaultView) : <T>(data: T) => data; // Firefox specific
-export const devClone = __DEV__ && typeof cloneInto !== 'undefined'
-  ? <T>(name: string, data: T, ...names: string[]) => {
+export const clone = typeof cloneInto !== 'undefined' ?
+  <T>(data: T) => cloneInto(data, document.defaultView) : // Firefox specific
+  <T>(data: T) => data;
+export const devClone = __DEV__ && typeof cloneInto !== 'undefined' ?
+  <T>(name: string, data: T, ...names: string[]) => {
     let obj: any = window.wrappedJSObject;
     for (const n of names) obj = obj[n];
     obj[name] = cloneInto(data, document.defaultView, { cloneFunctions: true }); // Firefox specific
-  }
-  : () => {};
-export const devExport = __DEV__ && typeof exportFunction !== 'undefined'
-  ? (name: string, fn: () => any, ...names: string[]) => {
+  } :
+  () => {
+    if (!__DEV__) throw new Error('THIS SHOULD NEVER HAVE GOTTEN INTO PROD');
+  };
+export const devExport = __DEV__ && typeof exportFunction !== 'undefined' ?
+  (name: string, fn: () => any, ...names: string[]) => {
     let obj: any = window.wrappedJSObject;
     for (const n of names) obj = obj[n];
     Reflect.defineProperty(obj, name, { get: exportFunction(fn, window) }); // Firefox specific
-  }
-  : () => {};
+  } :
+  () => {
+    if (!__DEV__) throw new Error('THIS SHOULD NEVER HAVE GOTTEN INTO PROD');
+  };
 
 export function injectScript(node: HTMLElement, content: string, friendly?: string, data?: any, w?: Window): Promise<void>;
 export function injectScript(file: string, node: HTMLElement, friendly?: string, data?: any, w?: Window): Promise<void>;
