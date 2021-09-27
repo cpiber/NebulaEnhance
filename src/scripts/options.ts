@@ -10,7 +10,7 @@ if (cl.length)
 document.body.classList.toggle('mobile', isMobile());
 
 const els = Settings.get();
-const { local } = getBrowserInstance().storage;
+const { local, sync } = getBrowserInstance().storage;
 
 // permissions for youtube comments
 const { permissions } = getBrowserInstance();
@@ -51,13 +51,13 @@ load(true).then(aChange).then(vChange);
   document.body.classList.remove('show-changelogs');
   window.location.hash = document.body.className;
 
-  const show: boolean = (await local.get({ showChangelogs: true })).showChangelogs;
-  const version: string = (await local.get({ lastVersion: '-1' })).lastVersion;
+  const show: boolean = (await (sync || local).get({ showChangelogs: true })).showChangelogs;
+  const version: string = (await (sync || local).get({ lastVersion: '-1' })).lastVersion;
   const actualVersion = getBrowserInstance().runtime.getManifest().version;
   const installed = version === '-1';
   console.debug(show, version, actualVersion, installed);
   // show changelog or install message
   if (installed || (show && version !== actualVersion) || showChangelogs)
     showLogs(actualVersion, installed);
-  local.set({ lastVersion: actualVersion });
+  (sync || local).set({ lastVersion: actualVersion });
 })();

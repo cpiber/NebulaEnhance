@@ -84,7 +84,7 @@
     "description": "Beschriftung für LoadNebula der Optionen Seite."
   },
   "optionsLoadNebulaHint": {
-    "message": "Ob automatisch versucht werden soll, das Nebula Video zu finden. Funktioniert nur für die neuesten 20 videos.",
+    "message": "Ob automatisch versucht werden soll, das Nebula Video zu finden.",
     "description": "Hilfstext für LoadNebula der Optionen Seite."
   },
   "optionsVisitedColorTitle": {

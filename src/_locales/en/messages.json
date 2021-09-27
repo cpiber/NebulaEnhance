@@ -84,7 +84,7 @@
     "description": "Label for LoadNebula of options page."
   },
   "optionsLoadNebulaHint": {
-    "message": "Whether to automatically try and find the matching Nebula video or not. Works only with the 20 newest videos.",
+    "message": "Whether to automatically try and find the matching Nebula video or not.",
     "description": "Hint for LoadNebula of options page."
   },
   "optionsVisitedColorTitle": {

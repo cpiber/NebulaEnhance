@@ -1,7 +1,6 @@
-import { Events, Message, getBrowserInstance, isQueueMessage, parseTypeObject, replyMessage } from '../../helpers/sharedExt';
+import { Events, Message, getBrowserInstance, getFromStorage, isQueueMessage, parseTypeObject, replyMessage } from '../../helpers/sharedExt';
 import { Queue } from '../queue';
 
-const { local } = getBrowserInstance().storage;
 type Msg = { type: string, name?: string, [key: string]: any };
 
 /**
@@ -23,7 +22,7 @@ export const handle = (e: MessageEvent) => {
   let promise: Promise<any> = null;
   switch (msg.type) {
     case Message.GET_STORAGE:
-      promise = local.get(msg.get);
+      promise = getFromStorage(msg.get);
       break;
     case Message.GET_MESSAGE:
       promise = Promise.resolve(getBrowserInstance().i18n.getMessage(msg.message));

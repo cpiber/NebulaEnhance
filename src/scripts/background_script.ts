@@ -4,6 +4,8 @@ import { BrowserMessage, getBrowserInstance, nebulavideo, parseTypeObject } from
 const videoFetchYt = 50;
 const videoFetchNebula = 50;
 
+const { local, sync } = getBrowserInstance().storage;
+
 getBrowserInstance().browserAction.onClicked.addListener(() => openOptions());
 
 getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [key: string]: any }) => {
@@ -21,8 +23,13 @@ getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [k
 });
 
 getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
-  const show: boolean = (await getBrowserInstance().storage.local.get({ showChangelogs: true })).showChangelogs;
-  const version: string = (await getBrowserInstance().storage.local.get({ lastVersion: '-1' })).lastVersion;
+  if (sync) {
+    await sync.set(await local.get());
+    await local.clear();
+  }
+
+  const show: boolean = (await (sync || local).get({ showChangelogs: true })).showChangelogs;
+  const version: string = (await (sync || local).get({ lastVersion: '-1' })).lastVersion;
   console.debug(show, version, details.reason);
   if (details.reason === 'install' || (show && version !== getBrowserInstance().runtime.getManifest().version))
     openOptions(false, 'show-changelogs');
@@ -100,7 +107,7 @@ const openOptions = (active = true, ...args: string[]) => {
 };
 
 (async () => {
-  const yt: boolean = (await getBrowserInstance().storage.local.get({ youtube: false })).youtube;
+  const yt: boolean = (await (sync || local).get({ youtube: false })).youtube;
   if (!yt) return;
   console.debug(await loadCreators());
 })();

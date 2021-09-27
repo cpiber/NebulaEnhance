@@ -2,11 +2,11 @@ import { getBrowserInstance } from '../helpers/sharedExt';
 import { Settings, toData } from './settings';
 
 const els = Settings.get();
-const { local } = getBrowserInstance().storage;
+const { local, sync } = getBrowserInstance().storage;
 
-export const save = () => local.set(toData());
+export const save = () => (sync || local).set(toData());
 export const load = async (doSave = false) => {
-  const data = await local.get(toData(true));
+  const data = await (sync || local).get(toData(true));
   Object.keys(els).forEach(prop => {
     if (els[prop].type === 'checkbox') {
       (els[prop] as HTMLInputElement).checked = !!data[prop];
