@@ -10,7 +10,7 @@ export const refreshToken = async () => {
   try {
     ({ apiToken } = JSON.parse(cookie));
   } catch (e) {
-    console.debug(e);
+    console.dev.warn(e);
   }
   const apiAuth = apiToken ? { Authorization: `Token ${apiToken}` } : {};
   console.dev.debug('Refreshing nebula token using auth', apiAuth);

@@ -148,14 +148,15 @@ const loadComments = async () => {
   if (h2.length < 2) return;
   const title = h2[0].textContent;
   const creator = h2[1].textContent;
+  const nebula = (h2[1].parentElement as HTMLAnchorElement).href;
   if (!title || !creator) return;
   const e = h2[0].nextElementSibling;
   if (!e || e.querySelector('.enhancer-yt, .enhancer-yt-err'))
     return; // already requested
-  console.debug(`Requesting '${title}' by ${creator}`);
+  console.debug(`Requesting '${title}' by ${creator} (${nebula})`);
 
   try {
-    const vid: ytvideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_YTID, creator, title });
+    const vid: ytvideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_YTID, creator, title, nebula });
     console.debug('Found video:', vid);
     const v = document.createElement('span');
     v.classList.add('enhancer-yt');

@@ -11,6 +11,7 @@ getBrowserInstance().browserAction.onClicked.addListener(() => openOptions());
 getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [key: string]: any }) => {
   try {
     const msg = parseTypeObject(message);
+    console.dev.log('Handling message', msg);
     switch (msg.type) {
       case BrowserMessage.LOAD_CREATORS:
         return console.debug(await loadCreators());
@@ -44,12 +45,13 @@ const loadCreators = (() => {
 })();
 
 const getYoutubeId = async (message: { [key: string]: any }) => {
-  const { creator, title } = message;
+  const { creator, title, nebula } = message;
   const normalizedCreator = normalizeString(creator);
+  console.debug('creator:', creator, '\nnebula:', nebula, '\ntitle:', title);
 
   try {
     const creators = await loadCreators();
-    const uploads = creators.find(e => e.name === creator || normalizeString(e.name) === normalizedCreator)?.uploads;
+    const uploads = creators.find(e => e.name === creator || normalizeString(e.name) === normalizedCreator || e.nebula === nebula)?.uploads;
     return creatorHasYTVideo(uploads, title, videoFetchYt);
   } catch (err) {
     console.error(err);
@@ -62,7 +64,7 @@ const getNebulaVideo = async (message: { [key: string]: any }): Promise<nebulavi
 
   const creators = await loadCreators();
   const creator = creators.find(c => c.channel === channelID);
-  console.debug('creator:', creator);
+  console.debug('creator:', creator, '\nchannelID:', channelID, '\nvideoTitle:', videoTitle);
   if (!creator) return;
 
   // try search the channel's newest videos locally
