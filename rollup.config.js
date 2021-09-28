@@ -40,10 +40,10 @@ const question = q => new Promise(resolve => readline.question(q, answer => reso
 const jsreplace = (dev = !process.env.BUILD) => ({
   '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
   '__DEV__': JSON.stringify(dev),
-  'console.dev.log': dev ? 'console.log' : 'void',
-  'console.dev.debug': dev ? 'console.debug' : 'void',
-  'console.dev.warn': dev ? 'console.warn' : 'void',
-  'console.dev.error': dev ? 'console.error' : 'void',
+  'console.dev.log': dev ? 'console.log' : '(()=>{})',
+  'console.dev.debug': dev ? 'console.debug' : '(()=>{})',
+  'console.dev.warn': dev ? 'console.warn' : '(()=>{})',
+  'console.dev.error': dev ? 'console.error' : '(()=>{})',
   'preventAssignment': true,
 });
 const jsplugins = () => [
@@ -206,7 +206,8 @@ function remove() {
         if (!bundle[prop].code) continue;
         if (bundle[prop].code === '\n' ||
           bundle[prop].code.trim() === 'var undefined$1 = undefined;\n\nexport default undefined$1;' ||
-          bundle[prop].code.trim() === 'var undefined$1 = undefined;\n\nexport { undefined$1 as default };')
+          bundle[prop].code.trim() === 'var undefined$1 = undefined;\n\nexport { undefined$1 as default };'
+        )
           delete bundle[prop];
       }
     },
