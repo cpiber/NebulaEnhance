@@ -21,3 +21,7 @@ interface Window {
 
 declare const __YT_API_KEY__: string;
 declare const __DEV__: boolean;
+
+interface Console {
+  dev: Pick<Console, 'log' | 'debug' | 'warn' | 'error'>;
+}

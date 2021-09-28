@@ -11,13 +11,20 @@ Please make sure you have [NodeJS](https://nodejs.org/) and it's package manager
 
 # Coding
 
-All source files are written in TypeScript, a superset of JavaScript. This enables strict typechecking and usage of ESNext features. All new code is expected to be in TypeScript with proper annotations.
+All source files are written in TypeScript, a superset of JavaScript. This enables strict type checking and usage of ESNext features. All new code is expected to be in TypeScript with proper annotations.
 
 There is no coding standard, but the current code is written with an indentation of 2 spaces, brackets on same line. ESLint enforces the current style loosely.
 
 If you want to add a feature, please open a new issue first to discuss.
 
 All new code must be covered by tests (exceptions can be discussed).
+
+
+# Logging to the console
+
+There are currently two ways to log to the console:
+- Using regular `console` (e.g. `console.log`): Anything other than `console.debug` should be avoided to avoid filling the user's console with irrelevant content. `debug` denotes messages that can be helpful in debugging issues. `error` and `warn` can be used to show unexpected behavior (use sparingly).
+- Using `console.dev` (e.g. `console.dev.log`): These calls are directly translated to their `console` counterparts in development mode, and patched out in production. These can be used to output interval information that can be helpful e.g. in retrace program execution, but not for debugging errors. *Do not put actual computations as arguments to allow clean patching*.
 
 
 # In depth

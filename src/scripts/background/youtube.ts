@@ -1,7 +1,7 @@
+import type { Video } from '.';
 import { ytvideo } from '../helpers/shared';
 import { creatorHasVideo } from './ifidf';
 import { normalizeString } from './misc';
-import { Video } from './types';
 
 const plistcache: { [key: string]: Video[] } = {};
 export const loadYTVideos = async (playlist: string, num: number) => {

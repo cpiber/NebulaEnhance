@@ -13,6 +13,7 @@ export const refreshToken = async () => {
     console.debug(e);
   }
   const apiAuth = apiToken ? { Authorization: `Token ${apiToken}` } : {};
+  console.dev.debug('Refreshing nebula token using auth', apiAuth);
 
   const req = await fetch('https://api.watchnebula.com/api/v1/authorization/', {
     credentials: 'omit',

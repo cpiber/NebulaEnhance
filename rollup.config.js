@@ -37,6 +37,15 @@ const question = q => new Promise(resolve => readline.question(q, answer => reso
 /**
  * JS BUILD
  */
+const jsreplace = (dev = !process.env.BUILD) => ({
+  '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
+  '__DEV__': JSON.stringify(dev),
+  'console.dev.log': dev ? 'console.log' : 'void',
+  'console.dev.debug': dev ? 'console.debug' : 'void',
+  'console.dev.warn': dev ? 'console.warn' : 'void',
+  'console.dev.error': dev ? 'console.error' : 'void',
+  'preventAssignment': true,
+});
 const jsplugins = () => [
   string({
     include: '**/*.svg',
@@ -46,9 +55,7 @@ const jsplugins = () => [
   }),
   commonjs(),
   replace({
-    __YT_API_KEY__: JSON.stringify(process.env.YT_API_KEY),
-    __DEV__: JSON.stringify(!process.env.BUILD),
-    preventAssignment: true,
+    ...jsreplace(),
   }),
 ];
 const js = (args) =>
@@ -76,7 +83,7 @@ const js = (args) =>
           tsconfig: process.env.BUILD ? './tsconfig.prod.json' : './tsconfig.json',
         }),
         ...jsplugins(),
-        process.env.BUILD && terser({ format: { comments: false } }),
+        process.env.BUILD && !process.env.NO_MINIFY && terser({ format: { comments: false } }),
       ],
       watch: w(args.watch),
     };
@@ -175,12 +182,10 @@ const testsInternal = () => ({
       include: '**/*.svg',
     }),
     replace({
-      __YT_API_KEY__: JSON.stringify(process.env.YT_API_KEY),
       __NEBULA_PASS__: JSON.stringify(process.env.NEBULA_PASS),
       __NEBULA_USER__: JSON.stringify(process.env.NEBULA_USER),
       __NEBULA_BASE__: JSON.stringify(process.env.NEBULA_BASE || 'https://nebula.app'),
-      __DEV__: JSON.stringify(true),
-      preventAssignment: true,
+      ...jsreplace(false),
     }),
   ],
 });
@@ -199,7 +204,9 @@ function remove() {
         return;
       for (const prop in bundle) {
         if (!bundle[prop].code) continue;
-        if (bundle[prop].code === '\n' || bundle[prop].code.trim() === 'var undefined$1 = undefined;\n\nexport default undefined$1;')
+        if (bundle[prop].code === '\n' ||
+          bundle[prop].code.trim() === 'var undefined$1 = undefined;\n\nexport default undefined$1;' ||
+          bundle[prop].code.trim() === 'var undefined$1 = undefined;\n\nexport { undefined$1 as default };')
           delete bundle[prop];
       }
     },

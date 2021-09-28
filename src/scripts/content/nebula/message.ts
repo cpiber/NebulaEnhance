@@ -13,8 +13,9 @@ export const handle = (e: MessageEvent) => {
   const msg = parseTypeObject<Msg>(e.data, true);
   if (msg === null)
     return true; // ignore invalid messages
-  if (msg.type.startsWith('enhancer-message-'))
-    return true; // ignore replies
+  if (msg.type.startsWith('enhancer-message-') || msg.type.startsWith('enhancer-event-'))
+    return true; // ignore replies and events
+  console.dev.debug('Handling message', msg);
 
   if (isQueueMessage(msg.type))
     return Queue.get().handleMessage(e, msg);

@@ -1,7 +1,7 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { durationLocation, queueBottonLocation } from '../../helpers/locations';
-import { BrowserMessage, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, clone, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
@@ -53,8 +53,10 @@ export const nebula = async () => {
   devClone('queue', {});
   Object.keys(queue).forEach(key => {
     const v = queue[key];
+    const str = Object.prototype.toString.call(v);
     if (typeof v === 'function') devClone(key, v.bind(queue), 'queue');
-    else devExport(key, () => queue[key], 'queue');
+    else if (str !== '[object Object]') devExport(key, () => queue[key], 'queue');
+    else devExport(key, () => clone(queue[key]), 'queue');
   });
 };
 
@@ -131,7 +133,9 @@ const hashChange = async () => {
     return; // invalid video list
   // extract comma separated list of friendly-names from hash
   const q = hash[1].split(',');
-  await Queue.get().set(q, current ? current[1] : undefined);
+  const cur = current ? current[1] : undefined;
+  console.dev.debug('queue:', q, '\ncurrent:', cur);
+  await Queue.get().set(q, cur);
   console.debug('Queue: loaded from hash');
 };
 
@@ -162,7 +166,8 @@ const loadComments = async () => {
     v.append(a, ` (${(vid.confidence * 100).toFixed(1)}%)`);
     e.append(e.querySelector('span[class]')?.cloneNode(true), v); // dot
   } catch (err) {
-    console.error(err);
+    console.debug('Request failed:', err);
+    console.dev.error(err);
     const er = document.createElement('span');
     er.classList.add('enhancer-yt-err');
     er.textContent = `${err}`;
