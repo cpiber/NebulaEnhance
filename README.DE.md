@@ -33,11 +33,13 @@ Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überp
 - Queue: Füge Videos einfach zu einer Warteschlange hinzu
 - Teilen: Schlange kann jetzt geteilt werden -- Teilen Sie Ihre Liste oder legen Sie Lesezeichen dafür an!
 - YouTube Link: Die Erweiterung kann versuchen, das passende YouTube-Video zu finden (Aktivierung in den Einstellungen)
+- Watch on Nebula: Auf jeder YouTube Video-Seite wird versucht, das passende Nebula Video zu finden (Aktivierung in den Einstellungen)
 - ~~Theater Modus: Videospieler wird besser an die Seite angepasst~~ Jetzt nativ unterstützt
 
 **Videospieler**
-- "Quick dial" für Abspielgeschwindigkeit: Ein neuer Knopf im Videospieler erlaubt es per Mausrad die Geschwindigkeit bequem und schnell zu verändern
+- "Quick dial" für Abspielgeschwindigkeit: Ein neuer Knopf im Videospieler erlaubt es per Mausrad die Geschwindigkeit zu verändern
 - Scroll über Videospieler um Lautstärke zu ändern (Aktivierung in den Einstellungen)
+- Zeit-Anzeige lässt sich zwischen aktueller und verbleibender Zeit wechseln
 - Autoplay: Videos können automatisch gestartet werden
 - Keyboard Shortcuts: Tastaturkürzel für einfachere und schnellere Bedienung ([siehe Playback Sektion](https://www.mrfdev.com/youtube-keyboard-shortcuts))
 - ~~Standard Abspielgeschwindigkeit und Lautstärke: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit und Lautstärke abzuspielen~~ Jetzt nativ unterstützt
@@ -46,7 +48,7 @@ Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überp
 **Custom scripts**
 - Benutzerdefinierte Scripts, die auf der Webseite ausgeführt werden
 
-Falls Sie Vorschläge haben, öffnen Sie bitte eine neue [issue](https://github.com/cpiber/NebulaEnhance/issues).
+Falls Sie Vorschläge haben, öffnen Sie bitte ein neues [Issue](https://github.com/cpiber/NebulaEnhance/issues) oder starten Sie eine [Diskussion](https://github.com/cpiber/NebulaEnhance/discussions/new).
 
 
 # Screenshots
@@ -55,7 +57,7 @@ Video Schlange:
 
 ![Queue / Video Warteschlange.](static/Screenshot3_de.png)
 
-Videospieler mit neuen Kontrollknöpfen (Video Schlange nächstes/voriges, Lautstärke Indikator, Quick Dial):
+Videospieler mit neuen Kontrollknöpfen (Video Schlange nächstes/voriges, Lautstärke Indikator, Zeit verbleibend, Quick Dial):
 
 ![Videospieler mit Kontrollknöpfen.](static/Screenshot1.png)
 

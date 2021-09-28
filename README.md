@@ -34,11 +34,13 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 - Queue: Add videos to watch queue
 - Share: Queue is shareable -- Bookmark and Share your list!
 - YouTube Link: This extension can try to find the corresponding YouTube video (enable in settings)
+- Watch on Nebula: On any YouTube video page tries to find the corresponding Nebula video (enable in settings)
 - ~~Theatre Mode: Make the player fit the page better~~ Now natively supported
 
 **Player**
-- Quick dial to set speed: New button in player allows to increase/decrease speed by scrolling
+- Quick dial to set speed: New button in player to increase/decrease speed by scrolling
 - Scroll over player to set volume (enable in settings)
+- Toggle time display between current/remaining time
 - Autoplay: Start videos automatically
 - Keyboard shortcuts: Shortcuts in video player ([see Playback section](https://www.mrfdev.com/youtube-keyboard-shortcuts))
 - ~~Default playback speed and volume, subtitles~~ Now natively supported
@@ -47,7 +49,7 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 **Custom scripts**
 - Execute custom JavaScript code on the web page
 
-If you have any suggestions, please open a new [issue](https://github.com/cpiber/NebulaEnhance/issues).
+If you have any suggestions, please open a new [issue](https://github.com/cpiber/NebulaEnhance/issues) or start a [discussion](https://github.com/cpiber/NebulaEnhance/discussions/new).
 
 
 # Screenshots
@@ -56,7 +58,7 @@ Queue:
 
 ![Queue / Watch list.](static/Screenshot3.png)
 
-Player with new controls (Queue next/previous, volume indicator, quick dial):
+Player with new controls (Queue next/previous, volume indicator, time remaining, quick dial):
 
 ![Player with controls.](static/Screenshot1.png)
 
