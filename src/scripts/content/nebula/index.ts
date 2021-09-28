@@ -134,7 +134,7 @@ const hashChange = async () => {
   // extract comma separated list of friendly-names from hash
   const q = hash[1].split(',');
   const cur = current ? current[1] : undefined;
-  console.dev.debug('queue:', q, '\ncurrent:', current ? current[1] : undefined);
+  console.dev.debug('queue:', q, '\ncurrent:', cur);
   await Queue.get().set(q, cur);
   console.debug('Queue: loaded from hash');
 };

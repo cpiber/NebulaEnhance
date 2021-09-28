@@ -205,8 +205,7 @@ function remove() {
       for (const prop in bundle) {
         if (!bundle[prop].code) continue;
         if (bundle[prop].code === '\n' ||
-          bundle[prop].code.trim() === 'var undefined$1 = undefined;\n\nexport default undefined$1;' ||
-          bundle[prop].code.trim() === 'var undefined$1 = undefined;\n\nexport { undefined$1 as default };')
+          bundle[prop].code.trim() === 'var undefined$1 = undefined;\n\nexport default undefined$1;')
           delete bundle[prop];
       }
     },
