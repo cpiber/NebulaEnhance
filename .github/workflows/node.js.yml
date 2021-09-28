@@ -34,37 +34,46 @@ jobs:
         npm run env | grep npm_package_version >> $GITHUB_ENV
     - run: |
         echo Workflow triggered by event ${{ github.event_name }}
+    - name: Install grep and find
+      run: sudo apt-get install grep findutils
+    
+    - name: Create non-minified js files
+      run: npm run build:js -- --environment NO_MINIFY
+      env:
+        YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
+    - name: Verify no debug artifacts
+      run: |
+        dev=$(grep --color=always "devClone\|devExport\|(()=>{})" $(find extension-dist -name "*.js"))
+        if [ -n "$dev" ]; then
+          echo "::group::Invalid statements"
+          echo "$dev"
+          echo "::endgroup::"
+          echo "::error ::Found statements that shouln't be in the production build!"
+          exit 1
+        fi
+      shell: bash
     
     - name: Build
       run: npm run build:all # does not run tests
       env:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
     
-    - name: Install grep and find
-      run: sudo apt-get install grep findutils
-    - name: Verify directory structure and debug content
+    - name: Verify directory structure
       run: |
         locales=$(find extension-dist/_locales -not -name "*.json" -type f)
         scripts=$(find extension-dist/scripts -not -name "*.js" -type f)
-        styles=$(find extension-dist/styles -not -name "*.js" -type f)
+        styles=$(find extension-dist/styles -not -name "*.css" -type f)
         if [ -n "$locales" ] || [ -n "$scripts" ] || [ -n "$styles" ]; then
           echo "::group::Files found"
-          echo "$(tput bold)In _locales"
-          printf "%s\n" $locales
-          echo "$(tput bold)In scripts"
-          printf "%s\n" $scripts
-          echo "$(tput bold)In styles"
-          printf "%s\n" $styles
+          echo -e "\nIn _locales"
+          echo "$locales"
+          echo -e "\nIn scripts"
+          echo "$scripts"
+          echo -e "\nIn styles"
+          echo "$styles"
           echo "::endgroup::"
           echo "::error ::Found files that do not belong!"
-        fi
-
-        dev=$(grep --color=always "devClone\|devExport\|void(" $(find extension-dist -name "*.js"))
-        if [ -n "$dev" ]; then
-          echo "::group::Invalid statements"
-          printf "%s\n" $dev
-          echo "::endgroup::"
-          echo "::error ::Found statements that shouln't be in the production build!"
+          exit 1
         fi
       shell: bash
 
