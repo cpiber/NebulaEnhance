@@ -43,7 +43,7 @@ jobs:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
     - name: Verify no debug artifacts
       run: |
-        dev=$(grep --color=always "devClone\|devExport\|(()=>{})" $(find extension-dist -name "*.js"))
+        dev=$(grep --color=always "devClone\|devExport\|(()=>{})" $(find extension-dist -name "*.js") || echo "")
         if [ -n "$dev" ]; then
           echo "::group::Invalid statements"
           echo "$dev"
