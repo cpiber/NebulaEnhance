@@ -49,3 +49,18 @@ Array.from(document.querySelectorAll<HTMLElement>('[data-i18n]')).forEach(e => {
     e.setAttribute(attr, e.getAttribute(attr).replace(/__MSG_(.+)__/g, (...args) => getBrowserInstance().i18n.getMessage(args[1]))));
   e.removeAttribute('data-i18n');
 });
+
+// label animation
+const setInputClass = (el: HTMLInputElement) => {
+  if (!el.value) {
+    el.classList.remove('has-value');
+  } else {
+    el.classList.add('has-value');
+  }
+};
+Array.from(document.querySelectorAll<HTMLInputElement>('.enhancer-text-input')).forEach(e => {
+  setInputClass(e);
+  e.addEventListener('change', ev => {
+    setInputClass(ev.target as HTMLInputElement);
+  });
+});

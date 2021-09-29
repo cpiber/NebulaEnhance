@@ -1,13 +1,14 @@
+@import '../helpers/placeholders';
 
 .enhancer-queue-share {
   position: relative;
   margin: auto;
-  padding: 32px;
   width: 100%;
   max-width: 450px;
   background-color: var(--bg-color);
-  border-radius: 3px;
+  border-radius: $border_radius;
   box-sizing: border-box;
+  @extend %box-shadow;
 
   &-bg {
     position: fixed;
@@ -26,7 +27,7 @@
       left: 0;
       right: 0;
       background-color: var(--bg-color);
-      opacity: 0.8;
+      opacity: 0.9;
     }
 
     &.hidden {
@@ -42,18 +43,8 @@
   }
 
   .body {
-    margin-top: 16px;
     display: block;
-    @extend %top;
-
-    > * {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      box-sizing: border-box;
-      margin: 4px 0;
-      cursor: pointer;
-    }
+    @extend %panel;
   }
 
   @media (max-width: $mobile) {

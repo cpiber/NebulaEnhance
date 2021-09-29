@@ -39,6 +39,9 @@ export const toData = (useDefaults = false) => {
     } else if (els[key].type === 'checkbox') {
       val = !useDefaults ? (els[key] as HTMLInputElement).checked : !!val;
     }
+    if (els[key].classList.contains('enhancer-text-input')) {
+      els[key].classList.toggle('has-value', !!val);
+    }
     data[key] = val;
   });
 

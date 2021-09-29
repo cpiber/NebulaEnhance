@@ -35,8 +35,12 @@
     "message": "Geschwindigkeits-Änderungsrate",
     "description": "Beschriftung für Änderungsrate der Abspielgeschwindigkeit der Optionen Seite."
   },
+  "optionsPlaybackChangeRateLabel": {
+    "message": "Änderungsrate",
+    "description": "Beschriftung für Änderungsrate der Optionen Seite."
+  },
   "optionsPlaybackChangeRateHint": {
-    "message": "Um wieviel die Geschwindigkeit geändert werden soll beim scrollen der Maus über dem neuen Speed Knopf, z.B. <code>0.1</code>.",
+    "message": "Um wieviel die Geschwindigkeit geändert werden soll beim Scrollen der Maus über dem neuen Speed Knopf, z.B. <code>0.1</code>.",
     "description": "Hilfstext für Änderungsrate der Abspielgeschwindigkeit der Optionen Seite."
   },
   "optionsAutoplayTitle": {
@@ -48,7 +52,7 @@
     "description": "Beschriftung für Autoplay in Schlange der Optionen Seite."
   },
   "optionsAutoplayHint": {
-    "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">https://demo.theoplayer.com/autoplay-policy</a>.<br />Optional nur mit aktiver Warteschlange.",
+    "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">hier</a>. Optional nur mit aktiver Warteschlange.",
     "description": "Hilfstext für Autoplay der Optionen Seite."
   },
   "optionsVolumeScrollTitle": {
@@ -89,6 +93,10 @@
   },
   "optionsVisitedColorTitle": {
     "message": "Link Farbe für besuchte Videos",
+    "description": "Beschriftung für Link Farbe der Optionen Seite."
+  },
+  "optionsVisitedColorLabel": {
+    "message": "Farbe",
     "description": "Beschriftung für Link Farbe der Optionen Seite."
   },
   "optionsVisitedColorHint": {
@@ -132,7 +140,7 @@
     "description": "Titel fürs changelog fenster."
   },
   "optionsChangelogInstalled": {
-    "message": "**Danke, dass Sie diese Erweiterung installiert haben!**\n\nUnten finden Sie einen Ausschnitt des Changelogs, leider nur in Englisch.\n\nNehmen Sie sich bitte Zeit, die Features der Erweitung in den Optionen kennenzulernen!",
+    "message": "<h2>Danke, dass Sie diese Erweiterung installiert haben!</h2><p>Unten finden Sie einen Ausschnitt des Changelogs, leider nur in Englisch.</p><p>Nehmen Sie sich bitte Zeit, die Features der Erweitung in den Optionen kennenzulernen!</p>",
     "description": "Markdown text für changelog fenster Körper nach installieren der Erweiterung."
   },
   "optionsChangelogYourVersion": {

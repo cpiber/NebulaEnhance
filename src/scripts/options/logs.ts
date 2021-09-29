@@ -70,8 +70,12 @@ export const showLogs = async (currentVersion: string, installed = false) => {
   const last = document.createElement('p');
   last.className = 'all-releases';
   const full = last.appendChild(document.createElement('a'));
+  full.className = 'enhancer-button';
   full.href = `https://github.com/${owner}/${repo}/releases`;
   full.target = '_blank';
   full.innerText = msg('optionsChangelogAllReleases');
-  buildModal(msg('optionsChangelogTitle'), installed ? msg('optionsChangelogInstalled') : '', 'changelog', ...rs, last);
+  const welcome = document.createElement('div');
+  welcome.className = 'enhancer-welcome-banner';
+  welcome.innerHTML = msg('optionsChangelogInstalled');
+  buildModal(msg('optionsChangelogTitle'), installed ? welcome.outerHTML : '', 'changelog', ...rs, last);
 };
