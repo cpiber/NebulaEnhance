@@ -228,48 +228,60 @@ form {
   }
 }
 
-body.standalone {
-  form {
-    max-width: $maxwidth;
-    margin: 24px auto;
-    padding: 20px 28px;
+body {
+  &.standalone {
+    form {
+      max-width: $maxwidth;
+      margin: 24px auto;
+      padding: 20px 28px;
 
-    > :last-child {
-      margin-bottom: 0;
+      > :last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .page-title {
+      height: 72px;
+      display: flex;
+      gap: 25px;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.4em;
+      font-size: 18px;
+      border-bottom: 1px solid rgba(85, 85, 85, 0.1);
+
+      @media screen and (max-width: $tablet) {
+        font-size: 16px;
+      }
+
+      @media screen and (max-width: $mobile) {
+        font-size: 14px;
+      }
+
+      @media screen and (max-width: $mobile_small) {
+        font-size: 12px;
+      }
+
+      .icon {
+        height: 2.2em;
+      }
+
+      .text {
+        width: 100%;
+      }
     }
   }
 
-  .page-title {
-    height: 72px;
-    display: flex;
-    gap: 25px;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    font-weight: 300;
-    text-transform: uppercase;
-    letter-spacing: 0.4em;
-    font-size: 18px;
-    border-bottom: 1px solid rgba(85, 85, 85, 0.1);
-
-    @media screen and (max-width: $tablet) {
-      font-size: 16px;
+  &:not(.standalone) {
+    header {
+      display: none;
     }
 
-    @media screen and (max-width: $mobile) {
-      font-size: 14px;
-    }
-
-    @media screen and (max-width: $mobile_small) {
-      font-size: 12px;
-    }
-
-    .icon {
-      height: 2.2em;
-    }
-
-    .text {
-      width: 100%;
+    form {
+      padding-top: 0;
     }
   }
 }
