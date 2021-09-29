@@ -50,6 +50,10 @@ Some available scripts:
 
 For more control over the build process, it is recommended to use `npm run start` to run the build, and `npm run ext:<browser>` in a separate terminal. This allows to restart either process independently, as well as test in both browsers without halting the build.
 
+The commands `ext:android` and `start:android` can be used for development on Firefox Android.
+
+For both `ext:firefox` and `ext:android` you can specify a Firefox profile if you'd like to keep all changes. **WARNING**: This option makes the profile specified by `--firefox-profile` completely insecure for daily use (see [the docs](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/#--firefox)). If you'd like to go ahead, run `npm run ext:firefox -- --keep-profile-changes -p <profile name>`.
+
 
 # Folder structure
 
