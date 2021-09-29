@@ -1,9 +1,14 @@
-@import "./mixins";
+@import './mixins';
 
 .enhancer-field {
   display: block;
   margin: 16px 0;
   font-size: 13px;
+
+  label {
+    display: block;
+    padding-bottom: 4px;
+  }
 
   .enhancer-control {
     clear: both;
@@ -31,20 +36,19 @@
         border-style: solid;
         border-width: 1px;
         border-radius: 4.5px;
-        box-shadow: transparent 0em 0em 0em 0em inset;
+        box-shadow: transparent 0 0 0 0 inset;
         font-family: inherit;
         font-size: 12px;
         font-weight: 300;
         line-height: 1em;
-        margin: 0em;
+        margin: 0;
         outline: none;
-        transition: color 0.1s ease 0s, border-color 0.1s ease 0s;
+        transition: color 0.1s ease 0s, border-color 0.1s ease 0s, opacity 0.3s ease-in-out 0s;
         width: 100%;
         padding: 20px 10px 4px 12px !important;
-        transition: opacity 0.3s ease-in-out 0s;
 
         @include light {
-          background: #fff;
+          background: #ffffff;
           border-color: rgba(34, 36, 38, 0.15);
           color: rgb(0, 20, 30);
         }
@@ -66,7 +70,7 @@
 
         &:disabled {
           &, & + label {
-            opacity: .4;
+            opacity: 0.4;
           }
         }
 
@@ -82,7 +86,7 @@
       border-radius: 4.5px;
       font-size: 12px;
       line-height: 1em;
-      margin: 0em;
+      margin: 0;
       outline: none;
       min-height: 125px;
       max-width: 100%;
@@ -90,7 +94,7 @@
       padding: 6px 10px;
 
       @include light {
-        background: #fff;
+        background: #ffffff;
         border-color: rgba(34, 36, 38, 0.15);
         color: rgb(0, 20, 30);
       }
@@ -101,11 +105,6 @@
         color: rgb(247, 247, 247);
       }
     }
-  }
-
-  label {
-    display: block;
-    padding-bottom: 4px;
   }
 
   .enhancer-checkbox {
@@ -148,6 +147,6 @@
   box-shadow: none;
 
   &:focus {
-    box-shadow: rgb(82 180 233 / 50%) 0px 0px 10px;
+    box-shadow: rgb(82 180 233 / 50%) 0 0 10px;
   }
 }

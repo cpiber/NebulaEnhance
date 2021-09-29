@@ -52,7 +52,7 @@ Array.from(document.querySelectorAll<HTMLElement>('[data-i18n]')).forEach(e => {
 
 // label animation
 const setInputClass = (el: HTMLInputElement) => {
-  if(el.value === '' || !el.value) {
+  if (el.value === '' || !el.value) {
     el.classList.remove('has-value');
   } else {
     el.classList.add('has-value');

@@ -37,6 +37,7 @@
 
   .top {
     @extend %panel;
+
     border-bottom: 1px solid rgba(85, 85, 85, 0.1);
 
     &::after {
