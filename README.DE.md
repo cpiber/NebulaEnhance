@@ -55,7 +55,7 @@ Falls Sie Vorschläge haben, öffnen Sie bitte ein neues [Issue](https://github.
 
 Video Schlange:
 
-![Queue / Video Warteschlange.](static/Screenshot3_de.png)
+![Queue / Video Warteschlange.](static/Screenshot3_dark.png)
 
 Videospieler mit neuen Kontrollknöpfen (Video Schlange nächstes/voriges, Lautstärke Indikator, Zeit verbleibend, Quick Dial):
 

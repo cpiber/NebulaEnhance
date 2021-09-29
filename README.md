@@ -56,7 +56,7 @@ If you have any suggestions, please open a new [issue](https://github.com/cpiber
 
 Queue:
 
-![Queue / Watch list.](static/Screenshot3.png)
+![Queue / Watch list.](static/Screenshot3_dark.png)
 
 Player with new controls (Queue next/previous, volume indicator, time remaining, quick dial):
 
