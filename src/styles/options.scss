@@ -211,6 +211,21 @@ form {
     font-size: 1.1em;
     padding-top: $ptop;
   }
+
+  .enhancer-welcome-banner {
+    background: rgba(128, 128, 128, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 32px;
+
+    *:first-child {
+      margin-top: 0;
+    }
+
+    *:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 body.standalone {

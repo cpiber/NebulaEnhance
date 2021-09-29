@@ -132,7 +132,7 @@
     "description": "Titel fürs changelog fenster."
   },
   "optionsChangelogInstalled": {
-    "message": "**Danke, dass Sie diese Erweiterung installiert haben!**\n\nUnten finden Sie einen Ausschnitt des Changelogs, leider nur in Englisch.\n\nNehmen Sie sich bitte Zeit, die Features der Erweitung in den Optionen kennenzulernen!",
+    "message": "<h2>Danke, dass Sie diese Erweiterung installiert haben!</h2><p>Unten finden Sie einen Ausschnitt des Changelogs, leider nur in Englisch.</p><p>Nehmen Sie sich bitte Zeit, die Features der Erweitung in den Optionen kennenzulernen!</p>",
     "description": "Markdown text für changelog fenster Körper nach installieren der Erweiterung."
   },
   "optionsChangelogYourVersion": {

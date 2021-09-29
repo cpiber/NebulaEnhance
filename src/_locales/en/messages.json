@@ -132,7 +132,7 @@
     "description": "Title for changelog modal."
   },
   "optionsChangelogInstalled": {
-    "message": "**Thank you for installing this extension!**\n\nBelow you can find an extract of the changelog.\n\nPlease also explore the options to find out about our features!",
+    "message": "<h2>Thank you for installing this extension!</h2><p>Below you can find an extract of the changelog.</p><p>Please also explore the options to find out about our features!</p>",
     "description": "Markdown text in changelog modal body for when extension is installed."
   },
   "optionsChangelogYourVersion": {
