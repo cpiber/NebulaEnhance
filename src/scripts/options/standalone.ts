@@ -14,9 +14,5 @@ export const standalone = (alone: boolean) => {
   icon.src = getBrowserInstance().runtime.getURL('icons/icon_128.png');
   icon.alt = ext;
   icon.className = 'icon';
-  const title = document.createElement('span');
-  title.className = 'text';
-  title.textContent = document.title;
-  $title.firstChild.remove();
-  $title.append(icon, title);
+  $title.prepend(icon);
 };

@@ -1,96 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link href="styles/options.css" rel="stylesheet" />
-  <title>__MSG_optionsTitle__</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link href="styles/options.css" rel="stylesheet" />
+    <title>__MSG_optionsTitle__</title>
   </head>
   <body>
-  <form>
-    <h1 class="i18n page-title">__MSG_optionsTitle__</h1>
-    <h2 class="i18n">__MSG_optionsTitlePlayer__</h2>
-    <p class="no-mobile">
-    <label>
-      <span class="title i18n">__MSG_optionsPlaybackChangeRateTitle__:</span>
-      <input type="number" name="playbackChange" data-default="0.1" step="0.05" size="5" placeholder="0.1" />
-    </label>
-    <span class="hint i18n">__MSG_optionsPlaybackChangeRateHint__</span>
-    </p>
-    <p>
-    <label>
-      <span class="title i18n">__MSG_optionsAutoplayTitle__:</span>
-      <span class="flex"><input type="checkbox" name="autoplay" data-default="" /> <span class="i18n">__MSG_optionsEnable__</span></span>
-    </label>
-    <label><span class="flex"><input type="checkbox" name="autoplayQueue" data-default="" /> <span class="i18n">__MSG_optionsAutoplayQueue__</span></span></label>
-    <span class="hint i18n">__MSG_optionsAutoplayHint__</span>
-    </p>
-    <p class="no-mobile">
-    <label>
-      <span class="title i18n">__MSG_optionsVolumeScrollTitle__:</span>
-      <span class="flex"><input type="checkbox" name="volumeEnabled" data-default="" /> <span class="i18n">__MSG_optionsEnable__</span></span>
-    </label>
-    <label><span class="flex"><input type="checkbox" name="volumeLog" data-default="" /> <span class="i18n">__MSG_optionsVolumeScrollLog__</span></span></label>
-    <label><span class="flex"><input type="checkbox" name="volumeShow" data-default="" /> <span class="i18n">__MSG_optionsVolumeScrollShow__</span></span></label>
-    <label><span class="flex"><span class="i18n">__MSG_optionsVolumeScrollChange__:</span> <input type="number" name="volumeChange" data-default="0.1" step="0.05" size="5" placeholder="0.1" min="-1" max="1" /></span></label>
-    <span class="hint i18n">__MSG_optionsVolumeScrollHint__</span>
-    </p>
-    <p class="mobile">
-    <label>
-      <span class="title i18n">__MSG_optionsVolumeScrollShow__:</span>
-      <span class="flex"><input type="checkbox" name="volumeShow" data-default="" /> <span class="i18n">__MSG_optionsEnable__</span></span>
-    </label>
-    </p>
-    
-    <h2 class="i18n">__MSG_optionsTitlePage__</h2>
-    <p>
-    <label>
-      <span class="title i18n">__MSG_optionsLoadYoutubeTitle__:</span>
-      <span class="flex"><input type="checkbox" name="youtube" data-default="" /> <span class="i18n">__MSG_optionsEnable__</span></span>
-    </label>
-    <span class="hint i18n">__MSG_optionsLoadYoutubeHint__</span>
-    </p>
-    <p>
-    <label>
-      <span class="title i18n">__MSG_optionsLoadNebulaTitle__:</span>
-      <span class="flex"><input type="checkbox" name="watchnebula" data-default="" /> <span class="i18n">__MSG_optionsEnable__</span></span>
-    </label>
-    <span class="hint i18n">__MSG_optionsLoadNebulaHint__</span>
-    </p>
-    <p>
-    <label>
-      <span class="title i18n">__MSG_optionsVisitedColorTitle__:</span>
-      <input type="text" name="visitedColor" data-default="#6fbce6" />
-    </label>
-    <span class="hint i18n">__MSG_optionsVisitedColorHint__</span>
-    <span class="hint i18n warning visited-color-warning" style="display: none;">__MSG_optionsVisitedColorInvalid__</span>
-    </p>
+    <header>
+      <h1 class="i18n page-title">__MSG_title__</h1>
+    </header>
 
-    <h2 class="i18n">__MSG_optionsTitleScripts__</h2>
-    <p>
-    <label>
-      <span class="title i18n">__MSG_optionsCustomScriptPageTitle__:</span>
-      <span class="warning i18n">__MSG_optionsCustomScriptWarning__</span>
-      <textarea name="customScriptPage" data-default="" data-i18n="placeholder" placeholder="__MSG_optionsCustomScriptPagePlaceholder__"></textarea>
-    </label>
-    <span class="hint i18n">__MSG_optionsCustomScriptPageHint__</span>
-    </p>
-    
-    <h2 class="i18n">__MSG_optionsTitleOther__</h2>
-    <p>
-    <label>
-      <span class="title i18n">__MSG_optionsShowChangelogTitle__:</span>
-      <span class="flex"><input type="checkbox" name="showChangelogs" data-default="on" /> <span class="i18n">__MSG_optionsEnable__</span></span>
-    </label>
-    <span class="hint i18n">__MSG_optionsShowChangelogHint__</span>
-    </p>
-    <button class="i18n" id="showChangelogsNow">__MSG_optionsShowChangelogButton__</button>
-    <div class="spacing"></div>
-    <p><button type="submit" class="i18n">__MSG_buttonSave__</button></p>
-    <span class="hint i18n">__MSG_optionsButtonSaveNote__</span>
-    <span class="hint i18n">__MSG_optionsReloadNote__</span>
-    <p class="hint i18n">__MSG_credits__</p>
-  </form>
-  <script src="scripts/options.js"></script>
+    <form>
+      <main>
+        <section>
+          <h2 class="i18n">__MSG_optionsTitlePlayer__</h2>
+
+          <div class="enhancer-field no-mobile">
+            <h3 class="enhancer-field-title i18n">__MSG_optionsPlaybackChangeRateTitle__</h3>
+
+            <div class="enhancer-control">
+              <input type="number" class="enhancer-text-input" name="playbackChange" id="playbackChange" data-default="0.1" step="0.05" size="5" placeholder="0.1" />
+              <label class="title i18n" for="playbackChange">__MSG_optionsPlaybackChangeRateLabel__</label>
+            </div>
+
+            <p class="hint i18n">__MSG_optionsPlaybackChangeRateHint__</p>
+          </div>
+
+          <div class="enhancer-field">
+            <h3 class="enhancer-field-title i18n">__MSG_optionsAutoplayTitle__</h3>
+
+            <label for="autoplay" class="enhancer-checkbox">
+              <input type="checkbox" name="autoplay" id="autoplay" data-default="" />
+              <span class="i18n">__MSG_optionsEnable__</span>
+            </label>
+            <label for="autoplayQueue" class="enhancer-checkbox">
+              <input type="checkbox" name="autoplayQueue" id="autoplayQueue" data-default="" />
+              <span class="i18n">__MSG_optionsAutoplayQueue__</span>
+            </label>
+
+            <p class="hint i18n">__MSG_optionsAutoplayHint__</p>
+          </div>
+
+          <div class="enhancer-field no-mobile">
+            <h3 class="enhancer-field-title i18n">__MSG_optionsVolumeScrollTitle__</h3>
+
+            <label for="volumeEnabled" class="enhancer-checkbox">
+              <input type="checkbox" name="volumeEnabled" id="volumeEnabled" data-default="" />
+              <span class="i18n">__MSG_optionsEnable__</span>
+            </label>
+            <label for="volumeLog" class="enhancer-checkbox">
+              <input type="checkbox" name="volumeLog" id="volumeLog" data-default="" />
+              <span class="i18n">__MSG_optionsVolumeScrollLog__</span>
+            </label>
+            <label for="volumeShow" class="enhancer-checkbox">
+              <input type="checkbox" name="volumeShow" id="volumeShow" data-default="" />
+              <span class="i18n">__MSG_optionsVolumeScrollShow__</span>
+            </label>
+          </div>
+
+          <div class="enhancer-field no-mobile">
+            <div class="enhancer-control">
+              <input type="number" class="enhancer-text-input" name="volumeChange" id="volumeChange" data-default="0.1" step="0.05" size="5" placeholder="0.1" min="-1" max="1" />
+              <label class="title i18n" for="volumeChange">__MSG_optionsVolumeScrollChange__</label>
+            </div>
+
+            <p class="hint i18n">__MSG_optionsVolumeScrollHint__</p>
+          </div>
+
+          <div class="enhancer-field mobile">
+            <h3 class="enhancer-field-title i18n">__MSG_optionsVolumeScrollShow__</h3>
+
+            <label for="volumeShowMobile" class="enhancer-checkbox">
+              <input type="checkbox" name="volumeShow" id="volumeShowMobile" data-default="" />
+              <span class="i18n">__MSG_optionsEnable__</span>
+            </label>
+          </div>
+        </section>
+  
+        <section>
+          <h2 class="i18n">__MSG_optionsTitlePage__</h2>
+
+          <div class="enhancer-field">
+            <h3 class="enhancer-field-title i18n">__MSG_optionsLoadYoutubeTitle__</h3>
+
+            <label for="youtube" class="enhancer-checkbox">
+              <input type="checkbox" name="youtube" id="youtube" data-default="" />
+              <span class="i18n">__MSG_optionsEnable__</span>
+            </label>
+
+            <p class="hint i18n">__MSG_optionsLoadYoutubeHint__</p>
+          </div>
+
+          <div class="enhancer-field">
+            <h3 class="enhancer-field-title i18n">__MSG_optionsLoadNebulaTitle__</h3>
+
+            <label for="watchnebula" class="enhancer-checkbox">
+              <input type="checkbox" name="watchnebula" id="watchnebula" data-default="" />
+              <span class="i18n">__MSG_optionsEnable__</span>
+            </label>
+
+            <p class="hint i18n">__MSG_optionsLoadNebulaHint__</p>
+          </div>
+
+          <div class="enhancer-field">
+            <h3 class="enhancer-field-title i18n">__MSG_optionsVisitedColorTitle__</h3>
+
+            <div class="enhancer-control">
+              <input type="text" class="enhancer-text-input is-monospace" name="visitedColor" id="visitedColor" data-default="#6fbce6" />
+              <label class="title i18n" for="visitedColor">__MSG_optionsVisitedColorLabel__</label>
+            </div>
+
+            <p class="warning i18n visited-color-warning" style="display: none;">__MSG_optionsVisitedColorInvalid__</p>
+            <p class="hint i18n">__MSG_optionsVisitedColorHint__</p>
+          </div>
+        </section>
+  
+        <section>
+          <h2 class="i18n">__MSG_optionsTitleScripts__</h2>
+
+          <div class="enhancer-field">
+            <h3 class="enhancer-field-title i18n">__MSG_optionsCustomScriptPageTitle__</h3>
+
+            <div class="enhancer-control">
+              <p class="warning i18n">__MSG_optionsCustomScriptWarning__</p>
+              <textarea name="customScriptPage" data-default="" data-i18n="placeholder" placeholder="__MSG_optionsCustomScriptPagePlaceholder__"></textarea>
+            </div>
+
+            <p class="hint i18n">__MSG_optionsCustomScriptPageHint__</p>
+          </div>
+        </section>
+  
+        <section>
+          <h2 class="i18n">__MSG_optionsTitleOther__</h2>
+
+          <div class="enhancer-field">
+            <h3 class="enhancer-field-title i18n">__MSG_optionsShowChangelogTitle__</h3>
+
+            <label for="showChangelogs" class="enhancer-checkbox">
+              <input type="checkbox" name="showChangelogs" id="showChangelogs" data-default="on" />
+              <span class="i18n">__MSG_optionsEnable__</span>
+            </label>
+
+            <p class="hint i18n">__MSG_optionsShowChangelogHint__</p>
+          </div>
+
+          <div class="enhancer-field">
+            <button class="i18n enhancer-button" id="showChangelogsNow">__MSG_optionsShowChangelogButton__</button>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p><button type="submit" class="i18n enhancer-button">__MSG_buttonSave__</button></p>
+        <span class="hint i18n">__MSG_optionsButtonSaveNote__</span>
+        <span class="hint i18n">__MSG_optionsReloadNote__</span>
+        <p class="hint i18n">__MSG_credits__</p>
+      </footer>
+    </form>
+    <script src="scripts/options.js"></script>
   </body>
 </html>

@@ -2,6 +2,7 @@ extension-dist
 web-ext-artifacts
 todo.md
 .vscode
+build/
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/node
