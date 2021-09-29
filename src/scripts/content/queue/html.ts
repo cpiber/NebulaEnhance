@@ -32,7 +32,7 @@ export const html = `
     <div class="body">
       <div class="enhancer-field">
         <div class="enhancer-control">
-          <input type="text" readonly id="enhancer-share-link" placeholder=" " />
+          <input type="text" readonly id="enhancer-share-link" class="enhancer-text-input has-value" />
           <label for="enhancer-share-link">${link}</label>
         </div>
       </div>

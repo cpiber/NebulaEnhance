@@ -16,18 +16,16 @@
       left: 16px;
       position: absolute;
       top: 50%;
-      margin-top: -10px;
+      margin-top: -8px;
       transform-origin: 0% 0%;
       transition: all 0.3s ease-in-out 0s;
       z-index: 100;
       transform: none;
+      pointer-events: none;
     }
 
     input {
-      &[type=text],
-      &[type=number],
-      &[type=email],
-      &[type=password] {
+      &.enhancer-text-input {
         display: block;
         appearance: none;
         border-style: solid;
@@ -58,8 +56,8 @@
         }
 
         &:focus,
-        &:active,
-        &:not(:placeholder-shown) {
+        &.has-value,
+        &[placeholder] {
           & + label {
             color: rgb(135, 200, 234);
             transform: scale(0.8) translate(-5px, -8px);
