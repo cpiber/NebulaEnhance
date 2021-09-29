@@ -237,9 +237,11 @@ function writeJSON(filename = 'manifest.js') {
 export default async args => {
   if (!process.env.YT_API_KEY) {
     console.warn(chalk.stderr.red.bold`YouTube API key empty!`);
-    const input = await question('Proceed? (y/[n]) ');
-    if (input.toLowerCase() != 'y')
-      process.exit(-1);
+    if (!process.env.CI) {
+      const input = await question('Proceed? (y/[n]) ');
+      if (input.toLowerCase() != 'y')
+        process.exit(-1);
+    }
   }
   readline.close();
 
