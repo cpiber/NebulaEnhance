@@ -2,6 +2,7 @@ import { jest } from '@jest/globals';
 import { login, setSettings, videoSelector } from '../shared';
 
 jest.setTimeout(20000);
+jest.retryTimes(2);
 
 let somevideo: string;
 beforeAll(async () => {

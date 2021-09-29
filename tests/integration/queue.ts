@@ -2,6 +2,7 @@ import { jest } from '@jest/globals';
 import { addToQueue, expectQueueLength, login, qbuttSelector, queueSelector, titles, videoSelector, waitForPlayerInit } from '../shared';
 
 jest.setTimeout(20000);
+jest.retryTimes(2);
 
 beforeAll(async () => {
   await login();
