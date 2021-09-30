@@ -1,5 +1,5 @@
 import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString } from './background';
-import { BrowserMessage, getBrowserInstance, nebulavideo, parseTypeObject } from './helpers/sharedExt';
+import { BrowserMessage, getBrowserInstance, getFromStorage, nebulavideo, parseTypeObject } from './helpers/sharedExt';
 
 const videoFetchYt = 50;
 const videoFetchNebula = 50;
@@ -29,8 +29,8 @@ getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
     await local.clear();
   }
 
-  const show: boolean = (await (sync || local).get({ showChangelogs: true })).showChangelogs;
-  const version: string = (await (sync || local).get({ lastVersion: '-1' })).lastVersion;
+  const show = (await getFromStorage({ showChangelogs: true })).showChangelogs;
+  const version = (await getFromStorage({ lastVersion: '-1' })).lastVersion;
   console.debug(show, version, details.reason);
   if (details.reason === 'install' || (show && version !== getBrowserInstance().runtime.getManifest().version))
     openOptions(false, 'show-changelogs');
@@ -109,7 +109,7 @@ const openOptions = (active = true, ...args: string[]) => {
 };
 
 (async () => {
-  const yt: boolean = (await (sync || local).get({ youtube: false })).youtube;
+  const yt = (await getFromStorage({ youtube: false })).youtube;
   if (!yt) return;
   console.debug(await loadCreators());
 })();
