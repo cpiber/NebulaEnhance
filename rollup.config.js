@@ -114,7 +114,6 @@ const css = (args) =>
           plugins: [ autoprefixer(), presetEnv() ],
           extract: true,
           sourceMap: !process.env.BUILD,
-          fiber: require('fibers'),
         }),
         remove(),
       ],
@@ -248,7 +247,7 @@ export default async args => {
   if (!args.silent)
     console.info(`Build mode ${process.env.BUILD ? 'on' : 'off'}.`);
 
-  const type = args.configType?.toLowerCase();
+  const type = args.configType && args.configType.toLowerCase() || '';
   switch (type) {
     case 'js':
       return js(args);

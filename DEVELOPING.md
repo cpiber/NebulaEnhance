@@ -8,6 +8,11 @@ Please make sure you have [NodeJS](https://nodejs.org/) and it's package manager
   - Alternatively you can also run `npm run start` and `npm run ext:firefox` / `npm run ext:chromium` in different terminals to separate the building and reloading of the extension
 - Build: `npm run build`
 
+## Node versions:
+
+- Building: Min. tested version is `node v12` (v12.22.6) (pnpm needs `>=12.17`), but doesn't run tests properly (unit tests fail)
+- Full: Min tested version is `node v14` (tested w/ v14.18.0, v15.14.0, v16.10.0)
+
 
 # Coding
 
