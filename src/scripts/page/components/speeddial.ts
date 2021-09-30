@@ -12,7 +12,7 @@ const SpeedDial = async (playbackChange: number) => {
   const speed = await sendMessage(Message.GET_MESSAGE, { message: 'playerSpeed' });
 
   const MenuButton = window.videojs.getComponent('MenuButton');
-  type T = Instance<typeof MenuButton> & Dial;
+  type T = InstanceType<typeof MenuButton> & Dial;
   return window.videojs.extend(MenuButton, {
     constructor(this: T) {
       MenuButton.apply(this, arguments as FnArgs<typeof MenuButton>);

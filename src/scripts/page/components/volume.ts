@@ -8,7 +8,7 @@ type Control = {
 
 const VolumeText = (show: boolean) => {
   const TimeDisplay = window.videojs.getComponent('TimeDisplay');
-  type T = Instance<typeof TimeDisplay> & Control;
+  type T = InstanceType<typeof TimeDisplay> & Control;
   return window.videojs.extend(TimeDisplay, {
     timeout: null,
     constructor(this: T) {

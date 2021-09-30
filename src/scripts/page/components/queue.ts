@@ -11,7 +11,7 @@ const QueueButton = async (next: boolean) => {
   const text = await sendMessage(Message.GET_MESSAGE, { message: `pageQueue${next ? 'Next' : 'Prev'}` });
 
   const MenuButton = window.videojs.getComponent('MenuButton');
-  type T = Instance<typeof MenuButton> & Button;
+  type T = InstanceType<typeof MenuButton> & Button;
   return window.videojs.extend(MenuButton, {
     tooltip: null,
     constructor(this: T) {

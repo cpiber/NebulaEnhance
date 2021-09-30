@@ -1,7 +1,7 @@
 
 const Time = () => {
   const Component = window.videojs.getComponent('ClickableComponent');
-  type T = Instance<typeof Component>;
+  type T = InstanceType<typeof Component>;
   const comp = window.videojs.extend(Component, {
     constructor(this: T) {
       Component.apply(this, arguments as FnArgs<typeof Component>);

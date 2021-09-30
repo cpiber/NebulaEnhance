@@ -64,6 +64,7 @@ export const initPlayer = async () => {
     addPlayerControls(player, autoplay);
 
   const { canNext, canPrev, length: queueLen } = await sendMessage(Message.GET_QSTATUS);
+  console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev, 'queueLen:', queueLen);
   updatePlayerControls(player, canNext, canPrev);
   if (autoplay || (autoplayQueue && queueLen))
     player.play();
@@ -149,9 +150,8 @@ const addPlayerControls = (player: VPlayer, autoplay: boolean) => {
 
 export const updatePlayerControls = (player: VPlayer, canNext: boolean, canPrev: boolean) => {
   if (!player) return;
-  console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev);
-  (player.controlBar.getChild('QueueNext') as Instance<Comp<typeof QueueButton>>).toggle(canNext);
-  (player.controlBar.getChild('QueuePrev') as Instance<Comp<typeof QueueButton>>).toggle(canPrev);
+  (player.controlBar.getChild('QueueNext') as InstanceType<Comp<typeof QueueButton>>).toggle(canNext);
+  (player.controlBar.getChild('QueuePrev') as InstanceType<Comp<typeof QueueButton>>).toggle(canPrev);
 };
 
 const keydownHandler = (playbackChange: number, e: KeyboardEvent) => {
@@ -218,5 +218,5 @@ const wheelHandler = async (volumeChange: number, volumeLog: boolean, e: WheelEv
   const n = volumeLog ? Math.pow(Math.max(v, 0), pow) : v; // if log, also take care that it's not negative (x^2 increases again below x=0)
   player.volume(e.deltaY * volumeChange > 0 && n < 0.01 ? 0 : n); // lower volume and below threshold -> mute
 
-  (player.controlBar.getChild('VolumeText') as Instance<Comp<typeof VolumeText>>).show();
+  (player.controlBar.getChild('VolumeText') as InstanceType<Comp<typeof VolumeText>>).show();
 };
