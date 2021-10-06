@@ -50,8 +50,10 @@ load(true).then(aChange).then(vChange);
   document.body.classList.remove('show-changelogs');
   window.location.hash = document.body.className;
 
-  const show: boolean = (await getFromStorage({ showChangelogs: true })).showChangelogs;
-  const version: string = (await getFromStorage({ lastVersion: '-1' })).lastVersion;
+  const { showChangelogs: show, lastVersion: version, theme } = await getFromStorage({ showChangelogs: true, lastVersion: '-1', theme: '' });
+
+  if (theme === 'dark' || theme === 'light') document.querySelector('html').setAttribute('data-theme', theme);
+
   const actualVersion = getBrowserInstance().runtime.getManifest().version;
   const installed = version === '-1';
   console.debug(show, version, actualVersion, installed);

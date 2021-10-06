@@ -1,7 +1,7 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { durationLocation, queueBottonLocation } from '../../helpers/locations';
-import { BrowserMessage, clone, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoPage, mutation, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, clone, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoPage, mutation, setToStorage, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
@@ -20,6 +20,7 @@ export const nebula = async () => {
   document.addEventListener(`${loadPrefix}-creator`, createLinkForAll);
   document.body.addEventListener('mouseover', hover);
   document.body.addEventListener('click', click);
+  document.querySelector('[href="https://standard.tv/"]')?.nextElementSibling?.nextElementSibling?.addEventListener?.('click', changeTheme);
 
   // inject web content script
   await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
@@ -189,4 +190,10 @@ const createLinkForAll = () => {
   link.href = '#';
   link.classList.add('enhancer-queueButton', 'enhancer-queueButtonAll');
   container.appendChild(link);
+};
+
+const changeTheme = (e: MouseEvent) => {
+  const theme = (e.target as HTMLElement).textContent.toLowerCase();
+  console.debug('Saving theme', theme);
+  setToStorage({ theme });
 };
