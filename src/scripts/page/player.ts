@@ -35,7 +35,7 @@ export const init = async () => {
   await registerComponents(playbackChange, volumeShow);
   setPlayerDefaults(autoplay);
 
-  document.addEventListener('keydown', keydownHandler.bind(null, playbackChange));
+  document.addEventListener('keydown', keydownHandler.bind(null, playbackChange), { capture: true });
   if (volumeEnabled)
     document.addEventListener('wheel', wheelHandler.bind(null, volumeChange, volumeLog), { passive: false });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
@@ -186,6 +186,9 @@ const keydownHandler = (playbackChange: number, e: KeyboardEvent) => {
       break;
     case '>':
       player.playbackRate(Math.round((player.playbackRate() + playbackChange) * 100) / 100);
+      break;
+    case ' ': // normally handled by video.js, but they don't use capture, see #12
+      player.paused() ? player.play() : player.pause();
       break;
     case 'n':
       sendMessage(Message.QUEUE_NEXT, null, false);
