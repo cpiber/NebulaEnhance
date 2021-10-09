@@ -66,16 +66,17 @@ For both `ext:firefox` and `ext:android` you can specify a Firefox profile if yo
 NebulaEnhance
  ├── .env -- Env file. Do not commit.
  ├── .env.sample -- Env file example.
- ├── .eslintrc.js -- ESLint (js linter) config file.
+ ├── .eslintrc.cjs -- ESLint (js linter) config file.
  ├─> .github
- │   └─> workflows
+ │   └─> workflows -- GitHub Actions workflows.
  ├── .gitignore
- ├── .stylelintrc.js -- StyleLint (css linter) config file.
+ ├── .husky -- Husky hook definitions.
+ ├── .stylelintrc.cjs -- StyleLint (css linter) config file.
  ├── DEVELOPING.md
  ├── README.DE.md
  ├── README.md
  ├─> extension-dist (generated) -- Built extension.
- ├── jest-puppeteer.config.js -- Jest-Puppeteer (integration testrunner) config.
+ ├── jest-puppeteer.config.cjs -- Jest-Puppeteer (integration testrunner) config.
  ├── jest.config.js -- Jest (testrunner) config.
  ├── jest.setup.js -- Jest setup file, run before each test file.
  ├─> node_modules (generated) -- Installed packages.
