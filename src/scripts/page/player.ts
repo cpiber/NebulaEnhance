@@ -44,9 +44,11 @@ export const init = async () => {
   const c = visitedColor.split(';')[0];
   if (!c) return;
   const s = document.createElement('style');
-  s.textContent = `:root { --visited-color: ${c}; }`;
+  s.textContent = `
+    :root { --visited-color: ${c}; }
+    a[href^='/videos/']:visited /* video link */ { color: var(--visited-color); }
+  `;
   document.head.appendChild(s);
-  document.body.classList.add('style-visited');
 };
 
 export const initPlayer = async () => {
