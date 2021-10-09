@@ -35,7 +35,8 @@
     "lint:css": "stylelint '**/*.scss'",
     "lint:ext": "web-ext lint",
     "lint-fix": "npm run lint:js -- --fix && npm run lint:css -- --fix && npm run lint:ext",
-    "clean": "rimraf extension-dist"
+    "clean": "rimraf extension-dist",
+    "prepare": "husky install"
   },
   "keywords": [
     "nebula",
@@ -78,6 +79,7 @@
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
     "glob": "^7.2.0",
+    "husky": "^7.0.2",
     "jest": "^27.2.2",
     "jest-puppeteer": "^6.0.0",
     "jsdom": "^17.0.0",
