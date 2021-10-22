@@ -263,7 +263,7 @@ jobs:
       run: |
         locales=$(find extension-dist/_locales -not -name "*.json" -type f)
         scripts=$(find extension-dist/scripts -not -name "*.js" -type f)
-        styles=$(find extension-dist/styles -not -name "*.css" -type f)
+        styles=$(find extension-dist/styles -not -name "*.css" -not -name "*.woff2" -type f)
         if [ -n "$locales" ] || [ -n "$scripts" ] || [ -n "$styles" ]; then
           echo "::group::Files found"
           echo -e "\nIn _locales"
