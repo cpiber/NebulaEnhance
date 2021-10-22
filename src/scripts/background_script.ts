@@ -13,6 +13,8 @@ getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [k
     const msg = parseTypeObject(message);
     console.dev.log('Handling message', msg);
     switch (msg.type) {
+      case BrowserMessage.INIT_PAGE:
+        return openChangelog();
       case BrowserMessage.LOAD_CREATORS:
         return console.debug(await loadCreators());
       case BrowserMessage.GET_YTID:
@@ -29,12 +31,16 @@ getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
     await local.clear();
   }
 
+  if (details.reason === 'install') openOptions(true, 'show-changelogs');
+});
+
+const openChangelog = async () => {
   const show = (await getFromStorage({ showChangelogs: true })).showChangelogs;
   const version = (await getFromStorage({ lastVersion: '-1' })).lastVersion;
-  console.debug(show, version, details.reason);
-  if (details.reason === 'install' || (show && version !== getBrowserInstance().runtime.getManifest().version))
+  console.debug(show, version);
+  if (show && version !== getBrowserInstance().runtime.getManifest().version)
     openOptions(false, 'show-changelogs');
-});
+};
 
 const loadCreators = (() => {
   let promise: Promise<Creator[]> = null;

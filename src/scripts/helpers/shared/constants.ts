@@ -21,6 +21,7 @@ export const QUEUE_KEY = 'enhancer-queue';
 
 
 export const enum BrowserMessage {
+  INIT_PAGE = 'initPageScript',
   LOAD_CREATORS = 'loadCreators',
   GET_YTID = 'getYoutubeId',
   GET_VID = 'getNebulaVid',
