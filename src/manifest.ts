@@ -20,7 +20,6 @@ const manifest: browser._manifest.WebExtensionManifest = {
   content_scripts: [
     {
       matches: [
-        '*://*.watchnebula.com/*',
         '*://*.nebula.app/*',
         '*://*.youtube.com/*',
       ],

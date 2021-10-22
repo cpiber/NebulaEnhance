@@ -35,9 +35,8 @@ getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
 });
 
 const openChangelog = async () => {
-  const show = (await getFromStorage({ showChangelogs: true })).showChangelogs;
-  const version = (await getFromStorage({ lastVersion: '-1' })).lastVersion;
-  console.debug(show, version);
+  const { showChangelogs: show, lastVersion: version } = await getFromStorage({ showChangelogs: true, lastVersion: '-1' });
+  console.debug({ show, version }, 'open changelogs?', show && version !== getBrowserInstance().runtime.getManifest().version);
   if (show && version !== getBrowserInstance().runtime.getManifest().version)
     openOptions(false, 'show-changelogs');
 };
