@@ -18,6 +18,7 @@ div.enhancer-queueButton {
   @include hov {
     @extend %hover;
   }
+
   $self: &;
   @at-root img, picture {
     @include hov {

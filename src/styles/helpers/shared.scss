@@ -16,7 +16,7 @@
     text-align: inherit;
 
     label {
-      color: rgb(159, 158, 156);
+      color: rgb(159 158 156);
       font-size: 12px;
       left: 16px;
       position: absolute;
@@ -49,21 +49,21 @@
 
         @include light {
           background: #ffffff;
-          border-color: rgba(34, 36, 38, 0.15);
-          color: rgb(0, 20, 30);
+          border-color: rgb(34 36 38 / 0.15);
+          color: rgb(0 20 30);
         }
 
         @include dark {
-          background: rgb(17, 23, 25);
-          border-color: rgb(119, 119, 119);
-          color: rgb(247, 247, 247);
+          background: rgb(17 23 25);
+          border-color: rgb(119 119 119);
+          color: rgb(247 247 247);
         }
 
         &:focus,
         &.has-value,
         &[placeholder] {
           & + label {
-            color: rgb(135, 200, 234);
+            color: rgb(135 200 234);
             transform: scale(0.8) translate(-5px, -8px);
           }
         }
@@ -95,14 +95,14 @@
 
       @include light {
         background: #ffffff;
-        border-color: rgba(34, 36, 38, 0.15);
-        color: rgb(0, 20, 30);
+        border-color: rgb(34 36 38 / 0.15);
+        color: rgb(0 20 30);
       }
 
       @include dark {
-        background: rgb(17, 23, 25);
-        border-color: rgb(119, 119, 119);
-        color: rgb(247, 247, 247);
+        background: rgb(17 23 25);
+        border-color: rgb(119 119 119);
+        color: rgb(247 247 247);
       }
     }
   }
@@ -131,13 +131,13 @@
 
 .enhancer-button {
   appearance: none;
-  border: 1px solid rgb(111, 188, 230);
+  border: 1px solid rgb(111 188 230);
   cursor: pointer;
   font-family: inherit;
   line-height: 1em;
   text-shadow: none;
   background: transparent;
-  color: rgb(111, 188, 230);
+  color: rgb(111 188 230);
   border-radius: 6px;
   font-size: 13px;
   font-weight: normal;
@@ -147,6 +147,6 @@
   box-shadow: none;
 
   &:focus {
-    box-shadow: rgb(82 180 233 / 50%) 0 0 10px;
+    box-shadow: rgb(82 180 233 / 0.5) 0 0 10px;
   }
 }

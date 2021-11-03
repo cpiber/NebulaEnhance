@@ -6,10 +6,10 @@
 
 %box-shadow {
   @include light {
-    box-shadow: rgb(0, 0, 0, 0.2) 0 6px 24px;
+    box-shadow: rgb(0 0 0 / 0.2) 0 6px 24px;
   }
   @include dark {
-    box-shadow: rgb(45, 45, 45, 0.8) 0 6px 20px;
+    box-shadow: rgb(45 45 45 / 0.8) 0 6px 20px;
   }
 }
 

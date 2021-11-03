@@ -38,7 +38,7 @@
   .top {
     @extend %panel;
 
-    border-bottom: 1px solid rgba(85, 85, 85, 0.1);
+    border-bottom: 1px solid rgb(85 85 85 / 0.1);
 
     &::after {
       top: unset;
@@ -104,8 +104,7 @@
     .element {
       position: relative;
       display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
+      flex-flow: row nowrap;
       align-items: center;
       cursor: pointer;
       padding: 4px 8px;
@@ -203,7 +202,7 @@
         .title {
           font-size: 14px;
           max-height: 42px;
-          display: -webkit-box; // line-clamp only works with this older version of flex
+          display: box; // line-clamp only works with this older version of flex
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
         }
