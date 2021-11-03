@@ -20,7 +20,6 @@ export const nebula = async () => {
   document.addEventListener(`${loadPrefix}-creator`, createLinkForAll);
   document.body.addEventListener('mouseover', hover);
   document.body.addEventListener('click', click);
-  document.querySelector('[href="https://standard.tv/"]')?.nextElementSibling?.nextElementSibling?.addEventListener?.('click', changeTheme);
 
   // inject web content script
   await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
@@ -92,6 +91,9 @@ const createLink = (img: HTMLImageElement) => {
 const click = async (e: MouseEvent) => {
   const q = Queue.get();
   const target = e.target as HTMLElement;
+
+  if (target.closest('[href="https://standard.tv/"] + * + * > *:nth-child(2)'))
+    return changeTheme(e);
 
   const addAll = target.closest('.enhancer-queueButtonAll');
   if (addAll !== null) {
