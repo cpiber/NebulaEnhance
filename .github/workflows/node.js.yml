@@ -239,15 +239,7 @@ jobs:
       env:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
     - name: Verify no debug artifacts
-      run: |
-        dev=$(grep --color=always "devClone\|devExport\|(()=>{})" $(find extension-dist -name "*.js") || echo "")
-        if [ -n "$dev" ]; then
-          echo "::group::Invalid statements"
-          echo "$dev"
-          echo "::endgroup::"
-          echo "::error ::Found statements that shouldn't be in the production build!"
-          exit 1
-        fi
+      run: chmod +x .github/verify-artifacts.sh && .github/verify-artifacts.sh
       shell: bash
     - name: Run addon linter on non-minified
       run: npm run lint:ext
@@ -260,22 +252,7 @@ jobs:
           extension-dist/
 
     - name: Verify directory structure
-      run: |
-        locales=$(find extension-dist/_locales -not -name "*.json" -type f)
-        scripts=$(find extension-dist/scripts -not -name "*.js" -type f)
-        styles=$(find extension-dist/styles -not -name "*.css" -not -name "*.woff2" -type f)
-        if [ -n "$locales" ] || [ -n "$scripts" ] || [ -n "$styles" ]; then
-          echo "::group::Files found"
-          echo -e "\nIn _locales"
-          echo "$locales"
-          echo -e "\nIn scripts"
-          echo "$scripts"
-          echo -e "\nIn styles"
-          echo "$styles"
-          echo "::endgroup::"
-          echo "::error ::Found files that do not belong!"
-          exit 1
-        fi
+      run: chmod +x .github/verify-dirs.sh && .github/verify-dirs.sh
       shell: bash
     - name: Run linters
       run: npm run lint
