@@ -66,3 +66,10 @@ Player with new controls (Queue next/previous, volume indicator, time remaining,
 # Developing
 
 See [DEVELOPING.md](DEVELOPING.md)
+
+
+# Credits
+
+Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/) and modified.
+
+Theme by @groenroos.
