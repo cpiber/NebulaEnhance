@@ -18,13 +18,14 @@ let optionsURL: string;
 const b = (browser as never as Browser);
 declare const chrome: typeof browser;
 
-export const login = async () => {
+export const login = async (force = false) => {
   console.log('Using base', __NEBULA_BASE__);
 
   await page.goto('chrome://settings');
   optionsURL = await page.evaluate(async () => (await chrome.management.getAll())[0].optionsUrl);
   await page.goto(`${__NEBULA_BASE__}/login`);
-  if (await page.evaluate(() => document.cookie.indexOf('nebula-auth')) !== -1)
+  await page.bringToFront();
+  if (!force && await page.evaluate(() => document.cookie.indexOf('nebula-auth')) !== -1)
     return;
 
   await expect(page).toFillForm(formSelector, {
@@ -33,6 +34,20 @@ export const login = async () => {
   });
   await expect(page).toClick(`${formSelector} button`, { text: 'Sign In' });
   await page.waitForSelector('[href="/account"]'); // wait until logged in
+};
+
+export const maybeLogin = (cb: () => Promise<void>) => async () => {
+  // Every so often, Nebula logs us out
+  // in particular, it seems the combination of reloading the page and clearing localstorage does this
+  // even though the cookie appears to still be there
+  // happens most often on `ignores completed queue` and `adds proper controls`
+  await page.bringToFront();
+  await cb();
+  if ((await page.$x('//button[contains(text(), "Sign Up")]')).length == 0)
+    return;
+  console.log('Had to login again...', expect.getState().currentTestName);
+  await login(true);
+  await cb();
 };
 
 export const setSettings = async (set: { [key: string]: string | boolean}) => {

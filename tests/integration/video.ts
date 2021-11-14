@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { login, setSettings, videoSelector } from '../shared';
+import { login, maybeLogin, setSettings, videoSelector } from '../shared';
 
 jest.setTimeout(20000);
 jest.retryTimes(2);
@@ -35,7 +35,7 @@ const gotoPlayer = async () => {
   player = await page.$eval('.video-js', el => el.id);
 };
 describe('video player', () => {
-  beforeEach(gotoPlayer);
+  beforeEach(maybeLogin(gotoPlayer));
 
   test('controls present', async () => {
     await expect(page).toMatchElement('.enhancer-speed', { timeout: 0 });

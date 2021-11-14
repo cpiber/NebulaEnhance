@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { addToQueue, expectQueueLength, login, qbuttSelector, queueSelector, titles, videoSelector, waitForPlayerInit } from '../shared';
+import { addToQueue, expectQueueLength, login, maybeLogin, qbuttSelector, queueSelector, titles, videoSelector, waitForPlayerInit } from '../shared';
 
 jest.setTimeout(20000);
 jest.retryTimes(2);
@@ -13,10 +13,10 @@ beforeAll(async () => {
 });
 
 describe('videos page', () => {
-  beforeEach(async () => {
+  beforeEach(maybeLogin(async () => {
     await page.goto(`${__NEBULA_BASE__}/videos`);
     await page.waitForSelector(videoSelector);
-  });
+  }));
 
   afterEach(async () => {
     await page.evaluate(() => window.localStorage.clear());
@@ -68,10 +68,10 @@ describe('videos page', () => {
 });
 
 describe('queue', () => {
-  beforeEach(async () => {
+  beforeEach(maybeLogin(async () => {
     await page.goto(`${__NEBULA_BASE__}/videos`);
     await page.waitForSelector(videoSelector);
-  });
+  }));
 
   afterEach(async () => {
     await page.evaluate(() => window.localStorage.clear());
@@ -80,9 +80,9 @@ describe('queue', () => {
   test('can clear queue', async () => {
     await addToQueue(3);
     await expectQueueLength().toBe(3);
-    (await expect(page).toDisplayDialog(() => page.click(`${queueSelector} .close`))).dismiss();
+    await (await expect(page).toDisplayDialog(() => page.click(`${queueSelector} .close`))).dismiss();
     await expectQueueLength().toBe(3);
-    (await expect(page).toDisplayDialog(() => page.click(`${queueSelector} .close`))).accept();
+    await (await expect(page).toDisplayDialog(() => page.click(`${queueSelector} .close`))).accept();
     await expectQueueLength().toBe(0);
   });
 
