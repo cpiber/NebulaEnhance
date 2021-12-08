@@ -6,7 +6,7 @@ import { creatorRegex, loadPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
 
-const videoselector = 'a[href^="/videos/"]';
+const videoselector = 'a[href^="/videos/"][aria-hidden]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 
 export const nebula = async () => {
