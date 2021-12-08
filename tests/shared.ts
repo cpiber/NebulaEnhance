@@ -1,13 +1,19 @@
 import type { Browser } from 'puppeteer';
 
-export const videoSelector = 'a[href^="/videos/"]';
+export const videoSelector = 'a[href^="/videos/"][aria-hidden]';
 export const qbuttSelector = '.enhancer-queueButton';
 export const queueSelector = '.enhancer-queue';
 
+let actualVideoSelector: string = null;
+
+export const getNthVideo = async (num: number) => {
+  if (actualVideoSelector === null) actualVideoSelector = await page.$eval(videoSelector, el => el.className);
+  return `.${actualVideoSelector}:nth-child(${num})`;
+};
 export const addToQueue = async (num: number, offset = 0) => {
   for (let index = 0; index < num; index++) {
-    await page.hover(`${videoSelector}:nth-child(${index + 1 + offset}) img`);
-    await page.click(`${videoSelector}:nth-child(${index + 1 + offset}) ${qbuttSelector}`);
+    await page.hover(`${await getNthVideo(index + 1 + offset)} img`);
+    await page.click(`${await getNthVideo(index + 1 + offset)} ${qbuttSelector}`);
   }
 };
 export const expectQueueLength = () => expect(page.evaluate(sel => document.querySelector(`${sel} .elements`).children.length, queueSelector)).resolves;

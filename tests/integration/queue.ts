@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { addToQueue, expectQueueLength, login, maybeLogin, qbuttSelector, queueSelector, titles, videoSelector, waitForPlayerInit } from '../shared';
+import { addToQueue, expectQueueLength, getNthVideo, login, maybeLogin, qbuttSelector, queueSelector, titles, videoSelector, waitForPlayerInit } from '../shared';
 
 jest.setTimeout(20000);
 jest.retryTimes(2);
@@ -39,7 +39,7 @@ describe('videos page', () => {
       return document.querySelectorAll(sel).length > n;
     }, {}, videoSelector, cnt);
 
-    const v2 = await page.waitForSelector(`${videoSelector}:nth-child(${cnt + 1})`);
+    const v2 = await page.waitForSelector(await getNthVideo(cnt + 1));
     expect(await page.evaluate(s => document.querySelectorAll(s).length, videoSelector)).toBeGreaterThan(cnt);
     await (await v2.$('img')).hover();
     await expect(v2).toMatchElement(qbuttSelector);
@@ -54,8 +54,8 @@ describe('videos page', () => {
     const title = await page.evaluate(sel => document.querySelector(`${sel} > :last-child > :nth-child(2)`).textContent, videoSelector);
     await expect(page.evaluate(sel => document.querySelector(`${sel} .element .title`).textContent, queueSelector)).resolves.toEqual(title);
 
-    await page.hover(`${videoSelector}:nth-child(2) img`);
-    await page.click(`${videoSelector}:nth-child(2) ${qbuttSelector}`);
+    await page.hover(`${await getNthVideo(2)} img`);
+    await page.click(`${await getNthVideo(2)} ${qbuttSelector}`);
     await expectQueueLength().toBe(2);
 
     expect(
