@@ -7,7 +7,7 @@ export const queueSelector = '.enhancer-queue';
 let actualVideoSelector: string = null;
 
 export const getNthVideo = async (num: number) => {
-  if (actualVideoSelector === null) actualVideoSelector = await page.$eval(videoSelector, el => el.className);
+  if (actualVideoSelector === null) actualVideoSelector = await page.$eval(videoSelector, el => el.parentElement.className);
   return `.${actualVideoSelector}:nth-child(${num})`;
 };
 export const addToQueue = async (num: number, offset = 0) => {

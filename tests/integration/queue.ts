@@ -51,7 +51,7 @@ describe('videos page', () => {
     await expectQueueLength().toBe(1);
     await page.click(`${videoSelector} ${qbuttSelector}`);
     await expectQueueLength().toBe(1); // don't add another
-    const title = await page.evaluate(sel => document.querySelector(`${sel} > :last-child > :nth-child(2)`).textContent, videoSelector);
+    const title = await page.evaluate(sel => document.querySelector(`${sel} ~ div > :last-child > :first-child`).textContent, videoSelector);
     await expect(page.evaluate(sel => document.querySelector(`${sel} .element .title`).textContent, queueSelector)).resolves.toEqual(title);
 
     await page.hover(`${await getNthVideo(2)} img`);
