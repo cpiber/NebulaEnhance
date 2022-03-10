@@ -22,7 +22,7 @@ Number.prototype.pad = function (this: number, length: number) {
 export const dot = (t1: number[], t2: number[]) => t1.length === t2.length && t1.reduce((prev, cur, index) => prev + cur * t2[index], 0);
 export const norm = (t: number[]) => Math.sqrt(t.reduce((p, v) => p + v * v, 0));
 
-export const mutation = <T extends any[]>(func: (...args: T) => void, time = 500, ...args: T) => {
+export const debounce = <T extends any[]>(func: (...args: T) => void, time = 500, ...args: T) => {
   let timeout = 0;
   return () => {
     window.clearTimeout(timeout);

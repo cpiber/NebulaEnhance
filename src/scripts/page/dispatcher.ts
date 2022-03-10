@@ -3,10 +3,12 @@ import { clone, videoUrlMatch } from '../helpers/shared';
 export const eventPrefix = 'enebula' as const;
 export const navigatePrefix = `${eventPrefix}-navigate` as const;
 export const loadPrefix = `${eventPrefix}-load` as const;
+export const xhrPrefix = `${eventPrefix}-xhr` as const;
 export const knownPages = [ 'myshows', 'videos', 'podcasts', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs' ] as const;
 
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
+export const videoselector = 'a[href^="/videos/"][aria-hidden]';
 
 export const init = () => {
   const origPushState = history.pushState;
@@ -16,6 +18,14 @@ export const init = () => {
   };
   window.addEventListener('popstate', navigation);
   navigation();
+
+  const xhropen = window.XMLHttpRequest.prototype.open;
+  window.XMLHttpRequest.prototype.open = function (this: InstanceType<typeof XMLHttpRequest>) {
+    this.addEventListener('loadend', () => {
+      document.dispatchEvent(new CustomEvent(xhrPrefix, { detail: this }));
+    });
+    return xhropen.apply(this, arguments as unknown as FnArgs<typeof xhropen>);
+  };
 };
 
 let currenturl = '';
@@ -45,7 +55,7 @@ const naviage = (page: string, from: string, data: { [key: string]: any } = {}) 
   console.debug('Navigating to page', page, 'from', from);
   const detail = clone({ detail: { page, from, ...data } });
   currentDetail = detail;
-  // document.dispatchEvent(new CustomEvent(navigatePrefix, detail));
+  document.dispatchEvent(new CustomEvent(navigatePrefix, detail));
   document.dispatchEvent(new CustomEvent(`${navigatePrefix}-${page}`, detail));
   currentlyloading = window.location.href;
 
@@ -62,6 +72,10 @@ const loading = () => {
       if (document.querySelectorAll('h2').length >= 2)
         load();
       break;
+    case 'videos':
+      if (document.querySelectorAll(videoselector).length)
+        load();
+      break;
     default:
       load();
       break;
@@ -70,7 +84,7 @@ const loading = () => {
 
 const load = () => {
   console.debug('Loading finished for page', currentDetail.detail.page);
-  // document.dispatchEvent(new CustomEvent(loadPrefix, currentDetail));
+  document.dispatchEvent(new CustomEvent(loadPrefix, currentDetail));
   document.dispatchEvent(new CustomEvent(`${loadPrefix}-${currentDetail.detail.page}`, currentDetail));
   currentDetail = null;
   currentlyloading = null;

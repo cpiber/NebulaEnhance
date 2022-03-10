@@ -1,12 +1,11 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { durationLocation, queueBottonLocation } from '../../helpers/locations';
-import { BrowserMessage, clone, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoPage, mutation, setToStorage, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
-import { creatorRegex, loadPrefix } from '../../page/dispatcher';
+import { BrowserMessage, clone, debounce, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoPage, setToStorage, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
 
-const videoselector = 'a[href^="/videos/"][aria-hidden]';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 
 export const nebula = async () => {
@@ -18,8 +17,11 @@ export const nebula = async () => {
   window.addEventListener('hashchange', hashChange);
   document.addEventListener(`${loadPrefix}-video`, maybeLoadComments.bind(null, youtube));
   document.addEventListener(`${loadPrefix}-creator`, createLinkForAll);
+  document.addEventListener(loadPrefix, doVideoActions);
+  document.addEventListener(xhrPrefix, doVideoActions);
   document.body.addEventListener('mouseover', hover);
   document.body.addEventListener('click', click);
+  doVideoActions();
 
   // inject web content script
   await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
@@ -29,15 +31,6 @@ export const nebula = async () => {
   await hashChange();
   await Queue.get().restoreStorage();
   await maybeLoadComments(youtube);
-
-  const cb = mutation(() => {
-    // substitute hover listener
-    if (isMobile())
-      Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
-  }, 1000);
-  const m = new MutationObserver(cb);
-  m.observe(document.querySelector('#root'), { subtree: true, childList: true });
-  cb();
 
   // inject custom script (if available)
   if (customScriptPage)
@@ -59,6 +52,12 @@ export const nebula = async () => {
     else devExport(key, () => clone(queue[key]), 'queue');
   });
 };
+
+const doVideoActions = debounce(() => {
+  // add links on mobile to substitute hover
+  if (isMobile())
+    Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
+}, 500);
 
 const imgLink = (e: HTMLElement) => {
   // check if element is the image in a video link
