@@ -1,7 +1,7 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
-import { durationLocation, queueBottonLocation } from '../../helpers/locations';
-import { BrowserMessage, clone, debounce, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoPage, setToStorage, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { creatorLink, durationLocation, queueBottonLocation } from '../../helpers/locations';
+import { BrowserMessage, clone, debounce, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
@@ -9,19 +9,21 @@ import { handle } from './message';
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 
 export const nebula = async () => {
-  const { youtube, customScriptPage } = await getFromStorage({ youtube: false, customScriptPage: '' });
+  const { youtube, customScriptPage, hiddenCreators } = await getFromStorage({ youtube: false, customScriptPage: '', hiddenCreators: [] as string[] });
   console.debug('Youtube:', youtube);
+  console.debug('Hiding', hiddenCreators.length, 'creators');
 
   // attach listeners
+  const cb = debounce(doVideoActions, 500, hiddenCreators);
   window.addEventListener('message', handle);
   window.addEventListener('hashchange', hashChange);
   document.addEventListener(`${loadPrefix}-video`, maybeLoadComments.bind(null, youtube));
   document.addEventListener(`${loadPrefix}-creator`, createLinkForAll);
-  document.addEventListener(loadPrefix, doVideoActions);
-  document.addEventListener(xhrPrefix, doVideoActions);
+  document.addEventListener(loadPrefix, cb);
+  document.addEventListener(xhrPrefix, cb);
   document.body.addEventListener('mouseover', hover);
   document.body.addEventListener('click', click);
-  doVideoActions();
+  cb();
 
   // inject web content script
   await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
@@ -53,11 +55,14 @@ export const nebula = async () => {
   });
 };
 
-const doVideoActions = debounce(() => {
+const doVideoActions = (hiddenCreators: string[]) => {
   // add links on mobile to substitute hover
   if (isMobile())
     Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
-}, 500);
+  // hide creators
+  if (isVideoListPage())
+    Array.from(document.querySelectorAll<HTMLImageElement>(videoselector)).forEach(el => hideVideo(el, hiddenCreators));
+};
 
 const imgLink = (e: HTMLElement) => {
   // check if element is the image in a video link
@@ -197,4 +202,12 @@ const changeTheme = (e: MouseEvent) => {
   const theme = (e.target as HTMLElement).textContent.toLowerCase();
   console.debug('Saving theme', theme);
   setToStorage({ theme });
+};
+
+const hideVideo = (el: HTMLElement, hiddenCreators: string[]) => {
+  const creator = creatorLink(el)?.substring(1);
+  if (!creator) return;
+  if (hiddenCreators.indexOf(creator) === -1) return;
+  console.debug('Hiding video by creator', creator);
+  el.parentElement.remove();
 };
