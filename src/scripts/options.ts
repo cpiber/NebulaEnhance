@@ -1,6 +1,7 @@
 import { BrowserMessage, getBrowserInstance, getFromStorage, isMobile, setToStorage } from './helpers/sharedExt';
 import { load } from './options/form';
 import { showLogs } from './options/logs';
+import { showManageCreators } from './options/managecreators';
 import { Settings } from './options/settings';
 import { standalone } from './options/standalone';
 
@@ -38,6 +39,7 @@ const vChange = () => {
 els.volumeEnabled.addEventListener('change', vChange);
 
 document.querySelector('#showChangelogsNow').addEventListener('click', () => showLogs(getBrowserInstance().runtime.getManifest().version));
+document.querySelector('#manageHiddenCreators').addEventListener('click', showManageCreators);
 
 // load initial values from storage
 load(true).then(aChange).then(vChange);

@@ -107,6 +107,14 @@
     "message": "Invalid color",
     "description": "Hint for invalid visited color of options page."
   },
+  "optionsManageHiddenCreators": {
+    "message": "Manage hidden creators",
+    "description": "Button text to manage hidden creators"
+  },
+  "optionsManageHiddenCreatorsNone": {
+    "message": "No creators hidden",
+    "description": "Hint that no creators are hidden"
+  },
   "optionsCustomScriptPageTitle": {
     "message": "Custom script for page",
     "description": "Label for adding custom scripts to webpage of options page."

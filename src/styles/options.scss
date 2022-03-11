@@ -76,6 +76,40 @@ form {
   color: #eeeeee;
 }
 
+.hidden-creator {
+  h2 {
+    display: flex;
+    align-items: center;
+  }
+
+  .hide-creator {
+    display: flex;
+    border: none;
+    background: none;
+    width: 1.3em;
+    height: 1.3em;
+    color: inherit;
+    opacity: 0.7;
+    cursor: pointer;
+    position: relative;
+    padding: 0 0 0 5px;
+    margin-left: 6px;
+
+    svg {
+      fill: white;
+      fill: currentColor;
+    }
+  }
+}
+
+.manage-hidden .body > p {
+  font-style: italic;
+
+  &:not(:last-child) {
+    display: none;
+  }
+}
+
 .modal {
   $mtop: 12px;
   $mleft: 20px;
