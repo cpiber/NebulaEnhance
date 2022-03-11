@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 import { JSDOM } from 'jsdom';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { Events, Message, clone, dot, getCookie, injectFunction, injectScript, isMobile, isVideoListPage, isVideoPage, mutation, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
+import { Events, Message, clone, debounce, dot, getCookie, injectFunction, injectScript, isMobile, isVideoListPage, isVideoPage, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -113,10 +113,10 @@ describe('other', () => {
     expect(clone(obj)).toEqual(obj);
   });
 
-  test('mutation debounces calls', () => {
+  test('debounce debounces calls', () => {
     jest.useFakeTimers();
     const mock = jest.fn();
-    const m = mutation(mock);
+    const m = debounce(mock);
     for (let i = 0; i < 10; i++)
       m();
     jest.runAllTimers();
