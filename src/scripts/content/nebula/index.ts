@@ -222,20 +222,20 @@ const insertHideButton = async () => {
   const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? container.lastElementChild as HTMLElement : undefined;
   if (follow) follow.style.marginRight = '3em';
 
-  const buttonHide = document.createElement('button');
-  buttonHide.innerHTML = iconHide;
-  buttonHide.classList.add('enhancer-hideCreator', 'hide');
-  buttonHide.setAttribute('aria-label', hideCreator);
-  buttonHide.title = hideCreator;
-  container.appendChild(buttonHide);
-  const buttonShow = document.createElement('button');
-  buttonShow.innerHTML = iconShow;
-  buttonShow.classList.add('enhancer-hideCreator', 'show');
-  buttonShow.setAttribute('aria-label', showCreator);
-  buttonShow.title = showCreator;
-  container.appendChild(buttonShow);
+  const buttonHiden = document.createElement('button');
+  buttonHiden.innerHTML = iconShow;
+  buttonHiden.classList.add('enhancer-hideCreator', 'hide');
+  buttonHiden.setAttribute('aria-label', hideCreator);
+  buttonHiden.title = hideCreator;
+  container.appendChild(buttonHiden);
+  const buttonShown = document.createElement('button');
+  buttonShown.innerHTML = iconHide;
+  buttonShown.classList.add('enhancer-hideCreator', 'show');
+  buttonShown.setAttribute('aria-label', showCreator);
+  buttonShown.title = showCreator;
+  container.appendChild(buttonShown);
   ({ hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] }));
-  h2.classList.toggle('hidden', hiddenCreators.includes(window.location.pathname.substring(1)));
+  h2.classList.toggle('hidden', hiddenCreators.includes(window.location.pathname.split('/')[1]));
 };
 
 const changeTheme = (e: MouseEvent) => {
@@ -245,7 +245,7 @@ const changeTheme = (e: MouseEvent) => {
 };
 
 const hideVideo = (el: HTMLElement, hiddenCreators: string[]) => {
-  const creator = creatorLink(el)?.substring(1);
+  const creator = creatorLink(el)?.split('/')?.[1];
   if (!creator) return;
   if (hiddenCreators.indexOf(creator) === -1) return;
   console.debug('Hiding video by creator', creator, `https://nebula.app/${creator}`);
