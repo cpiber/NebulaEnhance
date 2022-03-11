@@ -239,6 +239,10 @@
     "message": "Show this creator again",
     "description": "Button hint to unhide creator"
   },
+  "pageCreatorHidden": {
+    "message": "Creator hidden by you",
+    "description": "Hint on hidden creator"
+  },
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs and Feature Requests</a>",
     "description": "Credit footer."

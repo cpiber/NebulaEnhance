@@ -239,6 +239,10 @@
     "message": "Diesen Kanal wieder anzeigen",
     "description": "Button hinweis um creator nicht mehr zu verstecken"
   },
+  "pageCreatorHidden": {
+    "message": "Kanal wurde von Ihnen versteckt",
+    "description": "Hinweis zu verstecktem Kanal"
+  },
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs und Feature Requests</a>",
     "description": "Credit footer."

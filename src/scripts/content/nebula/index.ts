@@ -8,9 +8,10 @@ import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/d
 import { Queue } from '../queue';
 import { handle } from './message';
 
-const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
-const hideCreator = getBrowserInstance().i18n.getMessage('pageHideCreator');
-const showCreator = getBrowserInstance().i18n.getMessage('pageShowCreator');
+const msg = getBrowserInstance().i18n.getMessage;
+const addToQueue = msg('pageAddToQueue');
+const hideCreator = msg('pageHideCreator');
+const showCreator = msg('pageShowCreator');
 
 let hiddenCreators: string[] = [];
 export const nebula = async () => {
@@ -43,6 +44,11 @@ export const nebula = async () => {
   // inject custom script (if available)
   if (customScriptPage)
     await injectScript(document.body, customScriptPage);
+
+  // set hidden creator overlay content from translation
+  const s = document.createElement('style');
+  s.textContent = `.enhancer-hiddenVideo::after { content: ${JSON.stringify(msg('pageCreatorHidden'))}; }`;
+  document.head.appendChild(s);
 
   document.body.classList.add('enhancer-initialized');
 
@@ -248,7 +254,7 @@ const hideVideo = (el: HTMLElement, hiddenCreators: string[]) => {
   const creator = creatorLink(el)?.split('/')?.[1];
   if (!creator) return;
   if (hiddenCreators.indexOf(creator) === -1) return;
-  console.debug('Hiding video by creator', creator, `https://nebula.app/${creator}`);
+  console.dev.debug('Hiding video by creator', creator, `https://nebula.app/${creator}`);
   if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
   else el.parentElement.classList.add('enhancer-hiddenVideo');
 };
