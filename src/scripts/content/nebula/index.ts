@@ -1,3 +1,5 @@
+import iconHide from '../../../icons/hide.svg';
+import iconShow from '../../../icons/show.svg';
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { creatorLink, durationLocation, queueBottonLocation } from '../../helpers/locations';
@@ -8,22 +10,24 @@ import { handle } from './message';
 
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
 
+let hiddenCreators: string[] = [];
 export const nebula = async () => {
-  const { youtube, customScriptPage, hiddenCreators } = await getFromStorage({ youtube: false, customScriptPage: '', hiddenCreators: [] as string[] });
+  const { youtube, customScriptPage, hiddenCreators: h } = await getFromStorage({ youtube: false, customScriptPage: '', hiddenCreators: [] as string[] });
+  hiddenCreators = h;
   console.debug('Youtube:', youtube);
   console.debug('Hiding', hiddenCreators.length, 'creators');
 
   // attach listeners
-  const cb = debounce(doVideoActions, 500, hiddenCreators);
   window.addEventListener('message', handle);
   window.addEventListener('hashchange', hashChange);
   document.addEventListener(`${loadPrefix}-video`, maybeLoadComments.bind(null, youtube));
   document.addEventListener(`${loadPrefix}-creator`, createLinkForAll);
-  document.addEventListener(loadPrefix, cb);
-  document.addEventListener(xhrPrefix, cb);
+  document.addEventListener(`${loadPrefix}-creator`, insertHideButton);
+  document.addEventListener(loadPrefix, doVideoActions);
+  document.addEventListener(xhrPrefix, doVideoActions);
   document.body.addEventListener('mouseover', hover);
   document.body.addEventListener('click', click);
-  cb();
+  doVideoActions();
 
   // inject web content script
   await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
@@ -55,14 +59,14 @@ export const nebula = async () => {
   });
 };
 
-const doVideoActions = (hiddenCreators: string[]) => {
+const doVideoActions = debounce(() => {
   // add links on mobile to substitute hover
   if (isMobile())
     Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
   // hide creators
   if (isVideoListPage())
     Array.from(document.querySelectorAll<HTMLImageElement>(videoselector)).forEach(el => hideVideo(el, hiddenCreators));
-};
+}, 500);
 
 const imgLink = (e: HTMLElement) => {
   // check if element is the image in a video link
@@ -111,11 +115,20 @@ const click = async (e: MouseEvent) => {
     return;
   }
 
+  const hideCreator = target.closest('.enhancer-hideCreator');
+  if (hideCreator !== null) {
+    const h2 = hideCreator.parentElement?.children[1];
+    console.assert(h2.tagName.toLowerCase() === 'h2', 'Assumed tag of queried element to be `h2`, got `%s`', h2.tagName.toLowerCase());
+    const hide = h2.classList.toggle('hidden');
+    await toggleHideCreator(window.location.pathname.substring(1), hide);
+    return;
+  }
+
   const later = target.closest('.enhancer-queueButton');
   const link = target.closest<HTMLAnchorElement>(videoselector);
   if (link === null)
     return;
-  const name = link.getAttribute('href').substr(8);
+  const name = link.getAttribute('href').substring(8);
   // extract and store information on video
   await q.addToStore(name, link);
   // no queue and video clicked
@@ -198,6 +211,27 @@ const createLinkForAll = () => {
   container.appendChild(link);
 };
 
+const insertHideButton = async () => {
+  document.querySelectorAll('.enhancer-hideCreator').forEach(e => e.remove());
+  const h2 = document.querySelector('h2');
+  const container = h2?.parentElement;
+  if (!container)
+    return;
+  const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? container.lastElementChild as HTMLElement : undefined;
+  if (follow) follow.style.marginRight = '3em';
+
+  const buttonHide = document.createElement('button');
+  buttonHide.innerHTML = iconHide;
+  buttonHide.classList.add('enhancer-hideCreator', 'hide');
+  container.appendChild(buttonHide);
+  const buttonShow = document.createElement('button');
+  buttonShow.innerHTML = iconShow;
+  buttonShow.classList.add('enhancer-hideCreator', 'show');
+  container.appendChild(buttonShow);
+  ({ hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] }));
+  h2.classList.toggle('hidden', hiddenCreators.includes(window.location.pathname.substring(1)));
+};
+
 const changeTheme = (e: MouseEvent) => {
   const theme = (e.target as HTMLElement).textContent.toLowerCase();
   console.debug('Saving theme', theme);
@@ -208,6 +242,17 @@ const hideVideo = (el: HTMLElement, hiddenCreators: string[]) => {
   const creator = creatorLink(el)?.substring(1);
   if (!creator) return;
   if (hiddenCreators.indexOf(creator) === -1) return;
-  console.debug('Hiding video by creator', creator);
+  console.debug('Hiding video by creator', creator, `https://nebula.app/${creator}`);
   el.parentElement.remove();
+};
+
+const toggleHideCreator = async (creator: string, hide: boolean) => {
+  // let's hope we don't get interrupted here, could lose data, but no way to lock...
+  ({ hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] }));
+  const idx = hiddenCreators.indexOf(creator);
+  if (idx !== -1) hiddenCreators.splice(idx, 1);
+  if (hide) hiddenCreators.push(creator);
+  console.debug(hide ? 'Hiding creator' : 'Showing creator', creator,
+    '\nHidden creators:', hiddenCreators.length);
+  await setToStorage({ hiddenCreators });
 };

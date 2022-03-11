@@ -59,6 +59,35 @@ a.enhancer-queueButtonAll {
   }
 }
 
+button.enhancer-hideCreator {
+  grid-area: follow;
+  align-self: center;
+  display: flex;
+  border: none;
+  background: none;
+  width: 1.3em;
+  height: 1.3em;
+  margin-left: auto;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  position: relative;
+  padding: 0 0 0 5px;
+
+  svg {
+    fill: white;
+    fill: currentColor;
+  }
+
+  h2:nth-child(2).hidden ~ &.hide {
+    display: none;
+  }
+
+  h2:nth-child(2):not(.hidden) ~ &.show {
+    display: none;
+  }
+}
+
 .enhancer-yt-err {
   display: none;
 }
