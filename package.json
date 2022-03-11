@@ -1,6 +1,6 @@
 {
   "name": "nebulaenhance",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "private": true,
   "description": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
   "type": "module",
@@ -87,7 +87,7 @@
     "node-fetch": "^3.0.0",
     "postcss": "^8.3.8",
     "postcss-preset-env": "^6.7.0",
-    "puppeteer": "^10",
+    "puppeteer": "^10.4.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.57.0",
     "rollup-jest": "^1.1.3",
