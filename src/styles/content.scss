@@ -88,6 +88,10 @@ button.enhancer-hideCreator {
   }
 }
 
+.enhancer-hiddenVideo > * {
+  opacity: 0.05;
+}
+
 .enhancer-yt-err {
   display: none;
 }

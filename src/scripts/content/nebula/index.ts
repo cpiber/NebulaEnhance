@@ -243,7 +243,8 @@ const hideVideo = (el: HTMLElement, hiddenCreators: string[]) => {
   if (!creator) return;
   if (hiddenCreators.indexOf(creator) === -1) return;
   console.debug('Hiding video by creator', creator, `https://nebula.app/${creator}`);
-  el.parentElement.remove();
+  if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
+  else el.parentElement.classList.add('enhancer-hiddenVideo');
 };
 
 const toggleHideCreator = async (creator: string, hide: boolean) => {
