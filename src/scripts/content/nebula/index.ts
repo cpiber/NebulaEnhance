@@ -3,12 +3,14 @@ import iconShow from '../../../icons/show.svg';
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { creatorLink, durationLocation, queueBottonLocation } from '../../helpers/locations';
-import { BrowserMessage, clone, debounce, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, clone, debounce, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
 
 const addToQueue = getBrowserInstance().i18n.getMessage('pageAddToQueue');
+const hideCreator = getBrowserInstance().i18n.getMessage('pageHideCreator');
+const showCreator = getBrowserInstance().i18n.getMessage('pageShowCreator');
 
 let hiddenCreators: string[] = [];
 export const nebula = async () => {
@@ -120,7 +122,7 @@ const click = async (e: MouseEvent) => {
     const h2 = hideCreator.parentElement?.children[1];
     console.assert(h2.tagName.toLowerCase() === 'h2', 'Assumed tag of queried element to be `h2`, got `%s`', h2.tagName.toLowerCase());
     const hide = h2.classList.toggle('hidden');
-    await toggleHideCreator(window.location.pathname.substring(1), hide);
+    hiddenCreators = await toggleHideCreator(window.location.pathname.substring(1), hide);
     return;
   }
 
@@ -223,10 +225,14 @@ const insertHideButton = async () => {
   const buttonHide = document.createElement('button');
   buttonHide.innerHTML = iconHide;
   buttonHide.classList.add('enhancer-hideCreator', 'hide');
+  buttonHide.setAttribute('aria-label', hideCreator);
+  buttonHide.title = hideCreator;
   container.appendChild(buttonHide);
   const buttonShow = document.createElement('button');
   buttonShow.innerHTML = iconShow;
   buttonShow.classList.add('enhancer-hideCreator', 'show');
+  buttonShow.setAttribute('aria-label', showCreator);
+  buttonShow.title = showCreator;
   container.appendChild(buttonShow);
   ({ hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] }));
   h2.classList.toggle('hidden', hiddenCreators.includes(window.location.pathname.substring(1)));
@@ -245,15 +251,4 @@ const hideVideo = (el: HTMLElement, hiddenCreators: string[]) => {
   console.debug('Hiding video by creator', creator, `https://nebula.app/${creator}`);
   if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
   else el.parentElement.classList.add('enhancer-hiddenVideo');
-};
-
-const toggleHideCreator = async (creator: string, hide: boolean) => {
-  // let's hope we don't get interrupted here, could lose data, but no way to lock...
-  ({ hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] }));
-  const idx = hiddenCreators.indexOf(creator);
-  if (idx !== -1) hiddenCreators.splice(idx, 1);
-  if (hide) hiddenCreators.push(creator);
-  console.debug(hide ? 'Hiding creator' : 'Showing creator', creator,
-    '\nHidden creators:', hiddenCreators.length);
-  await setToStorage({ hiddenCreators });
 };

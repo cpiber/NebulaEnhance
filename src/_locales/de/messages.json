@@ -223,6 +223,14 @@
     "message": "Suchergebnis",
     "description": "Nebula video match confidence bei suche auf youtube seite"
   },
+  "pageHideCreator": {
+    "message": "Diesen Kanal verstecken",
+    "description": "Button hinweis um creator zu verstecken"
+  },
+  "pageShowCreator": {
+    "message": "Diesen Kanal wieder anzeigen",
+    "description": "Button hinweis um creator nicht mehr zu verstecken"
+  },
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs und Feature Requests</a>",
     "description": "Credit footer."
