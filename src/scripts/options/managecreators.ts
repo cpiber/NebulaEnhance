@@ -2,7 +2,7 @@ import iconShow from '../../icons/show.svg';
 import { getChannel } from '../helpers/api';
 import { opt, refreshToken } from '../helpers/api/store';
 import { getBrowserInstance, getFromStorage, toggleHideCreator } from '../helpers/sharedExt';
-import { buildModal } from './modal';
+import { buildModal, withLoader } from './modal';
 
 const msg = getBrowserInstance().i18n.getMessage;
 
@@ -30,7 +30,7 @@ const buildCreator = (channel: Nebula.Channel) => {
   return el;
 };
 
-export const showManageCreators = async () => {
+export const showManageCreators = withLoader(async () => {
   const { hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] });
   if (opt.auth === null)
     await refreshToken();
@@ -45,4 +45,4 @@ export const showManageCreators = async () => {
     return 0;
   }).map(buildCreator);
   buildModal(msg('optionsManageHiddenCreators'), msg('optionsManageHiddenCreatorsNone'), 'manage-hidden', ...c);
-};
+});

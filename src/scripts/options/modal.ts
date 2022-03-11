@@ -1,6 +1,7 @@
 import DOMPurify from 'dompurify';
 import marked from 'marked';
 import closeIcon from '../../icons/close.svg';
+import iconThreeDots from '../../icons/three-dots.svg';
 
 export const buildModal = (title: string, body: string, classes: string = undefined, ...more: HTMLElement[]) => {
   const wrapper = document.querySelector<HTMLDivElement>('.modal__wrapper') || document.body.appendChild(document.createElement('div'));
@@ -23,4 +24,15 @@ export const buildModal = (title: string, body: string, classes: string = undefi
   content.append(...more);
   close.addEventListener('click', () => wrapper.style.display = 'none');
   return wrapper;
+};
+
+type RetPromise<T> = T extends (...args: any[]) => infer R ? R extends Promise<any> ? R : Promise<R> : never;
+export const withLoader = <T extends (...args: any[]) => any>(fn: T) => {
+  return (...args: FnArgs<T>): RetPromise<T> => {
+    const loading = document.querySelector<HTMLDivElement>('body > .loading') || document.body.appendChild(document.createElement('div'));
+    loading.innerHTML = iconThreeDots;
+    loading.className = 'loading';
+    loading.style.display = '';
+    return Promise.resolve(fn(...args)).finally(() => loading.style.display = 'none') as RetPromise<T>;
+  };
 };

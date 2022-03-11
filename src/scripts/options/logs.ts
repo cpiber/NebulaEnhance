@@ -1,7 +1,7 @@
 import DOMPurify from 'dompurify';
 import marked from 'marked';
 import { getBrowserInstance } from '../helpers/sharedExt';
-import { buildModal } from './modal';
+import { buildModal, withLoader } from './modal';
 
 const msg = getBrowserInstance().i18n.getMessage;
 const owner = 'cpiber';
@@ -32,7 +32,7 @@ const releaseToMore = (cv: string, r: Github.Release) => [
   ...([ 'draft', 'prerelease' ] as Array<keyof Github.Release>).filter(e => r[e] === true).map(s => s[0].toUpperCase() + s.slice(1)),
 ].join(', ');
 
-export const showLogs = async (currentVersion: string, installed = false) => {
+export const showLogs = withLoader(async (currentVersion: string, installed = false) => {
   const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/releases?per_page=3`, {
     headers: {
       Accept: 'application/vnd.github.v3+json',
@@ -55,4 +55,4 @@ export const showLogs = async (currentVersion: string, installed = false) => {
   welcome.className = 'enhancer-welcome-banner';
   welcome.innerHTML = msg('optionsChangelogInstalled');
   buildModal(msg('optionsChangelogTitle'), installed ? welcome.outerHTML : '', 'changelog', ...rs, last);
-};
+});

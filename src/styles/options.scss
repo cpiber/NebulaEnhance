@@ -76,6 +76,43 @@ form {
   color: #eeeeee;
 }
 
+.loading {
+  position: fixed;
+  z-index: 99999;
+
+  &, &::before {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    background-color: gray;
+    opacity: 0.6;
+  }
+
+  svg {
+    width: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -20px;
+  }
+
+  path {
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @for $n from 1 through 3 {
+    .pth#{$n} {
+      animation-delay: $n * 0.2s;
+    }
+  }
+}
+
 .hidden-creator {
   .avatar {
     width: 1em;
@@ -322,5 +359,19 @@ body {
     form {
       padding-top: 0;
     }
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+
+  15% {
+    transform: translateY(-3px);
+  }
+
+  30% {
+    transform: translateY(0);
   }
 }
