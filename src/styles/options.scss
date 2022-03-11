@@ -77,12 +77,20 @@ form {
 }
 
 .hidden-creator {
+  .avatar {
+    width: 1em;
+    height: 1em;
+    border: 1px solid white;
+    border-radius: 0.5em;
+    margin-right: 5px;
+  }
+
   h2 {
     display: flex;
     align-items: center;
   }
 
-  .hide-creator {
+  .unhide-creator {
     display: flex;
     border: none;
     background: none;

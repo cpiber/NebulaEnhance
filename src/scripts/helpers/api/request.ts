@@ -43,6 +43,11 @@ export const getVideo = (name: string) => request<Nebula.Video>(`https://content
   method: 'GET',
 });
 
+export const getChannel = (name: string) => request<Nebula.Channel>(`https://content.watchnebula.com/slug/${name}/`, {
+  referrer: 'https://nebula.app/',
+  method: 'GET',
+});
+
 export const getChannelVideos = async (name: string, num = Infinity) => {
   const vids: Nebula.Video[] = [];
   const req = new URL(`https://content.watchnebula.com/video/channels/${name}/`);
