@@ -69,7 +69,7 @@
   },
   "optionsVolumeScrollChange": {
     "message": "Änderungsrate",
-    "description": "Änderungsrate Beschriftung für Volume Scroll der Optionen Seite.."
+    "description": "Änderungsrate Beschriftung für Volume Scroll der Optionen Seite."
   },
   "optionsVolumeScrollHint": {
     "message": "Ob beim Scrollen über den Videospieler die Lautstärke geändert werden soll. Optional in logarithmischer Skala (anstatt linear).",
@@ -121,11 +121,11 @@
   },
   "optionsManageHiddenCreators": {
     "message": "Versteckte Kanäle verwalten",
-    "description": "Button text um versteckte creators zu verwalten"
+    "description": "Button text um versteckte creators zu verwalten."
   },
   "optionsManageHiddenCreatorsNone": {
     "message": "Keine versteckten Kanäle",
-    "description": "Hinweis, dass keine creators versteckt sind"
+    "description": "Hinweis, dass keine creators versteckt sind."
   },
   "optionsCustomScriptPageTitle": {
     "message": "Custom Script für Webseite",
@@ -157,7 +157,7 @@
   },
   "optionsChangelogTitle": {
     "message": "Changelog",
-    "description": "Titel fürs changelog fenster."
+    "description": "Titel fürs changelog Fenster."
   },
   "optionsChangelogInstalled": {
     "message": "<h2>Danke, dass Sie diese Erweiterung installiert haben!</h2><p>Unten finden Sie einen Ausschnitt des Changelogs, leider nur in Englisch.</p><p>Nehmen Sie sich bitte Zeit, die Features der Erweitung in den Optionen kennenzulernen!</p>",
@@ -165,11 +165,11 @@
   },
   "optionsChangelogYourVersion": {
     "message": "Ihre Version",
-    "description": "Text um aktuelle version zu markieren im changelog fenster."
+    "description": "Text um aktuelle version zu markieren im changelog Fenster."
   },
   "optionsChangelogAllReleases": {
     "message": "Vollständige Liste von Versionen",
-    "description": "Text unter Versionsliste im changelog fenster."
+    "description": "Text unter Versionsliste im changelog Fenster."
   },
   "optionsButtonSaveNote": {
     "message": "Optionen werden automatisch gespeichert.",
@@ -190,10 +190,6 @@
   "playerNewSpeed": {
     "message": "Neue Geschwindigkeit",
     "description": "'Speed' text im popup."
-  },
-  "playerTheatre": {
-    "message": "Theater-Modus umschalten",
-    "description": "Beschriftung für Theater-Modus Knopf."
   },
   "pageAddToQueue": {
     "message": "Zur Warteschlange hinzufügen",
@@ -221,39 +217,39 @@
   },
   "pageQueueNext": {
     "message": "Nächstes",
-    "description": "Videospieler Hinweis für nächstes Video"
+    "description": "Videospieler Hinweis für nächstes Video."
   },
   "pageQueuePrev": {
     "message": "Voriges",
-    "description": "Videospieler Hinweis für voriges Video"
+    "description": "Videospieler Hinweis für voriges Video."
   },
   "pageWatchOnNebula": {
     "message": "Auf Nebula ansehen",
-    "description": "Watch on Nebula button auf youtube seite"
+    "description": "Watch on Nebula button auf youtube."
   },
   "pageGoChannel": {
     "message": "Zu Kanal gehen",
-    "description": "Nebula kanal tooltip auf youtube seite"
+    "description": "Nebula kanal tooltip auf youtube."
   },
   "pageVideoConfidence": {
     "message": "Video-Match",
-    "description": "Nebula video match confidence auf youtube seite"
+    "description": "Nebula video match confidence auf youtube."
   },
   "pageSearchConfidence": {
     "message": "Suchergebnis",
-    "description": "Nebula video match confidence bei suche auf youtube seite"
+    "description": "Nebula video match confidence bei suche auf youtube."
   },
   "pageHideCreator": {
     "message": "Diesen Kanal verstecken",
-    "description": "Button hinweis um creator zu verstecken"
+    "description": "Button hinweis um creator zu verstecken."
   },
   "pageShowCreator": {
     "message": "Diesen Kanal wieder anzeigen",
-    "description": "Button hinweis um creator nicht mehr zu verstecken"
+    "description": "Button hinweis um creator nicht mehr zu verstecken."
   },
   "pageCreatorHidden": {
     "message": "Kanal wurde von Ihnen versteckt",
-    "description": "Hinweis zu verstecktem Kanal"
+    "description": "Hinweis zu verstecktem Kanal."
   },
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs und Feature Requests</a>",

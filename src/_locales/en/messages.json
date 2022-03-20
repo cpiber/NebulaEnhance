@@ -121,11 +121,11 @@
   },
   "optionsManageHiddenCreators": {
     "message": "Manage hidden creators",
-    "description": "Button text to manage hidden creators"
+    "description": "Button text to manage hidden creators."
   },
   "optionsManageHiddenCreatorsNone": {
     "message": "No creators hidden",
-    "description": "Hint that no creators are hidden"
+    "description": "Hint that no creators are hidden."
   },
   "optionsCustomScriptPageTitle": {
     "message": "Custom script for page",
@@ -191,10 +191,6 @@
     "message": "New Speed",
     "description": "'Speed' text in popup."
   },
-  "playerTheatre": {
-    "message": "Toggle theatre mode",
-    "description": "Tooltip for toggle theatre button."
-  },
   "pageAddToQueue": {
     "message": "Add to queue",
     "description": "Hidden hint for queue button."
@@ -221,39 +217,39 @@
   },
   "pageQueueNext": {
     "message": "Next",
-    "description": "Player hint for next in queue"
+    "description": "Player hint for next in queue."
   },
   "pageQueuePrev": {
     "message": "Previous",
-    "description": "Player hint for previous in queue"
+    "description": "Player hint for previous in queue."
   },
   "pageWatchOnNebula": {
     "message": "Watch on Nebula",
-    "description": "Watch on Nebula button on youtube page"
+    "description": "Watch on Nebula button on youtube."
   },
   "pageGoChannel": {
     "message": "Go to channel",
-    "description": "Nebula channel tooltip on youtube page"
+    "description": "Nebula channel tooltip on youtube."
   },
   "pageVideoConfidence": {
     "message": "Video-confidence",
-    "description": "Nebula video match confidence on youtube page"
+    "description": "Nebula video match confidence on youtube."
   },
   "pageSearchConfidence": {
     "message": "Search-confidence",
-    "description": "Nebula video match confidence for search on youtube page"
+    "description": "Nebula video match confidence for search on youtube."
   },
   "pageHideCreator": {
     "message": "Hide this creator",
-    "description": "Button hint to hide creator"
+    "description": "Button hint to hide creator."
   },
   "pageShowCreator": {
     "message": "Show this creator again",
-    "description": "Button hint to unhide creator"
+    "description": "Button hint to unhide creator."
   },
   "pageCreatorHidden": {
     "message": "Creator hidden by you",
-    "description": "Hint on hidden creator"
+    "description": "Hint on hidden creator."
   },
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs and Feature Requests</a>",
