@@ -2,6 +2,52 @@
 @import './queue/queue';
 @import './queue/queue_share';
 
+.enhancer-hideCreator {
+  grid-area: follow;
+  align-self: center;
+  display: flex;
+  border: none;
+  background: none;
+  width: 1.3em;
+  height: 1.3em;
+  margin-left: auto;
+  color: inherit;
+  cursor: pointer;
+  position: relative;
+  padding: 0 0 0 5px;
+
+  svg {
+    fill: white;
+    fill: currentColor;
+    opacity: 0.7;
+  }
+
+  h2:nth-child(2).hidden ~ &.hide {
+    display: none;
+  }
+
+  h2:nth-child(2):not(.hidden) ~ &.show {
+    display: none;
+  }
+
+  &-pre {
+    margin-right: 3em;
+
+    @media only screen and (max-width: 768px) {
+      margin-right: 40px;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    padding: 7px;
+    background-color: var(--this-bg-color, var(--bg-color));
+    border: var(--this-border, none);
+    border-radius: 15px;
+  }
+}
+
 div.enhancer-queueButton {
   top: 8px;
   bottom: unset;
@@ -56,35 +102,6 @@ a.enhancer-queueButtonAll {
     height: 12px;
     fill: white;
     fill: currentColor;
-  }
-}
-
-button.enhancer-hideCreator {
-  grid-area: follow;
-  align-self: center;
-  display: flex;
-  border: none;
-  background: none;
-  width: 1.3em;
-  height: 1.3em;
-  margin-left: auto;
-  color: inherit;
-  opacity: 0.7;
-  cursor: pointer;
-  position: relative;
-  padding: 0 0 0 5px;
-
-  svg {
-    fill: white;
-    fill: currentColor;
-  }
-
-  h2:nth-child(2).hidden ~ &.hide {
-    display: none;
-  }
-
-  h2:nth-child(2):not(.hidden) ~ &.show {
-    display: none;
   }
 }
 

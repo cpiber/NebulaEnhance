@@ -226,20 +226,20 @@ const insertHideButton = async () => {
   if (!container)
     return;
   const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? container.lastElementChild as HTMLElement : undefined;
-  if (follow) follow.style.marginRight = '3em';
+  if (follow) follow.classList.add('enhancer-hideCreator-pre');
+  if (follow) container.style.setProperty('--this-bg-color', window.getComputedStyle(follow).backgroundColor);
+  if (follow) container.style.setProperty('--this-border', window.getComputedStyle(follow).border);
 
-  const buttonHiden = document.createElement('button');
-  buttonHiden.innerHTML = iconShow;
-  buttonHiden.classList.add('enhancer-hideCreator', 'hide');
-  buttonHiden.setAttribute('aria-label', hideCreator);
-  buttonHiden.title = hideCreator;
-  container.appendChild(buttonHiden);
-  const buttonShown = document.createElement('button');
+  const buttonHidden = container.appendChild(document.createElement('button'));
+  buttonHidden.innerHTML = iconShow;
+  buttonHidden.classList.add('enhancer-hideCreator', 'hide');
+  buttonHidden.setAttribute('aria-label', hideCreator);
+  buttonHidden.title = hideCreator;
+  const buttonShown = container.appendChild(document.createElement('button'));
   buttonShown.innerHTML = iconHide;
   buttonShown.classList.add('enhancer-hideCreator', 'show');
   buttonShown.setAttribute('aria-label', showCreator);
   buttonShown.title = showCreator;
-  container.appendChild(buttonShown);
   ({ hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] }));
   h2.classList.toggle('hidden', hiddenCreators.includes(window.location.pathname.split('/')[1]));
 };
