@@ -4,7 +4,7 @@ export const eventPrefix = 'enebula' as const;
 export const navigatePrefix = `${eventPrefix}-navigate` as const;
 export const loadPrefix = `${eventPrefix}-load` as const;
 export const xhrPrefix = `${eventPrefix}-xhr` as const;
-export const knownPages = [ 'myshows', 'videos', 'podcasts', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs' ] as const;
+export const knownPages = [ 'myshows', 'videos', 'podcasts', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs' ] as const;
 
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
