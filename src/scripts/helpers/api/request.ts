@@ -27,6 +27,7 @@ const request = async <T = any>(url: string, init?: RequestInit) => {
     };
 
     const req = await fetch(url, i);
+    if (!req.ok) throw new Error(`Request failed: ${req.status} ${req.statusText}`);
     const body = await req.json();
 
     if (body.detail === 'You do not have permission to perform this action.')

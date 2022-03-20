@@ -12,7 +12,7 @@ export const youtube = async () => {
 
   if (!watchnebula) return;
 
-  setTimeout(run, 0, true);
+  setTimeout(run, 0, false);
 
   // To support forward/backward page navigation changes.
   // The setTimeout must be used to ensure that this effectively runs on the *new* page.

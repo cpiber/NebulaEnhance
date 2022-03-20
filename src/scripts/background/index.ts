@@ -5,6 +5,7 @@ export * from './youtube';
 export type Creator = {
   name: string,
   nebula: string,
+  nebulaAlt: string,
   channel: string,
   uploads: string,
 };

@@ -75,7 +75,21 @@ const getNebulaVideo = async (message: { [key: string]: any }): Promise<nebulavi
   // try search the channel's newest videos locally
   if (creator.nebula) {
     try {
-      const video = await creatorHasNebulaVideo(creator.nebula.split('/').pop(), videoTitle, videoFetchNebula);
+      const video = await creatorHasNebulaVideo(creator.nebula, videoTitle, videoFetchNebula);
+      return {
+        is: 'video',
+        confidence: video.confidence,
+        link: video.video,
+      };
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  // try search the alternative channel's newest videos locally
+  if (creator.nebulaAlt && creator.nebula !== creator.nebulaAlt) {
+    try {
+      const video = await creatorHasNebulaVideo(creator.nebulaAlt, videoTitle, videoFetchNebula);
       return {
         is: 'video',
         confidence: video.confidence,
