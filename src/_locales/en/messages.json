@@ -87,6 +87,10 @@
     "message": "Load Nebula link",
     "description": "Label for LoadNebula of options page."
   },
+  "optionsYtOpenTab": {
+    "message": "Automatically open link",
+    "description": "Option to automatically open found link."
+  },
   "optionsLoadNebulaHint": {
     "message": "Whether to automatically try and find the matching Nebula video or not.",
     "description": "Hint for LoadNebula of options page."

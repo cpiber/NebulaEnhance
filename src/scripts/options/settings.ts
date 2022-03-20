@@ -9,6 +9,7 @@ export class Settings {
   volumeShow: HTMLInputElement = undefined;
   volumeChange: HTMLInputElement = undefined;
   youtube: HTMLInputElement = undefined;
+  ytOpenTab: HTMLInputElement = undefined;
   watchnebula: HTMLInputElement = undefined;
   customScriptPage: HTMLTextAreaElement = undefined;
   showChangelogs: HTMLInputElement = undefined;

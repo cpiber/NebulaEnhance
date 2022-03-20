@@ -37,12 +37,19 @@ const vChange = () => {
   els.volumeChange.disabled = !c;
 };
 els.volumeEnabled.addEventListener('change', vChange);
+const nChange = () => {
+  els.ytOpenTab.disabled = !els.watchnebula.checked;
+};
+els.watchnebula.addEventListener('change', nChange);
 
 document.querySelector('#showChangelogsNow').addEventListener('click', () => showLogs(getBrowserInstance().runtime.getManifest().version));
 document.querySelector('#manageHiddenCreators').addEventListener('click', showManageCreators);
 
 // load initial values from storage
-load(true).then(aChange).then(vChange);
+load(true)
+  .then(aChange)
+  .then(vChange)
+  .then(nChange);
 
 // changelog
 (async () => {
