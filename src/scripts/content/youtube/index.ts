@@ -34,7 +34,7 @@ export const youtube = async () => {
 let interval = 0;
 const run = debounce((allowOpenTab: boolean) => {
   if (!location.pathname.startsWith('/watch'))
-    return console.dev.debug('not a video');
+    return console.dev.debug('not a video'), undefined;
 
   Array.from(document.querySelectorAll('.watch-on-nebula')).forEach(n => n.remove());
   window.clearInterval(interval);

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dev=$(grep --color=always "devClone\|devExport\|(()=>{})" $(find extension-dist -name "*.js"))
+dev=$(grep --color=always -n "devClone\|devExport\|(()=>{})" $(find extension-dist -name "*.js"))
 if [ -n "$dev" ]; then
   echo "::group::Invalid statements"
   echo "$dev"
