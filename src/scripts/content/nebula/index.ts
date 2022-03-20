@@ -229,6 +229,18 @@ const insertHideButton = async () => {
   if (follow) follow.classList.add('enhancer-hideCreator-pre');
   if (follow) container.style.setProperty('--this-bg-color', window.getComputedStyle(follow).backgroundColor);
   if (follow) container.style.setProperty('--this-border', window.getComputedStyle(follow).border);
+  const creator = window.location.pathname.split('/')[1];
+
+  const { rss: loadRss } = await getFromStorage({ rss: false });
+  if (loadRss) {
+    const rss = document.createElement('a');
+    if (follow) follow.before(rss); else container.appendChild(rss);
+    rss.href = `https://leonick.se/feeds/nebula?channel=${creator}`;
+    rss.target = '_blank';
+    rss.classList.add('enhancer-rss');
+    if (!follow) rss.classList.add('enhancer-hideCreator-pre');
+    rss.appendChild(document.createElement('img')).src = 'https://nebula.app/static/media/rss.fb780e91.svg';
+  }
 
   const buttonHidden = container.appendChild(document.createElement('button'));
   buttonHidden.innerHTML = iconShow;
@@ -241,7 +253,7 @@ const insertHideButton = async () => {
   buttonShown.setAttribute('aria-label', showCreator);
   buttonShown.title = showCreator;
   ({ hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] }));
-  h2.classList.toggle('hidden', hiddenCreators.includes(window.location.pathname.split('/')[1]));
+  h2.classList.toggle('hidden', hiddenCreators.includes(creator));
 };
 
 const changeTheme = (e: MouseEvent) => {

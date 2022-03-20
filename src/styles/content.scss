@@ -32,6 +32,7 @@
 
   &-pre {
     margin-right: 3em;
+    margin-left: 40px;
 
     @media only screen and (max-width: 768px) {
       margin-right: 40px;
@@ -46,6 +47,13 @@
     border: var(--this-border, none);
     border-radius: 15px;
   }
+}
+
+.enhancer-rss {
+  width: 30px;
+  height: 30px;
+  grid-area: follow;
+  align-self: center;
 }
 
 div.enhancer-queueButton {

@@ -11,6 +11,7 @@ export class Settings {
   youtube: HTMLInputElement = undefined;
   ytOpenTab: HTMLInputElement = undefined;
   watchnebula: HTMLInputElement = undefined;
+  rss: HTMLInputElement = undefined;
   customScriptPage: HTMLTextAreaElement = undefined;
   showChangelogs: HTMLInputElement = undefined;
   visitedColor: HTMLInputElement = undefined;

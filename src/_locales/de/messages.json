@@ -95,6 +95,14 @@
     "message": "Ob automatisch versucht werden soll, das Nebula Video zu finden.",
     "description": "Hilfstext für LoadNebula der Optionen Seite."
   },
+  "optionsLoadRSSTitle": {
+    "message": "RSS/Atom Feed laden",
+    "description": "Beschriftung für LoadRSS der Optionen Seite."
+  },
+  "optionsLoadRSSHint": {
+    "message": "Ob ein Link zu einem RSS/Atom-Feed zur Seite hinzugefügt werden soll.<br/><i>Achtung</i>: Der Feed wird über die externe Seite <a href=\"https://leonick.se/projects/nebula-feed\" target=\"_blank\">leonick.se</a> generiert!",
+    "description": "Hilfstext für LoadRSS der Optionen Seite."
+  },
   "optionsVisitedColorTitle": {
     "message": "Link Farbe für besuchte Videos",
     "description": "Beschriftung für Link Farbe der Optionen Seite."
