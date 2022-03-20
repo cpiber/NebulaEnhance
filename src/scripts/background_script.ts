@@ -113,10 +113,10 @@ const getNebulaVideo = async (message: { [key: string]: any }): Promise<nebulavi
   }
 
   // last resort: link to channel
-  if (!creator.nebula) return;
+  if (!creator.nebula && !creator.nebulaAlt) return;
   return {
     is: 'channel',
-    link: creator.nebula,
+    link: `https://nebula.app/${creator.nebula || creator.nebulaAlt}`,
   };
 };
 

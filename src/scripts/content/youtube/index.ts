@@ -3,7 +3,7 @@
  * @see https://github.com/parkeraddison/watch-on-nebula/blob/main/extension/scripts/content_script.js
  */
 
-import { BrowserMessage, debounce, getBrowserInstance, getFromStorage, injectFunction, nebulavideo } from '../../helpers/sharedExt';
+import { BrowserMessage, debounce, getBrowserInstance, getFromStorage, nebulavideo } from '../../helpers/sharedExt';
 import { constructButton } from './html';
 
 export const youtube = async () => {
@@ -56,11 +56,11 @@ const run = debounce((allowOpenTab: boolean) => {
 
     console.dev.debug('Referer:', document.referrer);
     if (document.referrer.match(/https?:\/\/(.+\.)?nebula\.app\/?/) && window.history.length <= 1) return; // prevent open link if via nebula link (any link)
-    if (!allowOpenTab) return;
+    if (!allowOpenTab || vid.is === 'channel') return;
     const { ytOpenTab: doOpenTab } = await getFromStorage({ ytOpenTab: false });
     if (!doOpenTab) return;
 
     window.open(vid.link);
-    injectFunction(document.body, () => document.querySelectorAll('video').forEach(v => v.pause()));
+    document.querySelectorAll('video').forEach(v => v.pause());
   }, 500);
 }, 5);
