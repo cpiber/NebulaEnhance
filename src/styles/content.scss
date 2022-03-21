@@ -30,15 +30,6 @@
     display: none;
   }
 
-  &-pre {
-    margin-right: 3em;
-    margin-left: 40px;
-
-    @media only screen and (max-width: 768px) {
-      margin-right: 40px;
-    }
-  }
-
   @media only screen and (max-width: 768px) {
     width: 30px;
     height: 30px;
@@ -46,6 +37,15 @@
     background-color: var(--this-bg-color, var(--bg-color));
     border: var(--this-border, none);
     border-radius: 15px;
+  }
+}
+
+button.enhancer-hideCreator-pre {
+  margin-right: 3em;
+  margin-left: 40px;
+
+  @media only screen and (max-width: 768px) {
+    margin-right: 40px;
   }
 }
 
