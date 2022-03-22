@@ -59,8 +59,10 @@ Falls Sie Vorschläge haben, öffnen Sie bitte ein neues [Issue](https://github.
 
 | Seitenupdates | Videospielerupdates |
 | :---: | :---: |
-| ![Queue / Video Warteschlange.](static/Screenshot3_dark.png)<br />Video Schlange | ![Videospieler mit Kontrollknöpfen.](static/Screenshot1.png)<br />Videospieler mit neuen Kontrollknöpfen (Video Schlange nächstes/voriges, Lautstärke Indikator, Zeit verbleibend, Quick Dial) |
-| ![Kanal mit Hide-Creator und RSS.](static/Screenshot4.png)<br />Kanal mit "Hide creator" und RSS buttons | |
+| ![Queue / Video Warteschlange.](static/Screenshot3_dark.png) | ![Videospieler mit Kontrollknöpfen.](static/Screenshot1.png) |
+| Video Schlange | Videospieler mit neuen Kontrollknöpfen (Video Schlange nächstes/voriges, Lautstärke Indikator, Zeit verbleibend, Quick Dial) |
+| ![Kanal mit Hide-Creator und RSS.](static/Screenshot4.png) | |
+| Kanal mit "Hide creator" und RSS buttons | |
 
 
 # Entwickeln

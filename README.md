@@ -60,8 +60,10 @@ If you have any suggestions, please open a new [issue](https://github.com/cpiber
 
 | Page updates | Player updates |
 | :---: | :---: |
-| ![Queue / Watch list.](static/Screenshot3_dark.png)<br />Queue | ![Player with controls.](static/Screenshot1.png)<br />Player with new controls (Queue next/previous, volume indicator, time remaining, quick dial) |
-| ![Channel with hide-creator and RSS.](static/Screenshot4.png)<br />Channel with "Hide creator" and RSS buttons | |
+| ![Queue / Watch list.](static/Screenshot3_dark.png) | ![Player with controls.](static/Screenshot1.png) |
+| Queue | Player with new controls (Queue next/previous, volume indicator, time remaining, quick dial) |
+| ![Channel with hide-creator and RSS.](static/Screenshot4.png) | |
+| Channel with "Hide creator" and RSS buttons | |
 
 
 # Developing
