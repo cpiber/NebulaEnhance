@@ -24,7 +24,7 @@ Die Erweiterung ist verfügbar in den offiziellen Add-On Stores:
 
 Die neuesten Veröffentlichungen sind [hier](https://github.com/cpiber/NebulaEnhance/releases) verfügbar.
 
-Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überprüfen müssen, bevor diese sichtbar gemacht werden in den Stores. Besonders bei dem Chrome Webstore kann dies länger dauern.
+Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überprüfen müssen, bevor diese sichtbar gemacht werden in den Stores.
 
 
 # Features
@@ -34,6 +34,10 @@ Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überp
 - Teilen: Schlange kann jetzt geteilt werden -- Teilen Sie Ihre Liste oder legen Sie Lesezeichen dafür an!
 - YouTube Link: Die Erweiterung kann versuchen, das passende YouTube-Video zu finden (Aktivierung in den Einstellungen)
 - Watch on Nebula: Auf jeder YouTube Video-Seite wird versucht, das passende Nebula Video zu finden (Aktivierung in den Einstellungen)
+  - Optional auch automatisch direkt in neuem Tab öffnen
+- Hide creators: Lässt Videos von gewissen Kanälen verschwinden
+- RSS: Feed button für Kanäle via [externem Tool](https://leonick.se/projects/nebula-feed) (Aktivierung in den Einstellungen)
+- Markiert besuchte Links (angesehene Videos)
 - ~~Theater Modus: Videospieler wird besser an die Seite angepasst~~ Jetzt nativ unterstützt
 
 **Videospieler**
@@ -51,15 +55,12 @@ Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überp
 Falls Sie Vorschläge haben, öffnen Sie bitte ein neues [Issue](https://github.com/cpiber/NebulaEnhance/issues) oder starten Sie eine [Diskussion](https://github.com/cpiber/NebulaEnhance/discussions/new).
 
 
-# Screenshots
+# [Screenshots](/static/)
 
-Video Schlange:
-
-![Queue / Video Warteschlange.](static/Screenshot3_dark.png)
-
-Videospieler mit neuen Kontrollknöpfen (Video Schlange nächstes/voriges, Lautstärke Indikator, Zeit verbleibend, Quick Dial):
-
-![Videospieler mit Kontrollknöpfen.](static/Screenshot1.png)
+| Seitenupdates | Videospielerupdates |
+| :---: | :---: |
+| ![Queue / Video Warteschlange.](static/Screenshot3_dark.png)<br />Video Schlange | ![Videospieler mit Kontrollknöpfen.](static/Screenshot1.png)<br />Videospieler mit neuen Kontrollknöpfen (Video Schlange nächstes/voriges, Lautstärke Indikator, Zeit verbleibend, Quick Dial) |
+| ![Kanal mit Hide-Creator und RSS.](static/Screenshot4.png)<br />Kanal mit "Hide creator" und RSS buttons | |
 
 
 # Entwickeln

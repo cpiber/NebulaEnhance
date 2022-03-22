@@ -25,7 +25,7 @@ This extension is available on the official add-on stores:
 
 The most recent releases are available [here](https://github.com/cpiber/NebulaEnhance/releases).
 
-Please be aware that both Mozilla and Google need to verify my changes before making them visible in the stores. Especially for the Chrome Webstore this takes time.
+Please be aware that both Mozilla and Google need to verify my changes before making them visible in the stores.
 
 
 # Features
@@ -35,6 +35,10 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 - Share: Queue is shareable -- Bookmark and Share your list!
 - YouTube Link: This extension can try to find the corresponding YouTube video (enable in settings)
 - Watch on Nebula: On any YouTube video page tries to find the corresponding Nebula video (enable in settings)
+  - Optionally automatically open it in a new tab
+- Hide creators: Enables you to hide videos by certain creators
+- RSS: Add feed button to creator page via [external tool](https://leonick.se/projects/nebula-feed) (enable in settings)
+- Style visited links to mark watched videos
 - ~~Theatre Mode: Make the player fit the page better~~ Now natively supported
 
 **Player**
@@ -52,15 +56,12 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 If you have any suggestions, please open a new [issue](https://github.com/cpiber/NebulaEnhance/issues) or start a [discussion](https://github.com/cpiber/NebulaEnhance/discussions/new).
 
 
-# Screenshots
+# [Screenshots](/static/)
 
-Queue:
-
-![Queue / Watch list.](static/Screenshot3_dark.png)
-
-Player with new controls (Queue next/previous, volume indicator, time remaining, quick dial):
-
-![Player with controls.](static/Screenshot1.png)
+| Page updates | Player updates |
+| :---: | :---: |
+| ![Queue / Watch list.](static/Screenshot3_dark.png)<br />Queue | ![Player with controls.](static/Screenshot1.png)<br />Player with new controls (Queue next/previous, volume indicator, time remaining, quick dial) |
+| ![Channel with hide-creator and RSS.](static/Screenshot4.png)<br />Channel with "Hide creator" and RSS buttons | |
 
 
 # Developing
