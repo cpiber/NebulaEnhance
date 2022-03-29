@@ -240,7 +240,7 @@ const insertHideButton = async () => {
     rss.target = '_blank';
     rss.classList.add('enhancer-rss');
     if (!follow) rss.classList.add('enhancer-hideCreator-pre');
-    rss.appendChild(document.createElement('img')).src = 'https://nebula.app/static/media/rss.fb780e91.svg';
+    rss.appendChild(document.createElement('img')).src = 'https://nebula.app/static/media/rss.fb780e91bf301f0d598c953f73bdc3a7.svg';
   }
 
   const buttonHidden = container.appendChild(document.createElement('button'));
