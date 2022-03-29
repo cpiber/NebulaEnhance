@@ -179,7 +179,7 @@ const loadComments = async () => {
   const nebula = (h2[1].parentElement as HTMLAnchorElement).href;
   if (!title || !creator) return;
   const e = h2[0].nextElementSibling;
-  const t = e?.lastElementChild;
+  const t = e?.querySelectorAll('time')?.[1];
   if (!e || !t || e.querySelector('.enhancer-yt, .enhancer-yt-err'))
     return; // already requested
   console.debug(`Requesting '${title}' by ${creator} (${nebula})`);
@@ -194,14 +194,14 @@ const loadComments = async () => {
     a.target = '_blank';
     a.textContent = a.href;
     v.append(a, ` (${(vid.confidence * 100).toFixed(1)}%)`);
-    t.before(e.querySelector('span[class]')?.cloneNode(true), v); // dot
+    t.after(e.querySelector('span[class]')?.cloneNode(true), v); // dot
   } catch (err) {
     console.debug('Request failed:', err);
     console.dev.error(err);
     const er = document.createElement('span');
     er.classList.add('enhancer-yt-err');
     er.textContent = `${err}`;
-    t.before(er);
+    t.after(er);
   }
   console.debug('Loading comments done.');
 };
