@@ -1,5 +1,5 @@
 import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString } from './background';
-import { BrowserMessage, getBrowserInstance, getFromStorage, nebulavideo, parseTypeObject } from './helpers/sharedExt';
+import { BrowserMessage, getBrowserInstance, getFromStorage, nebulavideo, parseTypeObject, setToStorage } from './helpers/sharedExt';
 
 const videoFetchYt = 50;
 const videoFetchNebula = 50;
@@ -34,11 +34,17 @@ getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
   if (details.reason === 'install') openOptions(true, 'show-changelogs');
 });
 
+let isHandlingChangelog = false;
 const openChangelog = async () => {
+  if (isHandlingChangelog) return;
+  isHandlingChangelog = true;
   const { showChangelogs: show, lastVersion: version } = await getFromStorage({ showChangelogs: true, lastVersion: '-1' });
   console.debug({ show, version }, 'open changelogs?', show && version !== getBrowserInstance().runtime.getManifest().version);
-  if (show && version !== getBrowserInstance().runtime.getManifest().version)
+  const actualVersion = getBrowserInstance().runtime.getManifest().version;
+  if (show && version !== actualVersion)
     openOptions(false, 'show-changelogs');
+  await setToStorage({ lastVersion: actualVersion });
+  isHandlingChangelog = false;
 };
 
 const loadCreators = (() => {
