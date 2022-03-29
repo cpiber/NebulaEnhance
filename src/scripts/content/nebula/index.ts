@@ -29,7 +29,7 @@ export const nebula = async () => {
   document.addEventListener(loadPrefix, doVideoActions);
   document.addEventListener(xhrPrefix, doVideoActions);
   document.body.addEventListener('mouseover', hover);
-  document.body.addEventListener('click', click);
+  document.body.addEventListener('click', click, { capture: true });
   doVideoActions();
 
   // inject web content script

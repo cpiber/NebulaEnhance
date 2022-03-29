@@ -12,16 +12,18 @@ beforeAll(async () => {
   await page.click('.CookieConsent-Button');
 });
 
+beforeEach(maybeLogin(async () => {
+  await page.goto(`${__NEBULA_BASE__}/videos`);
+  await page.waitForSelector(videoSelector);
+  console.log(expect.getState().currentTestName);
+}));
+
+afterEach(async () => {
+  await page.evaluate(() => window.localStorage.removeItem('enhancer-queue'));
+  await page.waitForTimeout(2000);
+});
+
 describe('videos page', () => {
-  beforeEach(maybeLogin(async () => {
-    await page.goto(`${__NEBULA_BASE__}/videos`);
-    await page.waitForSelector(videoSelector);
-  }));
-
-  afterEach(async () => {
-    await page.evaluate(() => window.localStorage.clear());
-  });
-
   test('hover video adds queue button', async () => {
     const vid = await page.waitForSelector(videoSelector);
     await (await vid.$('img')).hover();
@@ -68,15 +70,6 @@ describe('videos page', () => {
 });
 
 describe('queue', () => {
-  beforeEach(maybeLogin(async () => {
-    await page.goto(`${__NEBULA_BASE__}/videos`);
-    await page.waitForSelector(videoSelector);
-  }));
-
-  afterEach(async () => {
-    await page.evaluate(() => window.localStorage.clear());
-  });
-
   test('can clear queue', async () => {
     await addToQueue(3);
     await expectQueueLength().toBe(3);
@@ -119,7 +112,7 @@ describe('queue', () => {
       const t = await page.evaluate((sel, n) => document.querySelector(`${sel} .element:nth-child(${n}) .title`).textContent, queueSelector, num);
       // titles in nebula are weird...
       // e.g. https://nebula.app/videos/extra-history-vlad-the-impaler-lies-extra-history contains extra space that is stripped in document title
-      await page.waitForFunction(() => document.title.indexOf('Loading') === -1 && document.title.indexOf('Nebula | Nebula') === -1, { timeout: 5000 });
+      await page.waitForFunction(() => document.title.indexOf('Loading') === -1 && document.title !== 'Nebula', { timeout: 5000 });
       await expect(page.title()).resolves.toContain(t.replace(/\s+/g, ' '));
       await expect(page.evaluate(sel => document.querySelector(`${sel} .top .title`).textContent, queueSelector)).resolves.toBe(t);
       await expect(page.evaluate(sel => document.querySelector(`${sel} .top .no`).textContent, queueSelector)).resolves.toBe(`${num}`);
@@ -165,7 +158,7 @@ describe('queue', () => {
     await page.click(`${queueSelector} .top .share`);
     const url = await page.evaluate(() => document.querySelector<HTMLInputElement>('.enhancer-queue-share input[type="text"]').value);
     const before = await titles();
-    await page.evaluate(() => window.localStorage.clear());
+    await page.evaluate(() => window.localStorage.removeItem('enhancer-queue'));
 
     await page.goto(url);
     await page.waitForSelector(queueSelector);
@@ -178,7 +171,7 @@ describe('queue', () => {
     await page.click(`${queueSelector} .top .share`);
     const url = await page.evaluate(() => document.querySelector<HTMLInputElement>('.enhancer-queue-share input[type="text"]').value);
     const before = await titles();
-    await page.evaluate(() => window.localStorage.clear());
+    await page.evaluate(() => window.localStorage.removeItem('enhancer-queue'));
 
     await page.evaluate(hash => window.location.hash = hash, url.slice(url.indexOf('#')));
     await page.waitForTimeout(100);

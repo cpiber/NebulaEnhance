@@ -38,8 +38,10 @@ export const login = async (force = false) => {
     email: __NEBULA_USER__,
     password: __NEBULA_PASS__,
   });
-  await expect(page).toClick(`${formSelector} button`, { text: 'Sign In' });
-  await page.waitForSelector('[href="/account"]'); // wait until logged in
+  await expect(page).toClick(`${formSelector} button`, { text: 'Sign in' });
+  await page.waitForResponse('https://api.watchnebula.com/api/v1/authorization/'); // wait until logged in
+  await page.waitForSelector('[href="/account"]');
+  await page.waitForTimeout(1000);
 };
 
 export const maybeLogin = (cb: () => Promise<void>) => async () => {
