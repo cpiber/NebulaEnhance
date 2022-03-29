@@ -68,8 +68,11 @@ export const initPlayer = async () => {
   const { canNext, canPrev, length: queueLen } = await sendMessage(Message.GET_QSTATUS);
   console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev, 'queueLen:', queueLen);
   updatePlayerControls(player, canNext, canPrev);
-  if (autoplay || (autoplayQueue && queueLen))
+  player.autoplay(autoplay || (autoplayQueue && !!queueLen));
+  if (autoplay || (autoplayQueue && !!queueLen))
     player.play();
+  else
+    player.pause();
 
   player._enhancerInit = true;
 };
