@@ -75,10 +75,8 @@ export const initPlayer = async () => {
   console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev, 'queueLen:', queueLen);
   updatePlayerControls(player, canNext, canPrev);
   player.autoplay(autoplay || (autoplayQueue && !!queueLen));
-  if (autoplay || (autoplayQueue && !!queueLen))
-    player.play();
-  else
-    player.pause();
+  if (player.autoplay()) player.play();
+  else player.pause();
 
   player._enhancerInit = true;
 };

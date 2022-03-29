@@ -68,6 +68,9 @@ const loading = () => {
     return window.clearInterval(loadInterval);
   switch (currentDetail.detail.page) {
     case 'video':
+      if (document.querySelectorAll('h2').length >= 2 && document.querySelector('video'))
+        load();
+      break;
     case 'creator':
       if (document.querySelectorAll('h2').length >= 2)
         load();
