@@ -45,7 +45,7 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 - Quick dial to set speed: New button in player to increase/decrease speed by scrolling
 - Scroll over player to set volume (enable in settings)
 - Toggle time display between current/remaining time
-- Autoplay: Start videos automatically
+- Control Nebula video autoplay
 - Keyboard shortcuts: Shortcuts in video player ([see Playback section](https://www.mrfdev.com/youtube-keyboard-shortcuts))
 - ~~Default playback speed and volume, subtitles~~ Now natively supported
 - ~~Target qualities: Set the preferred video quality or qualities~~ Now natively supported

@@ -44,7 +44,7 @@ Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überp
 - "Quick dial" für Abspielgeschwindigkeit: Ein neuer Knopf im Videospieler erlaubt es per Mausrad die Geschwindigkeit zu verändern
 - Scroll über Videospieler um Lautstärke zu ändern (Aktivierung in den Einstellungen)
 - Zeit-Anzeige lässt sich zwischen aktueller und verbleibender Zeit wechseln
-- Autoplay: Videos können automatisch gestartet werden
+- Kontrolle über Video Autoplay
 - Keyboard Shortcuts: Tastaturkürzel für einfachere und schnellere Bedienung ([siehe Playback Sektion](https://www.mrfdev.com/youtube-keyboard-shortcuts))
 - ~~Standard Abspielgeschwindigkeit und Lautstärke: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit und Lautstärke abzuspielen~~ Jetzt nativ unterstützt
 - ~~Zielqualitäten: Erlaubt es, bevorzugte Videoqualität(en) zu setzen~~ Jetzt nativ unterstützt
