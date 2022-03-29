@@ -249,6 +249,7 @@ const clickHandler = (e: MouseEvent) => {
   e.stopPropagation();
   e.preventDefault();
   subs[0].mode = 'showing';
-  console.dev.log(`Set subtitle track '${subs[0].label}' active`);
-  window.localStorage.setItem('player-v1-subtitle-track', JSON.stringify(subs[0].label));
+  const { label } = subs[0];
+  console.dev.log(`Set subtitle track '${label}' active`);
+  window.localStorage.setItem('player-v1-subtitle-track', JSON.stringify(label));
 };
