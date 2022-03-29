@@ -1,5 +1,5 @@
 import type { VPlayer } from '../../types/videojs';
-import { Message, sendMessage } from '../helpers/shared';
+import { Message, arrFromLengthy, sendMessage } from '../helpers/shared';
 import QueueButton from './components/queue';
 import SpeedDial from './components/speeddial';
 import Time from './components/time';
@@ -22,14 +22,18 @@ const defaults = {
   volumeShow: false,
   volumeChange: 0.1,
   volumeLog: false,
+  useFirstSubtitle: false,
   visitedColor: '',
 };
 
 export const init = async () => {
-  const { playbackChange, autoplay, volumeEnabled, volumeChange, volumeLog, volumeShow, visitedColor } = await getFromStorage(defaults);
-  console.debug('playbackChange:', playbackChange, 'autoplay?', autoplay,
+  const {
+    playbackChange, autoplay, autoplayQueue, volumeEnabled,
+    volumeChange, volumeLog, volumeShow, useFirstSubtitle, visitedColor,
+  } = await getFromStorage(defaults);
+  console.debug('playbackChange:', playbackChange, 'autoplay?', autoplay, 'autoplay in queue?', autoplayQueue,
     '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog, 'show?', volumeShow,
-    '\nvisitedColor:', visitedColor);
+    '\nuse first subtitle?', useFirstSubtitle, 'visitedColor:', visitedColor);
 
   await waitForVJS();
   await registerComponents(playbackChange, volumeShow);
@@ -38,6 +42,8 @@ export const init = async () => {
   document.addEventListener('keydown', keydownHandler.bind(null, playbackChange), { capture: true });
   if (volumeEnabled)
     document.addEventListener('wheel', wheelHandler.bind(null, volumeChange, volumeLog), { passive: false });
+  if (useFirstSubtitle)
+    document.addEventListener('click', clickHandler, { capture: true });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
   initDispatch();
 
@@ -227,4 +233,22 @@ const wheelHandler = async (volumeChange: number, volumeLog: boolean, e: WheelEv
   player.volume(e.deltaY * volumeChange > 0 && n < 0.01 ? 0 : n); // lower volume and below threshold -> mute
 
   (player.controlBar.getChild('VolumeText') as InstanceType<Comp<typeof VolumeText>>).show();
+};
+
+const clickHandler = (e: MouseEvent) => {
+  const player = findAPlayer();
+  if (!player)
+    return;
+  const target = e.target as HTMLElement;
+  if (target.closest('.vjs-subs-caps-button.vjs-control') === null) // clicked subtitles button
+    return;
+  const subs = arrFromLengthy(player.textTracks()).filter(e => e.kind === 'subtitles');
+  if (subs.length !== 1 || subs[0].mode === 'showing')
+    return;
+  // only one subtitle track (not already active), use it and prevent popup
+  e.stopPropagation();
+  e.preventDefault();
+  subs[0].mode = 'showing';
+  console.dev.log(`Set subtitle track '${subs[0].label}' active`);
+  window.localStorage.setItem('player-v1-subtitle-track', JSON.stringify(subs[0].label));
 };

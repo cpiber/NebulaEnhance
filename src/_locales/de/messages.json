@@ -75,6 +75,14 @@
     "message": "Ob beim Scrollen über den Videospieler die Lautstärke geändert werden soll. Optional in logarithmischer Skala (anstatt linear).",
     "description": "Hilfstext für Volume Scroll der Optionen Seite."
   },
+  "optionsFirstSubtitleTitle": {
+    "message": "Ersten Untertitel aktivieren",
+    "description": "Beschriftung für First Subtitle der Optionen Seite."
+  },
+  "optionsFirstSubtitleHint": {
+    "message": "Ob beim Klick auf den Untertitel-Knopf die erste Spur aktiviert werden soll, wenn sie die einzige ist.",
+    "description": "Hilfstext für First Subtitle der Optionen Seite."
+  },
   "optionsLoadYoutubeTitle": {
     "message": "YouTube Videolink laden",
     "description": "Beschriftung für LoadYoutube der Optionen Seite."

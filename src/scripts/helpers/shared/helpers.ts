@@ -30,6 +30,13 @@ export const debounce = <T extends any[]>(func: (...args: T) => void, time = 500
   };
 };
 
+export const arrFromLengthy = <T>(a: { length: number, [k: number]: T }): T[] => {
+  const arr = new Array(a.length);
+  for (let i = 0; i < a.length; i++)
+    arr[i] = a[i];
+  return arr;
+};
+
 export const isMobile = () => window.matchMedia('(any-pointer: coarse), (any-hover: none)').matches;
 export const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
 export const isVideoListPage = () => !!window.location.pathname.match(/^\/(?:|videos\/?|myshows\/?)$/);

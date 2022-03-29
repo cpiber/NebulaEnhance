@@ -75,6 +75,14 @@
     "message": "Whether to make scrolling over the player change the playback volume. Optionally in logarithmic scale (as opposed to linear).",
     "description": "Hint for Volume Scroll of options page."
   },
+  "optionsFirstSubtitleTitle": {
+    "message": "Use first subtitle",
+    "description": "Label for First Subtitle of options page."
+  },
+  "optionsFirstSubtitleHint": {
+    "message": "Whether clicking on the subtitle button of the player should use the first available track if it is the only one.",
+    "description": "Hint for First Subtitle of options page."
+  },
   "optionsLoadYoutubeTitle": {
     "message": "Load YouTube link",
     "description": "Label for LoadYoutube of options page."
