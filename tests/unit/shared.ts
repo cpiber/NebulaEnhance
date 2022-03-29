@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 import { JSDOM } from 'jsdom';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { Events, Message, clone, debounce, dot, getCookie, injectFunction, injectScript, isMobile, isVideoListPage, isVideoPage, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
+import { Events, Message, arrFromLengthy, clone, debounce, dot, getCookie, injectFunction, injectScript, isMobile, isVideoListPage, isVideoPage, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -126,6 +126,18 @@ describe('other', () => {
       m();
     jest.runAllTimers();
     expect(mock).toBeCalledTimes(2);
+  });
+
+  test('arrFromLengthy converts to array', () => {
+    const test = { 0: 1, length: 5 };
+    const expected = [1];
+    expected.length = test.length;
+    expect(arrFromLengthy(test)).toEqual(expected);
+  });
+
+  test('arrFromLengthy lets arrays be', () => {
+    const test = [ 1, 2, 3 ];
+    expect(arrFromLengthy(test)).toEqual(test);
   });
 });
 
