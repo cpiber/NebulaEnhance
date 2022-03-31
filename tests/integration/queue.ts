@@ -15,7 +15,6 @@ beforeAll(async () => {
 beforeEach(maybeLogin(async () => {
   await page.goto(`${__NEBULA_BASE__}/videos`);
   await page.waitForSelector(videoSelector);
-  console.log(expect.getState().currentTestName);
 }));
 
 afterEach(async () => {
