@@ -241,13 +241,19 @@ const clickHandler = (e: MouseEvent) => {
   if (target.closest('.vjs-subs-caps-button.vjs-control') === null) // clicked subtitles button
     return;
   const subs = arrFromLengthy(player.textTracks()).filter(e => e.kind === 'subtitles');
-  if (subs.length !== 1 || subs[0].mode === 'showing')
+  if (subs.length !== 1)
     return;
   // only one subtitle track (not already active), use it and prevent popup
   e.stopPropagation();
   e.preventDefault();
-  subs[0].mode = 'showing';
   const { label } = subs[0];
-  console.dev.log(`Set subtitle track '${label}' active`);
-  window.localStorage.setItem('player-v1-subtitle-track', JSON.stringify(label));
+  if (subs[0].mode === 'showing') {
+    subs[0].mode = 'hidden';
+    console.dev.log(`Set subtitle track '${label}' inactive`);
+    window.localStorage.removeItem('player-v1-subtitle-track');
+  } else {
+    subs[0].mode = 'showing';
+    console.dev.log(`Set subtitle track '${label}' active`);
+    window.localStorage.setItem('player-v1-subtitle-track', JSON.stringify(label));
+  }
 };
