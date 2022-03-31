@@ -27,6 +27,7 @@ export default {
       moduleFileExtensions,
       moduleNameMapper,
       preset: 'jest-puppeteer',
+      testEnvironment: './jestEnv.js',
       testMatch: ['<rootDir>/tests/integration/**/*.ts'],
       testTimeout: 20,
       transform,

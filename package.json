@@ -81,6 +81,7 @@
     "glob": "^7.2.0",
     "husky": "^7.0.2",
     "jest": "^27.2.2",
+    "jest-environment-puppeteer": "^6.0.3",
     "jest-puppeteer": "^6.0.0",
     "jsdom": "^17.0.0",
     "node-eval": "^2.0.0",

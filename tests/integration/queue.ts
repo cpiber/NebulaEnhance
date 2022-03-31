@@ -18,7 +18,7 @@ beforeEach(maybeLogin(async () => {
 }));
 
 afterEach(async () => {
-  await page.evaluate(() => window.localStorage.removeItem('enhancer-queue'));
+  await page.evaluate(() => window.localStorage.clear());
   await page.waitForTimeout(2000);
 });
 
@@ -210,6 +210,7 @@ describe('queue', () => {
   });
 
   test('adds proper controls', async () => {
+    /** @see jestEnv.js */
     await addToQueue(3);
     await page.click(`${queueSelector} .top .next`);
     await waitForPlayerInit();
@@ -223,8 +224,8 @@ describe('queue', () => {
 
     await page.click(`${queueSelector} .top .next`);
     await waitForPlayerInit();
-    await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.disabled)).resolves.toBeFalsy();
     await expect(page.$eval('.enhancer-queue-control-next', (el: HTMLButtonElement) => el.disabled)).resolves.toBeTruthy();
+    await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.disabled)).resolves.toBeFalsy();
   });
 
   test('controls update on queue change', async () => {
