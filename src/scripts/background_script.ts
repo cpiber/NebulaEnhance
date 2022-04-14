@@ -1,4 +1,4 @@
-import { Creator, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, loadCreators as _loadCreators, normalizeString } from './background';
+import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString } from './background';
 import { BrowserMessage, getBrowserInstance, getFromStorage, nebulavideo, parseTypeObject, setToStorage } from './helpers/sharedExt';
 
 const videoFetchYt = 50;
@@ -58,11 +58,11 @@ const getYoutubeId = async (message: { [key: string]: any }) => {
   const normalizedCreator = normalizeString(creator || '');
   console.debug('creator:', creator, '\nnebula:', nebula, '\ntitle:', title);
   if (!creator && !nebula) throw 'not enough information';
-  const creatorFinder = creator && nebula
-    ? (e: Creator) => e.name === creator || normalizeString(e.name) === normalizedCreator || e.nebula === nebula || e.nebulaAlt == nebula
-    : creator
-      ? (e: Creator) => e.name === creator || normalizeString(e.name) === normalizedCreator
-      : (e: Creator) => e.nebula === nebula || e.nebulaAlt == nebula;
+  const creatorFinder = creator && nebula ?
+    (e: Creator) => e.name === creator || normalizeString(e.name) === normalizedCreator || e.nebula === nebula || e.nebulaAlt == nebula :
+    creator ?
+      (e: Creator) => e.name === creator || normalizeString(e.name) === normalizedCreator :
+      (e: Creator) => e.nebula === nebula || e.nebulaAlt == nebula;
 
   try {
     const creators = await loadCreators();
@@ -146,7 +146,9 @@ const openOptions = (active = true, ...args: string[]) => {
   // debug code
   if (!__DEV__) return;
   (window as any).loadCreators = loadCreators;
-  Object.defineProperty(window, 'loadCreatorsPromise', { get: () => promise, set(v) { promise = v; } });
+  Object.defineProperty(window, 'loadCreatorsPromise', { get: () => promise, set(v) {
+    promise = v;
+  } });
   (window as any).getYoutubeId = getYoutubeId;
   (window as any).getNebulaVideo = getNebulaVideo;
   (window as any).openChangelog = openChangelog;
