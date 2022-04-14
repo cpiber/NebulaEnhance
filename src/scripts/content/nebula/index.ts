@@ -176,8 +176,8 @@ const loadComments = async () => {
   if (h2.length < 2) return;
   const title = h2[0].textContent;
   const creator = h2[1].textContent;
-  const nebula = (h2[1].parentElement as HTMLAnchorElement).href;
   if (!title || !creator) return;
+  const nebula = (h2[1].parentElement as HTMLAnchorElement).getAttribute('href').split('/')[1];
   const e = h2[0].nextElementSibling;
   const t = e?.querySelectorAll('time')?.[1];
   if (!e || !t || e.querySelector('.enhancer-yt, .enhancer-yt-err'))
