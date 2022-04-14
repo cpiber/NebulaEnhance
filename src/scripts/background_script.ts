@@ -47,22 +47,26 @@ const openChangelog = async () => {
   isHandlingChangelog = false;
 };
 
-const loadCreators = (() => {
-  let promise: Promise<Creator[]> = null;
-  return () => {
-    if (promise) return promise;
-    return promise = _loadCreators();
-  };
-})();
+let promise: Promise<Creator[]> = null;
+const loadCreators = () => {
+  if (promise) return promise;
+  return promise = _loadCreators();
+};
 
 const getYoutubeId = async (message: { [key: string]: any }) => {
   const { creator, title, nebula } = message;
-  const normalizedCreator = normalizeString(creator);
+  const normalizedCreator = normalizeString(creator || '');
   console.debug('creator:', creator, '\nnebula:', nebula, '\ntitle:', title);
+  if (!creator && !nebula) throw 'not enough information';
+  const creatorFinder = creator && nebula
+    ? (e: Creator) => e.name === creator || normalizeString(e.name) === normalizedCreator || e.nebula === nebula || e.nebulaAlt == nebula
+    : creator
+      ? (e: Creator) => e.name === creator || normalizeString(e.name) === normalizedCreator
+      : (e: Creator) => e.nebula === nebula || e.nebulaAlt == nebula;
 
   try {
     const creators = await loadCreators();
-    const uploads = creators.find(e => e.name === creator || normalizeString(e.name) === normalizedCreator || e.nebula === nebula || e.nebulaAlt == nebula)?.uploads;
+    const uploads = creators.find(creatorFinder)?.uploads;
     return creatorHasYTVideo(uploads, title, videoFetchYt);
   } catch (err) {
     console.error(err);
@@ -72,6 +76,7 @@ const getYoutubeId = async (message: { [key: string]: any }) => {
 
 const getNebulaVideo = async (message: { [key: string]: any }): Promise<nebulavideo> => {
   const { channelID, videoTitle } = message;
+  if (!channelID) throw 'not enough information';
 
   const creators = await loadCreators();
   const creator = creators.find(c => c.channel === channelID);
@@ -137,4 +142,13 @@ const openOptions = (active = true, ...args: string[]) => {
   const yt = (await getFromStorage({ youtube: false })).youtube;
   if (!yt) return;
   console.debug(await loadCreators());
+
+  // debug code
+  if (!__DEV__) return;
+  (window as any).loadCreators = loadCreators;
+  Object.defineProperty(window, 'loadCreatorsPromise', { get: () => promise, set(v) { promise = v; } });
+  (window as any).getYoutubeId = getYoutubeId;
+  (window as any).getNebulaVideo = getNebulaVideo;
+  (window as any).openChangelog = openChangelog;
+  (window as any).openOptions = openOptions;
 })();
