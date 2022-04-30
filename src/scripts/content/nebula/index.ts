@@ -236,7 +236,7 @@ const insertHideButton = async () => {
   if (loadRss) {
     const rss = document.createElement('a');
     if (follow) follow.before(rss); else container.appendChild(rss);
-    rss.href = `https://leonick.se/feeds/nebula?channel=${creator}`;
+    rss.href = `https://rss.nebula.app/video/channels/${creator}.rss`;
     rss.target = '_blank';
     rss.classList.add('enhancer-rss');
     if (!follow) rss.classList.add('enhancer-hideCreator-pre');

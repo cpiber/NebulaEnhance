@@ -37,7 +37,7 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 - Watch on Nebula: On any YouTube video page tries to find the corresponding Nebula video (enable in settings)
   - Optionally automatically open it in a new tab
 - Hide creators: Enables you to hide videos by certain creators
-- RSS: Add feed button to creator page via [external tool](https://leonick.se/projects/nebula-feed) (enable in settings)
+- RSS: Add feed button to creator page
 - Style visited links to mark watched videos
 - ~~Theatre Mode: Make the player fit the page better~~ Now natively supported
 
