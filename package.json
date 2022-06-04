@@ -11,7 +11,7 @@
     "test:ee": "npm run jest -- --selectProjects integration --runInBand",
     "test:watch": "npm run jest -- --watch --notify",
     "test:pr": "npm run test:unit -- --ci --testPathIgnorePatterns youtube",
-    "coverage": "npm run jest -- --selectProjects unit --coverage",
+    "coverage": "COVERAGE=true npm run jest -- --selectProjects unit --coverage",
     "prebuild": "npm run clean && npm run build:all",
     "build": "web-ext build",
     "build:light": "rollup -c --configType all",

@@ -177,7 +177,7 @@ const testsInternal = () => ({
   output: {
     format: 'esm',
     exports: 'auto',
-    sourcemap: false, // for some reason it seems jest includes some source-map translation itself, `true` breaks for coverage
+    sourcemap: !process.env.COVERAGE, // for some reason it seems jest includes some source-map translation itself, `true` breaks for coverage
   },
   context: 'window',
   plugins: [
