@@ -6,13 +6,13 @@ import replace from '@rollup/plugin-replace';
 import typescript from '@rollup/plugin-typescript';
 import autoprefixer from 'autoprefixer';
 import chalk from 'chalk';
-import cpx from 'cpx';
 import { config } from 'dotenv';
 import glob from 'glob';
 import nodeEval from 'node-eval';
 import path from 'path';
 import presetEnv from 'postcss-preset-env';
 import 'rollup';
+import copy from 'rollup-plugin-copy';
 import postcss from 'rollup-plugin-postcss';
 import { string } from 'rollup-plugin-string';
 import { terser } from 'rollup-plugin-terser';
@@ -128,11 +128,8 @@ const css = (args) =>
  */
 const other = (args) => {
   if (!args.silent)
-    console.info(chalk`{blueBright [Rollup build]} Copying files`);
-  (args.watch ? cpx.watch : cpx.copySync)('src/**/*.!(d.ts|ts|js|xcf|@(sa|sc|c)ss)', 'extension-dist');
-
-  if (!args.silent)
-    console.info(chalk`{blueBright [Rollup build]} Generating manifest`);
+    console.info(chalk`{blueBright [Rollup build]} Copying files and generating manifest`);
+  const otherglob = 'src/**/*.!(d.ts|ts|js|xcf|@(sa|sc|c)ss)';
   /**
    * @type {import('rollup').RollupOptions}
    */
@@ -153,6 +150,14 @@ const other = (args) => {
         preventAssignment: true,
       }),
       writeJSON(),
+      copy({
+        targets: [
+          { src: otherglob, dest: 'extension-dist' },
+        ],
+        flatten: false,
+        verbose: !args.silent,
+      }),
+      addWatch(otherglob),
     ],
     watch: w(args.watch),
   };
@@ -218,6 +223,7 @@ function remove() {
  */
 function writeJSON(filename = 'manifest.js') {
   return {
+    name: 'write-json',
     generateBundle(_, bundle, isWrite) {
       if (!isWrite)
         return;
@@ -232,6 +238,18 @@ function writeJSON(filename = 'manifest.js') {
   };
 }
 
+/**
+ * @param {string} id
+ * @returns {import('rollup').Plugin}
+ */
+function addWatch(id) {
+  return {
+    name: 'watch-external',
+    buildStart() {
+      glob.sync(id).forEach(f => this.addWatchFile(f));
+    },
+  };
+}
 
 export default async args => {
   if (!process.env.YT_API_KEY) {
