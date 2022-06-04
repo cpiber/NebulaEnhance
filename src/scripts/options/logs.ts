@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify';
-import marked from 'marked';
+import { marked } from 'marked';
 import { getBrowserInstance } from '../helpers/sharedExt';
 import { buildModal, withLoader } from './modal';
 

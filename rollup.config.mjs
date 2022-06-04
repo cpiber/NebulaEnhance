@@ -1,16 +1,18 @@
+/// <reference types="@types/node"/>
+/*global process */
 'use strict';
 
 import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import typescript from '@rollup/plugin-typescript';
-import autoprefixer from 'autoprefixer';
-import chalk from 'chalk';
+import chalk from 'chalk-template';
 import { config } from 'dotenv';
 import glob from 'glob';
 import nodeEval from 'node-eval';
 import path from 'path';
 import presetEnv from 'postcss-preset-env';
+import { createInterface } from 'readline';
 import 'rollup';
 import copy from 'rollup-plugin-copy';
 import postcss from 'rollup-plugin-postcss';
@@ -22,7 +24,7 @@ const w = watch => watch ? {
   clearScreen: !!process.stdout.isTTY,
 } : false;
 
-const readline = require('readline').createInterface({
+const readline = createInterface({
   input: process.stdin,
   output: process.stdout,
 });
@@ -111,7 +113,7 @@ const css = (args) =>
       },
       plugins: [
         postcss({
-          plugins: [ autoprefixer(), presetEnv() ],
+          plugins: [presetEnv()],
           extract: true,
           sourceMap: !process.env.BUILD,
         }),

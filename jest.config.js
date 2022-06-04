@@ -1,7 +1,7 @@
 /* eslint sort-keys: ['error'] */
 
 const transform = {
-  '\\.ts$': [ 'rollup-jest', { args: { configType: 'tests-internal', silent: true }, configFile: './rollup.config.js', useCache: false } ],
+  '\\.ts$': [ 'rollup-jest', { args: { configType: 'tests-internal', silent: true }, configFile: './rollup.config.mjs', useCache: false } ],
 };
 const moduleNameMapper = {
   '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|sass|scss|css)$': '<rootDir>/tests/mocks/fileMock.js',
@@ -17,8 +17,10 @@ export default {
       moduleNameMapper,
       setupFiles: ['./jest.setup.js'],
       testEnvironment: 'jsdom',
+      testEnvironmentOptions: {
+        url: 'https://nebula.app',
+      },
       testMatch: ['<rootDir>/tests/unit/**/*.ts'],
-      testURL: 'https://nebula.app',
       transform,
     },
     {

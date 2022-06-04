@@ -32,7 +32,7 @@ describe('loading youtube videos', () => {
     await expect(creatorHasYTVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 150)).resolves.toEqual({ confidence: 1, video: vid.videoId });
 
     // from cache
-    const fetchMock = jest.fn<any, any>();
+    const fetchMock = jest.fn<any>();
     global.fetch = fetchMock;
     await expect(creatorHasYTVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     expect(fetchMock).not.toBeCalled();

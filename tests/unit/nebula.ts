@@ -48,7 +48,7 @@ describe('loading nebula videos', () => {
     await expect(creatorHasNebulaVideo('hai', vid.title, 100)).resolves.toEqual({ confidence: 1, video: vid.videoId });
 
     // from cache
-    const fetchMock = jest.fn<any, any>();
+    const fetchMock = jest.fn<any>();
     global.fetch = fetchMock;
     await expect(creatorHasNebulaVideo('hai', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     expect(fetchMock).not.toBeCalled();
@@ -70,7 +70,7 @@ describe('loading nebula videos', () => {
     await expect(existsNebulaVideo(vid.title, 100)).resolves.toEqual({ confidence: 1, video: vid.videoId });
 
     // from cache
-    const fetchMock = jest.fn<any, any>();
+    const fetchMock = jest.fn<any>();
     global.fetch = fetchMock;
     await expect(existsNebulaVideo(vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
     expect(fetchMock).not.toBeCalled();
@@ -81,10 +81,10 @@ describe('loading nebula videos', () => {
 });
 
 describe('api', () => {
-  const fetchMock = jest.fn<any, any>();
+  const fetchMock = jest.fn<typeof fetch>();
 
   beforeAll(() => {
-    global.fetch = fetchMock;
+    global.fetch = fetchMock as unknown as typeof global.fetch;
   });
 
   const consoleError = console.error;
@@ -103,7 +103,7 @@ describe('api', () => {
     global.fetch = fetch as unknown as typeof global.fetch;
   });
 
-  const genTokenResponse = () => Promise.resolve(new Response(JSON.stringify({ token: Math.random().toString(16).substr(2) })));
+  const genTokenResponse = () => Promise.resolve(new Response(JSON.stringify({ token: Math.random().toString(16).substring(2) })));
 
   test('no token', async () => {
     fetchMock.mockImplementationOnce(genTokenResponse);
@@ -117,7 +117,7 @@ describe('api', () => {
 
   test('token from cookie', async () => {
     fetchMock.mockImplementationOnce((_, init) => {
-      expect(init.headers.Authorization).toContain('test');
+      expect((init.headers as any).Authorization).toContain('test');
       return genTokenResponse();
     });
 

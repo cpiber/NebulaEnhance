@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify';
-import marked from 'marked';
+import { marked } from 'marked';
 import closeIcon from '../../icons/close.svg';
 import iconThreeDots from '../../icons/three-dots.svg';
 

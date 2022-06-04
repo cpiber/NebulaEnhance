@@ -96,7 +96,7 @@ describe('other', () => {
   test('isMobile verifies via media query', () => {
     const w = window;
     (window as any) = window || {};
-    const mock = jest.fn<any, any>().mockReturnValueOnce({ matches: true }).mockReturnValueOnce({ matches: false });
+    const mock = jest.fn<any>().mockReturnValueOnce({ matches: true }).mockReturnValueOnce({ matches: false });
     window.matchMedia = mock;
 
     expect(isMobile()).toBe(true);
@@ -323,7 +323,7 @@ describe('message sending', () => {
 });
 
 describe('message event listeners', () => {
-  const mock = jest.fn<any, any>();
+  const mock = jest.fn<(ev: MessageEvent) => void>();
   beforeAll(() => {
     window.addEventListener('message', mock);
   });

@@ -11,7 +11,7 @@ export function sendMessage<T>(name: Message, data?: { [key: string]: any }, exp
     return Promise.resolve(undefined as T);
   }
   return new Promise<T>((resolve, reject) => {
-    const e = `enhancer-message-${Math.random().toString().substr(2)}`;
+    const e = `enhancer-message-${Math.random().toString().substring(2)}`;
     const c = (ev: MessageEvent) => {
       if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:.+\.)?nebula.app)/)) return;
       try {
@@ -34,7 +34,7 @@ export function sendEventHandler(event: Events.QUEUE_CHANGE, listener: Listener<
 export function sendEventHandler(event: Exclude<Events, Events.QUEUE_CHANGE>, listener: Listener, skipOriginCheck?: boolean): void;
 export function sendEventHandler(event: Events, listener: Listener, skipOriginCheck = false) {
   console.dev.debug('Registering remote listener for', event);
-  const e = `enhancer-event-${event}-${Math.random().toString().substr(2)}`;
+  const e = `enhancer-event-${event}-${Math.random().toString().substring(2)}`;
   const c = (ev: MessageEvent) => {
     if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:.+\.)?nebula.app)/)) return;
     try {
