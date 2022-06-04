@@ -27,10 +27,11 @@ export const youtube = async () => {
   // will essentially run on the previous page.
   window.addEventListener('yt-action', (ev: CustomEvent) => {
     if (!ev.detail) return;
-    console.dev.debug(`yt action: ${ev.detail.actionName}`);
-    if (![ 'yt-history-load', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(ev.detail.actionName) &&
+    const act = ev.detail.actionName;
+    console.dev.debug(`yt action: ${act}`);
+    if (![ 'yt-history-load', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(act) &&
         document.querySelector('.watch-on-nebula')) return;
-    console.dev.log(`yt action triggered re-run: ${ev.detail.actionName}`);
+    console.dev.log(`yt action triggered re-run: ${act}`);
     setTimeout(run, 1, true);
   });
 };

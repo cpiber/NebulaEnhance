@@ -87,18 +87,6 @@ jobs:
     - name: Clear jest cache
       run: npx jest --clear-cache
     - name: Run all tests
-      if: ${{ github.event_name != 'schedule' }} # don't wrap on schedule
-      uses: mattallty/jest-github-action@v1
-      with:
-        test-command: xvfb-run --auto-servernum npm run test -- --ci
-        coverage-comment: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
-        NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
-        NEBULA_USER: ${{ secrets.NEBULA_USER }}
-    - name: Run all tests
-      if: ${{ github.event_name == 'schedule' }}
       run: xvfb-run --auto-servernum npm run test -- --ci
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -80,10 +80,7 @@ jobs:
     - name: Clear jest cache
       run: npx jest --clear-cache
     - name: Run all tests
-      uses: mattallty/jest-github-action@v1
-      with:
-        test-command: npm run test:pr
-        coverage-comment: false
+      run: npm run test:pr -- --ci
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
