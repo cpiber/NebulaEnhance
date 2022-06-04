@@ -70,6 +70,9 @@ const run = debounce((allowOpenTab: boolean) => {
     console.dev.log('Found video:', vid);
     console.log(constructButton(vid));
     subscribeElement.before(constructButton(vid));
+    const wrap = document.querySelector('ytd-watch-metadata');
+    if (wrap) wrap.setAttribute('larger-item-wrap', ''); // make sure youtube displays two lines for space for the button
+    subscribeElement.parentElement.style.minWidth = '450px'; // actually even larger still
 
     console.dev.debug('Referer:', document.referrer);
     if (document.referrer.match(/https?:\/\/(.+\.)?nebula\.app\/?/) && window.history.length <= 1) return; // prevent open link if via nebula link (any link)
