@@ -99,6 +99,30 @@ export function injectFunction<T extends any[]>(node: HTMLElement, fn: (...args:
   script.remove();
 }
 
+export function injectFunctionWithReturn<T extends any[], R>(node: HTMLElement, fn: (...args: T) => R, ...args: T): Promise<R> {
+  return new Promise((resolve, reject) => {
+    const e = `enhancer-function-${fn.name}-${Math.random().toString().substring(2)}`;
+    const listener = (ev: MessageEvent) => {
+      const data = parseTypeObject<{ type: string, ret?: R, err: any }>(ev.data);
+      if (data.type !== e) return;
+      window.removeEventListener('message', listener);
+      'ret' in data ? resolve(data.ret) : reject(data.err);
+    };
+    window.addEventListener('message', listener);
+    const script = document.createElement('script');
+    script.textContent = `(async () => {
+      try {
+        const ret = await ((${fn})(${args.map(v => JSON.stringify(v)).join(',')}));
+        window.postMessage({ type: "${e}", ret });
+      } catch (e) {
+        window.postMessage({ type: "${e}", err: ''+e });
+      }
+    })()`;
+    node.appendChild(script);
+    script.remove();
+  });
+}
+
 export const getCookie = (name: string) => {
   const cookieArr = document.cookie.split(';');
   for (const cookie of cookieArr) {

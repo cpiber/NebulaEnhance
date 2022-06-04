@@ -75,11 +75,11 @@ const getYoutubeId = async (message: { [key: string]: any }) => {
 };
 
 const getNebulaVideo = async (message: { [key: string]: any }): Promise<nebulavideo> => {
-  const { channelID, videoTitle } = message;
-  if (!channelID) throw 'not enough information';
+  const { channelID, channelName, videoTitle } = message;
+  if (!channelID && !channelName) throw 'not enough information';
 
   const creators = await loadCreators();
-  const creator = creators.find(c => c.channel === channelID);
+  const creator = creators.find(c => c.channel === channelID || c.name === channelName || c.nebulaAlt === channelName);
   console.debug('creator:', creator, '\nchannelID:', channelID, '\nvideoTitle:', videoTitle);
   if (!creator) return;
 
