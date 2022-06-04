@@ -68,7 +68,8 @@ const loading = () => {
     return window.clearInterval(loadInterval);
   switch (currentDetail.detail.page) {
     case 'video':
-      if (document.querySelectorAll('h2').length >= 2 && document.querySelector('video'))
+      // either video is preset or video can't be played
+      if (document.querySelectorAll('h2').length >= 2 && (document.querySelector('video') || document.querySelector('[href="/join/"]')))
         load();
       break;
     case 'creator':

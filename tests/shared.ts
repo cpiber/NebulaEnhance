@@ -40,7 +40,7 @@ export const login = async (force = false) => {
   });
   await expect(page).toClick(`${formSelector} button`, { text: 'Sign in' });
   await page.waitForResponse('https://api.watchnebula.com/api/v1/authorization/'); // wait until logged in
-  await page.waitForSelector('[href="/account"]');
+  // await page.waitForSelector('[href="/settings/account"]');
   await page.waitForTimeout(1000);
 };
 
