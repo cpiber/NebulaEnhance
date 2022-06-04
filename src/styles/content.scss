@@ -18,15 +18,15 @@
 
   svg {
     fill: white;
-    fill: currentColor;
+    fill: currentcolor;
     opacity: 0.7;
   }
 
-  h2:nth-child(2).hidden ~ &.hide {
+  h2:nth-child(2).hidden~&.hide {
     display: none;
   }
 
-  h2:nth-child(2):not(.hidden) ~ &.show {
+  h2:nth-child(2):not(.hidden)~&.show {
     display: none;
   }
 
@@ -74,9 +74,11 @@ div.enhancer-queueButton {
   }
 
   $self: &;
-  @at-root img, picture {
+
+  @at-root img,
+  picture {
     @include hov {
-      & ~ #{$self} {
+      &~#{$self} {
         @extend %hover;
       }
     }
@@ -87,16 +89,18 @@ div.enhancer-queueButton {
     height: 19px;
     padding: 3px;
     fill: white;
-    fill: currentColor;
+    fill: currentcolor;
     transition: width 0.1s ease-in-out, height 0.1s ease-in-out;
     pointer-events: initial;
   }
+
   @include hov {
     svg {
       width: 22px;
       height: 22px;
     }
   }
+
   @include mobile {
     opacity: 1;
   }
@@ -109,7 +113,7 @@ a.enhancer-queueButtonAll {
     width: 12px;
     height: 12px;
     fill: white;
-    fill: currentColor;
+    fill: currentcolor;
   }
 }
 
@@ -130,7 +134,7 @@ a.enhancer-queueButtonAll {
     opacity: 0.75;
   }
 
-  > * {
+  >* {
     opacity: 0.05;
   }
 }
@@ -139,7 +143,8 @@ a.enhancer-queueButtonAll {
   display: none;
 }
 
-.vjs-control .vjs-button, .vjs-control.vjs-button {
+.vjs-control .vjs-button,
+.vjs-control.vjs-button {
   // need to set these manually again ...
   position: relative;
   font-family: VideoJS;
@@ -166,7 +171,10 @@ a.enhancer-queueButtonAll {
 }
 
 .enhancer-volume.vjs-time-control {
-  .video-js.vjs-nebula &, .video-js.vjs-nebula &.volume-conditional.volume-show, .video-js.vjs-nebula .vjs-volume-panel.vjs-hover ~ & {
+
+  .video-js.vjs-nebula &,
+  .video-js.vjs-nebula &.volume-conditional.volume-show,
+  .video-js.vjs-nebula .vjs-volume-panel.vjs-hover~& {
     width: 3.5em;
     transition: width 0.25s ease-in-out;
     overflow: hidden;
@@ -187,7 +195,7 @@ a.enhancer-queueButtonAll {
   cursor: pointer;
 }
 
-.video-js.vjs-nebula .vjs-control-bar > .vjs-time-control {
+.video-js.vjs-nebula .vjs-control-bar>.vjs-time-control {
   display: none; // can't remove it, someone adds it anyways
 }
 
@@ -195,6 +203,6 @@ a.enhancer-queueButtonAll {
   position: relative;
 }
 
-body > .watch-on-nebula {
+body>.watch-on-nebula {
   display: none !important;
 }

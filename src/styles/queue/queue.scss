@@ -27,7 +27,7 @@
     width: auto;
     height: 1em;
     vertical-align: middle;
-    fill: currentColor;
+    fill: currentcolor;
   }
 
   .clickable {
@@ -63,7 +63,12 @@
       font-weight: 400;
     }
 
-    .spacer, .close, .share, .prev, .next, .reverse {
+    .spacer,
+    .close,
+    .share,
+    .prev,
+    .next,
+    .reverse {
       padding: 8px;
       padding-right: 6px;
     }
@@ -86,7 +91,8 @@
       transform: scale($nextscale);
     }
 
-    .prev, .next {
+    .prev,
+    .next {
       opacity: $disabled_alpha;
 
       &.clickable {
@@ -134,7 +140,8 @@
         transform: scale($nextscale) rotate(90deg);
       }
 
-      &:first-child .up, &:last-child .down {
+      &:first-child .up,
+      &:last-child .down {
         opacity: $disabled_alpha;
         cursor: initial;
       }
@@ -213,7 +220,8 @@
           white-space: nowrap;
         }
 
-        .title, .creator {
+        .title,
+        .creator {
           overflow: hidden;
           text-align: left;
           width: 100%;
@@ -254,6 +262,7 @@
           right: 5px;
         }
       }
+
       @include hov {
         .remove {
           right: 5px;
@@ -265,11 +274,13 @@
   @media (max-width: $tablet_big) {
     right: 63px;
   }
+
   @media (max-width: $tablet) {
     left: 63px;
     right: 63px;
     width: unset;
   }
+
   @media (max-width: $mobile) {
     left: 0;
     right: 0;
