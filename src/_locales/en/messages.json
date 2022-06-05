@@ -180,12 +180,16 @@
     "description": "Text to put below version list in changelog modal."
   },
   "optionsButtonSaveNote": {
-    "message": "Hint: Options are automatically saved.",
+    "message": "Options are automatically saved.",
     "description": "Hint for 'save' button."
   },
   "optionsReloadNote": {
-    "message": "Note: For the above changes to apply, you need to reload the Nebula page.",
+    "message": "Hint: For the above changes to apply, you need to reload the Nebula page.",
     "description": "Note/hint for options to apply."
+  },
+  "optionsSavedNote": {
+    "message": "Saved",
+    "description": "Text for `saved` notification."
   },
   "buttonSave": {
     "message": "Save",
@@ -254,6 +258,14 @@
   "pageShowCreator": {
     "message": "Show this creator again",
     "description": "Button hint to unhide creator."
+  },
+  "pageHidingCreator": {
+    "message": "Hiding creator",
+    "description": "Text for `hiding` notification."
+  },
+  "pageShowingCreator": {
+    "message": "Showing creator again",
+    "description": "Text for `hiding` notification."
   },
   "pageCreatorHidden": {
     "message": "Creator hidden by you",

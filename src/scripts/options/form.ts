@@ -1,9 +1,13 @@
-import { getBrowserInstance, getFromStorage, setToStorage } from '../helpers/sharedExt';
+import { getBrowserInstance, getFromStorage, notification, setToStorage } from '../helpers/sharedExt';
 import { Settings, toData } from './settings';
 
 const els = Settings.get();
+const savedtext = getBrowserInstance().i18n.getMessage('optionsSavedNote');
 
-export const save = () => setToStorage(toData());
+export const save = async (showNotification = false) => {
+  setToStorage(toData());
+  if (showNotification) notification(savedtext);
+};
 export const load = async (doSave = false) => {
   const data = await getFromStorage(toData(true));
   Object.keys(els).forEach(prop => {
@@ -15,7 +19,7 @@ export const load = async (doSave = false) => {
   });
 
   if (doSave)
-    save();
+    save(false);
 };
 
 const delayedSave = (e: Event) => {
@@ -28,13 +32,13 @@ const delayedSave = (e: Event) => {
 const form = document.querySelector('form');
 form.addEventListener('submit', e => {
   e.preventDefault();
-  save();
+  save(true);
 });
 
 // autosave
 Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')).forEach(e => {
-  e.addEventListener('focusout', save);
-  e.addEventListener('change', save);
+  e.addEventListener('focusout', delayedSave);
+  e.addEventListener('change', delayedSave);
 });
 Array.from(form.querySelectorAll('textarea')).forEach(e => e.addEventListener('keyup', delayedSave));
 

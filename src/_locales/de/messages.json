@@ -187,6 +187,10 @@
     "message": "Hinweis: Damit Ihre Änderungen angewendet werden müssen Sie die Nebula Seite neuladen.",
     "description": "Notiz/Hinweis zu Änderungen."
   },
+  "optionsSavedNote": {
+    "message": "Gespeichert",
+    "description": "Text für `saved` notification."
+  },
   "buttonSave": {
     "message": "Speichern",
     "description": "'save' button."
@@ -254,6 +258,14 @@
   "pageShowCreator": {
     "message": "Diesen Kanal wieder anzeigen",
     "description": "Button hinweis um creator nicht mehr zu verstecken."
+  },
+  "pageHidingCreator": {
+    "message": "Kanal wird versteckt",
+    "description": "Text für `hiding` notification."
+  },
+  "pageShowingCreator": {
+    "message": "Kanal wird wieder angezeigt",
+    "description": "Text für `hiding` notification."
   },
   "pageCreatorHidden": {
     "message": "Kanal wurde von Ihnen versteckt",

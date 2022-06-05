@@ -69,7 +69,8 @@
         }
 
         &:disabled {
-          &, & + label {
+          &,
+          & + label {
             opacity: 0.4;
           }
         }
@@ -148,5 +149,33 @@
 
   &:focus {
     box-shadow: rgb(82 180 233 / 0.5) 0 0 10px;
+  }
+}
+
+.notification {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translate(-50%, calc(100% + 40px));
+  max-width: 80vw;
+  transition: transform 0.1s ease-in-out;
+  border: 1px solid rgb(111 188 230);
+  border-radius: 6px;
+  box-shadow: rgb(82 180 233 / 0.5) 0 0 10px;
+  padding: 8px 34px;
+  font-size: 13px;
+
+  &.show {
+    transform: translate(-50%, 0);
+  }
+
+  @include light {
+    background-color: #ffffff;
+    color: rgb(0 20 30);
+  }
+
+  @include dark {
+    background-color: #111719;
+    color: rgb(247 247 247);
   }
 }

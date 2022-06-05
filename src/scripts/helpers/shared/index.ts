@@ -1,6 +1,7 @@
 export * from './communication';
 export * from './constants';
 export * from './helpers';
+export * from './notification';
 
 export type ytvideo = {
   confidence: number,
