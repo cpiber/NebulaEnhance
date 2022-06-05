@@ -1,6 +1,6 @@
 {
   "name": "nebulaenhance",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "private": true,
   "description": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
   "type": "module",
@@ -35,8 +35,7 @@
     "lint:css": "stylelint '**/*.scss'",
     "lint:ext": "web-ext lint",
     "lint-fix": "npm run lint:js -- --fix && npm run lint:css -- --fix && npm run lint:ext",
-    "clean": "rimraf extension-dist",
-    "prepare": "husky install"
+    "clean": "rimraf extension-dist"
   },
   "keywords": [
     "nebula",
