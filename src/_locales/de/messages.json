@@ -140,7 +140,7 @@
     "description": "Beschriftung fürs Einfügen von custom scripts zur Webseite der Optionen Seite."
   },
   "optionsCustomScriptPageHint": {
-    "message": "Erlaubt es, benutzerdefinierten JavaScript Code auf der Nebula Seite auszuführen.",
+    "message": "Erlaubt es, benutzerdefinierten JavaScript Code auf der Nebula Seite auszuführen.<br />Siehe <a href=\"https://github.com/cpiber/NebulaEnhance/blob/master/docs/index.md\" target=\"_blank\">docs</a> für Informationen zur Interaktion mit Enhancer for Nebula.",
     "description": "Hilfstext fürs Einfügen von custom scripts zur Webseite der Optionen Seite."
   },
   "optionsCustomScriptPagePlaceholder": {

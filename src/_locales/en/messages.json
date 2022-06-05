@@ -140,7 +140,7 @@
     "description": "Label for adding custom scripts to webpage of options page."
   },
   "optionsCustomScriptPageHint": {
-    "message": "Allows to add custom JavaScript code to be executed on the Nebula page.",
+    "message": "Allows to add custom JavaScript code to be executed on the Nebula page.<br />See <a href=\"https://github.com/cpiber/NebulaEnhance/blob/master/docs/index.md\" target=\"_blank\">docs</a> for information on interacting with Enhancer for Nebula.",
     "description": "Hint for adding custom scripts to webpage of options page."
   },
   "optionsCustomScriptPagePlaceholder": {
