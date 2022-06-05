@@ -4,7 +4,7 @@ export const eventPrefix = 'enebula' as const;
 export const navigatePrefix = `${eventPrefix}-navigate` as const;
 export const loadPrefix = `${eventPrefix}-load` as const;
 export const xhrPrefix = `${eventPrefix}-xhr` as const;
-export const knownPages = [ 'myshows', 'videos', 'podcasts', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs' ] as const;
+export const knownPages = [ 'myshows', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings' ] as const;
 
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
@@ -48,10 +48,10 @@ const navigation = () => {
   return naviage('creator', oldurl, { who: cmatch[1], more: cmatch[2] });
 };
 
-let currentDetail: { detail: { page: string, from: string, [key: string]: any } } = null;
+let currentDetail: { detail: { page: string, from: string, [key: string]: any; }; } = null;
 let currentlyloading: string = null;
 let loadInterval = 0;
-const naviage = (page: string, from: string, data: { [key: string]: any } = {}) => {
+const naviage = (page: string, from: string, data: { [key: string]: any; } = {}) => {
   console.debug('Navigating to page', page, 'from', from);
   const detail = clone({ detail: { page, from, ...data } });
   currentDetail = detail;

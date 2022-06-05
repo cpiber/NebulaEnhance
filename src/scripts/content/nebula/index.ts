@@ -108,7 +108,7 @@ const click = async (e: MouseEvent) => {
   const q = Queue.get();
   const target = e.target as HTMLElement;
 
-  if (target.closest('[href="https://standard.tv/"] + * + * > *:nth-child(2)'))
+  if (target.closest('main [role="listbox"]') && location.pathname.startsWith('/settings/preferences'))
     return changeTheme(e);
 
   const addAll = target.closest('.enhancer-queueButtonAll');
@@ -258,7 +258,7 @@ const insertHideButton = async () => {
 };
 
 const changeTheme = (e: MouseEvent) => {
-  const theme = (e.target as HTMLElement).textContent.toLowerCase();
+  const theme = (e.target as HTMLElement).dataset.value.toLowerCase();
   console.debug('Saving theme', theme);
   setToStorage({ theme });
 };
