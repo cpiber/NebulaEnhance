@@ -43,7 +43,7 @@ export function clickTop(this: Queue, e: MouseEvent) {
   this.toggle();
 }
 
-export function handleMessage(this: Queue, e: MessageEvent, msg: { type: string, [key: string]: any }): true {
+export function handleMessage(this: Queue, e: MessageEvent, msg: { type: string, [key: string]: any }) {
   switch (msg.type) {
     case Message.QUEUE_NEXT:
       this.gotoNext();
@@ -52,7 +52,6 @@ export function handleMessage(this: Queue, e: MessageEvent, msg: { type: string,
       this.gotoPrev();
       break;
   }
-  return true;
 }
 
 export function popState(this: Queue) {

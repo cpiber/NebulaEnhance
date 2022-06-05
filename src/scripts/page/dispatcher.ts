@@ -11,9 +11,9 @@ export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
 export const videoselector = 'a[href^="/videos/"][aria-hidden]';
 
 export const init = () => {
-  const origPushState = history.pushState;
+  const pushstate = history.pushState;
   history.pushState = function (data, title, url) {
-    origPushState.call(history, data, title, url);
+    pushstate.call(history, data, title, url);
     setTimeout(navigation, 0);
   };
   window.addEventListener('popstate', navigation);

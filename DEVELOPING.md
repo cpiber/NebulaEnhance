@@ -1,5 +1,9 @@
 # Quick Start
 
+See also the [docs](docs/index.md) for more information.
+
+---
+
 Please make sure you have [NodeJS](https://nodejs.org/) and it's package manager [npm](https://www.npmjs.com/) installed.
 
 - Install [pnpm](https://github.com/pnpm/pnpm): `npm install -g pnpm`

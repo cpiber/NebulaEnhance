@@ -11,7 +11,7 @@ export const enum Message {
 }
 export const isQueueMessage = (msg: string) => msg.startsWith('queue');
 
-export const enum Events {
+export const enum Event {
   QUEUE_CHANGE = 'queueChange',
 }
 

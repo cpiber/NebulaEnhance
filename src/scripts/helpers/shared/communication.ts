@@ -1,4 +1,4 @@
-import { Events, Message } from './constants';
+import { Event, Message } from './constants';
 import { clone, parseTypeObject } from './helpers';
 
 export function sendMessage(name: Message.GET_MESSAGE, data: { message: string }): Promise<string>;
@@ -30,9 +30,9 @@ export function sendMessage<T>(name: Message, data?: { [key: string]: any }, exp
 }
 
 export type Listener<R = any, E = any> = (res: R, err: E) => void;
-export function sendEventHandler(event: Events.QUEUE_CHANGE, listener: Listener<{ canNext: boolean, canPrev: boolean }>, skipOriginCheck?: boolean): void;
-export function sendEventHandler(event: Exclude<Events, Events.QUEUE_CHANGE>, listener: Listener, skipOriginCheck?: boolean): void;
-export function sendEventHandler(event: Events, listener: Listener, skipOriginCheck = false) {
+export function sendEventHandler(event: Event.QUEUE_CHANGE, listener: Listener<{ canNext: boolean, canPrev: boolean }>, skipOriginCheck?: boolean): void;
+export function sendEventHandler(event: Exclude<Event, Event.QUEUE_CHANGE>, listener: Listener, skipOriginCheck?: boolean): void;
+export function sendEventHandler(event: Event, listener: Listener, skipOriginCheck = false) {
   console.dev.debug('Registering remote listener for', event);
   const e = `enhancer-event-${event}-${Math.random().toString().substring(2)}`;
   const c = (ev: MessageEvent) => {

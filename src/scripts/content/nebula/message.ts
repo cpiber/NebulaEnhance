@@ -1,4 +1,4 @@
-import { Events, Message, getBrowserInstance, getFromStorage, isQueueMessage, parseTypeObject, replyMessage } from '../../helpers/sharedExt';
+import { Event, Message, getBrowserInstance, getFromStorage, isQueueMessage, parseTypeObject, replyMessage } from '../../helpers/sharedExt';
 import { Queue } from '../queue';
 
 type Msg = { type: string, name?: string, [key: string]: any };
@@ -18,7 +18,7 @@ export const handle = (e: MessageEvent) => {
   console.dev.debug('Handling message', msg);
 
   if (isQueueMessage(msg.type))
-    return Queue.get().handleMessage(e, msg);
+    return Queue.get().handleMessage(e, msg), true;
 
   let promise: Promise<any> = null;
   switch (msg.type) {
@@ -49,7 +49,7 @@ export const handle = (e: MessageEvent) => {
 
 const registerListener = (e: MessageEvent, msg: Msg) => {
   switch (msg.event) {
-    case Events.QUEUE_CHANGE:
+    case Event.QUEUE_CHANGE:
       Queue.get().onChange(() => replyMessage(e, msg.name, { canNext: Queue.get().canGoNext(), canPrev: Queue.get().canGoPrev() }));
       break;
   }
