@@ -30,7 +30,7 @@ export const youtube = async () => {
     const act = ev.detail.actionName;
     console.dev.debug(`yt action: ${act}`);
     if (![ 'yt-history-load', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(act) &&
-        document.querySelector('.watch-on-nebula')) return;
+      document.querySelector('.watch-on-nebula')) return;
     console.dev.log(`yt action triggered re-run: ${act}`);
     setTimeout(run, 1, true);
   });
@@ -69,7 +69,6 @@ const run = debounce((allowOpenTab: boolean) => {
     console.debug('got video information', '\nchannelID:', channelID, 'channelName:', channelName, 'videoTitle:', videoTitle, 'on nebula?', !!vid);
     if (!vid) return;
     console.dev.log('Found video:', vid);
-    console.log(constructButton(vid));
     subscribeElement.before(constructButton(vid));
     const wrap = document.querySelector('ytd-watch-metadata');
     if (wrap) wrap.setAttribute('larger-item-wrap', ''); // make sure youtube displays two lines for space for the button

@@ -79,7 +79,6 @@
     "dotenv": "^16.0.1",
     "eslint": "^8.17.0",
     "glob": "^8.0.3",
-    "husky": "^8.0.1",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
     "jest-environment-puppeteer": "^6.0.3",
