@@ -226,8 +226,7 @@ const insertHideButton = async () => {
   const container = h2?.parentElement;
   if (!container)
     return;
-  const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? container.lastElementChild as HTMLElement : undefined;
-  if (follow) follow.classList.add('enhancer-hideCreator-pre');
+  const follow = handleFollowSpacing(container);
   if (follow) container.style.setProperty('--this-bg-color', window.getComputedStyle(follow).backgroundColor);
   if (follow) container.style.setProperty('--this-border', window.getComputedStyle(follow).border);
   const creator = window.location.pathname.split('/')[1];
@@ -255,6 +254,17 @@ const insertHideButton = async () => {
   buttonShown.title = showCreator;
   ({ hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] }));
   h2.classList.toggle('hidden', hiddenCreators.includes(creator));
+};
+
+const followFromContainer = (container: HTMLElement) => Array.from(container.children).filter(c => !c.classList.contains('enhancer-hideCreator')).pop();
+const handleFollowSpacing = (container: HTMLElement) => {
+  const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? followFromContainer(container) : undefined;
+  if (!follow) return;
+  const inner = () => setTimeout(handleFollowSpacing, 0, container);
+  follow.classList.add('enhancer-hideCreator-pre');
+  follow.removeEventListener('click', inner);
+  follow.addEventListener('click', inner);
+  return follow;
 };
 
 const changeTheme = (e: MouseEvent) => {
