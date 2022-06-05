@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 import { JSDOM } from 'jsdom';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { Events, Message, arrFromLengthy, clone, debounce, dot, getCookie, injectFunction, injectScript, isMobile, isVideoListPage, isVideoPage, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
+import { Event, Message, arrFromLengthy, clone, debounce, dot, getCookie, injectFunction, injectScript, isMobile, isVideoListPage, isVideoPage, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -17,8 +17,8 @@ describe('dot product operations', () => {
   });
 
   test('multi-dimensional', () => {
-    const a1 = [ 1,2,3 ];
-    const a2 = [ 3,2,1 ];
+    const a1 = [ 1, 2, 3 ];
+    const a2 = [ 3, 2, 1 ];
     const d = a1[0] * a2[0] + a1[1] * a2[1] + a1[2] * a2[2];
     expect(dot(a1, a2)).toBeCloseTo(d);
   });
@@ -63,7 +63,7 @@ describe('array equality', () => {
 
   test('different items', () => {
     expect([1].equals([2])).toBe(false);
-    expect([ 1,2,3 ].equals([ 2,1,3 ])).toBe(false);
+    expect([ 1, 2, 3 ].equals([ 2, 1, 3 ])).toBe(false);
   });
 
   test('same values', () => {
@@ -109,7 +109,7 @@ describe('other', () => {
   });
 
   test('clone returns equivalent object', () => {
-    const obj = { some: 'data', with: { nested: { arrays: [{ }] } } };
+    const obj = { some: 'data', with: { nested: { arrays: [{}] } } };
     expect(clone(obj)).toEqual(obj);
   });
 
@@ -333,10 +333,10 @@ describe('message event listeners', () => {
 
   test('sends a register event', () => new Promise((resolve) => {
     mock.mockImplementation((ev) => {
-      expect(JSON.parse(ev.data).event).toBe(Events.QUEUE_CHANGE);
+      expect(JSON.parse(ev.data).event).toBe(Event.QUEUE_CHANGE);
       resolve(0);
     });
-    sendEventHandler(Events.QUEUE_CHANGE, () => { /* */ }, true);
+    sendEventHandler(Event.QUEUE_CHANGE, () => { /* */ }, true);
   }));
 
   test('runs listeners', async () => {
@@ -348,7 +348,7 @@ describe('message event listeners', () => {
         ({ name } = JSON.parse(ev.data));
         resolve(0);
       });
-      sendEventHandler(Events.QUEUE_CHANGE, cb, true);
+      sendEventHandler(Event.QUEUE_CHANGE, cb, true);
     });
     mock.mockRestore(); // we post below, don't make problems
 
@@ -372,7 +372,7 @@ describe('message reply', () => {
   });
 
   const reply = (data: any, origin = '*') => (ev: MessageEvent) => {
-    const msg = parseTypeObject<{ type: string, name: string }>(ev.data);
+    const msg = parseTypeObject<{ type: string, name: string; }>(ev.data);
     // need to manually define these, because jsdom doesn't implement this behaviour
     const e = new MessageEvent('message', { origin, source: window });
     replyMessage(e, msg.name, data);
