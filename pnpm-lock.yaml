@@ -38,7 +38,7 @@ specifiers:
   puppeteer: ^14.2.1
   rimraf: ^3.0.2
   rollup: ^2.75.5
-  rollup-jest: file:rollup-jest.tar.gz
+  rollup-jest: ^3.0.0
   rollup-plugin-copy: ^3.4.0
   rollup-plugin-postcss: ^4.0.2
   rollup-plugin-string: ^3.0.0
@@ -92,7 +92,7 @@ devDependencies:
   puppeteer: 14.2.1
   rimraf: 3.0.2
   rollup: 2.75.5
-  rollup-jest: file:rollup-jest.tar.gz_rollup@2.75.5
+  rollup-jest: 3.0.0_rollup@2.75.5
   rollup-plugin-copy: 3.4.0
   rollup-plugin-postcss: 4.0.2_postcss@8.4.14
   rollup-plugin-string: 3.0.0
@@ -6953,6 +6953,16 @@ packages:
       glob: 7.2.0
     dev: true
 
+  /rollup-jest/3.0.0_rollup@2.75.5:
+    resolution: {integrity: sha512-6v3s4q5z7+PkL1hUYg6KWlL2kUVkjUHLAlMsaHANmuwOrM1GSlRifiJkazdqymVPFfeBfpooDEtz04Q7qwuGaw==}
+    engines: {node: '>=12.0'}
+    peerDependencies:
+      rollup: ^2.3.0
+    dependencies:
+      concat-merge: 1.0.3
+      rollup: 2.75.5
+    dev: true
+
   /rollup-plugin-copy/3.4.0:
     resolution: {integrity: sha512-rGUmYYsYsceRJRqLVlE9FivJMxJ7X6jDlP79fmFkL8sJs7VVMSVyA2yfyL+PGyO/vJs4A87hwhgVfz61njI+uQ==}
     engines: {node: '>=8.3'}
@@ -8372,17 +8382,4 @@ packages:
     dependencies:
       async: 3.2.0
       jszip: 3.6.0
-    dev: true
-
-  file:rollup-jest.tar.gz_rollup@2.75.5:
-    resolution: {integrity: sha512-ArwJG0QyrRGIrtEV7agMV837ufONgTIOAZw6/3YEnQSs3T8jGa8wPRs5tRFOFWfgMwrIQvmNVFVTbZfulZtxsg==, tarball: file:rollup-jest.tar.gz}
-    id: file:rollup-jest.tar.gz
-    name: rollup-jest
-    version: 2.0.0
-    engines: {node: '>=12.0'}
-    peerDependencies:
-      rollup: ^1.1.0 || ^2
-    dependencies:
-      concat-merge: 1.0.3
-      rollup: 2.75.5
     dev: true
