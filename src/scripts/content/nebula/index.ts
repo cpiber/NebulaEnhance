@@ -15,10 +15,16 @@ const showCreator = msg('pageShowCreator');
 
 let hiddenCreators: string[] = [];
 export const nebula = async () => {
-  const { youtube, customScriptPage, hiddenCreators: h } = await getFromStorage({ youtube: false, customScriptPage: '', hiddenCreators: [] as string[] });
+  const { youtube, theme, customScriptPage, hiddenCreators: h } = await getFromStorage({ youtube: false, theme: '', customScriptPage: '', hiddenCreators: [] as string[] });
   hiddenCreators = h;
-  console.debug('Youtube:', youtube);
+  console.debug('Youtube:', youtube, 'Theme:', theme);
   console.debug('Hiding', hiddenCreators.length, 'creators');
+
+  if (!theme) try {
+    const newtheme = JSON.parse(localStorage.getItem('colorSchemeSetting'));
+    console.debug('Detected theme', newtheme);
+    setToStorage({ theme: newtheme });
+  } catch { }
 
   // attach listeners
   window.addEventListener('message', handle);
