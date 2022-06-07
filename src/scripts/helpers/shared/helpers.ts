@@ -30,7 +30,7 @@ export const debounce = <T extends any[]>(func: (...args: T) => void, time = 500
   };
 };
 
-export const arrFromLengthy = <T>(a: { length: number, [k: number]: T }): T[] => {
+export const arrFromLengthy = <T>(a: { length: number, [k: number]: T; }): T[] => {
   const arr = new Array(a.length);
   for (let i = 0; i < a.length; i++)
     arr[i] = a[i];
@@ -103,7 +103,7 @@ export function injectFunctionWithReturn<T extends any[], R>(node: HTMLElement, 
   return new Promise((resolve, reject) => {
     const e = `enhancer-function-${fn.name}-${Math.random().toString().substring(2)}`;
     const listener = (ev: MessageEvent) => {
-      const data = parseTypeObject<{ type: string, ret?: R, err: any }>(ev.data);
+      const data = parseTypeObject<{ type: string, ret?: R, err: any; }>(ev.data);
       if (data.type !== e) return;
       window.removeEventListener('message', listener);
       'ret' in data ? resolve(data.ret) : reject(data.err);
@@ -141,10 +141,53 @@ export const parseMaybeJSON = (data: string) => {
     return data;
   }
 };
-export const parseTypeObject = <T extends { type: string }>(data: string | Record<string, any>, nullable = false): T => {
+export const parseTypeObject = <T extends { type: string; }>(data: string | Record<string, any>, nullable = false): T => {
   const d = typeof data === 'string' ? parseMaybeJSON(data) : data;
   if (typeof d === 'string') return { type: d } as T;
   if (typeof d.type === 'string') return d;
   if (nullable) return null;
   throw new TypeError('not convertible to type-object');
 };
+
+/**
+ * Class to wrap actions that repeat and can be cancelled
+ * yields represent cancellation points
+ * yield true to retry, false to abort
+ */
+export class CancellableRepeatingAction {
+  private interval = 0;
+  private killtime = 0;
+  private running = false;
+
+  async run<Action>(fn: () => Generator<any, Action | boolean> | AsyncGenerator<any, Action | boolean>, timeout: number, kill?: number): Promise<Action> {
+    if (this.running) this.cancel();
+    this.running = true;
+    if (kill) this.killtime = window.setTimeout(this.cancel.bind(this), kill);
+    return new Promise<Action>((resolve, reject) => {
+      this.interval = window.setInterval(async () => {
+        if (!this.running) return reject(this.cancel());
+        const gen = fn();
+        let last: any = undefined;
+        while (true) {
+          const ret = await gen.next(last);
+          if (!this.running) return reject(this.cancel());
+          if (!ret.done) {
+            if (ret.value === true) return; // retry (interval)
+            if (ret.value === false) return resolve((this.cancel(), undefined)); // cancel
+            last = ret.value;
+            continue; // fetch next
+          }
+          this.cancel();
+          resolve(ret.value as Action);
+        }
+      }, timeout);
+    });
+  }
+
+  cancel() {
+    if (!this.running) return;
+    window.clearInterval(this.interval);
+    window.clearTimeout(this.killtime);
+    this.running = false;
+  }
+}

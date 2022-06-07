@@ -3,7 +3,7 @@
  * @see https://github.com/parkeraddison/watch-on-nebula/blob/main/extension/scripts/content_script.js
  */
 
-import { BrowserMessage, debounce, getBrowserInstance, getFromStorage, injectFunctionWithReturn, nebulavideo } from '../../helpers/sharedExt';
+import { BrowserMessage, CancellableRepeatingAction, debounce, getBrowserInstance, getFromStorage, injectFunctionWithReturn, nebulavideo } from '../../helpers/sharedExt';
 import { constructButton } from './html';
 
 export const youtube = async () => {
@@ -13,75 +13,76 @@ export const youtube = async () => {
   if (!watchnebula) return;
   if (location.host.startsWith('m.')) return console.error('Enhancer for Nebula: YouTube mobile is currently not supported!');
 
-  setTimeout(run, 0, false);
+  Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.remove());
+  setTimeout(run, 0);
 
-  // To support forward/backward page navigation changes.
-  // The setTimeout must be used to ensure that this effectively runs on the *new* page.
-  window.addEventListener('popstate', (event) => {
-    console.dev.log('history navigation');
-    if (event.state)
-      setTimeout(run, 2, false);
-  });
-
-  // To support YouTube navigation events (clicking)
-  // Similar to history navigation, the setTimeout *must* be used, or the function
-  // will essentially run on the previous page.
   window.addEventListener('yt-action', (ev: CustomEvent) => {
     if (!ev.detail) return;
     const act = ev.detail.actionName;
     console.dev.debug(`yt action: ${act}`);
-    if (![ 'yt-history-load', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(act) &&
+    if (![ 'yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(act) &&
       document.querySelector('.watch-on-nebula')) return;
     console.dev.log(`yt action triggered re-run: ${act}`);
-    setTimeout(run, 1, true);
+    setTimeout(run, 100);
   });
 };
 
-let interval = 0;
-const run = debounce((allowOpenTab: boolean) => {
-  if (!location.pathname.startsWith('/watch'))
-    return console.dev.log('not a video'), undefined;
+const action = new CancellableRepeatingAction();
+let oldid: string = null;
+const run = debounce(async () => {
+  const remove = () => Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.style.display = 'none');
+  if (!location.pathname.startsWith('/watch')) {
+    console.dev.log('not a video');
+    action.cancel();
+    remove();
+    oldid = null;
+    return;
+  }
+  action.cancel();
 
-  const stop = () => {
-    window.clearInterval(interval);
-    interval = 0;
-  };
-  if (interval !== 0) stop(); // restart interval
-
-  Array.from(document.querySelectorAll('.watch-on-nebula')).forEach(n => n.remove());
-  window.setTimeout(stop, 10_000);
-  interval = window.setInterval(async () => {
+  await action.run(async function* () {
     const channelElement = document.querySelector<HTMLAnchorElement>(
       '.ytd-video-owner-renderer + * .yt-formatted-string[href^="/channel/"], .ytd-video-owner-renderer + * .yt-formatted-string[href^="/c/"]');
     const titleElement = document.querySelector<HTMLHeadingElement>('h1.ytd-video-primary-info-renderer');
     const subscribeElement = document.querySelector<HTMLDivElement>('ytd-watch-metadata #subscribe-button, ytd-video-secondary-info-renderer #subscribe-button');
     const idElement = document.querySelector('.ytd-page-manager[video-id]');
     console.dev.debug('Elements', !!channelElement, !!titleElement, !!subscribeElement, !!idElement);
-    if (!channelElement || !titleElement || !subscribeElement || !idElement) return;
+    if (!channelElement || !titleElement || !subscribeElement || !idElement) yield true; // retry
+    const setWidth = (w = '') => Array.from(subscribeElement.parentElement.parentElement.children).forEach((n: HTMLElement) => n.style.minWidth = w);
 
-    stop();
     // accessing custom attributes is not possible from content scripts, so inject this helper
     const channelID = await injectFunctionWithReturn(document.body, () =>
       (document.querySelector('ytd-video-owner-renderer.ytd-video-secondary-info-renderer') as any).__data.data.navigationEndpoint.browseEndpoint.browseId as string);
     const channelName = channelElement.href.split('/').pop();
     const videoTitle = titleElement.textContent;
     const vid: nebulavideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_VID, channelID, channelName, videoTitle });
-    Array.from(document.querySelectorAll('.watch-on-nebula')).forEach(n => n.remove()); // sometimes the interval is killed while the request is running (double navigation)
-    console.debug('got video information', '\nchannelID:', channelID, 'channelName:', channelName, 'videoTitle:', videoTitle, 'on nebula?', !!vid);
-    if (!vid) return;
+    const vidID = idElement.getAttribute('video-id');
+    console.debug('got video information',
+      '\nchannelID:', channelID, 'channelName:', channelName, 'videoTitle:', videoTitle, 'vidID:', vidID, '(', oldid, ')',
+      '\non nebula?', !!vid);
+
+    if (oldid === vidID) yield true; // retry
+    oldid = vidID;
+
+    if (!vid) {
+      oldid = vidID;
+      setWidth();
+      return remove();
+    }
     console.dev.log('Found video:', vid);
+
     subscribeElement.before(constructButton(vid));
     const wrap = document.querySelector('ytd-watch-metadata');
-    if (wrap) wrap.setAttribute('larger-item-wrap', ''); // make sure youtube displays two lines for space for the button
-    subscribeElement.parentElement.style.minWidth = '450px'; // actually even larger still
+    const large = wrap && wrap.hasAttribute('larger-item-wrap'); // this attribute displays two lines (join button)
+    setWidth(large ? '500px' : '450px'); // make space for us, more space if youtube wants it already
 
+    const { ytOpenTab: doOpenTab } = await getFromStorage({ ytOpenTab: false });
     console.dev.debug('Referer:', document.referrer);
     if (document.referrer.match(/https?:\/\/(.+\.)?nebula\.app\/?/) && window.history.length <= 1) return; // prevent open link if via nebula link (any link)
-    if (!allowOpenTab || vid.is === 'channel') return;
-    const { ytOpenTab: doOpenTab } = await getFromStorage({ ytOpenTab: false });
-    if (!doOpenTab) return;
+    if (vid.is === 'channel' || !doOpenTab) return;
+    yield;
 
-    window.open(vid.link);
+    window.open(vid.link, vidID);
     document.querySelectorAll('video').forEach(v => v.pause());
-  }, 500);
+  }, 500, 10_000);
 }, 5);
