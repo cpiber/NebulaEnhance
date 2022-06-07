@@ -26,7 +26,3 @@ export const enum BrowserMessage {
   GET_YTID = 'getYoutubeId',
   GET_VID = 'getNebulaVid',
 }
-
-
-// Nebula
-export const NEBULA_AUTH_KEY = 'nebula-auth';

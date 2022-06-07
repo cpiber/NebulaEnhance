@@ -1,6 +1,7 @@
 import type { Browser } from 'puppeteer';
+import { videoselector as videoSelector } from '../src/scripts/page/dispatcher';
 
-export const videoSelector = 'a[href^="/videos/"][aria-hidden]';
+export { videoSelector };
 export const qbuttSelector = '.enhancer-queueButton';
 export const queueSelector = '.enhancer-queue';
 
@@ -31,7 +32,7 @@ export const login = async (force = false) => {
   optionsURL = await page.evaluate(async () => (await chrome.management.getAll())[0].optionsUrl);
   await page.goto(`${__NEBULA_BASE__}/login`);
   await page.bringToFront();
-  if (!force && await page.evaluate(() => document.cookie.indexOf('nebula-auth')) !== -1)
+  if (!force && await page.evaluate(() => localStorage.getItem('nebula_auth.apiToken')))
     return;
 
   await expect(page).toFillForm(formSelector, {
@@ -40,7 +41,6 @@ export const login = async (force = false) => {
   });
   await expect(page).toClick(`${formSelector} button`, { text: 'Sign in' });
   await page.waitForResponse('https://api.watchnebula.com/api/v1/authorization/'); // wait until logged in
-  // await page.waitForSelector('[href="/settings/account"]');
   await page.waitForTimeout(1000);
 };
 
@@ -51,14 +51,14 @@ export const maybeLogin = (cb: () => Promise<void>) => async () => {
   // happens most often on `ignores completed queue` and `adds proper controls`
   await page.bringToFront();
   await cb();
-  if ((await page.$x('//button[contains(text(), "Sign Up")]')).length == 0)
+  if (!await page.$('a[role="button"][href="/join"]'))
     return;
   console.log('Had to login again...', expect.getState().currentTestName);
   await login(true);
   await cb();
 };
 
-export const setSettings = async (set: { [key: string]: string | boolean}) => {
+export const setSettings = async (set: { [key: string]: string | boolean; }) => {
   const pg = await b.newPage();
   await pg.goto(optionsURL);
   const form = await expect(pg).toMatchElement('form');

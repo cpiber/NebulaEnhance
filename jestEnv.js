@@ -34,6 +34,8 @@ class Env extends PuppeteerEnvironment {
       // currently occurs in queue > adds proper controls
       state.currentlyRunningTest.errors =
         state.currentlyRunningTest.errors.filter(e => !(e instanceof Error) || !e.message.match(/The play\(\) request was interrupted by a call to pause\(\)|Failed to load because no supported source was found/));
+      if (state.currentlyRunningTest.errors.length)
+        console.warn('Collected errors:', ...state.currentlyRunningTest.errors);
     }
   }
 }

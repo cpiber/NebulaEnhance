@@ -60,7 +60,7 @@ describe('video player', () => {
 });
 
 describe('video pages 2', () => {
-  test.skip('youtube link is loaded', async () => {
+  test('youtube link is loaded', async () => {
     await setSettings({
       youtube: true,
     });
