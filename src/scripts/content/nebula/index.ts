@@ -98,14 +98,14 @@ const hover = (e: MouseEvent) => {
     return;
   createLink(link.querySelector('img'));
 };
-const createLink = (img: HTMLImageElement) => {
+const createLink = (img: HTMLImageElement): void => {
   if (!img || queueBottonLocation(img).querySelector('.enhancer-queueButton') !== null)
     return; // queue button exists
   // create queue button
   const later = document.createElement('div');
   const watch = watchLaterLocation(img);
   if (!watch)
-    return console.dev.error('Expected nebula watch-later button', img);
+    return console.dev.error('Expected nebula watch-later button', img), undefined;
   later.innerHTML = `<div class="${watch.className}">${addToQueue}</div>${iconWatchLater}`;
   later.className = `${watch.className} enhancer-queueButton`;
   watch.after(later);
