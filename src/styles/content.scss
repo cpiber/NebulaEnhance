@@ -86,7 +86,7 @@ div.enhancer-queueButton {
     @include svghover;
 
     div {
-      display: block;
+      display: inherit;
 
       @include mobile {
         display: none;
