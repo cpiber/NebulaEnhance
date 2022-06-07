@@ -2,7 +2,7 @@ import iconHide from '../../../icons/hide.svg';
 import iconShow from '../../../icons/show.svg';
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
-import { creatorLink, durationLocation, queueBottonLocation } from '../../helpers/locations';
+import { creatorLink, queueBottonLocation, watchLaterLocation } from '../../helpers/locations';
 import { BrowserMessage, clone, debounce, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
@@ -73,35 +73,36 @@ const doVideoActions = debounce(() => {
     Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
   // hide creators
   if (isVideoListPage())
-    Array.from(document.querySelectorAll<HTMLImageElement>(videoselector)).forEach(el => hideVideo(el, hiddenCreators));
+    Array.from(document.querySelectorAll<HTMLElement>(videoselector)).forEach(el => hideVideo(el, hiddenCreators));
 }, 500);
 
-const imgLink = (e: HTMLElement) => {
+const videoHoverLink = (e: HTMLElement) => {
   // check if element is the image in a video link
-  if (e.tagName !== 'IMG')
+  const outer = e.closest('[data-context-menu-hover-trigger]');
+  if (outer === null)
     return null;
-  const link = e.closest(videoselector);
-  if (link === null)
+  const link = outer.firstElementChild;
+  if (!link.matches(videoselector))
     return null;
   return link;
 };
 const hover = (e: MouseEvent) => {
-  const link = imgLink(e.target as HTMLElement);
+  const link = videoHoverLink(e.target as HTMLElement);
   if (link === null)
     return;
-  createLink(e.target as HTMLImageElement);
+  createLink(link.querySelector('img'));
 };
 const createLink = (img: HTMLImageElement) => {
-  if (queueBottonLocation(img).querySelector('.enhancer-queueButton') !== null)
+  if (!img || queueBottonLocation(img).querySelector('.enhancer-queueButton') !== null)
     return; // queue button exists
   // create queue button
   const later = document.createElement('div');
-  const time = durationLocation(img);
-  if (!time || !time.querySelector('span'))
-    return; // ignore profile pic
-  later.innerHTML = `<span class="${time.querySelector('span')?.className}">${addToQueue}</span>${iconWatchLater}`;
-  later.className = `${time?.className} enhancer-queueButton`;
-  queueBottonLocation(img).appendChild(later);
+  const watch = watchLaterLocation(img);
+  if (!watch)
+    return console.dev.error('Expected nebula watch-later button', img);
+  later.innerHTML = `<div class="${watch.className}">${addToQueue}</div>${iconWatchLater}`;
+  later.className = `${watch.className} enhancer-queueButton`;
+  watch.after(later);
 };
 
 const click = async (e: MouseEvent) => {
@@ -276,6 +277,7 @@ const changeTheme = (e: MouseEvent) => {
 const hideVideo = (el: HTMLElement, hiddenCreators: string[]) => {
   const creator = creatorLink(el)?.split('/')?.[1];
   if (!creator) return;
+  console.log(creator, hiddenCreators);
   if (hiddenCreators.indexOf(creator) === -1) return;
   console.dev.debug('Hiding video by creator', creator, `https://nebula.app/${creator}`);
   if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();

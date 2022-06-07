@@ -57,12 +57,13 @@ button.enhancer-hideCreator-pre {
 }
 
 div.enhancer-queueButton {
-  top: 8px;
+  top: 32px;
   bottom: unset;
-  padding: 0 4px;
+  padding: 1px;
   line-height: 0;
   opacity: 0;
-  transition: opacity 0.1s ease-in-out;
+
+  // transition: opacity 0.1s ease-in-out;
   pointer-events: initial;
 
   &%hover {
@@ -71,17 +72,32 @@ div.enhancer-queueButton {
 
   @include hov {
     @extend %hover;
+
+    div {
+      opacity: 1;
+    }
   }
 
   $self: &;
 
-  @at-root img,
-  picture {
+  @at-root [data-context-menu-hover-trigger] {
     @include hov {
-      &~#{$self} {
+      #{$self} {
         @extend %hover;
       }
     }
+  }
+
+  div {
+    position: absolute;
+    top: 0;
+    right: 24px;
+    width: unset;
+    opacity: 0;
+    padding: 4px;
+    line-height: 22px;
+    font-size: 11px;
+    white-space: nowrap;
   }
 
   svg {
@@ -92,13 +108,6 @@ div.enhancer-queueButton {
     fill: currentcolor;
     transition: width 0.1s ease-in-out, height 0.1s ease-in-out;
     pointer-events: initial;
-  }
-
-  @include hov {
-    svg {
-      width: 22px;
-      height: 22px;
-    }
   }
 
   @include mobile {

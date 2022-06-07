@@ -8,7 +8,7 @@ export const knownPages = [ 'myshows', 'videos', 'podcasts', 'classes', 'search'
 
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
-export const videoselector = 'a[href^="/videos/"][aria-hidden]';
+export const videoselector = 'a[href^="/videos/"][aria-label]';
 
 export const init = () => {
   const pushstate = history.pushState;
