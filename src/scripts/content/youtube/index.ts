@@ -11,6 +11,7 @@ export const youtube = async () => {
   console.debug('Watch on Nebula:', watchnebula);
 
   if (!watchnebula) return;
+  if (location.host.startsWith('m.')) return console.error('Enhancer for Nebula: YouTube mobile is currently not supported!');
 
   setTimeout(run, 0, false);
 

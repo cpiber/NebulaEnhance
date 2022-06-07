@@ -180,8 +180,8 @@ const loadComments = async () => {
   if (!title || !creator) return;
   const nebula = (h2[1].parentElement as HTMLAnchorElement).getAttribute('href').split('/')[1];
   const e = h2[0].nextElementSibling;
-  const t = e?.querySelectorAll('time')?.[1];
-  if (!e || !t || e.querySelector('.enhancer-yt, .enhancer-yt-err'))
+  const time = e?.querySelectorAll('time')?.[1];
+  if (!e || !time || e.querySelector('.enhancer-yt, .enhancer-yt-err'))
     return; // already requested
   console.debug(`Requesting '${title}' by ${creator} (${nebula})`);
 
@@ -195,14 +195,20 @@ const loadComments = async () => {
     a.target = '_blank';
     a.textContent = a.href;
     v.append(a, ` (${(vid.confidence * 100).toFixed(1)}%)`);
-    t.after(e.querySelector('span[class]')?.cloneNode(true), v); // dot
+    const dot = e.querySelector('span[class]')?.cloneNode(true) as HTMLElement;
+    const v2 = v.cloneNode(true) as HTMLElement;
+    v2.classList.add('enhancer-yt-outside', ...Array.from(time.parentElement.classList));
+    time.parentElement.after(v2);
+    dot.classList.add('enhancer-yt-inside');
+    v.classList.add('enhancer-yt-inside');
+    time.after(dot, v);
   } catch (err) {
     console.debug('Request failed:', err);
     console.dev.error(err);
     const er = document.createElement('span');
     er.classList.add('enhancer-yt-err');
     er.textContent = `${err}`;
-    t.after(er);
+    time.after(er);
   }
   console.debug('Loading comments done.');
 };
@@ -277,7 +283,6 @@ const changeTheme = (e: MouseEvent) => {
 const hideVideo = (el: HTMLElement, hiddenCreators: string[]) => {
   const creator = creatorLink(el)?.split('/')?.[1];
   if (!creator) return;
-  console.log(creator, hiddenCreators);
   if (hiddenCreators.indexOf(creator) === -1) return;
   console.dev.debug('Hiding video by creator', creator, `https://nebula.app/${creator}`);
   if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();

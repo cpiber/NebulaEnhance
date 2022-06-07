@@ -62,19 +62,35 @@ div.enhancer-queueButton {
   padding: 1px;
   line-height: 0;
   opacity: 0;
-
-  // transition: opacity 0.1s ease-in-out;
   pointer-events: initial;
 
   &%hover {
     opacity: 1;
   }
 
+  @mixin svghover {
+    svg {
+      #main {
+        fill: white;
+        fill: currentcolor;
+      }
+
+      #inner {
+        fill: none;
+      }
+    }
+  }
+
   @include hov {
     @extend %hover;
+    @include svghover;
 
     div {
-      opacity: 1;
+      display: block;
+
+      @include mobile {
+        display: none;
+      }
     }
   }
 
@@ -89,11 +105,11 @@ div.enhancer-queueButton {
   }
 
   div {
+    display: none;
     position: absolute;
     top: 0;
     right: 24px;
     width: unset;
-    opacity: 0;
     padding: 4px;
     line-height: 22px;
     font-size: 11px;
@@ -104,14 +120,21 @@ div.enhancer-queueButton {
     width: 19px;
     height: 19px;
     padding: 3px;
-    fill: white;
-    fill: currentcolor;
-    transition: width 0.1s ease-in-out, height 0.1s ease-in-out;
     pointer-events: initial;
+
+    #inner,
+    #outline {
+      fill: white;
+      fill: currentcolor;
+    }
   }
 
   @include mobile {
     opacity: 1;
+    @include svghover;
+
+    background-color: black;
+    top: 8px;
   }
 }
 
@@ -148,8 +171,21 @@ a.enhancer-queueButtonAll {
   }
 }
 
-.enhancer-yt-err {
-  display: none;
+.enhancer-yt {
+  &-err,
+  &-outside {
+    display: none;
+  }
+
+  @media (max-width: $tablet) {
+    &-inside {
+      display: none;
+    }
+
+    &-outside {
+      display: unset;
+    }
+  }
 }
 
 .vjs-control .vjs-button,
