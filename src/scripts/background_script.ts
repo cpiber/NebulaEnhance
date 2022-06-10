@@ -1,4 +1,5 @@
-import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString, purgeCache, purgeCacheIfNecessary } from './background';
+import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString } from './background';
+import { purgeCache, purgeCacheIfNecessary } from './background/ext';
 import { BrowserMessage, getBrowserInstance, getFromStorage, nebulavideo, parseTimeString, parseTypeObject, setToStorage, toTimeString } from './helpers/sharedExt';
 
 const videoFetchYt = 50;

@@ -1,4 +1,4 @@
-import { purgeCacheIfNecessary } from '../background';
+import { purgeCacheIfNecessary } from '../background/ext';
 import { getBrowserInstance, getFromStorage, parseTimeString, toTimeString } from '../helpers/sharedExt';
 
 export class Settings {

@@ -1,4 +1,4 @@
-import { purgeCache } from './background';
+import { purgeCache } from './background/ext';
 import { BrowserMessage, getBrowserInstance, getFromStorage, isMobile, notification, setToStorage } from './helpers/sharedExt';
 import { load } from './options/form';
 import { showLogs } from './options/logs';
