@@ -72,6 +72,10 @@ form {
   margin: 8px 0 0;
 }
 
+.hint + .enhancer-control {
+  margin-top: 8px;
+}
+
 .warning {
   display: block;
   padding: 4px 8px;

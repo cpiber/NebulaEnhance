@@ -59,7 +59,7 @@ export const toTimeString = (seconds: number): string => {
       if (maxUnit > 0) return { str: `${str} ${maxUnit}${u}`, seconds: seconds - maxUnit * timeMapping[u] };
       return { str, seconds };
     }, { str: '', seconds });
-  if (!str) return `${rest}s`;
+  if (!str) return `${Math.floor(rest)}s`;
   console.assert(rest >= 0 && rest < 1, `Expected no rest, got ${rest}`);
   return str.trim();
 };

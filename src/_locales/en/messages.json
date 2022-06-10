@@ -136,12 +136,28 @@
     "description": "Label for purgetime of options page."
   },
   "optionsPurgetimeHint": {
-    "message": "The time after which to purge Nebula and YouTube video cache, e.g. <code>1 day 6 hours</code>.<br/>Will cause videos to be fetched anew on next page load.",
+    "message": "The time after which to purge Nebula and YouTube video cache, e.g. <code>1 day 6 hours</code>.<br/>Will cause videos to be fetched anew on next page load. Cache time of less than 3 hours is not recommended.",
     "description": "Hint for purgetime of options page."
   },
   "optionsPurgetimeNotice": {
     "message": "Last purge time: $1<br/>Next purge time: $2 (in $3)",
     "description": "Notice for purgetime of options page."
+  },
+  "optionsPurgeNow": {
+    "message": "Purge now",
+    "description": "Button text for purging cache."
+  },
+  "optionsPurged": {
+    "message": "Cache purged",
+    "description": "Text for `invalidated` notification."
+  },
+  "optionsManageHiddenCreatorsTitle": {
+    "message": "Hidden creators",
+    "description": "Title for hidden creators of options page."
+  },
+  "optionsManageHiddenCreatorsHint": {
+    "message": "Manage hidden creators. Channels can be hidden on the individual creator pages.",
+    "description": "Hint for hidden creators of options page."
   },
   "optionsManageHiddenCreators": {
     "message": "Manage hidden creators",

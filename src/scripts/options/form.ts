@@ -1,10 +1,10 @@
-import { getBrowserInstance, getFromStorage, notification, setToStorage } from '../helpers/sharedExt';
+import { debounce, getBrowserInstance, getFromStorage, notification, setToStorage } from '../helpers/sharedExt';
 import { Settings, toData } from './settings';
 
 const els = Settings.get();
 const savedtext = getBrowserInstance().i18n.getMessage('optionsSavedNote');
 
-export const save = async (showNotification = false) => {
+const save = async (showNotification = false) => {
   await setToStorage(await toData());
   if (showNotification) notification(savedtext);
 };
@@ -22,25 +22,22 @@ export const load = async (doSave = false) => {
     save(false);
 };
 
-const delayedSave = (e: Event) => {
-  const el = (e.target as HTMLInputElement | HTMLTextAreaElement);
-  const timeout = +el.dataset.timeout || 0;
-  clearTimeout(timeout);
-  el.dataset.timeout = '' + setTimeout(save, 400);
-};
+const debouncedSave = debounce(save, 400);
+const delayedSave = () => toData().then(() => debouncedSave());
 
 const form = document.querySelector('form');
 form.addEventListener('submit', e => {
   e.preventDefault();
   save(true);
 });
+window.addEventListener('beforeunload', () => save());
 
 // autosave
 Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')).forEach(e => {
   e.addEventListener('focusout', delayedSave);
   e.addEventListener('change', delayedSave);
+  e.addEventListener('keyup', delayedSave);
 });
-Array.from(form.querySelectorAll('textarea')).forEach(e => e.addEventListener('keyup', delayedSave));
 
 // load translations
 Array.from(document.querySelectorAll('.i18n, title')).forEach(e => {
@@ -54,16 +51,8 @@ Array.from(document.querySelectorAll<HTMLElement>('[data-i18n]')).forEach(e => {
 });
 
 // label animation
-const setInputClass = (el: HTMLInputElement) => {
-  if (!el.value) {
-    el.classList.remove('has-value');
-  } else {
-    el.classList.add('has-value');
-  }
-};
+const setInputClass = (el: HTMLInputElement) => el.classList.toggle('has-value', !!el.value);
 Array.from(document.querySelectorAll<HTMLInputElement>('.enhancer-text-input')).forEach(e => {
   setInputClass(e);
-  e.addEventListener('change', ev => {
-    setInputClass(ev.target as HTMLInputElement);
-  });
+  e.addEventListener('change', ev => setInputClass(ev.target as HTMLInputElement));
 });

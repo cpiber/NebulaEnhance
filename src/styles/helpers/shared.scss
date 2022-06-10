@@ -5,6 +5,10 @@
   margin: 16px 0;
   font-size: 13px;
 
+  &.disabled {
+    opacity: 0.65;
+  }
+
   label {
     display: block;
     padding-bottom: 4px;
@@ -154,6 +158,7 @@
 
 .notification {
   position: fixed;
+  z-index: 100000;
   bottom: 30px;
   left: 50%;
   transform: translate(-50%, calc(100% + 40px));

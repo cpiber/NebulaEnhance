@@ -136,12 +136,28 @@
     "description": "Beschriftung für Purgetime der Optionen Seite."
   },
   "optionsPurgetimeHint": {
-    "message": "Die Zeit, nach der Nebula und YouTube video cache invalidiert werden soll, z.B.. <code>1 Tag 6 Stunden</code>.<br/>Videos werden beim nächsten Aufruf neu geladen.",
+    "message": "Die Zeit, nach der Nebula und YouTube video cache invalidiert werden soll, z.B.. <code>1 Tag 6 Stunden</code>.<br/>Videos werden beim nächsten Aufruf neu geladen. Weniger als 6 Stunden werden nicht empfohlen.",
     "description": "Hilfstext für Purgetime der Optionen Seite."
   },
   "optionsPurgetimeNotice": {
     "message": "Letzte Invalidierung: $1<br/>Nächste Invalidierung: $2 (in $3)",
     "description": "Hilfstext für Purgetime der Optionen Seite."
+  },
+  "optionsPurgeNow": {
+    "message": "Jetzt Invalidieren",
+    "description": "Button text um cache invalidieren."
+  },
+  "optionsPurged": {
+    "message": "Cache invalidiert",
+    "description": "Text für `invalidated` notification."
+  },
+  "optionsManageHiddenCreatorsTitle": {
+    "message": "Versteckte Kanäle",
+    "description": "Titel für Versteckte Kanäle der Optionen Seite."
+  },
+  "optionsManageHiddenCreatorsHint": {
+    "message": "Verwalte versteckte Kanäle. Kanäle könnnen auf der jeweiligen Kanal-Seite versteckt werden.",
+    "description": "Hilfstext für Versteckte Kanäle der Optionen Seite."
   },
   "optionsManageHiddenCreators": {
     "message": "Versteckte Kanäle verwalten",

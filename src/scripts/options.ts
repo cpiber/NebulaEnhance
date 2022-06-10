@@ -1,8 +1,9 @@
-import { BrowserMessage, getBrowserInstance, getFromStorage, isMobile, setToStorage } from './helpers/sharedExt';
+import { purgeCache } from './background';
+import { BrowserMessage, getBrowserInstance, getFromStorage, isMobile, notification, setToStorage } from './helpers/sharedExt';
 import { load } from './options/form';
 import { showLogs } from './options/logs';
 import { showManageCreators } from './options/managecreators';
-import { Settings } from './options/settings';
+import { Settings, toData } from './options/settings';
 import { standalone } from './options/standalone';
 
 const cl = decodeURIComponent(window.location.hash.slice(1)).split(' ').filter(c => !!c);
@@ -41,7 +42,18 @@ const nChange = () => {
   els.ytOpenTab.disabled = !els.watchnebula.checked;
 };
 els.watchnebula.addEventListener('change', nChange);
+const vidChange = () => {
+  els.purgetime.disabled = !els.youtube.checked && !els.watchnebula.checked;
+};
+els.youtube.addEventListener('change', vidChange);
+els.watchnebula.addEventListener('change', vidChange);
 
+const purged = getBrowserInstance().i18n.getMessage('optionsPurged');
+document.querySelector('#purgeCacheNow').addEventListener('click', async () => {
+  await purgeCache();
+  notification(purged);
+  await toData();
+});
 document.querySelector('#showChangelogsNow').addEventListener('click', () => showLogs(getBrowserInstance().runtime.getManifest().version));
 document.querySelector('#manageHiddenCreators').addEventListener('click', showManageCreators);
 
@@ -49,7 +61,8 @@ document.querySelector('#manageHiddenCreators').addEventListener('click', showMa
 load(true)
   .then(aChange)
   .then(vChange)
-  .then(nChange);
+  .then(nChange)
+  .then(vidChange);
 
 // changelog
 (async () => {

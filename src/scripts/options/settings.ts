@@ -77,11 +77,13 @@ export const toData = async (useDefaults = false) => {
       ],
     );
   } catch (e) {
-    data.purgetime = '';
+    data.purgetime = els.purgetime.dataset.default;
     pError.classList.add('warning');
     pError.classList.remove('hint');
     pError.innerHTML = e instanceof Error ? e.message : e;
   }
+  if (!data.purgetime.toString().trim())
+    data.purgetime = '0s';
 
   return data;
 };
