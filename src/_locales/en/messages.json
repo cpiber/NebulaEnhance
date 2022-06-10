@@ -127,6 +127,22 @@
     "message": "Invalid color",
     "description": "Hint for invalid visited color of options page."
   },
+  "optionsPurgetimeTitle": {
+    "message": "Time between cache purges",
+    "description": "Title for purgetime of options page."
+  },
+  "optionsPurgetimeLabel": {
+    "message": "Time string",
+    "description": "Label for purgetime of options page."
+  },
+  "optionsPurgetimeHint": {
+    "message": "The time after which to purge Nebula and YouTube video cache, e.g. <code>1 day 6 hours</code>.<br/>Will cause videos to be fetched anew on next page load.",
+    "description": "Hint for purgetime of options page."
+  },
+  "optionsPurgetimeNotice": {
+    "message": "Last purge time: $1<br/>Next purge time: $2 (in $3)",
+    "description": "Notice for purgetime of options page."
+  },
   "optionsManageHiddenCreators": {
     "message": "Manage hidden creators",
     "description": "Button text to manage hidden creators."
@@ -274,5 +290,17 @@
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs and Feature Requests</a>",
     "description": "Credit footer."
+  },
+  "miscTimeLocaleMappings": {
+    "message": "{\"week\":\"w\",\"weeks\":\"w\",\"day\":\"d\",\"days\":\"d\",\"hrs\":\"h\",\"hour\":\"h\",\"hours\":\"h\",\"min\":\"m\",\"minute\":\"m\",\"minutes\":\"m\",\"sec\":\"s\",\"second\":\"s\",\"seconds\":\"s\"}",
+    "description": "Internal mapping for times."
+  },
+  "miscTimeInvalidElements": {
+    "message": "Time string contains invalid elements",
+    "description": "Error message for times."
+  },
+  "miscTimeInvalidUnit": {
+    "message": "Invalid unit `$1`",
+    "description": "Error message for times."
   }
 }

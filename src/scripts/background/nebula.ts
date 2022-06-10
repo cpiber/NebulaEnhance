@@ -4,7 +4,7 @@ import { ytvideo } from '../helpers/shared';
 import { creatorHasVideo } from './ifidf';
 import { normalizeString } from './misc';
 
-const plistcache: { [key: string]: Video[] } = {};
+const plistcache: { [key: string]: Video[]; } = {};
 export const loadNebulaChannelVideos = async (channel: string, num: number) => {
   if (!channel)
     throw 'Playlist empty';
@@ -17,7 +17,7 @@ export const loadNebulaChannelVideos = async (channel: string, num: number) => {
   return videos.slice(0, num);
 };
 
-const searchcache: { [key: string]: Video[] } = {};
+const searchcache: { [key: string]: Video[]; } = {};
 export const loadNebulaSearchVideos = async (text: string, num: number) => {
   if (!text)
     throw 'Search empty';
@@ -30,7 +30,14 @@ export const loadNebulaSearchVideos = async (text: string, num: number) => {
   return videos.slice(0, num);
 };
 
-const vidcache: { [key: string]: ytvideo } = {};
+const vidcache: { [key: string]: ytvideo; } = {};
 export const creatorHasNebulaVideo = (channel: string, title: string, num: number) => creatorHasVideo(vidcache, title, loadNebulaChannelVideos.bind(null, channel, num));
-const searchvidcache: { [key: string]: ytvideo } = {};
+const searchvidcache: { [key: string]: ytvideo; } = {};
 export const existsNebulaVideo = (title: string, num: number) => creatorHasVideo(searchvidcache, title, loadNebulaSearchVideos.bind(null, title, num));
+
+export const purgeCache = () => {
+  Object.keys(plistcache).forEach(key => delete plistcache[key]);
+  Object.keys(searchcache).forEach(key => delete searchcache[key]);
+  Object.keys(vidcache).forEach(key => delete vidcache[key]);
+  Object.keys(searchvidcache).forEach(key => delete searchvidcache[key]);
+};

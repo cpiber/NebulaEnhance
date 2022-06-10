@@ -18,6 +18,15 @@ Array.prototype.equals = function <T> (this: Array<T>, other: Array<T>) {
 Number.prototype.pad = function (this: number, length: number) {
   return ('' + this).padStart(length, '0');
 };
+String.prototype.matchAll = String.prototype.matchAll || function (r) {
+  let match: RegExpExecArray;
+  const regexp = new RegExp(r); // copy as per matchAll spec
+  if (regexp.flags.indexOf('g') === -1) throw new TypeError('matchAll must be called with a global RegExp');
+  return function* (that: string) {
+    while ((match = regexp.exec(that)) !== null)
+      yield match;
+  }(this);
+};
 
 export const dot = (t1: number[], t2: number[]) => t1.length === t2.length && t1.reduce((prev, cur, index) => prev + cur * t2[index], 0);
 export const norm = (t: number[]) => Math.sqrt(t.reduce((p, v) => p + v * v, 0));

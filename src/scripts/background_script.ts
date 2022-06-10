@@ -1,5 +1,5 @@
-import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString } from './background';
-import { BrowserMessage, getBrowserInstance, getFromStorage, nebulavideo, parseTypeObject, setToStorage } from './helpers/sharedExt';
+import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString, purgeCache, purgeCacheIfNecessary } from './background';
+import { BrowserMessage, getBrowserInstance, getFromStorage, nebulavideo, parseTimeString, parseTypeObject, setToStorage, toTimeString } from './helpers/sharedExt';
 
 const videoFetchYt = 50;
 const videoFetchNebula = 50;
@@ -8,7 +8,7 @@ const { local, sync } = getBrowserInstance().storage;
 
 getBrowserInstance().browserAction.onClicked.addListener(() => openOptions());
 
-getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [key: string]: any }) => {
+getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [key: string]: any; }) => {
   try {
     const msg = parseTypeObject(message);
     console.dev.log('Handling message', msg);
@@ -22,7 +22,7 @@ getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [k
       case BrowserMessage.GET_VID:
         return getNebulaVideo(msg);
     }
-  } catch {}
+  } catch { }
 });
 
 getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
@@ -53,7 +53,8 @@ const loadCreators = () => {
   return promise = _loadCreators();
 };
 
-const getYoutubeId = async (message: { [key: string]: any }) => {
+const getYoutubeId = async (message: { [key: string]: any; }) => {
+  await purgeCacheIfNecessary();
   const { creator, title, nebula } = message;
   const normalizedCreator = normalizeString(creator || '');
   console.debug('creator:', creator, '\nnebula:', nebula, '\ntitle:', title);
@@ -74,7 +75,8 @@ const getYoutubeId = async (message: { [key: string]: any }) => {
   }
 };
 
-const getNebulaVideo = async (message: { [key: string]: any }): Promise<nebulavideo> => {
+const getNebulaVideo = async (message: { [key: string]: any; }): Promise<nebulavideo> => {
+  await purgeCacheIfNecessary();
   const { channelID, channelName, videoTitle } = message;
   if (!channelID && !channelName) throw 'not enough information';
 
@@ -146,11 +148,16 @@ const openOptions = (active = true, ...args: string[]) => {
   // debug code
   if (!__DEV__) return;
   (window as any).loadCreators = loadCreators;
-  Object.defineProperty(window, 'loadCreatorsPromise', { get: () => promise, set(v) {
-    promise = v;
-  } });
+  Object.defineProperty(window, 'loadCreatorsPromise', {
+    get: () => promise, set(v) {
+      promise = v;
+    },
+  });
   (window as any).getYoutubeId = getYoutubeId;
   (window as any).getNebulaVideo = getNebulaVideo;
   (window as any).openChangelog = openChangelog;
   (window as any).openOptions = openOptions;
+  (window as any).purgeCache = purgeCache;
+  (window as any).parseTimeString = parseTimeString;
+  (window as any).toTimeString = toTimeString;
 })();

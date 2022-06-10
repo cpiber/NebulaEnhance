@@ -5,11 +5,11 @@ const els = Settings.get();
 const savedtext = getBrowserInstance().i18n.getMessage('optionsSavedNote');
 
 export const save = async (showNotification = false) => {
-  setToStorage(toData());
+  await setToStorage(await toData());
   if (showNotification) notification(savedtext);
 };
 export const load = async (doSave = false) => {
-  const data = await getFromStorage(toData(true));
+  const data = await getFromStorage(await toData(true));
   Object.keys(els).forEach(prop => {
     if (els[prop].type === 'checkbox') {
       (els[prop] as HTMLInputElement).checked = !!data[prop];

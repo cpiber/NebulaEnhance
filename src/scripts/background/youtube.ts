@@ -3,7 +3,7 @@ import { ytvideo } from '../helpers/shared';
 import { creatorHasVideo } from './ifidf';
 import { normalizeString } from './misc';
 
-const plistcache: { [key: string]: Video[] } = {};
+const plistcache: { [key: string]: Video[]; } = {};
 export const loadYTVideos = async (playlist: string, num: number) => {
   if (!playlist)
     throw 'Playlist empty';
@@ -44,5 +44,10 @@ export const loadYTVideos = async (playlist: string, num: number) => {
   return plistcache[playlist] = videos;
 };
 
-const vidcache: { [key: string]: ytvideo } = {};
+const vidcache: { [key: string]: ytvideo; } = {};
 export const creatorHasYTVideo = (playlist: string, title: string, num: number) => creatorHasVideo(vidcache, title, loadYTVideos.bind(null, playlist, num));
+
+export const purgeCache = () => {
+  Object.keys(plistcache).forEach(key => delete plistcache[key]);
+  Object.keys(vidcache).forEach(key => delete vidcache[key]);
+};
