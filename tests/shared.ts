@@ -71,6 +71,7 @@ export const setSettings = async (set: { [key: string]: string | boolean; }) => 
   }
   await expect(pg).toFillForm('form', set, { timeout: 1000 });
   await expect(pg).toClick('button[type="submit"]');
+  await page.waitForTimeout(100); // wait for saving to finish
   await pg.close();
 };
 
