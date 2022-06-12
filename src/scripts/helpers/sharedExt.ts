@@ -1,5 +1,6 @@
 import browser from 'webextension-polyfill';
 import { notification } from './shared';
+import './shared/prototype';
 export * from './shared';
 
 export const getBrowserInstance = () => browser; // poly-filled

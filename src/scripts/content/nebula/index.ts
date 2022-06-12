@@ -17,8 +17,8 @@ let hiddenCreators: string[] = [];
 export const nebula = async () => {
   const { youtube, theme, customScriptPage, hiddenCreators: h } = await getFromStorage({ youtube: false, theme: '', customScriptPage: '', hiddenCreators: [] as string[] });
   hiddenCreators = h;
-  console.debug('Youtube:', youtube, 'Theme:', theme);
-  console.debug('Hiding', hiddenCreators.length, 'creators');
+  console.debug('Youtube:', youtube, 'Theme:', theme,
+    '\nHiding', hiddenCreators.length, 'creators');
 
   if (!theme) try {
     const newtheme = JSON.parse(localStorage.getItem('colorSchemeSetting'));
