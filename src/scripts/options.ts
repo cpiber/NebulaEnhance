@@ -12,6 +12,7 @@ if (cl.length)
 document.body.classList.toggle('mobile', isMobile());
 
 const els = Settings.get();
+const purgeField = document.querySelector('#purgeCacheField');
 
 // permissions for youtube comments
 const { permissions } = getBrowserInstance();
@@ -44,6 +45,7 @@ const nChange = () => {
 els.watchnebula.addEventListener('change', nChange);
 const vidChange = () => {
   els.purgetime.disabled = !els.youtube.checked && !els.watchnebula.checked;
+  purgeField.classList.toggle('disabled', els.purgetime.disabled);
 };
 els.youtube.addEventListener('change', vidChange);
 els.watchnebula.addEventListener('change', vidChange);
