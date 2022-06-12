@@ -1,6 +1,7 @@
 import { jest } from '@jest/globals';
 import fetch from 'node-fetch';
 import type { Video } from '../../src/scripts/background';
+import '../../src/scripts/helpers/shared/prototype';
 
 global.fetch = fetch as unknown as typeof global.fetch;
 

@@ -4,6 +4,7 @@ import { JSDOM } from 'jsdom';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { Event, Message, arrFromLengthy, clone, debounce, dot, getCookie, injectFunction, injectScript, isMobile, isVideoListPage, isVideoPage, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
+import '../../src/scripts/helpers/shared/prototype';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

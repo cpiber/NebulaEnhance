@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
 import { DOMArray, callback } from '../../src/scripts/helpers/DOMArray';
+import '../../src/scripts/helpers/shared/prototype';
 import { Store, VideoArray } from '../../src/scripts/helpers/VideoQueue';
 
 class TestArray extends DOMArray<string> {
