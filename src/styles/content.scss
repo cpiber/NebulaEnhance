@@ -189,6 +189,61 @@ a.enhancer-queueButtonAll {
   }
 }
 
+time[datetime] {
+  position: relative;
+
+  @include hov {
+    .enhancer-datetime {
+      display: block;
+    }
+  }
+}
+
+.enhancer-datetime {
+  position: absolute;
+  top: -2.5em;
+  top: calc(-2em - 8px);
+  transform: translate(-50%, 0);
+  white-space: nowrap;
+  padding: 4px 6px;
+  border-radius: 2px;
+  background-color: black;
+  background-color: var(--bg-color);
+  border-color: black;
+  color: var(--font-color);
+  display: none;
+  font-size: 0.75rem;
+
+  &::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+    border-top: 5px solid var(--bg-color);
+    position: absolute;
+    left: 50%;
+    left: calc(50% - 2.5px);
+    bottom: -5px;
+  }
+
+  &,
+  &::after {
+    @include light {
+      filter: drop-shadow(rgb(0 0 0 / 0.2) 0 0 6px);
+    }
+
+    @include dark {
+      filter: drop-shadow(rgb(45 45 45 / 0.6) 0 0 4px);
+    }
+  }
+
+  @include light {
+    border-color: white;
+  }
+}
+
 .vjs-control .vjs-button,
 .vjs-control.vjs-button {
   // need to set these manually again ...

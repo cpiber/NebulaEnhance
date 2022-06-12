@@ -46,6 +46,24 @@ export const arrFromLengthy = <T>(a: { length: number, [k: number]: T; }): T[] =
   return arr;
 };
 
+export const calcOuterBounds = (e: HTMLElement) => {
+  const rects = e.getClientRects();
+  console.assert(rects.length > 0, 'expected at least one client rect');
+  if (rects.length <= 1) return { rect: rects[0], offset: 0 };
+  const oldx = rects[0].x;
+  const r = rects[0];
+  // calculate rect around all rects (biggest wrap)
+  for (let i = 1; i < rects.length; ++i) {
+    const x = Math.min(r.x, rects[i].x);
+    const y = Math.min(r.y, rects[i].y);
+    r.width = Math.max(r.x + r.width, rects[i].x + rects[i].width) - x;
+    r.height = Math.max(r.y + r.height, rects[i].y + rects[i].height) - y;
+    r.x = x;
+    r.y = y;
+  }
+  return { rect: r, offset: oldx - r.x };
+};
+
 export const isMobile = () => window.matchMedia('(any-pointer: coarse), (any-hover: none)').matches;
 export const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
 export const isVideoListPage = () => !!window.location.pathname.match(/^\/(?:|videos\/?|myshows\/?)$/);

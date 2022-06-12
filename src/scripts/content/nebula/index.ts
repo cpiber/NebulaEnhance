@@ -3,7 +3,7 @@ import iconShow from '../../../icons/show.svg';
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { creatorLink, queueBottonLocation, watchLaterLocation } from '../../helpers/locations';
-import { BrowserMessage, clone, debounce, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
@@ -93,7 +93,9 @@ const videoHoverLink = (e: HTMLElement) => {
   return link;
 };
 const hover = (e: MouseEvent) => {
-  const link = videoHoverLink(e.target as HTMLElement);
+  const target = e.target as HTMLElement;
+  if (target.tagName === 'TIME' && target.hasAttribute('datetime')) return timeHover(target as HTMLTimeElement);
+  const link = videoHoverLink(target);
   if (link === null)
     return;
   createLink(link.querySelector('img'));
@@ -109,6 +111,15 @@ const createLink = (img: HTMLImageElement): void => {
   later.innerHTML = `<div class="${watch.className}">${addToQueue}</div>${iconWatchLater}`;
   later.className = `${watch.className} enhancer-queueButton`;
   watch.after(later);
+};
+const timeHover = (e: HTMLTimeElement) => {
+  const time = new Date(e.dateTime).toLocaleString().replace(/(\d{1,2}:\d{2}):\d{2}/, '$1'); // remove seconds
+  if (!time || isNaN(new Date(e.dateTime).getTime())) return;
+  const { rect, offset } = calcOuterBounds(e);
+  const el = e.querySelector<HTMLSpanElement>('.enhancer-datetime') || e.appendChild(document.createElement('span'));
+  el.textContent = time;
+  el.style.left = `${rect.width / 2 - offset}px`;
+  el.classList.add('enhancer-datetime');
 };
 
 const click = async (e: MouseEvent) => {
