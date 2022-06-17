@@ -33,11 +33,13 @@ const requestData = async (name: string) => {
 };
 
 export const extractData = (data: Nebula.Video) => {
-  const minutes = Math.floor(data.duration / 60);
+  const hours = Math.floor(data.duration / 3600);
+  const minutes = Math.floor((data.duration - hours * 3600) / 60);
+  const seconds = data.duration - hours * 3600 - minutes * 60;
   const t = Object.keys(data.assets.thumbnail);
   const highest = t[t.length - 1];
   return {
-    length: `${minutes}:${(data.duration - minutes * 60).pad(2)}`,
+    length: hours > 0 ? `${hours}:${minutes.pad(2)}:${seconds.pad(2)}` : `${minutes}:${seconds.pad(2)}`,
     thumbnail: data.assets.thumbnail[highest].original,
     title: data.title,
     creator: data.channel_title,

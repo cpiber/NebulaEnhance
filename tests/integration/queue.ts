@@ -62,7 +62,7 @@ describe('videos page', () => {
     expect(
       await page.evaluate(sel =>
         Array.from(document.querySelector(`${sel} .elements`).children)
-          .map(e => !e.querySelector('.creator').textContent.match(/.+ • \d+:\d{2}/))
+          .map(e => !e.querySelector('.creator').textContent.match(/.+ • (\d+:\d{2}|\d{1,2}):\d{2}/))
           .reduce((prev, cur) => prev || cur, false), queueSelector),
     ).toBe(false);
   });
