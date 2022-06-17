@@ -171,6 +171,18 @@
     "message": "Custom Script für Webseite",
     "description": "Beschriftung fürs Einfügen von custom scripts zur Webseite der Optionen Seite."
   },
+  "optionsHideVideosTitle": {
+    "message": "Angesehene Videos ausblenden",
+    "description": "Beschriftung für Hide Videos der Optionen Seite."
+  },
+  "optionsHideVideosPerc": {
+    "message": "Prozent",
+    "description": "Prozent Beschriftung für Hide Videos der Optionen Seite."
+  },
+  "optionsHideVideosHint": {
+    "message": "Blendet angesehene Videos aus, basierend auf Nebulas aufgezeichneten Daten. Entscheidet basierend auf Prozent angesehener Zeit.",
+    "description": "Hilfstext für Hide Videos der Optionen Seite."
+  },
   "optionsCustomScriptPageHint": {
     "message": "Erlaubt es, benutzerdefinierten JavaScript Code auf der Nebula Seite auszuführen.<br />Siehe <a href=\"https://github.com/cpiber/NebulaEnhance/blob/master/docs/index.md\" target=\"_blank\">docs</a> für Informationen zur Interaktion mit Enhancer for Nebula.",
     "description": "Hilfstext fürs Einfügen von custom scripts zur Webseite der Optionen Seite."

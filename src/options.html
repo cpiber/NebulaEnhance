@@ -181,11 +181,11 @@
               <span class="i18n">__MSG_optionsEnable__</span>
             </label>
 
-            <p class="hint i18n">__MSG_optionsShowChangelogHint__</p>
-
             <div class="enhancer-control">
               <button type="button" class="i18n enhancer-button" id="showChangelogsNow">__MSG_optionsShowChangelogButton__</button>
             </div>
+
+            <p class="hint i18n">__MSG_optionsShowChangelogHint__</p>
           </div>
 
           <div class="enhancer-field">
@@ -196,6 +196,21 @@
             </div>
 
             <p class="hint i18n">__MSG_optionsManageHiddenCreatorsHint__</p>
+          </div>
+
+          <div class="enhancer-field">
+            <h3 class="enhancer-field-title i18n">__MSG_optionsHideVideosTitle__</h3>
+
+            <label for="hideVideosEnabled" class="enhancer-checkbox">
+              <input type="checkbox" name="hideVideosEnabled" id="hideVideosEnabled" data-default="" />
+              <span class="i18n">__MSG_optionsEnable__</span>
+            </label>
+            <div class="enhancer-control percent">
+              <input type="number" class="enhancer-text-input" name="hideVideosPerc" id="hideVideosPerc" data-default="80" step="10" size="5" placeholder="80" min="0" max="100" />
+              <label class="title i18n" for="hideVideosPerc">__MSG_optionsHideVideosPerc__</label>
+            </div>
+
+            <p class="hint i18n">__MSG_optionsHideVideosHint__</p>
           </div>
         </section>
       </main>

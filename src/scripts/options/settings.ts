@@ -16,6 +16,8 @@ export class Settings {
   ytOpenTab: HTMLInputElement = undefined;
   watchnebula: HTMLInputElement = undefined;
   rss: HTMLInputElement = undefined;
+  hideVideosEnabled: HTMLInputElement = undefined;
+  hideVideosPerc: HTMLInputElement = undefined;
   customScriptPage: HTMLTextAreaElement = undefined;
   showChangelogs: HTMLInputElement = undefined;
   visitedColor: HTMLInputElement = undefined;
@@ -84,6 +86,9 @@ export const toData = async (useDefaults = false) => {
   }
   if (!data.purgetime.toString().trim())
     data.purgetime = '0s';
+
+  if (els.hideVideosPerc.value.length)
+    data.hideVideosPerc = Math.max(0, Math.min(100, +data.hideVideosPerc));
 
   return data;
 };

@@ -110,6 +110,33 @@
         color: $fg_dark;
       }
     }
+
+    &.percent {
+      input.enhancer-text-input {
+        padding-right: 26px !important;
+      }
+
+      &::after {
+        content: '%';
+        position: absolute;
+        right: 2px;
+        top: 1px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 19px 8px 4px 0;
+
+        @include light {
+          background-color: $bg_light;
+          color: $fg_light;
+        }
+
+        @include dark {
+          background-color: $bg_dark;
+          color: $fg_dark;
+        }
+      }
+    }
   }
 
   .enhancer-checkbox {

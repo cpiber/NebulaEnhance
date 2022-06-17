@@ -2,7 +2,7 @@ import iconHide from '../../../icons/hide.svg';
 import iconShow from '../../../icons/show.svg';
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
-import { creatorLink, queueBottonLocation, watchLaterLocation } from '../../helpers/locations';
+import { creatorLink, isWatchProgress, queueBottonLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
 import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
@@ -15,10 +15,24 @@ const showCreator = msg('pageShowCreator');
 
 let hiddenCreators: string[] = [];
 export const nebula = async () => {
-  const { youtube, theme, customScriptPage, hiddenCreators: h } = await getFromStorage({ youtube: false, theme: '', customScriptPage: '', hiddenCreators: [] as string[] });
+  const {
+    youtube,
+    theme,
+    customScriptPage,
+    hiddenCreators: h,
+    hideVideosEnabled,
+    hideVideosPerc,
+  } = await getFromStorage({
+    youtube: false,
+    theme: '',
+    customScriptPage: '',
+    hiddenCreators: [] as string[],
+    hideVideosEnabled: false,
+    hideVideosPerc: 80,
+  });
   hiddenCreators = h;
   console.debug('Youtube:', youtube, 'Theme:', theme,
-    '\nHiding', hiddenCreators.length, 'creators');
+    '\nHiding', hiddenCreators.length, 'creators', '\tvideos?', hideVideosEnabled, 'with perc watched:', hideVideosPerc);
 
   if (!theme) try {
     const newtheme = JSON.parse(localStorage.getItem('colorSchemeSetting'));
@@ -27,16 +41,17 @@ export const nebula = async () => {
   } catch { }
 
   // attach listeners
+  const vidactions = doVideoActions.bind(null, hideVideosEnabled, hideVideosPerc);
   window.addEventListener('message', handle);
   window.addEventListener('hashchange', hashChange);
   document.addEventListener(`${loadPrefix}-video`, maybeLoadComments.bind(null, youtube));
   document.addEventListener(`${loadPrefix}-creator`, createLinkForAll);
   document.addEventListener(`${loadPrefix}-creator`, insertHideButton);
-  document.addEventListener(loadPrefix, doVideoActions);
-  document.addEventListener(xhrPrefix, doVideoActions);
+  document.addEventListener(loadPrefix, vidactions);
+  document.addEventListener(xhrPrefix, vidactions);
   document.body.addEventListener('mouseover', hover);
   document.body.addEventListener('click', click, { capture: true });
-  doVideoActions();
+  vidactions();
 
   // inject web content script
   await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
@@ -73,13 +88,13 @@ export const nebula = async () => {
   });
 };
 
-const doVideoActions = debounce(() => {
+const doVideoActions = debounce((hideWatched: boolean, hidePerc: number) => {
   // add links on mobile to substitute hover
   if (isMobile())
     Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
   // hide creators
   if (isVideoListPage())
-    Array.from(document.querySelectorAll<HTMLElement>(videoselector)).forEach(el => hideVideo(el, hiddenCreators));
+    Array.from(document.querySelectorAll<HTMLElement>(videoselector)).forEach(el => hideVideo(el, hiddenCreators, hideWatched, hidePerc));
 }, 500);
 
 const videoHoverLink = (e: HTMLElement) => {
@@ -297,11 +312,24 @@ const changeTheme = (e: MouseEvent) => {
   setToStorage({ theme });
 };
 
-const hideVideo = (el: HTMLElement, hiddenCreators: string[]) => {
+const hideVideo = (el: HTMLElement, hiddenCreators: string[], hideWatched: boolean, hidePerc: number) => {
   const creator = creatorLink(el)?.split('/')?.[1];
-  if (!creator) return;
-  if (hiddenCreators.indexOf(creator) === -1) return;
-  console.dev.debug('Hiding video by creator', creator, `https://nebula.app/${creator}`);
+  let hide = false;
+  if (creator && hiddenCreators.indexOf(creator) !== -1) {
+    console.debug('Hiding video by creator', creator, `https://nebula.app/${creator}`);
+    hide = true;
+  }
+  const watchProgress = watchProgressLocation(el);
+  if (hideWatched && watchProgress && isWatchProgress(watchProgress)) {
+    const ww = getComputedStyle(watchProgress.children[0]).width;
+    const pw = getComputedStyle(watchProgress).width;
+    const percent = (+ww.slice(0, -2)) / (+pw.slice(0, -2)) * 100;
+    if (percent > hidePerc) {
+      console.debug('Hiding video above watch percent', hidePerc, `(was ${percent})`);
+      hide = true;
+    }
+  }
+  if (!hide) return;
   if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
   else el.parentElement.classList.add('enhancer-hiddenVideo');
 };

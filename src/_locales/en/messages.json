@@ -167,6 +167,18 @@
     "message": "No creators hidden",
     "description": "Hint that no creators are hidden."
   },
+  "optionsHideVideosTitle": {
+    "message": "Hide watched videos",
+    "description": "Label for Hide videos of options page."
+  },
+  "optionsHideVideosPerc": {
+    "message": "Percent to hide",
+    "description": "Percent to hide label for Hide videos of options page."
+  },
+  "optionsHideVideosHint": {
+    "message": "Hide watched videos, based on Nebula's recorded information. Decision is based on percent of time watched.",
+    "description": "Hint for Hide videos of options page."
+  },
   "optionsCustomScriptPageTitle": {
     "message": "Custom script for page",
     "description": "Label for adding custom scripts to webpage of options page."

@@ -48,6 +48,10 @@ const vidChange = () => {
 };
 els.youtube.addEventListener('change', vidChange);
 els.watchnebula.addEventListener('change', vidChange);
+const hChange = () => {
+  els.hideVideosPerc.disabled = !els.hideVideosEnabled.checked;
+};
+els.hideVideosEnabled.addEventListener('change', hChange);
 
 const purged = getBrowserInstance().i18n.getMessage('optionsPurged');
 document.querySelector('#purgeCacheNow').addEventListener('click', async () => {
@@ -63,6 +67,7 @@ load(true)
   .then(aChange)
   .then(vChange)
   .then(nChange)
+  .then(hChange)
   .then(vidChange);
 
 // changelog
