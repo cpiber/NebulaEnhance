@@ -152,7 +152,7 @@
     "description": "Text für `invalidated` notification."
   },
   "optionsManageHiddenCreatorsTitle": {
-    "message": "Versteckte Kanäle",
+    "message": "Kanäle ausblenden",
     "description": "Titel für Versteckte Kanäle der Optionen Seite."
   },
   "optionsManageHiddenCreatorsHint": {
