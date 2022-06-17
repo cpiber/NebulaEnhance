@@ -72,6 +72,7 @@ form {
   margin: 8px 0 0;
 }
 
+label + .enhancer-control,
 .hint + .enhancer-control {
   margin-top: 8px;
 }
@@ -310,12 +311,14 @@ body {
     color: rgb(247 247 247);
   }
 
-  &.mobile .no-mobile {
-    display: none;
-  }
+  @include mobile {
+    .no-mobile {
+      display: none;
+    }
 
-  &:not(.mobile) .mobile {
-    display: none;
+    .mobile {
+      display: inherit;
+    }
   }
 
   &.standalone {
@@ -373,6 +376,10 @@ body {
       padding-top: 0;
     }
   }
+}
+
+.mobile {
+  display: none;
 }
 
 @keyframes bounce {

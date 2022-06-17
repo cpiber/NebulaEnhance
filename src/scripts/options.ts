@@ -1,5 +1,5 @@
 import { purgeCache } from './background/ext';
-import { BrowserMessage, getBrowserInstance, getFromStorage, isMobile, notification, setToStorage } from './helpers/sharedExt';
+import { BrowserMessage, getBrowserInstance, getFromStorage, notification, setToStorage } from './helpers/sharedExt';
 import { load } from './options/form';
 import { showLogs } from './options/logs';
 import { showManageCreators } from './options/managecreators';
@@ -9,7 +9,6 @@ import { standalone } from './options/standalone';
 const cl = decodeURIComponent(window.location.hash.slice(1)).split(' ').filter(c => !!c);
 if (cl.length)
   document.body.classList.add(...cl);
-document.body.classList.toggle('mobile', isMobile());
 
 const els = Settings.get();
 const purgeField = document.querySelector('#purgeCacheField');
