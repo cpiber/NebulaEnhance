@@ -231,11 +231,11 @@ time[datetime] {
   &,
   &::after {
     @include light {
-      filter: drop-shadow(rgb(0 0 0 / 0.2) 0 0 6px);
+      filter: drop-shadow($shadow_light 0 0 6px);
     }
 
     @include dark {
-      filter: drop-shadow(rgb(45 45 45 / 0.6) 0 0 4px);
+      filter: drop-shadow($shadow_dark 0 0 4px);
     }
   }
 

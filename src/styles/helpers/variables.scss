@@ -1,6 +1,25 @@
+// screen sizes
 $tablet_big: 987px;
 $tablet: 650px;
 $mobile: 500px;
 $mobile_small: 360px;
+
+// colors
+$bg_dark: #111719;
+$bg_light: #ffffff;
+$fg_dark: rgb(247 247 247);
+$fg_light: rgb(0 20 30);
+$border_dark: rgb(119 119 119);
+$border_light: rgb(34 36 38 / 0.15);
+$shadow_light: rgb(0 0 0 / 0.2);
+$shadow_dark: rgb(45 45 45 / 0.6);
+$blueish: rgb(111 188 230);
+$blueish_transparent: rgb(82 180 233 / 0.5);
+$blueish_dark: rgb(65 131 196);
+$blueish_light: rgb(135 200 234);
+$gray: rgb(159 158 156);
+$gray_transparent: rgb(85 85 85 / 0.1);
+
+// misc
 $disabled_alpha: 0.35;
 $border_radius: 8px;

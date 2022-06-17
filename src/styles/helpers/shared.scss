@@ -20,7 +20,7 @@
     text-align: inherit;
 
     label {
-      color: rgb(159 158 156);
+      color: $gray;
       font-size: 12px;
       left: 16px;
       position: absolute;
@@ -52,22 +52,22 @@
         padding: 20px 10px 4px 12px !important;
 
         @include light {
-          background: #ffffff;
-          border-color: rgb(34 36 38 / 0.15);
-          color: rgb(0 20 30);
+          background: $bg_light;
+          border-color: $border_light;
+          color: $fg_light;
         }
 
         @include dark {
-          background: rgb(17 23 25);
-          border-color: rgb(119 119 119);
-          color: rgb(247 247 247);
+          background: $bg_dark;
+          border-color: $border_dark;
+          color: $fg_dark;
         }
 
         &:focus,
         &.has-value,
         &[placeholder] {
           & + label {
-            color: rgb(135 200 234);
+            color: $blueish_light;
             transform: scale(0.8) translate(-5px, -8px);
           }
         }
@@ -99,15 +99,15 @@
       padding: 6px 10px;
 
       @include light {
-        background: #ffffff;
-        border-color: rgb(34 36 38 / 0.15);
-        color: rgb(0 20 30);
+        background: $bg_light;
+        border-color: $border_light;
+        color: $fg_light;
       }
 
       @include dark {
-        background: rgb(17 23 25);
-        border-color: rgb(119 119 119);
-        color: rgb(247 247 247);
+        background: $bg_dark;
+        border-color: $border_dark;
+        color: $fg_dark;
       }
     }
   }
@@ -136,13 +136,13 @@
 
 .enhancer-button {
   appearance: none;
-  border: 1px solid rgb(111 188 230);
+  border: 1px solid $blueish;
   cursor: pointer;
   font-family: inherit;
   line-height: 1em;
   text-shadow: none;
   background: transparent;
-  color: rgb(111 188 230);
+  color: $blueish;
   border-radius: 6px;
   font-size: 13px;
   font-weight: normal;
@@ -152,7 +152,7 @@
   box-shadow: none;
 
   &:focus {
-    box-shadow: rgb(82 180 233 / 0.5) 0 0 10px;
+    box-shadow: $blueish_transparent 0 0 10px;
   }
 }
 
@@ -164,9 +164,9 @@
   transform: translate(-50%, calc(100% + 40px));
   max-width: 80vw;
   transition: transform 0.1s ease-in-out;
-  border: 1px solid rgb(111 188 230);
+  border: 1px solid $blueish;
   border-radius: 6px;
-  box-shadow: rgb(82 180 233 / 0.5) 0 0 10px;
+  box-shadow: $blueish_transparent 0 0 10px;
   padding: 8px 34px;
   font-size: 13px;
 
@@ -175,12 +175,12 @@
   }
 
   @include light {
-    background-color: #ffffff;
-    color: rgb(0 20 30);
+    background-color: $bg_light;
+    color: $fg_light;
   }
 
   @include dark {
-    background-color: #111719;
-    color: rgb(247 247 247);
+    background-color: $bg_dark;
+    color: $fg_dark;
   }
 }

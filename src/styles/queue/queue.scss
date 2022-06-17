@@ -38,7 +38,7 @@
   .top {
     @extend %panel;
 
-    border-bottom: 1px solid rgb(85 85 85 / 0.1);
+    border-bottom: 1px solid $gray_transparent;
 
     &::after {
       top: unset;

@@ -26,7 +26,7 @@ body {
 
 a {
   text-decoration: none;
-  color: #4183c4;
+  color: $blueish_dark;
 }
 
 code,
@@ -209,13 +209,13 @@ label + .enhancer-control,
     @extend %box-shadow;
 
     @include light {
-      background-color: #ffffff;
-      color: rgb(0 20 30);
+      background-color: $bg_light;
+      color: $fg_light;
     }
 
     @include dark {
-      background-color: #111719;
-      color: rgb(247 247 247);
+      background-color: $bg_dark;
+      color: $fg_dark;
     }
 
     >* {
@@ -229,7 +229,7 @@ label + .enhancer-control,
       display: flex;
       align-items: center;
       gap: 15px;
-      border-bottom: 1px solid rgb(85 85 85 / 0.1);
+      border-bottom: 1px solid $gray_transparent;
 
       h1 {
         margin: 0;
@@ -265,7 +265,7 @@ label + .enhancer-control,
   .version {
     padding-bottom: 16px;
     margin-bottom: 16px;
-    border-bottom: 1px solid rgb(85 85 85 / 0.1);
+    border-bottom: 1px solid $gray_transparent;
   }
 
   .version-title {
@@ -302,13 +302,13 @@ body {
   padding-bottom: 12px;
 
   @include light {
-    background-color: #ffffff;
-    color: rgb(0 20 30);
+    background-color: $bg_light;
+    color: $fg_light;
   }
 
   @include dark {
-    background-color: #111719;
-    color: rgb(247 247 247);
+    background-color: $bg_dark;
+    color: $fg_dark;
   }
 
   @include mobile {
@@ -343,7 +343,7 @@ body {
       text-transform: uppercase;
       letter-spacing: 0.4em;
       font-size: 18px;
-      border-bottom: 1px solid rgb(85 85 85 / 0.1);
+      border-bottom: 1px solid $gray_transparent;
 
       @media screen and (max-width: $tablet) {
         font-size: 16px;
