@@ -66,15 +66,16 @@
         &:focus,
         &.has-value,
         &[placeholder] {
-          & + label {
+          &+label {
             color: $blueish_light;
             transform: scale(0.8) translate(-5px, -8px);
           }
         }
 
         &:disabled {
+
           &,
-          & + label {
+          &+label {
             opacity: 0.4;
           }
         }
@@ -210,4 +211,8 @@
     background-color: $bg_dark;
     color: $fg_dark;
   }
+}
+
+.dot {
+  margin: 0px 0.25em;
 }

@@ -4,7 +4,7 @@ export const eventPrefix = 'enebula' as const;
 export const navigatePrefix = `${eventPrefix}-navigate` as const;
 export const loadPrefix = `${eventPrefix}-load` as const;
 export const xhrPrefix = `${eventPrefix}-xhr` as const;
-export const knownPages = [ 'myshows', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings' ] as const;
+export const knownPages = ['myshows', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings'] as const;
 
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
@@ -69,11 +69,11 @@ const loading = () => {
   switch (currentDetail.detail.page) {
     case 'video':
       // either video is preset or video can't be played
-      if (document.querySelectorAll('h2').length >= 2 && (document.querySelector('video') || document.querySelector('[href="/join/"]')))
+      if (document.querySelectorAll('h1, h2').length >= 2 && (document.querySelector('video') || document.querySelector('[href="/join/"]')))
         load();
       break;
     case 'creator':
-      if (document.querySelectorAll('h2').length >= 2)
+      if (document.querySelectorAll('h1, h2').length >= 2)
         load();
       break;
     case 'videos':
