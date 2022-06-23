@@ -244,3 +244,43 @@ jobs:
       shell: bash
     - name: Run linters
       run: npm run lint
+
+  current:
+    name: Build & Test for current version
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' }}
+
+    steps:
+    - name: Install curl, jq, xvfb
+      run: sudo apt-get install curl jq xvfb
+    - name: Fetch latest tag name
+      run: echo "::set-output name=tag::$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/latest" | jq -r .tag_name)"
+      id: tagfetch
+    - run: |
+        echo Checking out tag ${{ steps.tagfetch.outputs.tag }}
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ steps.tagfetch.outputs.tag }}
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.2.0
+    - name: Cache pnpm modules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-pnpm-modules
+      with:
+        path: ~/.pnpm-store
+        key: pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          pnpm-
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2.0.1
+      with:
+        version: 6.0.2
+        run_install: true
+    - name: Build and run all tests
+      run: xvfb-run --auto-servernum npm run build
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
+        NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
+        NEBULA_USER: ${{ secrets.NEBULA_USER }}
