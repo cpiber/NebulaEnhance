@@ -175,16 +175,16 @@ a.enhancer-queueButtonAll {
 .enhancer-yt {
   &-err,
   &-outside {
-    display: none;
+    display: none !important;
   }
 
   @media (max-width: $tablet) {
     &-inside {
-      display: none;
+      display: none !important;
     }
 
     &-outside {
-      display: unset;
+      display: unset !important;
     }
   }
 }
