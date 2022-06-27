@@ -3,7 +3,7 @@
  * @see https://github.com/parkeraddison/watch-on-nebula/blob/main/extension/scripts/content_script.js
  */
 
-import { BrowserMessage, CancellableRepeatingAction, debounce, getBrowserInstance, getFromStorage, injectFunctionWithReturn, nebulavideo } from '../../helpers/sharedExt';
+import { BrowserMessage, CancellableRepeatingAction, debounce, getBrowserInstance, getFromStorage, injectFunction, injectFunctionWithReturn, nebulavideo } from '../../helpers/sharedExt';
 import { constructButton } from './html';
 
 export const youtube = async () => {
@@ -83,6 +83,15 @@ const run = debounce(async () => {
     yield;
 
     window.open(vid.link, vidID);
-    document.querySelectorAll('video').forEach(v => v.pause());
+    injectFunction(document.body, () => {
+      document.querySelectorAll('video').forEach(v => {
+        try {
+          v.pause();
+          (v.parentElement.parentElement as any).pauseVideo();
+        } catch (e) {
+          console.dev.error(e);
+        }
+      });
+    });
   }, 500, 10_000);
 }, 5);
