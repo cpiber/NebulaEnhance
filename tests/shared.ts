@@ -20,7 +20,7 @@ export const addToQueue = async (num: number, offset = 0) => {
 export const expectQueueLength = () => expect(page.evaluate(sel => document.querySelector(`${sel} .elements`).children.length, queueSelector)).resolves;
 export const titles = () => page.evaluate(sel => Array.from(document.querySelectorAll(`${sel} .element .title`)).map(n => n.textContent), queueSelector);
 
-const formSelector = '#NebulaApp > :nth-child(2) > :nth-child(2) form';
+const formSelector = '#NebulaApp main form';
 let optionsURL: string;
 const b = (browser as never as Browser);
 declare const chrome: typeof browser;

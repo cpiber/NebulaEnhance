@@ -8,7 +8,7 @@ export const knownPages = [ 'myshows', 'videos', 'podcasts', 'classes', 'search'
 
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
-export const videoselector = 'a[href^="/videos/"][aria-label]';
+export const videoselector = 'a[href^="/videos/"][aria-hidden]';
 
 export const init = () => {
   const pushstate = history.pushState;
@@ -77,7 +77,7 @@ const loading = () => {
         load();
       break;
     case 'videos':
-      if (document.querySelectorAll(videoselector).length)
+      if (document.querySelector(videoselector))
         load();
       break;
     default:

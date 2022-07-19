@@ -59,7 +59,6 @@ button.enhancer-hideCreator-pre {
 div.enhancer-queueButton {
   top: 32px;
   bottom: unset;
-  padding: 1px;
   line-height: 0;
   opacity: 0;
   pointer-events: initial;
@@ -85,7 +84,7 @@ div.enhancer-queueButton {
     @extend %hover;
     @include svghover;
 
-    div {
+    div.text {
       display: inherit;
 
       @include mobile {
@@ -102,18 +101,6 @@ div.enhancer-queueButton {
         @extend %hover;
       }
     }
-  }
-
-  div {
-    display: none;
-    position: absolute;
-    top: 0;
-    right: 24px;
-    width: unset;
-    padding: 4px;
-    line-height: 22px;
-    font-size: 11px;
-    white-space: nowrap;
   }
 
   svg {
@@ -140,8 +127,6 @@ div.enhancer-queueButton {
 }
 
 a.enhancer-queueButtonAll {
-  color: inherit;
-
   svg {
     width: 12px;
     height: 12px;

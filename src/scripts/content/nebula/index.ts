@@ -1,4 +1,5 @@
 import iconHide from '../../../icons/hide.svg';
+import iconRSS from '../../../icons/rss.svg';
 import iconShow from '../../../icons/show.svg';
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
@@ -121,9 +122,11 @@ const createLink = (img: HTMLImageElement): void => {
   // create queue button
   const later = document.createElement('div');
   const watch = watchLaterLocation(img);
-  if (!watch)
+  const inner = watch?.firstElementChild;
+  const text = inner?.lastElementChild;
+  if (!watch || !inner || !text)
     return console.dev.error('Expected nebula watch-later button', img), undefined;
-  later.innerHTML = `<div class="${watch.className}">${addToQueue}</div>${iconWatchLater}`;
+  later.innerHTML = `<div class="${inner.className}"><div class="${text.className} text">${addToQueue}</div>${iconWatchLater}</div>`;
   later.className = `${watch.className} enhancer-queueButton`;
   watch.after(later);
 };
@@ -248,7 +251,7 @@ const loadComments = async () => {
 
 const createLinkForAll = () => {
   document.querySelector('.enhancer-queueButtonAll')?.remove();
-  const container = document.querySelector('picture + div > p + div');
+  const container = document.querySelector('main > p + div');
   if (!container)
     return;
 
@@ -279,7 +282,7 @@ const insertHideButton = async () => {
     rss.target = '_blank';
     rss.classList.add('enhancer-rss');
     if (!follow) rss.classList.add('enhancer-hideCreator-pre');
-    rss.appendChild(document.createElement('img')).src = 'https://nebula.app/static/media/rss.fb780e91bf301f0d598c953f73bdc3a7.svg';
+    rss.innerHTML = iconRSS;
   }
 
   const buttonHidden = container.appendChild(document.createElement('button'));
