@@ -46,7 +46,7 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 - Scroll over player to set volume (enable in settings)
 - Toggle time display between current/remaining time
 - Control Nebula video autoplay
-- Keyboard shortcuts: Shortcuts in video player ([see Playback section](https://www.mrfdev.com/youtube-keyboard-shortcuts))
+- Keyboard shortcuts: Additional shortcuts in video player ([see Playback section](https://www.mrfdev.com/youtube-keyboard-shortcuts))
 - ~~Default playback speed and volume, subtitles~~ Now natively supported
 - ~~Target qualities: Set the preferred video quality or qualities~~ Now natively supported
 

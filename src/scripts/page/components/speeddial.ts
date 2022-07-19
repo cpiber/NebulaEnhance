@@ -1,4 +1,4 @@
-import { Message, isMobile, sendMessage } from '../../helpers/shared';
+import { Message, sendMessage } from '../../helpers/shared';
 import { Tooltip } from './tooltip';
 
 type Dial = {
@@ -37,15 +37,10 @@ const SpeedDial = async (playbackChange: number) => {
       this.updateTooltip();
     },
     handleClick(this: T) {
-      const mobile = isMobile();
-      // console.debug(mobile, mobile ? 'Android' : 'Other');
-
-      if (mobile) {
-        const ret = window.prompt(speedMsg, `${this.player().playbackRate()}`);
-        const r = +ret;
-        if (ret !== null && !isNaN(r))
-          this.updatePlaybackrate(r);
-      }
+      const ret = window.prompt(speedMsg, `${this.player().playbackRate()}`);
+      const r = +ret;
+      if (ret !== null && !isNaN(r))
+        this.updatePlaybackrate(r);
     },
     updateTooltip(this: T) {
       if (!this.el())

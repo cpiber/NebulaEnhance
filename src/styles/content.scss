@@ -57,7 +57,7 @@ button.enhancer-hideCreator-pre {
 }
 
 div.enhancer-queueButton {
-  top: 32px;
+  top: 24px;
   bottom: unset;
   line-height: 0;
   opacity: 0;
@@ -120,9 +120,16 @@ div.enhancer-queueButton {
     opacity: 1;
     @include svghover;
 
-    background-color: black;
-    color: white;
-    top: 8px;
+    top: 0;
+
+    div {
+      background-color: black;
+      color: white;
+    }
+
+    div.text {
+      display: none;
+    }
   }
 }
 
@@ -130,8 +137,12 @@ a.enhancer-queueButtonAll {
   svg {
     width: 12px;
     height: 12px;
-    fill: white;
-    fill: currentcolor;
+
+    #main,
+    #outline {
+      fill: white;
+      fill: currentcolor;
+    }
   }
 }
 
