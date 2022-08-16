@@ -129,6 +129,7 @@ const createLink = (img: HTMLImageElement): void => {
   later.innerHTML = `<div class="${inner.className}"><div class="${text.className} text">${addToQueue}</div>${iconWatchLater}</div>`;
   later.className = `${watch.className} enhancer-queueButton`;
   watch.after(later);
+  watch.classList.add('nebula-watch-later');
 };
 const timeHover = (e: HTMLTimeElement) => {
   const time = new Date(e.dateTime).toLocaleString().replace(/(\d{1,2}:\d{2}):\d{2}/, '$1'); // remove seconds

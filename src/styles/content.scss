@@ -67,7 +67,9 @@ div.enhancer-queueButton {
     opacity: 1;
   }
 
-  @mixin svghover {
+  @include hov {
+    @extend %hover;
+
     svg {
       #main {
         fill: white;
@@ -78,11 +80,6 @@ div.enhancer-queueButton {
         fill: none;
       }
     }
-  }
-
-  @include hov {
-    @extend %hover;
-    @include svghover;
 
     div.text {
       display: inherit;
@@ -114,13 +111,14 @@ div.enhancer-queueButton {
       fill: white;
       fill: currentcolor;
     }
+
+    #main {
+      fill: none;
+    }
   }
 
   @include mobile {
     opacity: 1;
-    @include svghover;
-
-    top: 0;
 
     div {
       background-color: black;
@@ -129,6 +127,19 @@ div.enhancer-queueButton {
 
     div.text {
       display: none;
+    }
+  }
+}
+
+div.nebula-watch-later {
+  @include mobile {
+    >div {
+      background-color: black;
+      color: white;
+    }
+
+    svg:first-child {
+      display: unset;
     }
   }
 }
