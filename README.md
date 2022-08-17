@@ -24,6 +24,7 @@ This extension is available on the official add-on stores:
 - Chromium: [![chrome](https://badgen.net/chrome-web-store/v/niaholaehmipmbpoagjmdlocnhakeonl)](https://chrome.google.com/webstore/detail/enhancer-for-nebula/niaholaehmipmbpoagjmdlocnhakeonl)
 
 The most recent releases are available [here](https://github.com/cpiber/NebulaEnhance/releases).
+Installing the `enhancer_for_nebula_<version>.zip` should work on any browser. The `enhancer_for_nebula_<version>.xpi` is produced and signed by Mozilla.
 
 Please be aware that both Mozilla and Google need to verify my changes before making them visible in the stores.
 
