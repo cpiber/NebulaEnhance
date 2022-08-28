@@ -8,9 +8,9 @@ import { init as initDispatch, loadPrefix } from './dispatcher';
 
 type Comp<T> = T extends (...args: any[]) => Promise<infer R> ? R : T extends (...args: any[]) => infer R ? R : never;
 
-function getFromStorage<T extends { [key: string]: any }>(key: T): Promise<T>;
+function getFromStorage<T extends { [key: string]: any; }>(key: T): Promise<T>;
 function getFromStorage<T>(key: string | string[]): Promise<T>;
-function getFromStorage<T>(key: string | string[] | { [key: string]: any }) {
+function getFromStorage<T>(key: string | string[] | { [key: string]: any; }) {
   return sendMessage<T>(Message.GET_STORAGE, { get: key });
 }
 
@@ -23,17 +23,16 @@ const defaults = {
   volumeChange: 0.1,
   volumeLog: false,
   useFirstSubtitle: false,
-  visitedColor: '',
 };
 
 export const init = async () => {
   const {
     playbackChange, autoplay, autoplayQueue, volumeEnabled,
-    volumeChange, volumeLog, volumeShow, useFirstSubtitle, visitedColor,
+    volumeChange, volumeLog, volumeShow, useFirstSubtitle,
   } = await getFromStorage(defaults);
   console.debug('playbackChange:', playbackChange, 'autoplay?', autoplay, 'autoplay in queue?', autoplayQueue,
     '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog, 'show?', volumeShow,
-    '\nuse first subtitle?', useFirstSubtitle, 'visitedColor:', visitedColor);
+    '\nuse first subtitle?', useFirstSubtitle);
 
   await waitForVJS();
   await registerComponents(playbackChange, volumeShow);
@@ -46,15 +45,6 @@ export const init = async () => {
     document.addEventListener('click', clickHandler, { capture: true });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
   initDispatch();
-
-  const c = visitedColor.split(';')[0];
-  if (!c) return;
-  const s = document.createElement('style');
-  s.textContent = `
-    :root { --visited-color: ${c}; }
-    a[href^='/videos/']:visited /* video link */ { color: var(--visited-color); }
-  `;
-  document.head.appendChild(s);
 };
 
 export const initPlayer = async () => {
