@@ -37,8 +37,6 @@ const manifest: browser._manifest.WebExtensionManifest = {
   ],
   permissions: [
     'storage',
-    '*://content.watchnebula.com/*',
-    '*://api.watchnebula.com/*',
     '*://standard.tv/*',
   ],
   optional_permissions: [

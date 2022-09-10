@@ -40,7 +40,7 @@ export const login = async (force = false) => {
     password: __NEBULA_PASS__,
   });
   await expect(page).toClick(`${formSelector} button`, { text: 'Sign in' });
-  await page.waitForResponse('https://api.watchnebula.com/api/v1/authorization/'); // wait until logged in
+  await page.waitForResponse('https://users.api.nebula.app/api/v1/authorization/'); // wait until logged in
   await page.waitForTimeout(1000);
 };
 
