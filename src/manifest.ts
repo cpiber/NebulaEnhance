@@ -21,6 +21,7 @@ const manifest: browser._manifest.WebExtensionManifest = {
     {
       matches: [
         '*://*.nebula.app/*',
+        '*://*.nebula.tv/*',
         '*://*.youtube.com/*',
       ],
       js: [
@@ -37,7 +38,8 @@ const manifest: browser._manifest.WebExtensionManifest = {
   ],
   permissions: [
     'storage',
-    '*://standard.tv/*',
+    // Only firefox requires this, and the subdomain must be completely specified, otherwise the request fails
+    '*://content.api.nebula.app/*',
   ],
   optional_permissions: [
     '*://*.googleapis.com/*',

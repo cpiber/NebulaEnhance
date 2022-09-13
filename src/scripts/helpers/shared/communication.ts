@@ -1,10 +1,10 @@
 import { Event, Message } from './constants';
 import { clone, parseTypeObject } from './helpers';
 
-export function sendMessage(name: Message.GET_MESSAGE, data: { message: string }): Promise<string>;
-export function sendMessage(name: Message.GET_QSTATUS): Promise<{ canNext: boolean, canPrev: boolean, position: number, length: number }>;
-export function sendMessage<T>(name: Exclude<Message, Message.GET_MESSAGE | Message.GET_QSTATUS>, data?: { [key: string]: any }, expectAnswer?: boolean, skipOriginCheck?: boolean): Promise<T>;
-export function sendMessage<T>(name: Message, data?: { [key: string]: any }, expectAnswer = true, skipOriginCheck = false) {
+export function sendMessage(name: Message.GET_MESSAGE, data: { message: string; }): Promise<string>;
+export function sendMessage(name: Message.GET_QSTATUS): Promise<{ canNext: boolean, canPrev: boolean, position: number, length: number; }>;
+export function sendMessage<T>(name: Exclude<Message, Message.GET_MESSAGE | Message.GET_QSTATUS>, data?: { [key: string]: any; }, expectAnswer?: boolean, skipOriginCheck?: boolean): Promise<T>;
+export function sendMessage<T>(name: Message, data?: { [key: string]: any; }, expectAnswer = true, skipOriginCheck = false) {
   console.dev.debug('Sending message', name, 'with data', data);
   if (!expectAnswer) {
     window.parent.postMessage(JSON.stringify({ ...data, type: name }), '*');
@@ -13,16 +13,16 @@ export function sendMessage<T>(name: Message, data?: { [key: string]: any }, exp
   return new Promise<T>((resolve, reject) => {
     const e = `enhancer-message-${Math.random().toString().substring(2)}`;
     const c = (ev: MessageEvent) => {
-      if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:.+\.)?nebula.app)/)) return;
+      if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula\.com|(?:.+\.)?nebula\.(?:app|tv))/)) return;
       try {
-        const msg = parseTypeObject<{ type: string, err?: any, res?: any }>(ev.data);
+        const msg = parseTypeObject<{ type: string, err?: any, res?: any; }>(ev.data);
         if (msg.type !== e) return;
         window.removeEventListener('message', c);
         if (msg.err)
           reject(msg.err);
         else
           resolve(msg.res);
-      } catch {}
+      } catch { }
     };
     window.addEventListener('message', c);
     window.parent.postMessage(JSON.stringify({ ...data, type: name, name: e }), '*');
@@ -30,18 +30,18 @@ export function sendMessage<T>(name: Message, data?: { [key: string]: any }, exp
 }
 
 export type Listener<R = any, E = any> = (res: R, err: E) => void;
-export function sendEventHandler(event: Event.QUEUE_CHANGE, listener: Listener<{ canNext: boolean, canPrev: boolean }>, skipOriginCheck?: boolean): void;
+export function sendEventHandler(event: Event.QUEUE_CHANGE, listener: Listener<{ canNext: boolean, canPrev: boolean; }>, skipOriginCheck?: boolean): void;
 export function sendEventHandler(event: Exclude<Event, Event.QUEUE_CHANGE>, listener: Listener, skipOriginCheck?: boolean): void;
 export function sendEventHandler(event: Event, listener: Listener, skipOriginCheck = false) {
   console.dev.debug('Registering remote listener for', event);
   const e = `enhancer-event-${event}-${Math.random().toString().substring(2)}`;
   const c = (ev: MessageEvent) => {
-    if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula.com|(?:.+\.)?nebula.app)/)) return;
+    if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula\.com|(?:.+\.)?nebula\.(?:app|tv))/)) return;
     try {
-      const msg = parseTypeObject<{ type: string, err?: any, res?: any }>(ev.data);
+      const msg = parseTypeObject<{ type: string, err?: any, res?: any; }>(ev.data);
       if (msg.type !== e) return;
       listener(msg.res, msg.err);
-    } catch {}
+    } catch { }
   };
   window.addEventListener('message', c);
   window.parent.postMessage(JSON.stringify({ type: Message.REGISTER_LISTENER, name: e, event }), '*');

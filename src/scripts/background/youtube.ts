@@ -1,5 +1,5 @@
 import type { Video } from '.';
-import { ytvideo } from '../helpers/shared';
+import { getBase, ytvideo } from '../helpers/shared';
 import { creatorHasVideo } from './ifidf';
 import { normalizeString } from './misc';
 
@@ -29,7 +29,7 @@ export const loadYTVideos = async (playlist: string, num: number) => {
           'Accept-Language': 'en-US,en;q=0.5',
           'Cache-Control': 'max-age=0',
         },
-        referrer: 'https://nebula.app/',
+        referrer: `https://${getBase()}/`,
         method: 'GET',
         mode: 'cors',
       });

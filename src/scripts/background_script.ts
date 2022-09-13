@@ -1,6 +1,6 @@
 import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString } from './background';
 import { purgeCache, purgeCacheIfNecessary } from './background/ext';
-import { BrowserMessage, getBrowserInstance, getFromStorage, nebulavideo, parseTimeString, parseTypeObject, setToStorage, toTimeString } from './helpers/sharedExt';
+import { BrowserMessage, getBase, getBrowserInstance, getFromStorage, nebulavideo, parseTimeString, parseTypeObject, setToStorage, toTimeString } from './helpers/sharedExt';
 
 const videoFetchYt = 50;
 const videoFetchNebula = 50;
@@ -130,7 +130,7 @@ const getNebulaVideo = async (message: { [key: string]: any; }): Promise<nebulav
   if (!creator.nebula && !creator.nebulaAlt) return;
   return {
     is: 'channel',
-    link: `https://nebula.app/${creator.nebula || creator.nebulaAlt}`,
+    link: `https://${getBase()}/${creator.nebula || creator.nebulaAlt}`,
   };
 };
 

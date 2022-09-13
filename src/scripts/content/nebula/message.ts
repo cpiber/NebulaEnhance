@@ -1,14 +1,14 @@
 import { Event, Message, getBrowserInstance, getFromStorage, isQueueMessage, parseTypeObject, replyMessage } from '../../helpers/sharedExt';
 import { Queue } from '../queue';
 
-type Msg = { type: string, name?: string, [key: string]: any };
+type Msg = { type: string, name?: string, [key: string]: any; };
 
 /**
  * handle postMessage event
  * @returns `true` if event handeled, else parsed message
  */
 export const handle = (e: MessageEvent) => {
-  if (!e.origin.match(/^https?:\/\/(?:.+\.)?nebula.app$/))
+  if (!e.origin.match(/^https?:\/\/(?:.+\.)?nebula\.(?:app|tv)$/))
     return true;
   const msg = parseTypeObject<Msg>(e.data, true);
   if (msg === null)

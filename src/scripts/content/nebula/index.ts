@@ -4,7 +4,7 @@ import iconShow from '../../../icons/show.svg';
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { creatorLink, isWatchProgress, queueBottonLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
-import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
@@ -287,7 +287,7 @@ const insertHideButton = async () => {
   if (loadRss) {
     const rss = document.createElement('a');
     if (follow) follow.before(rss); else container.appendChild(rss);
-    rss.href = `https://rss.nebula.app/video/channels/${creator}.rss`;
+    rss.href = `https://rss.${getBase()}/video/channels/${creator}.rss`;
     rss.target = '_blank';
     rss.classList.add('enhancer-rss');
     if (!follow) rss.classList.add('enhancer-hideCreator-pre');
@@ -329,7 +329,7 @@ const hideVideo = (el: HTMLElement, hiddenCreators: string[], hideWatched: boole
   const creator = creatorLink(el)?.split('/')?.[1];
   let hide = false;
   if (creator && hiddenCreators.indexOf(creator) !== -1) {
-    console.debug('Hiding video by creator', creator, `https://nebula.app/${creator}`);
+    console.debug('Hiding video by creator', creator, `https://${getBase()}/${creator}`);
     hide = true;
   }
   const watchProgress = watchProgressLocation(el);

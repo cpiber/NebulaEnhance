@@ -4,6 +4,7 @@
  */
 
 import type { Queue } from '../../content/queue';
+import { getBase } from '../shared';
 
 const request = async <T = any>(url: string, init?: RequestInit) => {
   const i = {
@@ -12,12 +13,15 @@ const request = async <T = any>(url: string, init?: RequestInit) => {
     headers: {
       ...init.headers,
       'Accept': 'application/json, text/plain, */*',
+      'Accept-Encoding': 'gzip, deflate, br',
       'Accept-Language': 'en,en-US;q=0.5',
       'Nebula-Platform': 'web',
+      'Nebula-App-Version': '22.8.0',
     },
     mode: 'cors' as const,
   };
 
+  console.dev.debug(`Fetching ${url}`, i);
   const req = await fetch(url, i);
   if (!req.ok) throw new Error(`Request failed: ${req.status} ${req.statusText}`);
   const body = await req.json();
@@ -29,25 +33,25 @@ const request = async <T = any>(url: string, init?: RequestInit) => {
   throw new Error(body.detail);
 };
 
-export const getVideo = (name: string) => request<Nebula.Video>(`https://content.api.nebula.app/video/${name}/`, {
-  referrer: `https://nebula.app/videos/${name}`,
+export const getVideo = (name: string) => request<Nebula.Video>(`https://content.api.${getBase()}/video/${name}/`, {
+  referrer: `https://${getBase()}/videos/${name}`,
   method: 'GET',
 });
 
-export const getChannel = (name: string) => request<Nebula.Channel>(`https://content.api.nebula.app/slug/${name}/`, {
-  referrer: 'https://nebula.app/',
+export const getChannel = (name: string) => request<Nebula.Channel>(`https://content.api.${getBase()}/slug/${name}/`, {
+  referrer: `https://${getBase()}/`,
   method: 'GET',
 });
 
 export const getChannelVideos = async (name: string, num = Infinity) => {
   const vids: Nebula.Video[] = [];
-  const req = new URL(`https://content.api.nebula.app/video/channels/${name}/`);
+  const req = new URL(`https://content.api.${getBase()}/video/channels/${name}/`);
   req.searchParams.set('page_size', `${Math.min(100, num)}`);
   let url = req.toString();
 
   while (url && vids.length < num) {
     const body = await request<Nebula.VideoRequest>(url, {
-      referrer: `https://nebula.app/${name}`,
+      referrer: `https://${getBase()}/${name}`,
       method: 'GET',
     });
     url = body.episodes.next;
@@ -57,14 +61,14 @@ export const getChannelVideos = async (name: string, num = Infinity) => {
 };
 
 export const enqueueChannelVideos = async (q: Queue, name: string) => {
-  const req = new URL(`https://content.api.nebula.app/video/channels/${name}/`);
+  const req = new URL(`https://content.api.${getBase()}/video/channels/${name}/`);
   req.searchParams.set('page_size', '100');
   let url = req.toString();
   // q.clear();
 
   while (url) {
     const body = await request<Nebula.VideoRequest>(url, {
-      referrer: `https://nebula.app/${name}`,
+      referrer: `https://${getBase()}/${name}`,
       method: 'GET',
     });
     url = body.episodes.next;
@@ -77,14 +81,14 @@ export const enqueueChannelVideos = async (q: Queue, name: string) => {
 
 export const searchVideos = async (text: string, num = Infinity) => {
   const vids: Nebula.Video[] = [];
-  const req = new URL('https://content.api.nebula.app/search/video/');
+  const req = new URL(`https://content.api.${getBase()}/search/video/`);
   req.searchParams.set('text', text);
   req.searchParams.set('page_size', `${Math.min(100, num)}`);
   let url = req.toString();
 
   while (url && vids.length < num) {
     const body = await request<Nebula.VideoSearchRequest>(url, {
-      referrer: 'https://nebula.app/',
+      referrer: `https://${getBase()}/`,
       method: 'GET',
     });
     url = body.next;

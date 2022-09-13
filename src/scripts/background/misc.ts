@@ -1,6 +1,6 @@
 
 export const loadCreators = async () => {
-  const res = await fetch('https://standard.tv/creators/');
+  const res = await fetch('https://talent.nebula.tv/creators/');
   const body = await res.text();
   const parser = new DOMParser();
   const doc = parser.parseFromString(body, 'text/html');
@@ -14,5 +14,5 @@ export const loadCreators = async () => {
 };
 
 export const normalizeString = (str: string) => str.toLowerCase().normalize('NFD').replace(/\p{Pd}/g, '-')
-/* eslint-disable-next-line no-misleading-character-class */
+  /* eslint-disable-next-line no-misleading-character-class */
   .replace(/["'()[\]{}\u0300-\u036f]/g, '');
