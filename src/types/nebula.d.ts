@@ -55,12 +55,25 @@ declare namespace Nebula {
     zype_id: string,
   };
 
+  type Featured<Typ, Item> = {
+    type: Typ,
+    id: string,
+    title: string,
+    size: string,
+    view_all_url: string,
+    attributes: string[],
+    items: Item[];
+  };
+  type FeaturedVideos = Featured<'latest_videos', Video & { type: "featured_video_episode"; }>;
+
   type VideoRequest = {
     details: Channel,
     episodes: PagedRequest<Video>,
   };
 
   type VideoSearchRequest = PagedRequest<Video>;
+
+  type FeaturedRequest = (FeaturedVideos | Featured<never, never>)[];
 
   type Category = {
     slug: string,
@@ -86,6 +99,13 @@ declare namespace Nebula {
       original: string,
       [key: string]: string,
     }
+  };
+
+  type Image = {
+    formats: string[],
+    width: number,
+    height: number,
+    src: string,
   };
 
   type IconSizes = '16' | '32' | '64' | '128' | '256' | '512';
