@@ -1,18 +1,12 @@
 import type { VPlayer } from '../../types/videojs';
-import { Message, arrFromLengthy, sendMessage } from '../helpers/shared';
 import QueueButton from './components/queue';
 import SpeedDial from './components/speeddial';
 import Time from './components/time';
 import VolumeText from './components/volume';
 import { init as initDispatch, loadPrefix } from './dispatcher';
+import { Message, arrFromLengthy, getFromStorage, sendMessage } from './sharedpage';
 
 type Comp<T> = T extends (...args: any[]) => Promise<infer R> ? R : T extends (...args: any[]) => infer R ? R : never;
-
-function getFromStorage<T extends { [key: string]: any; }>(key: T): Promise<T>;
-function getFromStorage<T>(key: string | string[]): Promise<T>;
-function getFromStorage<T>(key: string | string[] | { [key: string]: any; }) {
-  return sendMessage<T>(Message.GET_STORAGE, { get: key });
-}
 
 const defaults = {
   playbackChange: 0.1,
@@ -44,7 +38,7 @@ export const init = async () => {
   if (useFirstSubtitle)
     document.addEventListener('click', clickHandler, { capture: true });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
-  initDispatch();
+  await initDispatch();
 };
 
 export const initPlayer = async () => {

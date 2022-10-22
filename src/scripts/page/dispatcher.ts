@@ -1,4 +1,5 @@
-import { clone, videoUrlMatch } from '../helpers/shared';
+import { clone, getFromStorage, videoUrlMatch } from './sharedpage';
+import { filterVideos } from './xhrfilters';
 
 export const eventPrefix = 'enebula' as const;
 export const navigatePrefix = `${eventPrefix}-navigate` as const;
@@ -10,7 +11,7 @@ export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
 export const videoselector = 'a[href^="/videos/"][aria-hidden]';
 
-export const init = () => {
+export const init = async () => {
   const pushstate = history.pushState;
   history.pushState = function (data, title, url) {
     pushstate.call(history, data, title, url);
@@ -26,6 +27,21 @@ export const init = () => {
     });
     return xhropen.apply(this, arguments as unknown as FnArgs<typeof xhropen>);
   };
+  const xhrresponseget = Object.getOwnPropertyDescriptor(window.XMLHttpRequest.prototype, 'responseText');
+  Object.defineProperty(window.XMLHttpRequest.prototype, 'responseText', {
+    ...xhrresponseget,
+    get() {
+      let responseText: string = xhrresponseget.get.apply(this);
+      responseText = filterVideos(this, responseText, hiddenCreators, hideVideosEnabled ? hideVideosPerc : undefined);
+      return responseText;
+    },
+  });
+
+  const { hiddenCreators, hideVideosEnabled, hideVideosPerc } = await getFromStorage({
+    hiddenCreators: [] as string[],
+    hideVideosEnabled: false,
+    hideVideosPerc: 80,
+  });
 };
 
 let currenturl = '';

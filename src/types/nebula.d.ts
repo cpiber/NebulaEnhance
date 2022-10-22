@@ -5,14 +5,14 @@ declare namespace Nebula {
     next: string,
     previous: string,
     results: T[],
-  }
+  };
 
   type Video = {
     slug: string,
     title: string,
     description: string,
     short_description: string,
-    duration: number,
+    duration: number, // in seconds
     published_at: string,
     channel_slug: string,
     channel_slugs: string[],
@@ -25,9 +25,9 @@ declare namespace Nebula {
     attributes: string[],
     share_url: string,
     channel: Channel,
-    engagement: Engagement,
+    engagement: VideoEngagement,
     zype_id: string,
-  }
+  };
 
   type Channel = {
     slug: string,
@@ -37,7 +37,7 @@ declare namespace Nebula {
       avatar: Asset<IconSizes>,
       banner: Asset<BannerSizes>,
       hero: Asset<BannerSizes>,
-      featured: Asset<BannerSizes>
+      featured: Asset<BannerSizes>,
     },
     genre_category_title: string,
     genre_category_slug: string,
@@ -50,40 +50,46 @@ declare namespace Nebula {
     merch: string,
     merch_collection: string,
     share_url: string,
-    engagement: Engagement,
+    engagement: ChannelEngagement,
     playlists: Playlist[],
     zype_id: string,
-  }
+  };
 
   type VideoRequest = {
     details: Channel,
     episodes: PagedRequest<Video>,
-  }
+  };
 
-  type VideoSearchRequest = PagedRequest<Video>
+  type VideoSearchRequest = PagedRequest<Video>;
 
   type Category = {
     slug: string,
     title: string,
-  }
+  };
 
-  // possibly incomplete
-  type Engagement = {
+  type VideoEngagement = {
+    content_slug: string,
+    updated_at: string,
+    progress: number, // in seconds
+    completed: boolean,
+    watch_later: boolean,
+  };
+  type ChannelEngagement = {
     following: boolean,
-  }
+  };
 
   // incomplete
-  type Playlist = Record<string, never>
+  type Playlist = Record<string, never>;
 
   type Asset<Sizes extends string = ImageSizes> = {
     [key in Sizes]: {
       original: string,
       [key: string]: string,
     }
-  }
+  };
 
-  type IconSizes = '16' | '32' | '64' | '128' | '256' | '512'
-  type ThumbnailSizes = '240' | '480' | '720' | '1080'
-  type BannerSizes = '240' | '360' | '480' | '720' | '960' | '1440' | '1920' | '2560'
-  type ImageSizes = IconSizes | ThumbnailSizes | BannerSizes
+  type IconSizes = '16' | '32' | '64' | '128' | '256' | '512';
+  type ThumbnailSizes = '240' | '480' | '720' | '1080';
+  type BannerSizes = '240' | '360' | '480' | '720' | '960' | '1440' | '1920' | '2560';
+  type ImageSizes = IconSizes | ThumbnailSizes | BannerSizes;
 }
