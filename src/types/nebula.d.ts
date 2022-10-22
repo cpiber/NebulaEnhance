@@ -64,7 +64,7 @@ declare namespace Nebula {
     attributes: string[],
     items: Item[];
   };
-  type FeaturedVideos = Featured<'latest_videos', Video & { type: "featured_video_episode"; }>;
+  type FeaturedVideos = Featured<'latest_videos', Video & { type: 'featured_video_episode'; }>;
 
   type VideoRequest = {
     details: Channel,

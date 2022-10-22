@@ -4,7 +4,7 @@ import iconShow from '../../../icons/show.svg';
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { creatorLink, isWatchProgress, queueBottonLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
-import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, notification, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
@@ -343,6 +343,12 @@ const hideVideo = (el: HTMLElement, hiddenCreators: string[], hideWatched: boole
     }
   }
   if (!hide) return;
+  const outer = document.createElement('div');
+  const issue = document.createElement('a');
+  issue.href = 'https://github.com/cpiber/NebulaEnhance/issues/new';
+  issue.textContent = 'Please open a new issue here';
+  outer.append('Deprecated: Hid video via DOM. This shouldn\'t happen. ', issue, '.', document.createElement('br'), 'Please include the page url and console logs.');
+  notification(outer, 10000);
   if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
   else el.parentElement.classList.add('enhancer-hiddenVideo');
 };
