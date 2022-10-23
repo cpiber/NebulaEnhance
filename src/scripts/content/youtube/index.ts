@@ -6,11 +6,25 @@
 import { BrowserMessage, CancellableRepeatingAction, debounce, getBrowserInstance, getFromStorage, injectFunction, injectFunctionWithReturn, nebulavideo } from '../../helpers/sharedExt';
 import { constructButton } from './html';
 
-export const youtube = async () => {
-  const { watchnebula } = await getFromStorage({ watchnebula: false });
-  console.debug('Watch on Nebula:', watchnebula);
+const optionsDefaults = {
+  watchnebula: false,
+  ytOpenTab: false,
+};
+let options = { ...optionsDefaults };
 
-  if (!watchnebula) return;
+export const youtube = async () => {
+  const { watchnebula } = options = await getFromStorage(optionsDefaults);
+  console.debug('Watch on Nebula:', watchnebula);
+  getBrowserInstance().storage.onChanged.addListener(changed => {
+    Object.keys(options).forEach(prop => {
+      if (prop in changed && 'newValue' in changed[prop]) {
+        options[prop] = changed[prop].newValue as typeof options[typeof prop];
+      }
+    });
+    oldid = null;
+    setTimeout(run, 100);
+  });
+
   if (location.host.startsWith('m.')) return console.error('Enhancer for Nebula: YouTube mobile is currently not supported!');
 
   Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.remove());
@@ -20,7 +34,7 @@ export const youtube = async () => {
     if (!ev.detail) return;
     const act = ev.detail.actionName;
     console.dev.debug(`yt action: ${act}`);
-    if (![ 'yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(act) &&
+    if (!['yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action'].includes(act) &&
       document.querySelector('.watch-on-nebula')) return;
     console.dev.log(`yt action triggered re-run: ${act}`);
     setTimeout(run, 100);
@@ -39,6 +53,7 @@ const run = debounce(async () => {
     return;
   }
   action.cancel();
+  if (!options.watchnebula) return remove();
 
   await action.run(async function* () {
     const channelElement = document.querySelector<HTMLAnchorElement>(
@@ -76,7 +91,7 @@ const run = debounce(async () => {
     const large = wrap && wrap.hasAttribute('larger-item-wrap'); // this attribute displays two lines (join button)
     setWidth(large ? '500px' : '450px'); // make space for us, more space if youtube wants it already
 
-    const { ytOpenTab: doOpenTab } = await getFromStorage({ ytOpenTab: false });
+    const { ytOpenTab: doOpenTab } = options;
     console.dev.debug('Referer:', document.referrer);
     if (document.referrer.match(/https?:\/\/(.+\.)?nebula\.app\/?/) && window.history.length <= 1) return; // prevent open link if via nebula link (any link)
     if (vid.is === 'channel' || !doOpenTab) return;

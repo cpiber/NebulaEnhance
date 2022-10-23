@@ -29,6 +29,7 @@ export const constructButton = (vid: nebulavideo) => {
     text.id = 'text';
     text.className = 'style-scope ytd-button-renderer style-suggestive size-default';
     text.textContent = watchOnNebula;
+    setTimeout(() => text.removeAttribute('is-empty'), 1);
     const ripple = binner.appendChild(document.createElement('paper-ripple'));
     ripple.className = 'style-scope tp-yt-paper-button';
     const tooltip = link.appendChild(document.createElement('tp-yt-paper-tooltip'));
