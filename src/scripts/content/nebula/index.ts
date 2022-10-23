@@ -84,6 +84,7 @@ export const nebula = async () => {
     });
     doVideoActions();
     setStyles();
+    maybeLoadComments();
   });
 
   // debug code

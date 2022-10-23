@@ -1,4 +1,4 @@
-import { clone, getFromStorage, videoUrlMatch } from './sharedpage';
+import { clone, getFromStorage, onStorageChange, videoUrlMatch } from './sharedpage';
 import { filterFeatured, filterVideos } from './xhrfilters';
 
 export const eventPrefix = 'enebula' as const;
@@ -10,6 +10,13 @@ export const knownPages = [ 'myshows', 'videos', 'podcasts', 'classes', 'search'
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
 export const videoselector = 'a[href^="/videos/"][aria-hidden]';
+
+const optionsDefaults = {
+  hiddenCreators: [] as string[],
+  hideVideosEnabled: false,
+  hideVideosPerc: 80,
+};
+let options = { ...optionsDefaults };
 
 export const init = async () => {
   const pushstate = history.pushState;
@@ -32,16 +39,22 @@ export const init = async () => {
     ...xhrresponseget,
     get() {
       let responseText: string = xhrresponseget.get.apply(this);
+      const { hiddenCreators, hideVideosEnabled, hideVideosPerc } = options;
       responseText = filterVideos(this, responseText, hiddenCreators, hideVideosEnabled ? hideVideosPerc : undefined);
       responseText = filterFeatured(this, responseText, hiddenCreators, hideVideosEnabled ? hideVideosPerc : undefined);
       return responseText;
     },
   });
 
-  const { hiddenCreators, hideVideosEnabled, hideVideosPerc } = await getFromStorage({
-    hiddenCreators: [] as string[],
-    hideVideosEnabled: false,
-    hideVideosPerc: 80,
+  options = await getFromStorage(optionsDefaults);
+
+  onStorageChange(changed => {
+    Object.keys(options).forEach(prop => {
+      if (prop in changed && 'newValue' in changed[prop]) {
+        /* @ts-expect-error for some reason, options[prop] narrows to never... */
+        options[prop] = changed[prop].newValue as typeof options[typeof prop];
+      }
+    });
   });
 };
 
