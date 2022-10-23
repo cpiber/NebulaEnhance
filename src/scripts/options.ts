@@ -89,4 +89,12 @@ load(true)
   if (installed || (show && version !== actualVersion) || showChangelogs)
     showLogs(actualVersion, installed);
   setToStorage({ lastVersion: actualVersion });
+
+  getBrowserInstance().storage.onChanged.addListener(changes => {
+    if ('theme' in changes && changes['theme'].newValue !== undefined) {
+      const theme = changes['theme'].newValue;
+      if (theme === 'dark' || theme === 'light') document.querySelector('html').setAttribute('data-theme', theme);
+      else document.querySelector('html').removeAttribute('data-theme');
+    }
+  });
 })();
