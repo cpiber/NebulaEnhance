@@ -52,5 +52,8 @@ const registerListener = (e: MessageEvent, msg: Msg) => {
     case Event.QUEUE_CHANGE:
       Queue.get().onChange(() => replyMessage(e, msg.name, { canNext: Queue.get().canGoNext(), canPrev: Queue.get().canGoPrev() }));
       break;
+    case Event.STORAGE_CHANGE:
+      getBrowserInstance().storage.onChanged.addListener((...args) => replyMessage(e, msg.name, args));
+      break;
   }
 };

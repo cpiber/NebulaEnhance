@@ -13,6 +13,7 @@ export const isQueueMessage = (msg: string) => msg.startsWith('queue');
 
 export const enum Event {
   QUEUE_CHANGE = 'queueChange',
+  STORAGE_CHANGE = 'storageChange',
 }
 
 export const DRAG_INDEX = 'text/index';
