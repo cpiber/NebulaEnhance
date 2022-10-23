@@ -302,7 +302,7 @@ time[datetime] {
   cursor: pointer;
 }
 
-.video-js.vjs-nebula .vjs-control-bar > .vjs-time-control {
+.video-js.vjs-nebula .vjs-control-bar > .vjs-time-control:not(.enhancer-volume) {
   display: none; // can't remove it, someone adds it anyways
 }
 

@@ -7,7 +7,7 @@ type Dial = {
   updatePlaybackrate: (n: number) => void,
 };
 
-const SpeedDial = async (playbackChange: number) => {
+const SpeedDial = async (options: { playbackChange: number; }) => {
   const speedMsg = `${await sendMessage(Message.GET_MESSAGE, { message: 'playerNewSpeed' })}:`;
   const speed = await sendMessage(Message.GET_MESSAGE, { message: 'playerSpeed' });
 
@@ -27,7 +27,7 @@ const SpeedDial = async (playbackChange: number) => {
       const scroll = (e: WheelEvent) => {
         e.stopPropagation();
         e.preventDefault();
-        this.updatePlaybackrate(Math.round((this.player().playbackRate() - Math.sign(e.deltaY) * playbackChange) * 100) / 100);
+        this.updatePlaybackrate(Math.round((this.player().playbackRate() - Math.sign(e.deltaY) * options.playbackChange) * 100) / 100);
       };
       this.el().addEventListener('mouseenter', toggleTooltip.bind(this, false));
       this.el().addEventListener('mouseleave', toggleTooltip.bind(this, true));

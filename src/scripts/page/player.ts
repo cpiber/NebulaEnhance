@@ -4,11 +4,11 @@ import SpeedDial from './components/speeddial';
 import Time from './components/time';
 import VolumeText from './components/volume';
 import { init as initDispatch, loadPrefix } from './dispatcher';
-import { Message, arrFromLengthy, getFromStorage, sendMessage } from './sharedpage';
+import { Message, arrFromLengthy, getFromStorage, onStorageChange, sendMessage } from './sharedpage';
 
 type Comp<T> = T extends (...args: any[]) => Promise<infer R> ? R : T extends (...args: any[]) => infer R ? R : never;
 
-const defaults = {
+const optionsDefaults = {
   playbackChange: 0.1,
   autoplay: false,
   autoplayQueue: false,
@@ -18,27 +18,39 @@ const defaults = {
   volumeLog: false,
   useFirstSubtitle: false,
 };
+let options = { ...optionsDefaults };
 
 export const init = async () => {
   const {
     playbackChange, autoplay, autoplayQueue, volumeEnabled,
     volumeChange, volumeLog, volumeShow, useFirstSubtitle,
-  } = await getFromStorage(defaults);
+  } = options = await getFromStorage(optionsDefaults);
   console.debug('playbackChange:', playbackChange, 'autoplay?', autoplay, 'autoplay in queue?', autoplayQueue,
     '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog, 'show?', volumeShow,
     '\nuse first subtitle?', useFirstSubtitle);
 
   await waitForVJS();
-  await registerComponents(playbackChange, volumeShow);
+  await registerComponents();
   setPlayerDefaults(autoplay);
 
-  document.addEventListener('keydown', keydownHandler.bind(null, playbackChange), { capture: true });
-  if (volumeEnabled)
-    document.addEventListener('wheel', wheelHandler.bind(null, volumeChange, volumeLog), { passive: false });
-  if (useFirstSubtitle)
-    document.addEventListener('click', clickHandler, { capture: true });
+  document.addEventListener('keydown', keydownHandler, { capture: true });
+  document.addEventListener('wheel', wheelHandler, { passive: false });
+  document.addEventListener('click', clickHandler, { capture: true });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
   await initDispatch();
+
+  onStorageChange(changed => {
+    Object.keys(options).forEach(prop => {
+      if (prop in changed && 'newValue' in changed[prop]) {
+        /* @ts-expect-error for some reason, options[prop] narrows to never... */
+        options[prop] = changed[prop].newValue as typeof options[typeof prop];
+      }
+    });
+    const player = findAPlayer();
+    if (!player) return;
+    window.videojs.options.autoplay = options.autoplay;
+    (player.controlBar.getChild('VolumeText') as InstanceType<Comp<typeof VolumeText>>).setShown(options.volumeShow);
+  });
 };
 
 export const initPlayer = async () => {
@@ -49,7 +61,7 @@ export const initPlayer = async () => {
 
   player.on('ended', () => sendMessage(Message.QUEUE_NEXT, null, false));
 
-  const { autoplay, autoplayQueue } = await getFromStorage(defaults);
+  const { autoplay, autoplayQueue } = options;
   console.debug('autoplay?', autoplay, 'autoplayQueue?', autoplayQueue);
 
   if (player.controlBar.getChild('SpeedDial') === undefined)
@@ -99,12 +111,12 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<VPlayer>(
   }, 100);
 });
 
-const registerComponents = async (playbackChange: number, volumeShow: boolean) => {
+const registerComponents = async () => {
   console.debug('registering video components');
   /* eslint-disable new-cap */
-  window.videojs.registerComponent('SpeedDial', await SpeedDial(playbackChange));
+  window.videojs.registerComponent('SpeedDial', await SpeedDial(options));
   window.videojs.registerComponent('Time', Time());
-  window.videojs.registerComponent('VolumeText', VolumeText(volumeShow));
+  window.videojs.registerComponent('VolumeText', VolumeText(options));
   window.videojs.registerComponent('QueueNext', await QueueButton(true));
   window.videojs.registerComponent('QueuePrev', await QueueButton(false));
   /* eslint-enable new-cap */
@@ -147,7 +159,7 @@ export const updatePlayerControls = (player: VPlayer, canNext: boolean, canPrev:
   (player.controlBar.getChild('QueuePrev') as InstanceType<Comp<typeof QueueButton>>).toggle(canPrev);
 };
 
-const keydownHandler = (playbackChange: number, e: KeyboardEvent) => {
+const keydownHandler = (e: KeyboardEvent) => {
   if (e.altKey || e.ctrlKey || e.metaKey)
     return;
   if (document.activeElement.tagName === 'INPUT')
@@ -175,10 +187,10 @@ const keydownHandler = (playbackChange: number, e: KeyboardEvent) => {
       player.currentTime(player.duration());
       break;
     case '<':
-      player.playbackRate(Math.round((player.playbackRate() - playbackChange) * 100) / 100);
+      player.playbackRate(Math.round((player.playbackRate() - options.playbackChange) * 100) / 100);
       break;
     case '>':
-      player.playbackRate(Math.round((player.playbackRate() + playbackChange) * 100) / 100);
+      player.playbackRate(Math.round((player.playbackRate() + options.playbackChange) * 100) / 100);
       break;
     case ' ': // normally handled by video.js, but they don't use capture, see #12
       player.paused() ? player.play() : player.pause();
@@ -196,7 +208,9 @@ const keydownHandler = (playbackChange: number, e: KeyboardEvent) => {
   e.preventDefault();
 };
 
-const wheelHandler = async (volumeChange: number, volumeLog: boolean, e: WheelEvent) => {
+const wheelHandler = async (e: WheelEvent) => {
+  if (!options.volumeEnabled)
+    return;
   const player = findAPlayer();
   if (!player)
     return;
@@ -209,15 +223,17 @@ const wheelHandler = async (volumeChange: number, volumeLog: boolean, e: WheelEv
   // use polynomial as approximation for logarithmic scale (https://www.dr-lex.be/info-stuff/volumecontrols.html)
   // using x^2 now because x^4 is too aggressive for this range
   const pow = 2;
-  const cur = volumeLog ? Math.pow(player.volume(), 1 / pow) : player.volume(); // root
-  const v = cur - Math.sign(e.deltaY) * volumeChange;
-  const n = volumeLog ? Math.pow(Math.max(v, 0), pow) : v; // if log, also take care that it's not negative (x^2 increases again below x=0)
-  player.volume(e.deltaY * volumeChange > 0 && n < 0.01 ? 0 : n); // lower volume and below threshold -> mute
+  const cur = options.volumeLog ? Math.pow(player.volume(), 1 / pow) : player.volume(); // root
+  const v = cur - Math.sign(e.deltaY) * options.volumeChange;
+  const n = options.volumeLog ? Math.pow(Math.max(v, 0), pow) : v; // if log, also take care that it's not negative (x^2 increases again below x=0)
+  player.volume(e.deltaY * options.volumeChange > 0 && n < 0.01 ? 0 : n); // lower volume and below threshold -> mute
 
   (player.controlBar.getChild('VolumeText') as InstanceType<Comp<typeof VolumeText>>).show();
 };
 
 const clickHandler = (e: MouseEvent) => {
+  if (!options.useFirstSubtitle)
+    return;
   const player = findAPlayer();
   if (!player)
     return;
