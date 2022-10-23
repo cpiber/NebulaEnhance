@@ -4,7 +4,7 @@ import iconShow from '../../../icons/show.svg';
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { creatorLink, isWatchProgress, queueBottonLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
-import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, notification, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
@@ -14,28 +14,30 @@ const addToQueue = msg('pageAddToQueue');
 const hideCreator = msg('pageHideCreator');
 const showCreator = msg('pageShowCreator');
 
-let hiddenCreators: string[] = [];
+const optionsDefaults = {
+  youtube: false,
+  theme: '',
+  customScriptPage: '',
+  hiddenCreators: [] as string[],
+  hideVideosEnabled: false,
+  hideVideosPerc: 80,
+  subtitlesSelectable: false,
+  visitedColor: '',
+};
+let options = { ...optionsDefaults };
+
 export const nebula = async () => {
   const {
     youtube,
     theme,
     customScriptPage,
-    hiddenCreators: h,
+    hiddenCreators,
     hideVideosEnabled,
     hideVideosPerc,
     subtitlesSelectable,
     visitedColor,
-  } = await getFromStorage({
-    youtube: false,
-    theme: '',
-    customScriptPage: '',
-    hiddenCreators: [] as string[],
-    hideVideosEnabled: false,
-    hideVideosPerc: 80,
-    subtitlesSelectable: false,
-    visitedColor: '',
-  });
-  hiddenCreators = h;
+  } = options = await getFromStorage(optionsDefaults);
+
   console.debug('Youtube:', youtube, 'Theme:', theme, 'subtitles selectable?', subtitlesSelectable, 'visitedColor:', visitedColor,
     '\nHiding', hiddenCreators.length, 'creators', '\tvideos?', hideVideosEnabled, 'with perc watched:', hideVideosPerc);
 
@@ -46,17 +48,16 @@ export const nebula = async () => {
   } catch { }
 
   // attach listeners
-  const vidactions = doVideoActions.bind(null, hideVideosEnabled, hideVideosPerc);
   window.addEventListener('message', handle);
   window.addEventListener('hashchange', hashChange);
-  document.addEventListener(`${loadPrefix}-video`, maybeLoadComments.bind(null, youtube));
+  document.addEventListener(`${loadPrefix}-video`, maybeLoadComments);
   document.addEventListener(`${loadPrefix}-creator`, createLinkForAll);
   document.addEventListener(`${loadPrefix}-creator`, insertHideButton);
-  document.addEventListener(loadPrefix, vidactions);
-  document.addEventListener(xhrPrefix, vidactions);
+  document.addEventListener(loadPrefix, doVideoActions);
+  document.addEventListener(xhrPrefix, doVideoActions);
   document.body.addEventListener('mouseover', hover);
   document.body.addEventListener('click', click, { capture: true });
-  vidactions();
+  doVideoActions();
 
   // inject web content script
   await injectScript(getBrowserInstance().runtime.getURL('/scripts/player.js'), document.body);
@@ -65,22 +66,25 @@ export const nebula = async () => {
   const queue = Queue.get(); // initialize
   await hashChange();
   await Queue.get().restoreStorage();
-  await maybeLoadComments(youtube);
+  await maybeLoadComments();
 
   // inject custom script (if available)
   if (customScriptPage)
     await injectScript(document.body, customScriptPage);
-
-  // set hidden creator overlay content from translation
-  const s = document.createElement('style');
-  s.textContent = `.enhancer-hiddenVideo::after { content: ${JSON.stringify(msg('pageCreatorHidden'))}; }`;
-  if (subtitlesSelectable) s.textContent += '\n.vjs-text-track-cue { pointer-events:all; }';
-  const c = visitedColor.split(';')[0];
-  if (c) s.textContent += `\n:root { --visited-color: ${c}; }\na[href^='/videos/']:visited > div > * /* video link */ { color: var(--visited-color); }`;
-  document.head.appendChild(s);
-  document.head.appendChild(s);
+  setStyles();
 
   document.body.classList.add('enhancer-initialized');
+
+  getBrowserInstance().storage.onChanged.addListener(changed => {
+    Object.keys(options).forEach(prop => {
+      if (prop in changed && 'newValue' in changed[prop]) {
+        /* @ts-expect-error for some reason, options[prop] narrows to never... */
+        options[prop] = changed[prop].newValue as typeof options[typeof prop];
+      }
+    });
+    doVideoActions();
+    setStyles();
+  });
 
   // debug code
   // rollup optimizes everything that relies on __DEV__ out
@@ -97,13 +101,28 @@ export const nebula = async () => {
   });
 };
 
-const doVideoActions = debounce((hideWatched: boolean, hidePerc: number) => {
+const setStyles = () => {
+  const { subtitlesSelectable, visitedColor } = options;
+  document.getElementById('enhancer-styles')?.remove();
+
+  // set hidden creator overlay content from translation
+  const s = document.createElement('style');
+  s.id = 'enhancer-styles';
+  s.textContent = `.enhancer-hiddenVideo::after { content: ${JSON.stringify(msg('pageCreatorHidden'))}; }`;
+  if (subtitlesSelectable) s.textContent += '\n.vjs-text-track-cue { pointer-events:all; }';
+  const c = visitedColor.split(';')[0];
+  if (c) s.textContent += `\n:root { --visited-color: ${c}; }\na[href^='/videos/']:visited > div > * /* video link */ { color: var(--visited-color); }`;
+  document.head.appendChild(s);
+};
+
+const doVideoActions = debounce(() => {
   // add links on mobile to substitute hover
   if (isMobile())
     Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
   // hide creators
   if (isVideoListPage())
-    Array.from(document.querySelectorAll<HTMLElement>(videoselector)).forEach(el => hideVideo(el, hiddenCreators, hideWatched, hidePerc));
+    Array.from(document.querySelectorAll<HTMLElement>(videoselector)).forEach(el =>
+      hideVideo(el, options.hiddenCreators, options.hideVideosEnabled, options.hideVideosPerc));
 }, 500);
 
 const videoHoverLink = (e: HTMLElement) => {
@@ -173,7 +192,7 @@ const click = async (e: MouseEvent) => {
     const h2 = hideCreator.parentElement?.children[1];
     console.assert(h2.tagName.toLowerCase() === 'h2', 'Assumed tag of queried element to be `h2`, got `%s`', h2.tagName.toLowerCase());
     const hide = h2.classList.toggle('hidden');
-    hiddenCreators = await toggleHideCreator(window.location.pathname.substring(1), hide);
+    options.hiddenCreators = await toggleHideCreator(window.location.pathname.substring(1), hide);
     return;
   }
 
@@ -212,8 +231,8 @@ const hashChange = async () => {
   console.debug('Queue: loaded from hash');
 };
 
-const maybeLoadComments = (yt: boolean) => {
-  if (yt && isVideoPage())
+const maybeLoadComments = () => {
+  if (options.youtube && isVideoPage())
     return loadComments();
 };
 const loadComments = async () => {
@@ -304,8 +323,7 @@ const insertHideButton = async () => {
   buttonShown.classList.add('enhancer-hideCreator', 'show');
   buttonShown.setAttribute('aria-label', showCreator);
   buttonShown.title = showCreator;
-  ({ hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] }));
-  h2.classList.toggle('hidden', hiddenCreators.includes(creator));
+  h2.classList.toggle('hidden', options.hiddenCreators.includes(creator));
 };
 
 const followFromContainer = (container: HTMLElement) => Array.from(container.children).filter(c => !c.classList.contains('enhancer-hideCreator')).pop();
@@ -343,12 +361,6 @@ const hideVideo = (el: HTMLElement, hiddenCreators: string[], hideWatched: boole
     }
   }
   if (!hide) return;
-  const outer = document.createElement('div');
-  const issue = document.createElement('a');
-  issue.href = 'https://github.com/cpiber/NebulaEnhance/issues/new';
-  issue.textContent = 'Please open a new issue here';
-  outer.append('Deprecated: Hid video via DOM. This shouldn\'t happen. ', issue, '.', document.createElement('br'), 'Please include the page url and console logs.');
-  notification(outer, 10000);
   if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
   else el.parentElement.classList.add('enhancer-hiddenVideo');
 };

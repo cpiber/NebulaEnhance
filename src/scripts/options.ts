@@ -91,7 +91,7 @@ load(true)
   setToStorage({ lastVersion: actualVersion });
 
   getBrowserInstance().storage.onChanged.addListener(changes => {
-    if ('theme' in changes && changes['theme'].newValue !== undefined) {
+    if ('theme' in changes && 'newValue' in changes['theme']) {
       const theme = changes['theme'].newValue;
       if (theme === 'dark' || theme === 'light') document.querySelector('html').setAttribute('data-theme', theme);
       else document.querySelector('html').removeAttribute('data-theme');
