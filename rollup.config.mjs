@@ -255,7 +255,7 @@ function addWatch(id) {
 
 export default async args => {
   if (!process.env.YT_API_KEY) {
-    console.warn(chalk.stderr.red.bold`YouTube API key empty!`);
+    console.warn(chalk`{red.bold YouTube API key empty!}`);
     if (!process.env.CI) {
       const input = await question('Proceed? (y/[n]) ');
       if (input.toLowerCase() != 'y')
