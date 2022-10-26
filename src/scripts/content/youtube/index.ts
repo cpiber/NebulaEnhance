@@ -21,7 +21,7 @@ export const youtube = async () => {
         options[prop] = changed[prop].newValue as typeof options[typeof prop];
       }
     });
-    oldid = null;
+    console.dev.debug('Reload information', changed);
     setTimeout(run, 100);
   });
 
@@ -34,7 +34,7 @@ export const youtube = async () => {
     if (!ev.detail) return;
     const act = ev.detail.actionName;
     console.dev.debug(`yt action: ${act}`);
-    if (![ 'yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(act) &&
+    if (!['yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action'].includes(act) &&
       document.querySelector('.watch-on-nebula')) return;
     console.dev.log(`yt action triggered re-run: ${act}`);
     setTimeout(run, 100);
@@ -53,7 +53,7 @@ const run = debounce(async () => {
     return;
   }
   action.cancel();
-  if (!options.watchnebula) return remove();
+  if (!options.watchnebula) return Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.remove());
 
   await action.run(async function* () {
     const channelElement = document.querySelector<HTMLAnchorElement>(
@@ -63,7 +63,6 @@ const run = debounce(async () => {
     const idElement = document.querySelector('.ytd-page-manager[video-id]');
     console.dev.debug('Elements', !!channelElement, !!titleElement, !!subscribeElement, !!idElement);
     if (!channelElement || !titleElement || !subscribeElement || !idElement) yield true; // retry
-    const setWidth = (w = '') => Array.from(subscribeElement.parentElement.parentElement.children).forEach((n: HTMLElement) => n.style.minWidth = w);
 
     // accessing custom attributes is not possible from content scripts, so inject this helper
     const channelID = await injectFunctionWithReturn(document.body, () =>
@@ -76,20 +75,18 @@ const run = debounce(async () => {
       '\nchannelID:', channelID, 'channelName:', channelName, 'videoTitle:', videoTitle, 'vidID:', vidID, '(', oldid, ')',
       '\non nebula?', !!vid);
 
+    if (!document.querySelector('.watch-on-nebula')) oldid = null;
     if (oldid === vidID) yield true; // retry
     oldid = vidID;
 
     if (!vid) {
       oldid = vidID;
-      setWidth();
       return remove();
     }
     console.dev.log('Found video:', vid);
 
     subscribeElement.before(constructButton(vid));
-    const wrap = document.querySelector('ytd-watch-metadata');
-    const large = wrap && wrap.hasAttribute('larger-item-wrap'); // this attribute displays two lines (join button)
-    setWidth(large ? '500px' : '450px'); // make space for us, more space if youtube wants it already
+    subscribeElement.closest<HTMLDivElement>('#top-row.ytd-watch-metadata').style.display = 'block'; // not the prettiest, but it works
 
     const { ytOpenTab: doOpenTab } = options;
     console.dev.debug('Referer:', document.referrer);
