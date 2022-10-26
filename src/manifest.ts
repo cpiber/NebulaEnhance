@@ -40,6 +40,7 @@ const manifest: browser._manifest.WebExtensionManifest = {
     'storage',
     // Only firefox requires this, and the subdomain must be completely specified, otherwise the request fails
     '*://content.api.nebula.app/*',
+    '*://*.nebula.tv/*',
   ],
   optional_permissions: [
     '*://*.googleapis.com/*',
