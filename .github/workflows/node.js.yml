@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Node.js environment
-      uses: actions/setup-node@v2.2.0
+      uses: actions/setup-node@v3
     - name: Cache pnpm modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -24,7 +24,7 @@ jobs:
         restore-keys: |
           pnpm-
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2.0.1
+      uses: pnpm/action-setup@v2.2.4
       with:
         version: 6.0.2
         run_install: true
@@ -40,7 +40,7 @@ jobs:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
 
     - name: Archive extension
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
@@ -53,11 +53,11 @@ jobs:
     needs: build
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Node.js environment
-      uses: actions/setup-node@v2.2.0
+      uses: actions/setup-node@v3
     - name: Cache pnpm modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -66,7 +66,7 @@ jobs:
         restore-keys: |
           pnpm-
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2.0.1
+      uses: pnpm/action-setup@v2.2.4
       with:
         version: 6.0.2
         run_install: true
@@ -75,7 +75,7 @@ jobs:
         npm run env | grep npm_package_version >> $GITHUB_ENV
     
     - name: Get build files
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
@@ -116,11 +116,11 @@ jobs:
     if: ${{ github.event_name != 'schedule' }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Node.js environment
-      uses: actions/setup-node@v2.2.0
+      uses: actions/setup-node@v3
     - name: Cache pnpm modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -129,7 +129,7 @@ jobs:
         restore-keys: |
           pnpm-
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2.0.1
+      uses: pnpm/action-setup@v2.2.4
       with:
         version: 6.0.2
         run_install: true
@@ -150,11 +150,11 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Node.js environment
-      uses: actions/setup-node@v2.2.0
+      uses: actions/setup-node@v3
     - name: Cache pnpm modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -163,7 +163,7 @@ jobs:
         restore-keys: |
           pnpm-
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2.0.1
+      uses: pnpm/action-setup@v2.2.4
       with:
         version: 6.0.2
         run_install: true
@@ -172,7 +172,7 @@ jobs:
         npm run env | grep npm_package_version >> $GITHUB_ENV
     
     - name: Get build files
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
@@ -198,11 +198,11 @@ jobs:
     needs: build
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Node.js environment
-      uses: actions/setup-node@v2.2.0
+      uses: actions/setup-node@v3
     - name: Cache pnpm modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -211,7 +211,7 @@ jobs:
         restore-keys: |
           pnpm-
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2.0.1
+      uses: pnpm/action-setup@v2.2.4
       with:
         version: 6.0.2
         run_install: true
@@ -233,7 +233,7 @@ jobs:
       run: npm run lint:ext
     
     - name: Get build files
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
@@ -254,17 +254,17 @@ jobs:
     - name: Install curl, jq, xvfb
       run: sudo apt-get install curl jq xvfb
     - name: Fetch latest tag name
-      run: echo "::set-output name=tag::$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/latest" | jq -r .tag_name)"
+      run: echo "tag=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/latest" | jq -r .tag_name)" >> $GITHUB_OUTPUT
       id: tagfetch
     - run: |
         echo Checking out tag ${{ steps.tagfetch.outputs.tag }}
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         ref: ${{ steps.tagfetch.outputs.tag }}
     - name: Setup Node.js environment
-      uses: actions/setup-node@v2.2.0
+      uses: actions/setup-node@v3
     - name: Cache pnpm modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -273,7 +273,7 @@ jobs:
         restore-keys: |
           pnpm-
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2.0.1
+      uses: pnpm/action-setup@v2.2.4
       with:
         version: 6.0.2
         run_install: true

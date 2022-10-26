@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Node.js environment
-      uses: actions/setup-node@v2.2.0
+      uses: actions/setup-node@v3
     - name: Cache pnpm modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -22,7 +22,7 @@ jobs:
         restore-keys: |
           pnpm-
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2.0.1
+      uses: pnpm/action-setup@v2.2.4
       with:
         version: 6.0.2
         run_install: true
@@ -36,7 +36,7 @@ jobs:
       run: npm run build:all # does not run tests
 
     - name: Archive extension
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
@@ -49,11 +49,11 @@ jobs:
     needs: build
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Node.js environment
-      uses: actions/setup-node@v2.2.0
+      uses: actions/setup-node@v3
     - name: Cache pnpm modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -62,7 +62,7 @@ jobs:
         restore-keys: |
           pnpm-
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2.0.1
+      uses: pnpm/action-setup@v2.2.4
       with:
         version: 6.0.2
         run_install: true
@@ -71,7 +71,7 @@ jobs:
         npm run env | grep npm_package_version >> $GITHUB_ENV
     
     - name: Get build files
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
@@ -90,11 +90,11 @@ jobs:
     needs: build
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Node.js environment
-      uses: actions/setup-node@v2.2.0
+      uses: actions/setup-node@v3
     - name: Cache pnpm modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -103,7 +103,7 @@ jobs:
         restore-keys: |
           pnpm-
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2.0.1
+      uses: pnpm/action-setup@v2.2.4
       with:
         version: 6.0.2
         run_install: true
@@ -125,7 +125,7 @@ jobs:
       run: npm run lint:ext
     
     - name: Get build files
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
