@@ -34,7 +34,7 @@ export const youtube = async () => {
     if (!ev.detail) return;
     const act = ev.detail.actionName;
     console.dev.debug(`yt action: ${act}`);
-    if (!['yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action'].includes(act) &&
+    if (![ 'yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(act) &&
       document.querySelector('.watch-on-nebula')) return;
     console.dev.log(`yt action triggered re-run: ${act}`);
     setTimeout(run, 100);
