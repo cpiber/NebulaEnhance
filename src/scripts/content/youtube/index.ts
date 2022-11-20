@@ -34,7 +34,7 @@ export const youtube = async () => {
     if (!ev.detail) return;
     const act = ev.detail.actionName;
     console.dev.debug(`yt action: ${act}`);
-    if (![ 'yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(act) &&
+    if (!['yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action'].includes(act) &&
       document.querySelector('.watch-on-nebula')) return;
     console.dev.log(`yt action triggered re-run: ${act}`);
     setTimeout(run, 100);
@@ -57,7 +57,7 @@ const run = debounce(async () => {
 
   await action.run(async function* () {
     const channelElement = document.querySelector<HTMLAnchorElement>(
-      '.ytd-video-owner-renderer + * .yt-formatted-string[href^="/channel/"], .ytd-video-owner-renderer + * .yt-formatted-string[href^="/c/"]');
+      '.ytd-video-owner-renderer + * .yt-formatted-string[href^="/channel/"], .ytd-video-owner-renderer + * .yt-formatted-string[href^="/@"]');
     const titleElement = document.querySelector<HTMLHeadingElement>('h1.ytd-video-primary-info-renderer');
     const subscribeElement = document.querySelector<HTMLDivElement>('ytd-watch-metadata #subscribe-button, ytd-video-secondary-info-renderer #subscribe-button');
     const idElement = document.querySelector('.ytd-page-manager[video-id]');
