@@ -1,4 +1,4 @@
-import { getBrowserInstance, injectFunction, nebulavideo } from '../../helpers/sharedExt';
+import { getBrowserInstance, nebulavideo } from '../../helpers/sharedExt';
 
 const watchOnNebula = getBrowserInstance().i18n.getMessage('pageWatchOnNebula');
 const goChannel = getBrowserInstance().i18n.getMessage('pageGoChannel');
@@ -14,36 +14,33 @@ export const constructButton = (vid: nebulavideo) => {
     button.className = 'style-scope ytd-video-owner-renderer watch-on-nebula';
     const brender = button.appendChild(document.createElement('ytd-button-renderer'));
     brender.id = 'nebula-button';
-    brender.className = 'style-scope ytd-video-owner-renderer style-suggestive size-default';
-    brender.setAttribute('is-paper-button', '');
-    const link = brender.appendChild(document.createElement('a'));
-    link.className = 'yt-simple-endpoint style-scope ytd-button-renderer';
-    link.href = vid.link;
-    link.target = '_blank';
-    link.addEventListener('click', () => document.querySelectorAll('video').forEach(v => v.pause()));
-    link.setAttribute('tabindex', '-1');
-    const binner = link.appendChild(document.createElement('tp-yt-paper-button'));
-    binner.id = 'button';
-    binner.className = 'style-scope ytd-button-renderer style-suggestive size-default';
-    const text = binner.appendChild(document.createElement('yt-formatted-string'));
-    text.id = 'text';
-    text.className = 'style-scope ytd-button-renderer style-suggestive size-default';
-    text.textContent = watchOnNebula;
-    setTimeout(() => text.removeAttribute('is-empty'), 1);
-    const ripple = binner.appendChild(document.createElement('paper-ripple'));
-    ripple.className = 'style-scope tp-yt-paper-button';
-    const tooltip = link.appendChild(document.createElement('tp-yt-paper-tooltip'));
-    tooltip.className = 'style-scope ytd-toggle-button-renderer';
+    brender.className = 'style-scope ytd-video-owner-renderer';
+    brender.setAttribute('button-renderer', '');
+    const bshape = brender.appendChild(document.createElement('yt-button-shape'));
+    const btn = bshape.appendChild(document.createElement('button'));
+    btn.className = 'yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m';
+    btn.ariaLabel = watchOnNebula;
+    const bdiv = btn.appendChild(document.createElement('div'));
+    bdiv.className = 'cbox yt-spec-button-shape-next--button-text-content';
+    const bspan = bdiv.appendChild(document.createElement('span'));
+    bspan.className = 'yt-core-attributed-string yt-core-attributed-string--white-space-no-wrap';
+    bspan.textContent = watchOnNebula;
+    bspan.setAttribute('href', vid.link);
+    const bfeedback = btn.appendChild(document.createElement('yt-touch-feedback-shape'));
+    bfeedback.style.borderRadius = 'inherit';
+    const bfdiv = bfeedback.appendChild(document.createElement('div'));
+    bfdiv.className = 'yt-spec-touch-feedback-shape yt-spec-touch-feedback-shape--touch-response';
+    bfdiv.ariaHidden = 'true';
+    bfdiv.appendChild(document.createElement('div')).className = 'yt-spec-touch-feedback-shape__stroke';
+    bfdiv.appendChild(document.createElement('div')).className = 'yt-spec-touch-feedback-shape__fill';
+    brender.appendChild(document.createElement('tp-yt-paper-tooltip'));
+    btn.title = generateText(vid);
+    btn.addEventListener('click', () => {
+      window.open(bspan.getAttribute('href'));
+    });
   } else {
-    document.querySelector<HTMLAnchorElement>('.watch-on-nebula a').href = vid.link;
+    document.querySelector<HTMLSpanElement>('.watch-on-nebula span').setAttribute('href', vid.link);
   }
-  // we can't access custom properties from content-script, inject it
-  injectFunction(document.body, text => {
-    const t = document.querySelector<YoutubeTooltip>('#nebula-button tp-yt-paper-tooltip');
-    t.__domApi.textContent = text;
-    t.fitToVisibleBounds = true;
-    t.marginTop = 0;
-  }, generateText(vid));
   const b = document.querySelector<HTMLElement>('.watch-on-nebula');
   b.style.display = '';
   return b;
