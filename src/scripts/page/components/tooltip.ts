@@ -59,8 +59,14 @@ export class Tooltip {
 
   toggle(force?: boolean) {
     const washidden = this.tooltip.classList.contains('hidden');
+    const show = washidden || force === true;
     this.tooltip.classList.remove('show-anim', 'hide-anim', 'hidden');
-    this.tooltip.classList.add(washidden || force === true ? 'show-anim' : 'hide-anim');
+
+    if (show) {
+      this.update();
+      setTimeout(() => this.update(), 50);
+    }
+    this.tooltip.classList.add(show ? 'show-anim' : 'hide-anim');
     return this;
   }
 
