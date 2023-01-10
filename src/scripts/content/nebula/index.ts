@@ -21,7 +21,6 @@ const optionsDefaults = {
   hiddenCreators: [] as string[],
   hideVideosEnabled: false,
   hideVideosPerc: 80,
-  subtitlesSelectable: false,
   visitedColor: '',
 };
 let options = { ...optionsDefaults };
@@ -34,11 +33,10 @@ export const nebula = async () => {
     hiddenCreators,
     hideVideosEnabled,
     hideVideosPerc,
-    subtitlesSelectable,
     visitedColor,
   } = options = await getFromStorage(optionsDefaults);
 
-  console.debug('Youtube:', youtube, 'Theme:', theme, 'subtitles selectable?', subtitlesSelectable, 'visitedColor:', visitedColor,
+  console.debug('Youtube:', youtube, 'Theme:', theme, 'visitedColor:', visitedColor,
     '\nHiding', hiddenCreators.length, 'creators', '\tvideos?', hideVideosEnabled, 'with perc watched:', hideVideosPerc);
 
   if (!theme) try {
@@ -103,14 +101,13 @@ export const nebula = async () => {
 };
 
 const setStyles = () => {
-  const { subtitlesSelectable, visitedColor } = options;
+  const { visitedColor } = options;
   document.getElementById('enhancer-styles')?.remove();
 
   // set hidden creator overlay content from translation
   const s = document.createElement('style');
   s.id = 'enhancer-styles';
   s.textContent = `.enhancer-hiddenVideo::after { content: ${JSON.stringify(msg('pageCreatorHidden'))}; }`;
-  if (subtitlesSelectable) s.textContent += '\n.vjs-text-track-cue { pointer-events:all; }';
   const c = visitedColor.split(';')[0];
   if (c) s.textContent += `\n:root { --visited-color: ${c}; }\na[href^='/videos/']:visited > div > * /* video link */ { color: var(--visited-color); }`;
   document.head.appendChild(s);
