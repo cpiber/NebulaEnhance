@@ -11,12 +11,7 @@ export const debounce = <T extends any[]>(func: (...args: T) => void, time = 500
   };
 };
 
-export const arrFromLengthy = <T>(a: { length: number, [k: number]: T; }): T[] => {
-  const arr = new Array(a.length);
-  for (let i = 0; i < a.length; i++)
-    arr[i] = a[i];
-  return arr;
-};
+export const arrFromLengthy = <T>(a: { length: number, [k: number]: T; }): T[] => Array.from(a);
 
 export const calcOuterBounds = (e: HTMLElement) => {
   const rects = e.getClientRects();
