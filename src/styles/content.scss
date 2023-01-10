@@ -83,10 +83,6 @@ div.enhancer-queueButton {
 
     div.text {
       display: inherit;
-
-      @include mobile {
-        display: none;
-      }
     }
   }
 
@@ -123,10 +119,6 @@ div.enhancer-queueButton {
     div {
       background-color: black;
       color: white;
-    }
-
-    div.text {
-      display: none;
     }
   }
 }
