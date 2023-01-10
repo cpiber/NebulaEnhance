@@ -1,6 +1,7 @@
 import type { Player } from '../player';
 
-export const toggleVolumeShow = (control: HTMLElement, volumeShow: boolean) => control.classList.toggle('volume-conditional', !volumeShow);
+export const toggleVolumeShow = (player: Player, volumeShow: boolean) =>
+  player.parentElement.querySelector('.enhancer-volume').classList.toggle('volume-conditional', !volumeShow);
 
 const attachVolumeText = (player: Player, controls: NodeListOf<Element>, options: { volumeShow: boolean; }) => {
   const volume = controls[0].children[1] as HTMLElement;

@@ -1,3 +1,4 @@
+import createQueueButton, { toggleQueueButton } from './components/queue';
 import createSpeedDial from './components/speeddial';
 import attachTime from './components/time';
 import attachVolumeText, { toggleVolumeShow } from './components/volume';
@@ -44,7 +45,7 @@ export const init = async () => {
     const player = findAPlayer();
     if (!player) return;
     player.autoplay = options.autoplay;
-    toggleVolumeShow(player.parentElement.querySelector('.enhancer-volume'), options.volumeShow);
+    toggleVolumeShow(player, options.volumeShow);
   });
 };
 
@@ -92,16 +93,19 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<Player>((
 
 const addPlayerControls = async (player: Player) => {
   const controls = player.parentElement.querySelectorAll('.icon-spacing');
-  const left = controls[controls.length - 1];
-  left.prepend(await createSpeedDial(player, options));
-  await attachVolumeText(player, controls, options);
-  await attachTime(player, controls);
+  const left = controls[0];
+  const right = controls[controls.length - 1];
+  attachVolumeText(player, controls, options);
+  attachTime(player, controls);
+  right.prepend(await createSpeedDial(player, options));
+  left.children[0].after(await createQueueButton(player, true));
+  left.prepend(await createQueueButton(player, false));
 };
 
 export const updatePlayerControls = (player: Player, canNext: boolean, canPrev: boolean) => {
-  if (!player) return; // TODO
-  // (player.controlBar.getChild('QueueNext') as InstanceType<Comp<typeof QueueButton>>).toggle(canNext);
-  // (player.controlBar.getChild('QueuePrev') as InstanceType<Comp<typeof QueueButton>>).toggle(canPrev);
+  if (!player) return;
+  toggleQueueButton(player, true, canNext);
+  toggleQueueButton(player, false, canPrev);
 };
 
 const keydownHandler = (e: KeyboardEvent) => {
@@ -171,7 +175,7 @@ const wheelHandler = async (e: WheelEvent) => {
   const cur = options.volumeLog ? Math.pow(player.volume, 1 / pow) : player.volume; // root
   const v = cur - Math.sign(e.deltaY) * options.volumeChange;
   const n = options.volumeLog ? Math.pow(Math.max(v, 0), pow) : v; // if log, also take care that it's not negative (x^2 increases again below x=0)
-  player.volume = e.deltaY * options.volumeChange > 0 && n < 0.01 ? 0 : n; // lower volume and below threshold -> mute
+  player.volume = Math.min(e.deltaY * options.volumeChange > 0 && n < 0.01 ? 0 : n, 1); // lower volume and below threshold -> mute
 
   // (player.controlBar.getChild('VolumeText') as InstanceType<Comp<typeof VolumeText>>).show(); TODO
 };

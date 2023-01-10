@@ -1,46 +1,26 @@
+import iconNext from '../../../icons/next.svg';
 import { Message, sendMessage } from '../../helpers/shared';
+import type { Player } from '../player';
+import { newButton } from './htmlhelper';
 import { Tooltip } from './tooltip';
 
-type Button = {
-  tooltip: Tooltip,
-  toggle: (force: boolean) => void,
-};
+export const toggleQueueButton = (player: Player, next: boolean, enable: boolean) =>
+  player.parentElement.querySelector(`.enhancer-queue-control-${next ? 'next' : 'prev'}`).classList.toggle('disabled', !enable);
 
-const QueueButton = async (next: boolean) => {
+const createQueueButton = async (player: Player, next: boolean) => {
   const click = next ? () => sendMessage(Message.QUEUE_NEXT, null, false) : () => sendMessage(Message.QUEUE_PREV, null, false);
   const text = await sendMessage(Message.GET_MESSAGE, { message: `pageQueue${next ? 'Next' : 'Prev'}` });
 
-  const MenuButton = window.videojs.getComponent('MenuButton');
-  type T = InstanceType<typeof MenuButton> & Button;
-  return window.videojs.extend(MenuButton, {
-    tooltip: null,
-    constructor(this: T) {
-      MenuButton.apply(this, arguments as FnArgs<typeof MenuButton>);
+  const button = newButton(text, iconNext, 'disabled', 'enhancer-queue-control', `enhancer-queue-control-${next ? 'next' : 'prev'}`);
+  const tooltip = new Tooltip(button, `queue-${next ? 'next' : 'prev'}`, text).setKey(next ? 'n' : 'p').appendToPlayer(player);
 
-      this.tooltip = new Tooltip(this.el.bind(this), `queue-${next ? 'next' : 'prev'}`, text);
-      this.controlText(text);
-
-      const toggleTooltip = (force: boolean) => {
-        if (this.hasClass('vjs-disabled')) return;
-        this.tooltip.classList.toggle('vjs-hidden', force);
-        this.tooltip.update();
-      };
-      this.el().addEventListener('mouseenter', toggleTooltip.bind(this, false));
-      this.el().addEventListener('mouseleave', toggleTooltip.bind(this, true));
-      this.tooltip.appendTo(this.player().el()).setKey(next ? 'n' : 'p');
-      this.disable();
-    },
-    handleClick: click,
-    toggle(this: T, force: boolean) {
-      if (force) this.enable();
-      else this.disable();
-    },
-    dispose(this: T) {
-      this.tooltip.remove();
-    },
-    buildCSSClass(this: T) {
-      return `vjs-icon-${next ? 'next-item' : 'previous-item'} enhancer-queue-control enhancer-queue-control-${next ? 'next' : 'prev'} ${MenuButton.prototype.buildCSSClass.apply(this)}`;
-    },
-  });
+  const toggleTooltip = (force?: boolean) => {
+    if (button.classList.contains('disabled')) return;
+    tooltip.toggle(force);
+  };
+  button.addEventListener('click', click);
+  button.addEventListener('mouseenter', toggleTooltip.bind(undefined, true));
+  button.addEventListener('mouseleave', toggleTooltip.bind(undefined, false));
+  return button;
 };
-export default QueueButton;
+export default createQueueButton;
