@@ -36,11 +36,9 @@ export const extractData = (data: Nebula.Video) => {
   const hours = Math.floor(data.duration / 3600);
   const minutes = Math.floor((data.duration - hours * 3600) / 60);
   const seconds = data.duration - hours * 3600 - minutes * 60;
-  const t = Object.keys(data.assets.thumbnail);
-  const highest = t[t.length - 1];
   return {
     length: hours > 0 ? `${hours}:${minutes.pad(2)}:${seconds.pad(2)}` : `${minutes}:${seconds.pad(2)}`,
-    thumbnail: data.assets.thumbnail[highest].original,
+    thumbnail: data.images.thumbnail.src,
     title: data.title,
     creator: data.channel_title,
   };

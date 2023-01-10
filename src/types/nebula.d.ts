@@ -8,30 +8,36 @@ declare namespace Nebula {
   };
 
   type Video = {
+    id: string,
+    type: 'video_episode',
     slug: string,
     title: string,
     description: string,
     short_description: string,
     duration: number, // in seconds
+    duration_to_complete: number,
     published_at: string,
     channel_slug: string,
     channel_slugs: string[],
     channel_title: string,
     category_slugs: string[],
-    assets: {
-      channel_avatar: Asset<IconSizes>,
-      thumbnail: Asset<ThumbnailSizes>,
+    images: {
+      channel_avatar: Image,
+      thumbnail: Image,
     },
     attributes: string[],
     share_url: string,
-    channel: Channel,
+    primary_channel: Channel,
     engagement: VideoEngagement,
     zype_id: string,
   };
 
   type Channel = {
+    id: string,
+    type: 'video_channel',
     slug: string,
     title: string,
+    published_at: string,
     description: string,
     assets: {
       avatar: Asset<IconSizes>,
@@ -64,12 +70,9 @@ declare namespace Nebula {
     attributes: string[],
     items: Item[];
   };
-  type FeaturedVideos = Featured<'latest_videos', Video & { type: 'featured_video_episode'; }>;
+  type FeaturedVideos = Featured<'latest_videos', Omit<Video, 'type'> & { type: 'featured_video_episode'; }>;
 
-  type VideoRequest = {
-    details: Channel,
-    episodes: PagedRequest<Video>,
-  };
+  type VideoRequest = PagedRequest<Video>;
 
   type VideoSearchRequest = PagedRequest<Video>;
 

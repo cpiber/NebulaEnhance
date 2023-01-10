@@ -1,7 +1,8 @@
 
-const vidregex = /^\/(?:library\/)?video\/*$/;
+const vidregex = /^\/(?:library\/)?video_episodes\/*$/;
 export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[], watchperc: number | undefined): string => {
-  if (xhr.responseURL.indexOf('/video') === -1) return text;
+  console.dev.debug('Considering', xhr.responseURL, 'for filtering video list');
+  if (xhr.responseURL.indexOf('/video_episodes') === -1) return text;
   const u = new URL(xhr.responseURL);
   if (!u.pathname.match(vidregex)) return text;
 
@@ -13,6 +14,7 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
     console.debug('Hiding', len - len2, 'video(s) by hidden creators');
     if (watchperc !== undefined) {
       content.results = content.results.filter(r => {
+        if (r.engagement === null) return true;
         const p = r.engagement.progress / r.duration * 100;
         return p <= watchperc;
       });
@@ -31,6 +33,7 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
 
 const featregex = /^\/featured\/*$/;
 export const filterFeatured = (xhr: XMLHttpRequest, text: string, filter: string[], watchperc: number | undefined): string => {
+  console.dev.debug('Considering', xhr.responseURL, 'for filtering featured');
   if (xhr.responseURL.indexOf('/featured') === -1) return text;
   const u = new URL(xhr.responseURL);
   if (!u.pathname.match(featregex)) return text;
@@ -48,6 +51,7 @@ export const filterFeatured = (xhr: XMLHttpRequest, text: string, filter: string
       hidden += len - len2;
       if (watchperc !== undefined) {
         c.items = c.items.filter(r => {
+          if (r.engagement === null) return true;
           const p = r.engagement.progress / r.duration * 100;
           return p <= watchperc;
         });
