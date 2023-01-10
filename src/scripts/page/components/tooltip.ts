@@ -52,7 +52,7 @@ export class Tooltip {
     const w = +window.getComputedStyle(this.parent()).width.slice(0, -2);
     const ownw = +window.getComputedStyle(this.tooltip).width.slice(0, -2);
     const center = (this.parent() as HTMLElement).offsetLeft + w / 2;
-    let left = Math.max(center - ownw / 2, 12);
+    const left = Math.max(center - ownw / 2, 12);
     this.tooltip.style.left = `${left}px`;
     return this;
   }

@@ -1,64 +1,45 @@
+import iconSpeed from '../../../icons/speed.svg';
 import { Message, sendMessage } from '../../helpers/shared';
+import type { Player } from '../player';
+import { newButton } from './htmlhelper';
 import { Tooltip } from './tooltip';
 
-type Dial = {
-  tooltip: Tooltip,
-  updateTooltip: () => void,
-  updatePlaybackrate: (n: number) => void,
-};
-
-const SpeedDial = async (options: { playbackChange: number; }) => {
+const createSpeedDial = async (player: Player, options: { playbackChange: number; }) => {
   const speedMsg = `${await sendMessage(Message.GET_MESSAGE, { message: 'playerNewSpeed' })}:`;
   const speed = await sendMessage(Message.GET_MESSAGE, { message: 'playerSpeed' });
 
-  const MenuButton = window.videojs.getComponent('MenuButton');
-  type T = InstanceType<typeof MenuButton> & Dial;
-  return window.videojs.extend(MenuButton, {
-    constructor(this: T) {
-      MenuButton.apply(this, arguments as FnArgs<typeof MenuButton>);
+  const button = newButton(speed, iconSpeed);
+  const tooltip = new Tooltip(button, 'speed').appendToPlayer(player);
 
-      this.tooltip = new Tooltip(this.el.bind(this), 'speed');
-      this.controlText(speed);
+  const updateTooltip = () => {
+    tooltip.setText(`${speed}: ${player.playbackRate}`);
+  };
+  const updatePlaybackrate = (rate: number) => {
+    player.playbackRate = rate;
+    window.localStorage.setItem('player-v2-speed', `${rate}`);
+    setTimeout(updateTooltip, 0);
+  };
 
-      const toggleTooltip = (force?: boolean) => {
-        this.tooltip.classList.toggle('vjs-hidden', force);
-        this.updateTooltip();
-      };
-      const scroll = (e: WheelEvent) => {
-        e.stopPropagation();
-        e.preventDefault();
-        this.updatePlaybackrate(Math.round((this.player().playbackRate() - Math.sign(e.deltaY) * options.playbackChange) * 100) / 100);
-      };
-      this.el().addEventListener('mouseenter', toggleTooltip.bind(this, false));
-      this.el().addEventListener('mouseleave', toggleTooltip.bind(this, true));
-      this.el().addEventListener('wheel', scroll.bind(this), { passive: false });
-      window.addEventListener('resize', this.updateTooltip.bind(this));
-      this.tooltip.appendTo(this.player().el());
-      this.updateTooltip();
-    },
-    handleClick(this: T) {
-      const ret = window.prompt(speedMsg, `${this.player().playbackRate()}`);
-      const r = +ret;
-      if (ret !== null && !isNaN(r))
-        this.updatePlaybackrate(r);
-    },
-    updateTooltip(this: T) {
-      if (!this.el())
-        return;
-      this.tooltip.setText(`${speed}: ${this.player().playbackRate()}`);
-    },
-    updatePlaybackrate(this: T, rate: number) {
-      this.player().playbackRate(rate);
-      window.localStorage.setItem('player-v1-speed', `${rate}`);
-      this.setTimeout(this.updateTooltip.bind(this), 0);
-    },
-    dispose(this: T) {
-      this.tooltip.remove();
-      MenuButton.prototype.dispose.apply(this);
-    },
-    buildCSSClass(this: T) {
-      return `vjs-icon-circle-inner-circle enhancer-speed ${MenuButton.prototype.buildCSSClass.apply(this)}`;
-    },
-  });
+  const toggleTooltip = (force?: boolean) => {
+    tooltip.toggle(force);
+    updateTooltip();
+  };
+  const scroll = (e: WheelEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    updatePlaybackrate(Math.round((player.playbackRate - Math.sign(e.deltaY) * options.playbackChange) * 100) / 100);
+  };
+  const click = () => {
+    const ret = window.prompt(speedMsg, `${player.playbackRate}`);
+    const r = +ret;
+    if (ret !== null && !isNaN(r))
+      updatePlaybackrate(r);
+  };
+  button.addEventListener('mouseenter', toggleTooltip.bind(undefined, true));
+  button.addEventListener('mouseleave', toggleTooltip.bind(undefined, false));
+  button.addEventListener('wheel', scroll, { passive: false });
+  button.addEventListener('click', click);
+  window.addEventListener('resize', updateTooltip);
+  return button;
 };
-export default SpeedDial;
+export default createSpeedDial;

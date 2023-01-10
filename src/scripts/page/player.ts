@@ -1,3 +1,4 @@
+import createSpeedDial from './components/speeddial';
 import { init as initDispatch, loadPrefix } from './dispatcher';
 import { arrFromLengthy, getFromStorage, Message, onStorageChange, sendMessage } from './sharedpage';
 
@@ -29,9 +30,9 @@ export const init = async () => {
   // document.addEventListener('click', clickHandler, { capture: true }); TODO figure out why preventDefault doesn't prevent the context menu
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
   await initDispatch();
-  await initPlayer();
 
   onStorageChange(changed => {
+    console.dev.log('Options changed');
     Object.keys(options).forEach(prop => {
       if (prop in changed && 'newValue' in changed[prop]) {
         /* @ts-expect-error for some reason, options[prop] narrows to never... */
@@ -55,7 +56,7 @@ export const initPlayer = async () => {
 
   const { autoplay, autoplayQueue } = options;
   console.debug('autoplay?', autoplay, 'autoplayQueue?', autoplayQueue);
-  addPlayerControls(player);
+  await addPlayerControls(player);
 
   const { canNext, canPrev, length: queueLen } = await sendMessage(Message.GET_QSTATUS);
   console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev, 'queueLen:', queueLen);
@@ -87,8 +88,10 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<Player>((
   }, 100);
 });
 
-const addPlayerControls = (player: Player) => {
-  // TODO
+const addPlayerControls = async (player: Player) => {
+  const controls = player.parentElement.querySelectorAll('.icon-spacing');
+  const left = controls[controls.length - 1];
+  left.prepend(await createSpeedDial(player, options));
 };
 
 export const updatePlayerControls = (player: Player, canNext: boolean, canPrev: boolean) => {

@@ -76,4 +76,6 @@ See [DEVELOPING.md](DEVELOPING.md)
 
 Icon made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/) and modified.
 
+Several icons from [SVGrepo](https://www.svgrepo.com/).
+
 Theme by @groenroos.
