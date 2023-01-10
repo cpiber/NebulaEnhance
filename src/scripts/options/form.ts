@@ -5,6 +5,7 @@ const els = Settings.get();
 const savedtext = getBrowserInstance().i18n.getMessage('optionsSavedNote');
 
 const save = async (showNotification = false) => {
+  console.debug('Saving options');
   await setToStorage(await toData());
   if (showNotification) notification(savedtext);
 };

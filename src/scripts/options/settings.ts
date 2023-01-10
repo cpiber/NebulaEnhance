@@ -1,5 +1,5 @@
 import { purgeCacheIfNecessary } from '../background/ext';
-import { getBrowserInstance, getFromStorage, parseTimeString, toTimeString } from '../helpers/sharedExt';
+import { arrFromLengthy, getBrowserInstance, getFromStorage, parseTimeString, toTimeString } from '../helpers/sharedExt';
 
 export class Settings {
   private static instance: Settings = null;
@@ -26,7 +26,21 @@ export class Settings {
 
   protected constructor() {
     Object.keys(this as Settings).forEach(prop => {
-      this[prop] = document.querySelector(`[name="${prop}"]`);
+      const cc = arrFromLengthy(document.querySelectorAll<HTMLInputElement>(`[name="${prop}"]`));
+      this[prop] = cc[0] as never;
+      if (cc.length > 1) {
+        for (const e of cc) {
+          const updateOthers = () => {
+            for (const other of cc) if (other !== e) {
+              other.value = e.value;
+              other.checked = e.checked;
+            }
+          };
+          e.addEventListener('focusout', updateOthers);
+          e.addEventListener('change', updateOthers);
+          e.addEventListener('keyup', updateOthers);
+        }
+      }
     });
   }
 
