@@ -319,14 +319,11 @@ time[datetime] {
   }
 }
 
-.video-js.vjs-nebula .enhancer-time {
-  display: flex;
-  width: auto;
-  cursor: pointer;
-}
-
-.video-js.vjs-nebula .vjs-control-bar > .vjs-time-control:not(.enhancer-volume) {
-  display: none; // can't remove it, someone adds it anyways
+.enhancer-time {
+  &.enhancer-hide-remaining .enhancer-time-remaining,
+  &.enhancer-hide-current .enhancer-time-current {
+    display: none;
+  }
 }
 
 #top-row {

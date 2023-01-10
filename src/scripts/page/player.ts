@@ -1,4 +1,5 @@
 import createSpeedDial from './components/speeddial';
+import attachTime from './components/time';
 import { init as initDispatch, loadPrefix } from './dispatcher';
 import { arrFromLengthy, getFromStorage, Message, onStorageChange, sendMessage } from './sharedpage';
 
@@ -92,6 +93,7 @@ const addPlayerControls = async (player: Player) => {
   const controls = player.parentElement.querySelectorAll('.icon-spacing');
   const left = controls[controls.length - 1];
   left.prepend(await createSpeedDial(player, options));
+  attachTime(player, controls);
 };
 
 export const updatePlayerControls = (player: Player, canNext: boolean, canPrev: boolean) => {
