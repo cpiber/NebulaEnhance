@@ -1,7 +1,8 @@
 import createSpeedDial from './components/speeddial';
 import attachTime from './components/time';
+import attachVolumeText, { toggleVolumeShow } from './components/volume';
 import { init as initDispatch, loadPrefix } from './dispatcher';
-import { arrFromLengthy, getFromStorage, Message, onStorageChange, sendMessage } from './sharedpage';
+import { Message, arrFromLengthy, getFromStorage, onStorageChange, sendMessage } from './sharedpage';
 
 export type Player = HTMLVideoElement & { _enhancerInit: boolean; };
 
@@ -43,7 +44,7 @@ export const init = async () => {
     const player = findAPlayer();
     if (!player) return;
     player.autoplay = options.autoplay;
-    // (player.controlBar.getChild('VolumeText') as InstanceType<Comp<typeof VolumeText>>).setShown(options.volumeShow); TODO
+    toggleVolumeShow(player.parentElement.querySelector('.enhancer-volume'), options.volumeShow);
   });
 };
 
@@ -93,7 +94,8 @@ const addPlayerControls = async (player: Player) => {
   const controls = player.parentElement.querySelectorAll('.icon-spacing');
   const left = controls[controls.length - 1];
   left.prepend(await createSpeedDial(player, options));
-  attachTime(player, controls);
+  await attachVolumeText(player, controls, options);
+  await attachTime(player, controls);
 };
 
 export const updatePlayerControls = (player: Player, canNext: boolean, canPrev: boolean) => {

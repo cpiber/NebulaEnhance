@@ -301,21 +301,18 @@ time[datetime] {
   }
 }
 
-.enhancer-volume.vjs-time-control {
-  .video-js.vjs-nebula &,
-  .video-js.vjs-nebula &.volume-conditional.volume-show,
-  .video-js.vjs-nebula .vjs-volume-panel.vjs-hover ~ & {
+.enhancer-volume {
+  transition: width 0.25s ease-in-out;
+  overflow: hidden;
+  margin-right: -8px;
+
+  &:not(.enhancer-conditional),
+  .enhancer-volume-controller:hover ~ & {
     width: 3.5em;
-    transition: width 0.25s ease-in-out;
-    overflow: hidden;
   }
 
-  .video-js.vjs-nebula &.volume-conditional {
+  &.volume-conditional {
     width: 0;
-  }
-
-  .volume-display {
-    padding: 0 0.15em;
   }
 }
 
