@@ -21,8 +21,9 @@ export const loadYTVideos = async (playlist: string, num: number) => {
     url.searchParams.set('maxResults', `${Math.min(num - videos.length, 50)}`);
     if (page)
       url.searchParams.set('pageToken', page);
-    console.dev.debug('Fetching', url.toString());
-    const data = await fetch(url.toString(),
+    const u = url.toString();
+    console.dev.debug('Fetching', u);
+    const data = await fetch(u,
       {
         credentials: 'omit',
         headers: {

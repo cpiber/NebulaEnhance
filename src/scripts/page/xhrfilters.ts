@@ -1,9 +1,10 @@
 
 const vidregex = /^\/(?:library\/)?video_episodes\/*$/;
 export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[], watchperc: number | undefined): string => {
-  console.dev.debug('Considering', xhr.responseURL, 'for filtering video list');
-  if (xhr.responseURL.indexOf('/video_episodes') === -1) return text;
-  const u = new URL(xhr.responseURL);
+  const url = xhr.responseURL;
+  console.dev.debug('Considering', url, 'for filtering video list');
+  if (url.indexOf('/video_episodes') === -1) return text;
+  const u = new URL(url);
   if (!u.pathname.match(vidregex)) return text;
 
   try {
@@ -22,7 +23,7 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
     }
     return JSON.stringify(content);
   } catch (e) {
-    console.groupCollapsed('Error filtering', xhr.responseURL);
+    console.groupCollapsed('Error filtering', url);
     console.error(e);
     console.log(xhr);
     console.log(text);
@@ -33,9 +34,10 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
 
 const featregex = /^\/featured\/*$/;
 export const filterFeatured = (xhr: XMLHttpRequest, text: string, filter: string[], watchperc: number | undefined): string => {
-  console.dev.debug('Considering', xhr.responseURL, 'for filtering featured');
-  if (xhr.responseURL.indexOf('/featured') === -1) return text;
-  const u = new URL(xhr.responseURL);
+  const url = xhr.responseURL;
+  console.dev.debug('Considering', url, 'for filtering featured');
+  if (url.indexOf('/featured') === -1) return text;
+  const u = new URL(url);
   if (!u.pathname.match(featregex)) return text;
 
   try {
@@ -62,7 +64,7 @@ export const filterFeatured = (xhr: XMLHttpRequest, text: string, filter: string
     if (watchperc !== undefined) console.debug('Hiding', watched, 'watched video(s)');
     return JSON.stringify(content);
   } catch (e) {
-    console.groupCollapsed('Error filtering', xhr.responseURL);
+    console.groupCollapsed('Error filtering', url);
     console.error(e);
     console.log(xhr);
     console.log(text);
