@@ -274,8 +274,31 @@ time[datetime] {
 
 .enhancer-tooltip {
   position: absolute;
-  bottom: 48px;
+  bottom: 60px;
   z-index: 999;
+  transform-origin: bottom;
+
+  &.show-anim {
+    animation: popup 100ms ease-out normal forwards;
+  }
+
+  &.hide-anim {
+    animation: popup 100ms ease-in reverse forwards;
+  }
+
+  &.hidden {
+    display: none;
+  }
+
+  @keyframes popup {
+    0% {
+      transform: scale(0.5);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
 }
 
 .enhancer-volume.vjs-time-control {
