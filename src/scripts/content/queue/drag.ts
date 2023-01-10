@@ -65,6 +65,12 @@ const fake = (h: number) => {
   node.style.height = `${h}px`;
   return node;
 };
+const preventClick = (e: MouseEvent) => {
+  if (!(e.target as HTMLElement).classList.contains('handle'))
+    return;
+  e.preventDefault();
+  e.stopPropagation();
+};
 
 export function initDrag(this: Queue) {
   this.elementsEl.addEventListener('dragstart', dragElement);
@@ -72,4 +78,5 @@ export function initDrag(this: Queue) {
   this.elementsEl.addEventListener('dragenter', ev => ev.preventDefault()); // allow drop
   this.elementsEl.addEventListener('dragover', dragOverElement); // allow drop
   this.elementsEl.addEventListener('dragend', dragElementEnd);
+  this.elementsEl.addEventListener('click', preventClick, { capture: true });
 }
