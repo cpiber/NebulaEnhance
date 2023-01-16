@@ -52,7 +52,7 @@
     "description": "Beschriftung für Autoplay in Schlange der Optionen Seite."
   },
   "optionsAutoplayHint": {
-    "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://demo.theoplayer.com/autoplay-policy\" target=\"_blank\">hier</a>. Optional nur mit aktiver Warteschlange.",
+    "message": "Ob das Video automatisch starten soll oder nicht. Beachten Sie, dass dies von Ihrem Browser abhängt, siehe <a href=\"https://developer.mozilla.org/en-US/docs/Web/Media/Autoplay_guide#autoplay_availability\" target=\"_blank\">hier</a>. Optional nur mit aktiver Warteschlange.",
     "description": "Hilfstext für Autoplay der Optionen Seite."
   },
   "optionsVolumeScrollTitle": {
