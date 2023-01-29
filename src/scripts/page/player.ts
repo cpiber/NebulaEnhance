@@ -3,7 +3,7 @@ import createSpeedDial from './components/speeddial';
 import attachTime from './components/time';
 import attachVolumeText, { toggleVolumeShow } from './components/volume';
 import { init as initDispatch, loadPrefix } from './dispatcher';
-import { Message, arrFromLengthy, getFromStorage, onStorageChange, sendMessage } from './sharedpage';
+import { arrFromLengthy, getFromStorage, Message, onStorageChange, sendMessage } from './sharedpage';
 
 export type Player = HTMLVideoElement & { _enhancerInit: boolean; };
 
@@ -30,7 +30,7 @@ export const init = async () => {
 
   document.addEventListener('keydown', keydownHandler, { capture: true });
   document.addEventListener('wheel', wheelHandler, { passive: false });
-  // document.addEventListener('click', clickHandler, { capture: true }); TODO figure out why preventDefault doesn't prevent the context menu
+  document.addEventListener('pointerup', clickHandler, { capture: true });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
   await initDispatch();
 
@@ -180,6 +180,11 @@ const wheelHandler = async (e: WheelEvent) => {
   // (player.controlBar.getChild('VolumeText') as InstanceType<Comp<typeof VolumeText>>).show(); TODO
 };
 
+// NOTE: As per https://nebula.tv/static/js/components/PseudoButton/PseudoButton.js some configurations apparently don't fire click
+//       so they replaced it with pointerdown and pointerup
+// See also:
+// - https://developer.mozilla.org/en-US/docs/Web/API/Element/click_event#safari_mobile
+// - https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events
 const clickHandler = (e: MouseEvent) => {
   if (!options.useFirstSubtitle)
     return;
