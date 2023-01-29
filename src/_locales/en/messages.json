@@ -76,20 +76,12 @@
     "description": "Hint for Volume Scroll of options page."
   },
   "optionsSubtitleTitle": {
-    "message": "Subtitles",
+    "message": "Use first subtitle",
     "description": "Label for Subtitle of options page."
   },
   "optionsSubtitleHint": {
-    "message": "Whether to make subtitles interactable.<br/>Whether clicking on the subtitle button of the player should use the first available track if it is the only one.",
+    "message": "Whether clicking on the subtitle button of the player should use the first available track if it is the only one.",
     "description": "Hint for Subtitle of options page."
-  },
-  "optionsSubtitleSelectable": {
-    "message": "Make selectable",
-    "description": "Label for Subtitle Selectable of options page."
-  },
-  "optionsSubtitleFirst": {
-    "message": "Use first",
-    "description": "Label for First Subtitle of options page."
   },
   "optionsLoadYoutubeTitle": {
     "message": "Load YouTube link",

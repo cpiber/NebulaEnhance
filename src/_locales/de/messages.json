@@ -76,20 +76,12 @@
     "description": "Hilfstext für Volume Scroll der Optionen Seite."
   },
   "optionsSubtitleTitle": {
-    "message": "Untertitel",
+    "message": "Ersten Untertitel",
     "description": "Beschriftung für Subtitle der Optionen Seite."
   },
   "optionsSubtitleHint": {
-    "message": "Ob Untertitel interagierbar gemacht werden sollen.<br/>Ob beim Klick auf den Untertitel-Knopf die erste Spur aktiviert werden soll, wenn sie die einzige ist.",
+    "message": "Ob beim Klick auf den Untertitel-Knopf die erste Spur aktiviert werden soll, wenn sie die einzige ist.",
     "description": "Hilfstext für Subtitle der Optionen Seite."
-  },
-  "optionsSubtitleSelectable": {
-    "message": "Interagierbar machen",
-    "description": "Beschriftung für Subtitle Selectable der Optionen Seite."
-  },
-  "optionsSubtitleFirst": {
-    "message": "Ersten aktivieren",
-    "description": "Beschriftung für First Subtitle der Optionen Seite."
   },
   "optionsLoadYoutubeTitle": {
     "message": "YouTube Videolink laden",
