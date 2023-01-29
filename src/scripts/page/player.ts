@@ -3,7 +3,7 @@ import createSpeedDial from './components/speeddial';
 import attachTime from './components/time';
 import attachVolumeText, { toggleVolumeShow } from './components/volume';
 import { init as initDispatch, loadPrefix } from './dispatcher';
-import { arrFromLengthy, getFromStorage, Message, onStorageChange, sendMessage } from './sharedpage';
+import { Message, arrFromLengthy, getFromStorage, onStorageChange, sendMessage } from './sharedpage';
 
 export type Player = HTMLVideoElement & { _enhancerInit: boolean; };
 
