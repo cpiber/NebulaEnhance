@@ -27,7 +27,7 @@ const createSpeedDial = async (player: Player, options: { playbackChange: number
   const scroll = (e: WheelEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    updatePlaybackrate(Math.round((player.playbackRate - Math.sign(e.deltaY) * options.playbackChange) * 100) / 100);
+    updatePlaybackrate(Math.max(Math.round((player.playbackRate - Math.sign(e.deltaY) * options.playbackChange) * 100) / 100, 0.1));
   };
   const click = () => {
     const ret = window.prompt(speedMsg, `${player.playbackRate}`);
