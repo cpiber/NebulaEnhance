@@ -36,7 +36,7 @@ export const youtube = async () => {
     if (!ev.detail) return;
     const act = ev.detail.actionName;
     console.dev.debug(`yt action: ${act}`);
-    if (![ 'yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(act) &&
+    if (!['yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action'].includes(act) &&
       document.querySelector('.watch-on-nebula')) return;
     console.dev.log(`yt action triggered re-run: ${act}`);
     setTimeout(run, 100);
@@ -58,8 +58,6 @@ const run = debounce(async () => {
   if (!options.watchnebula) return Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.remove());
 
   await action.run(async function* () {
-    if (window.history.state['_enhancer_checked'] === true) return console.debug('Ignoring video since already processed');
-
     const channelElement = document.querySelector<HTMLAnchorElement>(
       '.ytd-video-owner-renderer + * .yt-formatted-string[href^="/channel/"], .ytd-video-owner-renderer + * .yt-formatted-string[href^="/@"]');
     const titleElement = document.querySelector<HTMLHeadingElement>('h1.ytd-video-primary-info-renderer');
@@ -82,11 +80,9 @@ const run = debounce(async () => {
     if (!document.querySelector('.watch-on-nebula')) oldid = null;
     if (oldid === vidID) yield true; // retry
     oldid = vidID;
+    if ((window.history.state || {})['_enhancer_checked'] === true) return console.debug('Ignoring video since already processed');
 
-    if (!vid) {
-      oldid = vidID;
-      return remove();
-    }
+    if (!vid) return remove();
     console.dev.log('Found video:', vid);
 
     subscribeElement.before(constructButton(vid));
