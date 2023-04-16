@@ -2,6 +2,13 @@
 @import './queue/queue';
 @import './queue/queue_share';
 
+a[href='/videos/_dummy_episode_'] {
+  &,
+  & + div {
+    display: none;
+  }
+}
+
 .enhancer-hideCreator {
   grid-area: follow;
   align-self: center;

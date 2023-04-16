@@ -344,6 +344,7 @@ const changeTheme = (e: MouseEvent) => {
 const hideVideo = (el: HTMLElement, hiddenCreators: string[], hideWatched: boolean, hidePerc: number) => {
   const creator = creatorLink(el)?.split('/')?.[1];
   let hide = false;
+  if (creator === '_dummy_channel_') hide = true;
   if (creator && hiddenCreators.indexOf(creator) !== -1) {
     console.debug('Hiding video by creator', creator, `https://${getBase()}/${creator}`);
     hide = true;

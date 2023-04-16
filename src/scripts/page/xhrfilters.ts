@@ -1,4 +1,29 @@
 
+const createDummyVideo = (): Nebula.Video => ({
+  id: '-1',
+  type: 'video_episode',
+  slug: '_dummy_episode_',
+  title: '__DUMMY__',
+  description: '',
+  short_description: '',
+  duration: -1,
+  duration_to_complete: -1,
+  published_at: '',
+  channel_slug: '_dummy_channel_',
+  channel_slugs: [],
+  channel_title: '__DUMMY__',
+  category_slugs: [],
+  images: {
+    channel_avatar: { formats: [], height: 0, width: 0, src: 'https://nebula.tv/' },
+    thumbnail: { formats: [], height: 0, width: 0, src: 'https://nebula.tv/' },
+  },
+  attributes: [],
+  share_url: '',
+  primary_channel: null,
+  engagement: null,
+  zype_id: '',
+});
+
 const vidregex = /^\/(?:library\/)?video_episodes\/*$/;
 export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[], watchperc: number | undefined): string => {
   const url = xhr.responseURL;
@@ -21,6 +46,7 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
       });
       console.debug('Hiding', len2 - content.results.length, 'watched video(s)');
     }
+    if (len !== 0 && content.results.length === 0) content.results.push(createDummyVideo());
     return JSON.stringify(content);
   } catch (e) {
     console.groupCollapsed('Error filtering', url);
