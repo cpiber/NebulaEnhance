@@ -10,6 +10,7 @@ const optionsDefaults = {
   watchnebula: false,
   ytOpenTab: false,
   ytMuteOnly: false,
+  ytReplaceTab: false,
 };
 let options = { ...optionsDefaults };
 
@@ -57,6 +58,8 @@ const run = debounce(async () => {
   if (!options.watchnebula) return Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.remove());
 
   await action.run(async function* () {
+    if (window.history.state['_enhancer_checked'] === true) return console.debug('Ignoring video since already processed');
+
     const channelElement = document.querySelector<HTMLAnchorElement>(
       '.ytd-video-owner-renderer + * .yt-formatted-string[href^="/channel/"], .ytd-video-owner-renderer + * .yt-formatted-string[href^="/@"]');
     const titleElement = document.querySelector<HTMLHeadingElement>('h1.ytd-video-primary-info-renderer');
@@ -89,11 +92,17 @@ const run = debounce(async () => {
     subscribeElement.before(constructButton(vid));
     subscribeElement.closest<HTMLDivElement>('#top-row.ytd-watch-metadata').style.display = 'block'; // not the prettiest, but it works
 
-    const { ytOpenTab: doOpenTab, ytMuteOnly: muteOnly } = options;
+    const { ytOpenTab: doOpenTab, ytMuteOnly: muteOnly, ytReplaceTab: replaceTab } = options;
     console.dev.debug('Referer:', document.referrer);
     if (document.referrer.match(/https?:\/\/(.+\.)?nebula\.app\/?/) && window.history.length <= 1) return; // prevent open link if via nebula link (any link)
     if (vid.is === 'channel' || !doOpenTab) return;
     yield;
+
+    if (replaceTab) {
+      window.history.replaceState({ ...window.history.state, _enhancer_checked: true }, '');
+      window.location.href = vid.link;
+      return;
+    }
 
     window.open(vid.link, vidID);
     injectFunction(document.body, !muteOnly ? () => {

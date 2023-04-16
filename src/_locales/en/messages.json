@@ -103,6 +103,10 @@
     "message": "Mute video instead of pausing",
     "description": "Option to only mute the youtube video instead of pausing it"
   },
+  "optionsYtReplaceTab": {
+    "message": "Re-use tab",
+    "description": "Option to re-use the youtube tab for nebula instead of a new tab"
+  },
   "optionsLoadNebulaHint": {
     "message": "Whether to automatically try and find the matching Nebula video or not.",
     "description": "Hint for LoadNebula of options page."

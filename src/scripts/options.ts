@@ -43,9 +43,12 @@ const nChange = () => {
 };
 els.watchnebula.addEventListener('change', nChange);
 const nTabChange = () => {
-  els.ytMuteOnly.disabled = !els.ytOpenTab.checked;
+  els.ytMuteOnly.disabled = !els.ytOpenTab.checked || els.ytReplaceTab.checked;
+  els.ytReplaceTab.disabled = !els.ytOpenTab.checked || els.ytMuteOnly.checked;
 };
 els.ytOpenTab.addEventListener('change', nTabChange);
+els.ytMuteOnly.addEventListener('change', nTabChange);
+els.ytReplaceTab.addEventListener('change', nTabChange);
 const vidChange = () => {
   els.purgetime.disabled = !els.youtube.checked && !els.watchnebula.checked;
   purgeField.classList.toggle('disabled', els.purgetime.disabled);

@@ -103,6 +103,10 @@
     "message": "Video still stellen",
     "description": "Option um video nur leise stellen anstatt zu pausieren"
   },
+  "optionsYtReplaceTab": {
+    "message": "Tab wiederverwenden",
+    "description": "Option um youtube Tab weiterzuverwenden anstatt eines neuen Tabs"
+  },
   "optionsLoadNebulaHint": {
     "message": "Ob automatisch versucht werden soll, das Nebula Video zu finden.",
     "description": "Hilfstext für LoadNebula der Optionen Seite."
