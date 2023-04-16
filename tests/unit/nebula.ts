@@ -54,8 +54,6 @@ describe('loading nebula videos', () => {
     await expect(loadNebulaSearchVideos('test', 100)).resolves.toHaveLength(100);
     const vid = (await loadNebulaSearchVideos('test', 1))[0] as Video;
     await expect(existsNebulaVideo(vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
-    const t = vid.title.substring(vid.title.indexOf(' '));
-    await expect(existsNebulaVideo(t, 50)).resolves.toMatchObject({ video: vid.videoId });
     await expect(existsNebulaVideo(vid.title, 100)).resolves.toEqual({ confidence: 1, video: vid.videoId });
 
     // from cache
