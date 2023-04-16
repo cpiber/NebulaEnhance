@@ -99,6 +99,7 @@ const run = debounce(async () => {
     yield;
 
     if (replaceTab) {
+      /* eslint-disable-next-line camelcase */
       window.history.replaceState({ ...window.history.state, _enhancer_checked: true }, '');
       window.location.href = vid.link;
       return;

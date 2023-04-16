@@ -1,4 +1,5 @@
 
+/* eslint-disable camelcase */
 const createDummyVideo = (): Nebula.Video => ({
   id: '-1',
   type: 'video_episode',
@@ -23,6 +24,7 @@ const createDummyVideo = (): Nebula.Video => ({
   engagement: null,
   zype_id: '',
 });
+/* eslint-enable camelcase */
 
 const vidregex = /^\/(?:library\/)?video_episodes\/*$/;
 export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[], watchperc: number | undefined): string => {
