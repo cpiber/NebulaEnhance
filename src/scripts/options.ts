@@ -42,6 +42,10 @@ const nChange = () => {
   els.ytOpenTab.disabled = !els.watchnebula.checked;
 };
 els.watchnebula.addEventListener('change', nChange);
+const nTabChange = () => {
+  els.ytMuteOnly.disabled = !els.ytOpenTab.checked;
+};
+els.ytOpenTab.addEventListener('change', nTabChange);
 const vidChange = () => {
   els.purgetime.disabled = !els.youtube.checked && !els.watchnebula.checked;
   purgeField.classList.toggle('disabled', els.purgetime.disabled);
@@ -67,6 +71,7 @@ load(true)
   .then(aChange)
   .then(vChange)
   .then(nChange)
+  .then(nTabChange)
   .then(hChange)
   .then(vidChange);
 

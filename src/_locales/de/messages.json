@@ -99,6 +99,10 @@
     "message": "Link automatisch öffnen",
     "description": "Option zum automatischen Öffnen des gefundenen Links."
   },
+  "optionsYtMuteOnly": {
+    "message": "Video still stellen",
+    "description": "Option um video nur leise stellen anstatt zu pausieren"
+  },
   "optionsLoadNebulaHint": {
     "message": "Ob automatisch versucht werden soll, das Nebula Video zu finden.",
     "description": "Hilfstext für LoadNebula der Optionen Seite."

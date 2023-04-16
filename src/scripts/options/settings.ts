@@ -14,6 +14,7 @@ export class Settings {
   useFirstSubtitle: HTMLInputElement = undefined;
   youtube: HTMLInputElement = undefined;
   ytOpenTab: HTMLInputElement = undefined;
+  ytMuteOnly: HTMLInputElement = undefined;
   watchnebula: HTMLInputElement = undefined;
   rss: HTMLInputElement = undefined;
   hideVideosEnabled: HTMLInputElement = undefined;

@@ -99,6 +99,10 @@
     "message": "Automatically open link",
     "description": "Option to automatically open found link."
   },
+  "optionsYtMuteOnly": {
+    "message": "Mute video instead of pausing",
+    "description": "Option to only mute the youtube video instead of pausing it"
+  },
   "optionsLoadNebulaHint": {
     "message": "Whether to automatically try and find the matching Nebula video or not.",
     "description": "Hint for LoadNebula of options page."

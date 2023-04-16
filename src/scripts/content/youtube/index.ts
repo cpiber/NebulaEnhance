@@ -9,6 +9,7 @@ import { constructButton } from './html';
 const optionsDefaults = {
   watchnebula: false,
   ytOpenTab: false,
+  ytMuteOnly: false,
 };
 let options = { ...optionsDefaults };
 
@@ -88,18 +89,28 @@ const run = debounce(async () => {
     subscribeElement.before(constructButton(vid));
     subscribeElement.closest<HTMLDivElement>('#top-row.ytd-watch-metadata').style.display = 'block'; // not the prettiest, but it works
 
-    const { ytOpenTab: doOpenTab } = options;
+    const { ytOpenTab: doOpenTab, ytMuteOnly: muteOnly } = options;
     console.dev.debug('Referer:', document.referrer);
     if (document.referrer.match(/https?:\/\/(.+\.)?nebula\.app\/?/) && window.history.length <= 1) return; // prevent open link if via nebula link (any link)
     if (vid.is === 'channel' || !doOpenTab) return;
     yield;
 
     window.open(vid.link, vidID);
-    injectFunction(document.body, () => {
+    injectFunction(document.body, !muteOnly ? () => {
       document.querySelectorAll('video').forEach(v => {
         try {
           v.pause();
           (v.parentElement.parentElement as any).pauseVideo();
+        } catch (e) {
+          console.dev.error(e);
+        }
+      });
+    } : () => {
+      document.querySelectorAll('video').forEach(v => {
+        try {
+          v.volume = 0;
+          v.muted = true;
+          (v.parentElement.parentElement as any).mute();
         } catch (e) {
           console.dev.error(e);
         }
