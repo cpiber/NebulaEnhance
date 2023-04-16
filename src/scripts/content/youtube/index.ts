@@ -90,7 +90,7 @@ const run = debounce(async () => {
 
     const { ytOpenTab: doOpenTab, ytMuteOnly: muteOnly, ytReplaceTab: replaceTab } = options;
     console.dev.debug('Referer:', document.referrer);
-    if (document.referrer.match(/https?:\/\/(.+\.)?nebula\.app\/?/) && window.history.length <= 1) return; // prevent open link if via nebula link (any link)
+    if (document.referrer.match(/https?:\/\/(.+\.)?nebula\.(app|tv)\/?/) && window.history.length <= 1) return; // prevent open link if via nebula link (any link)
     if (vid.is === 'channel' || !doOpenTab) return;
     yield;
 
