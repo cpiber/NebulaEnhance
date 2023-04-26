@@ -149,7 +149,7 @@ const createLink = (img: HTMLImageElement): void => {
   const watch = watchLaterLocation(img);
   const inner = watch?.firstElementChild;
   const text = inner?.lastElementChild;
-  if (!watch || !inner || !text)
+  if (!watch || !inner || !text || typeof text.className !== 'string')
     return console.dev.error('Expected nebula watch-later button', img), undefined;
   later.innerHTML = `<div class="${inner.className}"><div class="${text.className} text">${addToQueue}</div>${iconWatchLater}</div>`;
   later.className = `${watch.className} enhancer-queueButton`;
