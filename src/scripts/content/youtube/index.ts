@@ -36,7 +36,7 @@ export const youtube = async () => {
     if (!ev.detail) return;
     const act = ev.detail.actionName;
     console.dev.debug(`yt action: ${act}`);
-    if (![ 'yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(act) &&
+    if (!['yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action'].includes(act) &&
       document.querySelector('.watch-on-nebula')) return;
     console.dev.log(`yt action triggered re-run: ${act}`);
     setTimeout(run, 100);
@@ -106,7 +106,7 @@ const run = debounce(async () => {
       document.querySelectorAll('video').forEach(v => {
         try {
           v.pause();
-          (v.parentElement.parentElement as any).pauseVideo();
+          (v.parentElement.parentElement as unknown as YouTubePlayer.MediaPlayer).pauseVideo();
         } catch (e) {
           console.dev.error(e);
         }
@@ -114,9 +114,25 @@ const run = debounce(async () => {
     } : () => {
       document.querySelectorAll('video').forEach(v => {
         try {
-          v.volume = 0;
-          v.muted = true;
-          (v.parentElement.parentElement as any).mute();
+          const player = v.parentElement.parentElement as unknown as YouTubePlayer.MediaPlayer;
+          if (player.isMuted()) return;
+
+          const cbStateChange = (state: number) => {
+            console.dev.debug('State change: ', state);
+            if (state > 0) return; // stopped=0, killed=-1 ?
+            player.unMute();
+            player.removeEventListener('onStateChange', cbStateChange);
+            player.removeEventListener('onVideoDataChange', cbDataChange);
+          };
+          const cbDataChange = () => {
+            console.dev.debug('Data changed');
+            player.unMute();
+            player.removeEventListener('onStateChange', cbStateChange);
+            player.removeEventListener('onVideoDataChange', cbDataChange);
+          };
+          player.mute();
+          player.addEventListener('onStateChange', cbStateChange);
+          player.addEventListener('onVideoDataChange', cbDataChange);
         } catch (e) {
           console.dev.error(e);
         }

@@ -39,6 +39,20 @@ declare namespace YouTube {
       },
       videoOwnerChannelTitle: string,
       videoOwnerChannelId: string,
-    }
+    };
+  };
+}
+
+declare namespace YouTubePlayer {
+  type PlayerEvent = 'CONNECTION_ISSUE' | 'SIZE_CLICKED' | 'SUBSCRIBE' | 'UNSUBSCRIBE' | 'WATCH_LATER_VIDEO_ADDED' | 'WATCH_LATER_VIDEO_REMOVED' | 'changeEngagementPanelVisibility' | 'cinematicSettingsToggleChange' | 'innertubeCommand' | 'onAdStateChange' | 'onAutonavChangeRequest' | 'onAutonavCoundownStarted' | 'onAutonavPauseRequest' | 'onCollapseMiniplayer' | 'onFeedbackArticleRequest' | 'onFeedbackStartRequest' | 'onFullerscreenEduClicked' | 'onFullscreenChange' | 'onOfflineOperationFailure' | 'onOrchestrationBecameLeader' | 'onOrchestrationLostLeader' | 'onPlayVideo' | 'onStateChange' | 'onVideoDataChange' | 'onVideoProgress' | 'onYpcContentRequest' | 'onYtShowToast' | 'updateEngagementPanelAction' | 'updateKevlarOrC3Companion';
+
+  type MediaPlayer = {
+    pauseVideo(): void;
+    playVideo(): void;
+    mute(): void;
+    unMute(): void;
+    isMuted(): boolean;
+    addEventListener(ev: PlayerEvent, fn: (...args: any[]) => void): void;
+    removeEventListener(ev: PlayerEvent, fn: (...args: any[]) => void): void;
   };
 }
