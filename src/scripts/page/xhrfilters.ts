@@ -26,6 +26,8 @@ const createDummyVideo = (): Nebula.Video => ({
 });
 /* eslint-enable camelcase */
 
+const engagementCache: Record<string, number> = {};
+
 const vidregex = /^\/(?:library\/)?video_episodes\/*$/;
 export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[], watchperc: number | undefined): string => {
   const url = xhr.responseURL;
@@ -42,11 +44,12 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
     console.debug('Hiding', len - len2, 'video(s) by hidden creators');
     if (watchperc !== undefined) {
       content.results = content.results.filter(r => {
-        if (r.engagement === null) return true;
-        const p = r.engagement.progress / r.duration * 100;
+        if (r.engagement === null && !(r.id in engagementCache)) return true;
+        const engagement = r.engagement?.progress ?? engagementCache[r.id];
+        const p = engagement / r.duration * 100;
         return p <= watchperc;
       });
-      console.debug('Hiding', len2 - content.results.length, 'watched video(s)');
+      console.debug('Hiding', len2 - content.results.length, 'watched video(s) with', Object.keys(engagementCache).length, 'in engagement cache');
     }
     if (len !== 0 && content.results.length === 0) content.results.push(createDummyVideo());
     return JSON.stringify(content);
@@ -57,6 +60,30 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
     console.log(text);
     console.groupEnd();
     return text;
+  }
+};
+
+const engageregex = /^\/(?:library\/)?video_episodes\/engagement\/*$/;
+export const collectEngagement = (xhr: XMLHttpRequest, text: string): void => {
+  const url = xhr.responseURL;
+  console.dev.debug('Considering', url, 'for collecting engagement');
+  if (url.indexOf('/video_episodes') === -1) return;
+  const u = new URL(url);
+  if (!u.pathname.match(engageregex)) return;
+
+  try {
+    const content: Nebula.PagedRequest<Nebula.Engagement> = JSON.parse(text);
+    content.results.forEach(r => {
+      if (r.progress === null) return;
+      engagementCache[r.id] = r.progress.value;
+    });
+    console.debug('Collected engagement for', content.results.length, 'video(s)');
+  } catch (e) {
+    console.groupCollapsed('Error filtering', url);
+    console.error(e);
+    console.log(xhr);
+    console.log(text);
+    console.groupEnd();
   }
 };
 

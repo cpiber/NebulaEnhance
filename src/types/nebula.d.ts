@@ -61,6 +61,21 @@ declare namespace Nebula {
     zype_id: string,
   };
 
+  type Engagement = {
+    id: string,
+    watch_later: boolean,
+    progress: {
+      updated_at: string,
+      completed: boolean,
+      value: number, // seconds
+    },
+    primary_channel: {
+      id: string,
+      following: boolean,
+    },
+    updated_at: string,
+  };
+
   type Featured<Typ, Item> = {
     type: Typ,
     id: string,

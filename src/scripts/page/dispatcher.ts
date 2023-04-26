@@ -1,11 +1,11 @@
 import { clone, getFromStorage, onStorageChange, videoUrlMatch } from './sharedpage';
-import { filterFeatured, filterVideos } from './xhrfilters';
+import { collectEngagement, filterFeatured, filterVideos } from './xhrfilters';
 
 export const eventPrefix = 'enebula' as const;
 export const navigatePrefix = `${eventPrefix}-navigate` as const;
 export const loadPrefix = `${eventPrefix}-load` as const;
 export const xhrPrefix = `${eventPrefix}-xhr` as const;
-export const knownPages = [ 'myshows', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings' ] as const;
+export const knownPages = ['myshows', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings'] as const;
 
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
@@ -40,6 +40,7 @@ export const init = async () => {
     get() {
       let responseText: string = xhrresponseget.get.apply(this);
       const { hiddenCreators, hideVideosEnabled, hideVideosPerc } = options;
+      collectEngagement(this, responseText);
       responseText = filterVideos(this, responseText, hiddenCreators, hideVideosEnabled ? hideVideosPerc : undefined);
       responseText = filterFeatured(this, responseText, hiddenCreators, hideVideosEnabled ? hideVideosPerc : undefined);
       return responseText;
