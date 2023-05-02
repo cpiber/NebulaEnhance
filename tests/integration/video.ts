@@ -28,11 +28,8 @@ describe('page', () => {
   });
 });
 
-let player: string;
 const gotoPlayer = async () => {
   await page.goto(somevideo);
-  await page.waitForSelector('.video-js');
-  player = await page.$eval('.video-js', el => el.id);
 };
 
 // TODO: figure out why the controls aren't added during testing

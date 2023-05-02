@@ -46,7 +46,7 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
       content.results = content.results.filter(r => {
         if ((r.engagement?.progress ?? null) === null && !(r.id in engagementCache)) return true;
         const engagement = r.engagement?.progress ?? engagementCache[r.id];
-        console.assert(engagement !== undefined && engagement !== null, "Expected engagement value", r.engagement, engagementCache[r.id]);
+        console.assert(engagement !== undefined && engagement !== null, 'Expected engagement value', r.engagement, engagementCache[r.id]);
         const p = engagement / r.duration * 100;
         return p <= watchperc;
       });

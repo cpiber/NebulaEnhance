@@ -34,8 +34,8 @@ export const calcOuterBounds = (e: HTMLElement) => {
 export const isMobile = () => window.matchMedia('(any-pointer: coarse), (any-hover: none)').matches;
 export const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
 export const isVideoListPage = () => !!window.location.pathname.match(/^\/(?:|videos\/?|myshows\/?)$/);
-export const getBase = () => "nebula.tv";
-export const getApiBase = () => "nebula.app";
+export const getBase = () => 'nebula.tv';
+export const getApiBase = () => 'nebula.app';
 export const clone = typeof cloneInto !== 'undefined' ?
   <T>(data: T) => cloneInto(data, document.defaultView) : // Firefox specific
   <T>(data: T) => data;
