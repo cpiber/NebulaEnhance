@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { addToQueue, expectQueueLength, getNthVideo, login, maybeLogin, qbuttSelector, queueSelector, titles, videoSelector, waitForPlayerInit } from '../shared';
+import { addToQueue, expectQueueLength, getNthVideo, login, maybeLogin, qbuttSelector, queueSelector, titles, videoSelector } from '../shared';
 
 jest.setTimeout(20000);
 jest.retryTimes(2);
@@ -215,17 +215,14 @@ describe('queue', () => {
     /** @see jestEnv.js */
     await addToQueue(3);
     await page.click(`${queueSelector} .top .next`);
-    await waitForPlayerInit();
     await expect(page.$eval('.enhancer-queue-control-next', (el: HTMLButtonElement) => el.classList.contains('disabled'))).resolves.toBeFalsy();
     await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.classList.contains('disabled'))).resolves.toBeTruthy();
 
     await page.click(`${queueSelector} .top .next`);
-    await waitForPlayerInit();
     await expect(page.$eval('.enhancer-queue-control-next', (el: HTMLButtonElement) => el.classList.contains('disabled'))).resolves.toBeFalsy();
     await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.classList.contains('disabled'))).resolves.toBeFalsy();
 
     await page.click(`${queueSelector} .top .next`);
-    await waitForPlayerInit();
     await expect(page.$eval('.enhancer-queue-control-next', (el: HTMLButtonElement) => el.classList.contains('disabled'))).resolves.toBeTruthy();
     await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.classList.contains('disabled'))).resolves.toBeFalsy();
   });
@@ -233,7 +230,6 @@ describe('queue', () => {
   test.skip('controls update on queue change', async () => {
     await addToQueue(3);
     await page.click(`${queueSelector} .top .next`);
-    await waitForPlayerInit();
     await expect(page.$eval('.enhancer-queue-control-next', (el: HTMLButtonElement) => el.classList.contains('disabled'))).resolves.toBeFalsy();
     await expect(page.$eval('.enhancer-queue-control-prev', (el: HTMLButtonElement) => el.classList.contains('disabled'))).resolves.toBeTruthy();
     await (await expect(page).toDisplayDialog(() => page.click(`${queueSelector} .top .close`))).accept();

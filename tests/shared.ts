@@ -32,7 +32,7 @@ export const login = async (force = false) => {
   optionsURL = await page.evaluate(async () => (await chrome.management.getAll())[0].optionsUrl);
   await page.goto(`${__NEBULA_BASE__}/login`);
   await page.bringToFront();
-  if (!force && await page.evaluate(() => localStorage.getItem('nebula_auth.apiToken')))
+  if (!force && await page.evaluate(() => document.cookie.indexOf('nebula_auth.hasToken=true') >= 0))
     return;
 
   await expect(page).toFillForm(formSelector, {
@@ -40,7 +40,9 @@ export const login = async (force = false) => {
     password: __NEBULA_PASS__,
   });
   await expect(page).toClick(`${formSelector} button`, { text: 'Sign in' });
-  await page.waitForResponse('https://users.api.nebula.app/api/v1/authorization/'); // wait until logged in
+  try {
+    await page.waitForResponse('https://users.api.nebula.app/api/v1/authorization/', { timeout: 5000 }); // wait until logged in
+  } catch { }
   await page.waitForTimeout(1000);
 };
 
@@ -73,9 +75,4 @@ export const setSettings = async (set: { [key: string]: string | boolean; }) => 
   await expect(pg).toClick('button[type="submit"]');
   await page.waitForTimeout(100); // wait for saving to finish
   await pg.close();
-};
-
-export const waitForPlayerInit = async () => {
-  await page.waitForSelector('.video-js');
-  await page.waitForFunction(() => window.videojs.players[Object.keys(window.videojs.players).find(k => window.videojs.players[k])]._enhancerInit);
 };
