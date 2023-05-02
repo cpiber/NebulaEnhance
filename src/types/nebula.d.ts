@@ -28,7 +28,16 @@ declare namespace Nebula {
     attributes: string[],
     share_url: string,
     primary_channel: Channel,
-    engagement: VideoEngagement,
+    engagement: {
+      id: string,
+      watch_later: boolean,
+      progress: VideoEngagement,
+      primary_channel: {
+        id: string,
+        following: boolean,
+      },
+      updated_at: string,
+    },
     zype_id: string,
   };
 
@@ -64,11 +73,7 @@ declare namespace Nebula {
   type Engagement = {
     id: string,
     watch_later: boolean,
-    progress: {
-      updated_at: string,
-      completed: boolean,
-      value: number, // seconds
-    },
+    progress: VideoEngagement,
     primary_channel: {
       id: string,
       following: boolean,
@@ -99,11 +104,9 @@ declare namespace Nebula {
   };
 
   type VideoEngagement = {
-    content_slug: string,
     updated_at: string,
-    progress: number, // in seconds
     completed: boolean,
-    watch_later: boolean,
+    value: number, // seconds
   };
   type ChannelEngagement = {
     following: boolean,

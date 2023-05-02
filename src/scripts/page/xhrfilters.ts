@@ -44,8 +44,8 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
     console.debug('Hiding', len - len2, 'video(s) by hidden creators');
     if (watchperc !== undefined) {
       content.results = content.results.filter(r => {
-        if ((r.engagement?.progress ?? null) === null && !(r.id in engagementCache)) return true;
-        const engagement = r.engagement?.progress ?? engagementCache[r.id];
+        if ((r.engagement?.progress?.value ?? null) === null && !(r.id in engagementCache)) return true;
+        const engagement = r.engagement?.progress?.value ?? engagementCache[r.id];
         console.assert(engagement !== undefined && engagement !== null, 'Expected engagement value', r.engagement, engagementCache[r.id]);
         const p = engagement / r.duration * 100;
         return p <= watchperc;
@@ -109,8 +109,10 @@ export const filterFeatured = (xhr: XMLHttpRequest, text: string, filter: string
       hidden += len - len2;
       if (watchperc !== undefined) {
         c.items = c.items.filter(r => {
-          if (r.engagement === null) return true;
-          const p = r.engagement.progress / r.duration * 100;
+          if ((r.engagement?.progress?.value ?? null) === null && !(r.id in engagementCache)) return true;
+          const engagement = r.engagement?.progress?.value ?? engagementCache[r.id];
+          console.assert(engagement !== undefined && engagement !== null, 'Expected engagement value', r.engagement, engagementCache[r.id]);
+          const p = engagement / r.duration * 100;
           return p <= watchperc;
         });
         watched += len2 - c.items.length;
