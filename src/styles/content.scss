@@ -29,11 +29,11 @@ a[href='/videos/_dummy_episode_'] {
     opacity: 0.7;
   }
 
-  h2:nth-child(2).hidden ~ &.hide {
+  h1:nth-child(2).hidden ~ &.hide {
     display: none;
   }
 
-  h2:nth-child(2):not(.hidden) ~ &.show {
+  h1:nth-child(2):not(.hidden) ~ &.show {
     display: none;
   }
 
@@ -44,15 +44,6 @@ a[href='/videos/_dummy_episode_'] {
     background-color: var(--this-bg-color, var(--bg-color));
     border: var(--this-border, none);
     border-radius: 15px;
-  }
-}
-
-button.enhancer-hideCreator-pre {
-  margin-right: 3em;
-  margin-left: 40px;
-
-  @media only screen and (max-width: 768px) {
-    margin-right: 40px;
   }
 }
 

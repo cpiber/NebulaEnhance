@@ -187,9 +187,9 @@ const click = async (e: MouseEvent) => {
 
   const hideCreator = target.closest('.enhancer-hideCreator');
   if (hideCreator !== null) {
-    const h2 = hideCreator.parentElement?.children[1];
-    console.assert(h2.tagName.toLowerCase() === 'h2', 'Assumed tag of queried element to be `h2`, got `%s`', h2.tagName.toLowerCase());
-    const hide = h2.classList.toggle('hidden');
+    const h1 = hideCreator.parentElement?.children[1];
+    console.assert(h1.tagName.toLowerCase() === 'h1', 'Assumed tag of queried element to be `h1`, got `%s`', h1.tagName.toLowerCase());
+    const hide = h1.classList.toggle('hidden');
     options.hiddenCreators = await toggleHideCreator(window.location.pathname.substring(1), hide);
     return;
   }
@@ -291,11 +291,11 @@ const createLinkForAll = () => {
 
 const insertHideButton = async () => {
   document.querySelectorAll('.enhancer-hideCreator').forEach(e => e.remove());
-  const h2 = document.querySelector('h2');
-  const container = h2?.parentElement;
+  const h1 = document.querySelector('h1');
+  const container = h1?.parentElement;
   if (!container)
     return;
-  const follow = handleFollowSpacing(container);
+  const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? followFromContainer(container) : undefined;
   if (follow) container.style.setProperty('--this-bg-color', window.getComputedStyle(follow).backgroundColor);
   if (follow) container.style.setProperty('--this-border', window.getComputedStyle(follow).border);
   const creator = window.location.pathname.split('/')[1];
@@ -321,19 +321,10 @@ const insertHideButton = async () => {
   buttonShown.classList.add('enhancer-hideCreator', 'show');
   buttonShown.setAttribute('aria-label', showCreator);
   buttonShown.title = showCreator;
-  h2.classList.toggle('hidden', options.hiddenCreators.includes(creator));
+  h1.classList.toggle('hidden', options.hiddenCreators.includes(creator));
 };
 
 const followFromContainer = (container: HTMLElement) => Array.from(container.children).filter(c => !c.classList.contains('enhancer-hideCreator')).pop();
-const handleFollowSpacing = (container: HTMLElement) => {
-  const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? followFromContainer(container) : undefined;
-  if (!follow) return;
-  const inner = () => setTimeout(handleFollowSpacing, 0, container);
-  follow.classList.add('enhancer-hideCreator-pre');
-  follow.removeEventListener('click', inner);
-  follow.addEventListener('click', inner);
-  return follow;
-};
 
 const changeTheme = (e: MouseEvent) => {
   const theme = (e.target as HTMLElement).dataset.value.toLowerCase();

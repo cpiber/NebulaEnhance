@@ -119,7 +119,7 @@ export const filterFeatured = (xhr: XMLHttpRequest, text: string, filter: string
       }
     }
     console.debug('Hiding', hidden, 'video(s) by hidden creators');
-    if (watchperc !== undefined) console.debug('Hiding', watched, 'watched video(s)');
+    if (watchperc !== undefined) console.debug('Hiding', watched, 'watched video(s) with', Object.keys(engagementCache).length, 'in engagement cache');
     return JSON.stringify(content);
   } catch (e) {
     console.groupCollapsed('Error filtering', url);
