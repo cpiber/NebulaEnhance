@@ -53,7 +53,6 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
       console.debug('Hiding', len2 - content.results.length, 'watched video(s) with', Object.keys(engagementCache).length, 'in engagement cache');
     }
     if (len !== 0 && content.results.length === 0) content.results.push(createDummyVideo());
-    console.dev.log('New length', content.results.length);
     return JSON.stringify(content);
   } catch (e) {
     console.groupCollapsed('Error filtering', url);
