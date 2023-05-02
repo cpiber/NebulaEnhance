@@ -10,7 +10,7 @@ a[href='/videos/_dummy_episode_'] {
 }
 
 .enhancer-hideCreator {
-  grid-area: follow;
+  grid-area: follow / follow-end;
   align-self: center;
   display: flex;
   border: none;
@@ -61,6 +61,7 @@ button.enhancer-hideCreator-pre {
   height: 30px;
   grid-area: follow;
   align-self: center;
+  margin-left: -40px;
 }
 
 div.enhancer-queueButton {
