@@ -12,7 +12,7 @@
 
 Stark inspiriert von [Enhancer for YouTube&trade;](https://www.mrfdev.com/enhancer-for-youtube)
 
-Diese Erweiterung will nützliche Features zur [Nebula](https://nebula.app) Seite bringen.
+Diese Erweiterung will nützliche Features zur [Nebula](https://nebula.tv) Seite bringen.
 
 
 # Installierung

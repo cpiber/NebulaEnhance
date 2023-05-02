@@ -4,7 +4,7 @@
  */
 
 import type { Queue } from '../../content/queue';
-import { getBase } from '../shared';
+import { getApiBase } from '../shared';
 
 const request = async <T = any>(url: string, init?: RequestInit) => {
   const i = {
@@ -33,13 +33,13 @@ const request = async <T = any>(url: string, init?: RequestInit) => {
   throw new Error(body.detail);
 };
 
-export const getVideo = (name: string) => request<Nebula.Video>(`https://content.api.${getBase()}/content/videos/${name}/`, {
-  referrer: `https://${getBase()}/videos/${name}`,
+export const getVideo = (name: string) => request<Nebula.Video>(`https://content.api.${getApiBase()}/content/videos/${name}/`, {
+  referrer: `https://${getApiBase()}/videos/${name}`,
   method: 'GET',
 });
 
-export const getChannel = (name: string) => request<Nebula.Channel>(`https://content.api.${getBase()}/content/${name}/`, {
-  referrer: `https://${getBase()}/`,
+export const getChannel = (name: string) => request<Nebula.Channel>(`https://content.api.${getApiBase()}/content/${name}/`, {
+  referrer: `https://${getApiBase()}/`,
   method: 'GET',
 });
 
@@ -49,7 +49,7 @@ export const getChannelVideos = async (name: string, num = Infinity) => {
 };
 export const getChannelVideosById = async (id: string, num = Infinity) => {
   const vids: Nebula.Video[] = [];
-  const req = new URL(`https://content.api.${getBase()}/video_channels/${id}/video_episodes/`);
+  const req = new URL(`https://content.api.${getApiBase()}/video_channels/${id}/video_episodes/`);
   req.searchParams.set('page_size', `${Math.min(100, num)}`);
   let url = req.toString();
 
@@ -66,7 +66,7 @@ export const enqueueChannelVideos = async (q: Queue, name: string) => {
   return enqueueChannelVideosById(q, channel.id);
 };
 export const enqueueChannelVideosById = async (q: Queue, id: string) => {
-  const req = new URL(`https://content.api.${getBase()}/video_channels/${id}/video_episodes/`);
+  const req = new URL(`https://content.api.${getApiBase()}/video_channels/${id}/video_episodes/`);
   req.searchParams.set('page_size', '100');
   let url = req.toString();
   // q.clear();
@@ -83,14 +83,14 @@ export const enqueueChannelVideosById = async (q: Queue, id: string) => {
 
 export const searchVideos = async (text: string, num = Infinity) => {
   const vids: Nebula.Video[] = [];
-  const req = new URL(`https://content.api.${getBase()}/video_episodes/search/`);
+  const req = new URL(`https://content.api.${getApiBase()}/video_episodes/search/`);
   req.searchParams.set('q', text);
   req.searchParams.set('page_size', `${Math.min(100, num)}`);
   let url = req.toString();
 
   while (url && vids.length < num) {
     const body = await request<Nebula.VideoSearchRequest>(url, {
-      referrer: `https://${getBase()}/`,
+      referrer: `https://${getApiBase()}/`,
       method: 'GET',
     });
     url = body.next;

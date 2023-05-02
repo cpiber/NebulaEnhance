@@ -114,7 +114,7 @@
     "sourceDir": "./extension-dist",
     "run": {
       "startUrl": [
-        "https://nebula.app"
+        "https://nebula.tv"
       ]
     }
   }

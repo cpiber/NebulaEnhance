@@ -18,7 +18,7 @@ export default {
       setupFiles: ['./jest.setup.js'],
       testEnvironment: 'jsdom',
       testEnvironmentOptions: {
-        url: 'https://nebula.app',
+        url: 'https://nebula.tv',
       },
       testMatch: ['<rootDir>/tests/unit/**/*.ts'],
       transform,

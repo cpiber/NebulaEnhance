@@ -4,7 +4,7 @@ import iconShow from '../../../icons/show.svg';
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { creatorLink, isWatchProgress, queueBottonLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
-import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getApiBase, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { handle } from './message';
@@ -304,7 +304,7 @@ const insertHideButton = async () => {
   if (loadRss) {
     const rss = document.createElement('a');
     if (follow) follow.before(rss); else container.appendChild(rss);
-    rss.href = `https://rss.${getBase()}/video/channels/${creator}.rss`;
+    rss.href = `https://rss.${getApiBase()}/video/channels/${creator}.rss`;
     rss.target = '_blank';
     rss.classList.add('enhancer-rss');
     if (!follow) rss.classList.add('enhancer-hideCreator-pre');

@@ -104,7 +104,7 @@ jobs:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
         NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
         NEBULA_USER: ${{ secrets.NEBULA_USER }}
-        NEBULA_BASE: https://beta.nebula.app
+        NEBULA_BASE: https://beta.nebula.tv
     - name: Emit warning if beta test failed
       if: ${{ steps.betatest.outcome == 'failure' }}
       run: echo "::warning::Beta tests failed"
