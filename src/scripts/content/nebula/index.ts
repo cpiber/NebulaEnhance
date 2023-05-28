@@ -4,8 +4,7 @@ import { creatorLink, isWatchProgress, queueBottonLocation, uploadTimeLocation, 
 import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, uploadIsBefore, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
-import type { CreatorSettings } from './creator-settings';
-import { addCreatorSettings, init as initCreator } from './creator-settings';
+import { CreatorSettings, addCreatorSettings, init as initCreator } from './creator-settings';
 import { handle } from './message';
 
 const msg = getBrowserInstance().i18n.getMessage;

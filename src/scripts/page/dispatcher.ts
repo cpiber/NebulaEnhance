@@ -1,4 +1,5 @@
-import { clone, getFromStorage, onStorageChange, videoUrlMatch } from './sharedpage';
+import type { CreatorSettings } from '../content/nebula/creator-settings';
+import { Message, clone, getFromStorage, onStorageChange, parseTimeString, sendMessage, videoUrlMatch } from './sharedpage';
 import { collectEngagement, filterFeatured, filterVideos } from './xhrfilters';
 
 export const eventPrefix = 'enebula' as const;
@@ -15,6 +16,8 @@ const optionsDefaults = {
   hiddenCreators: [] as string[],
   hideVideosEnabled: false,
   hideVideosPerc: 80,
+  creatorSettings: {} as Record<string, CreatorSettings>,
+  creatorHideAfter: {} as Record<string, number>,
 };
 let options = { ...optionsDefaults };
 
@@ -39,21 +42,32 @@ export const init = async () => {
     ...xhrresponseget,
     get() {
       let responseText: string = xhrresponseget.get.apply(this);
-      const { hiddenCreators, hideVideosEnabled, hideVideosPerc } = options;
+      const { hiddenCreators, hideVideosEnabled, hideVideosPerc, creatorHideAfter } = options;
       collectEngagement(this, responseText);
-      responseText = filterVideos(this, responseText, hiddenCreators, hideVideosEnabled ? hideVideosPerc : undefined);
-      responseText = filterFeatured(this, responseText, hiddenCreators, hideVideosEnabled ? hideVideosPerc : undefined);
+      responseText = filterVideos(this, responseText, hiddenCreators, creatorHideAfter, hideVideosEnabled ? hideVideosPerc : undefined);
+      responseText = filterFeatured(this, responseText, hiddenCreators, creatorHideAfter, hideVideosEnabled ? hideVideosPerc : undefined);
       return responseText;
     },
   });
 
+  const localeTimeMappings = await sendMessage(Message.GET_MESSAGE, { message: 'miscTimeLocaleMappings' });
+  const transformCreatorSettings = () => {
+    options.creatorHideAfter = {};
+    for (const prop in options.creatorSettings) {
+      if (!options.creatorSettings[prop].hideAfter) continue;
+      options.creatorHideAfter[prop] = parseTimeString(options.creatorSettings[prop].hideAfter, 'Time string contains invalid elements', localeTimeMappings, unit => `Invalid unit ${unit}`);
+    }
+  };
+
   options = await getFromStorage(optionsDefaults);
+  transformCreatorSettings();
 
   onStorageChange(changed => {
     Object.keys(options).forEach(prop => {
       if (prop in changed && 'newValue' in changed[prop]) {
         /* @ts-expect-error for some reason, options[prop] narrows to never... */
         options[prop] = changed[prop].newValue as typeof options[typeof prop];
+        if (prop === 'creatorSettings') transformCreatorSettings();
       }
     });
   });
