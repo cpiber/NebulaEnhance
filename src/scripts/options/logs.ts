@@ -1,7 +1,7 @@
 import DOMPurify from 'dompurify';
 import { marked } from 'marked';
 import { getBrowserInstance } from '../helpers/sharedExt';
-import { buildModal, withLoader } from './modal';
+import { buildModalDirect, withLoader } from './modal';
 
 const msg = getBrowserInstance().i18n.getMessage;
 const owner = 'cpiber';
@@ -54,5 +54,5 @@ export const showLogs = withLoader(async (currentVersion: string, installed = fa
   const welcome = document.createElement('div');
   welcome.className = 'enhancer-welcome-banner';
   welcome.innerHTML = msg('optionsChangelogInstalled');
-  buildModal(msg('optionsChangelogTitle'), installed ? welcome.outerHTML : '', 'changelog', ...rs, last);
+  buildModalDirect(msg('optionsChangelogTitle'), installed ? welcome : null, 'changelog', ...rs, last);
 });
