@@ -3,7 +3,7 @@ import iconRSS from '../../../icons/rss.svg';
 import iconSettings from '../../../icons/settings.svg';
 import iconShow from '../../../icons/show.svg';
 import { buildModal } from '../../helpers/modal';
-import { getApiBase, getBrowserInstance, getFromStorage, setCreatorHideAfter, toggleHideCreator } from '../../helpers/sharedExt';
+import { getApiBase, getBrowserInstance, getFromStorage, notification, parseTimeString, setCreatorHideAfter, toggleHideCreator } from '../../helpers/sharedExt';
 
 const msg = getBrowserInstance().i18n.getMessage;
 const hideCreator = msg('pageHideCreator');
@@ -11,6 +11,7 @@ const showCreator = msg('pageShowCreator');
 const modalTitle = msg('pageCreatorSettings');
 const hideAfter = msg('pageHideAfter');
 const hideAfterHint = msg('pageHideAfterHint');
+const savedtext = getBrowserInstance().i18n.getMessage('optionsSavedNote');
 
 export type CreatorSettings = {
   hideAfter?: string,
@@ -90,6 +91,9 @@ const show = async () => {
   label.htmlFor = 'hide-after';
   label.innerHTML = hideAfterHint;
 
+  const warn = container.appendChild(document.createElement('p'));
+  warn.className = 'warning';
+
   buildModal(modalTitle, container, 'creator-settings-modal');
 };
 
@@ -110,5 +114,13 @@ const change = async (e: Event) => {
 
   if (target.id !== 'hide-after') return;
   target.classList.toggle('has-value', !!target.value);
-  await setCreatorHideAfter(window.location.pathname.substring(1), target.value);
+  const warning = target.closest('.enhancer-field').nextElementSibling;
+  try {
+    warning.textContent = '';
+    parseTimeString(target.value);
+    await setCreatorHideAfter(window.location.pathname.substring(1), target.value);
+    notification(savedtext);
+  } catch (ex) {
+    warning.textContent = ex;
+  }
 };
