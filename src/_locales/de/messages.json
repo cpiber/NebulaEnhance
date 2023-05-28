@@ -327,6 +327,14 @@
     "message": "Kanal wurde von Ihnen versteckt",
     "description": "Hinweis zu verstecktem Kanal."
   },
+  "pageHideAfter": {
+    "message": "Videos verstecken nach:",
+    "description": "Titel für hide-after Einstellung"
+  },
+  "pageHideAfterHint": {
+    "message": "Zeit nach der Videos versteckt werden sollen, leer um zu deaktivieren, z.B. <code>1d</code>",
+    "description": "Placeholder für hide-after Einstellung"
+  },
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs und Feature Requests</a>",
     "description": "Credit footer."

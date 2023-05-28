@@ -327,6 +327,14 @@
     "message": "Creator hidden by you",
     "description": "Hint on hidden creator."
   },
+  "pageHideAfter": {
+    "message": "Hide Videos after:",
+    "description": "Title for hide-after setting"
+  },
+  "pageHideAfterHint": {
+    "message": "Time after which to hide videos, empty to not hide, e.g. <code>1d</code>",
+    "description": "Placeholder to show for hide-after settings"
+  },
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs and Feature Requests</a>",
     "description": "Credit footer."

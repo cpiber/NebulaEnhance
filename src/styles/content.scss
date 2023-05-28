@@ -17,15 +17,17 @@ a[href='/videos/_dummy_episode_'] {
 }
 
 .enhancer-hideCreator {
+  cursor: pointer;
+
   button {
     height: 1em;
   }
 
-  .creator-settings-modal > .hidden &.hide {
+  .creator-settings-modal .body > .hidden &.hide {
     display: none;
   }
 
-  .creator-settings-modal > :not(.hidden) &.show {
+  .creator-settings-modal .body > :not(.hidden) &.show {
     display: none;
   }
 }
@@ -55,6 +57,20 @@ a[href='/videos/_dummy_episode_'] {
     background-color: var(--this-bg-color, var(--bg-color));
     border: var(--this-border, none);
     border-radius: 15px;
+  }
+}
+
+.enhancer-field {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  h3 {
+    margin: 0 !important;
+  }
+
+  > .enhancer-control, > label {
+    flex: 1;
   }
 }
 

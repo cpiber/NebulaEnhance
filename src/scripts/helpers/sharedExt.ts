@@ -1,4 +1,5 @@
 import browser from 'webextension-polyfill';
+import type { CreatorSettings } from '../content/nebula/creator-settings';
 import { notification } from './shared';
 import './shared/prototype';
 export * from './shared';
@@ -32,6 +33,16 @@ export const toggleHideCreator = async (creator: string, hide: boolean) => {
   notification(hide ? hidingCreator : showingCreator);
   await setToStorage({ hiddenCreators });
   return hiddenCreators;
+};
+
+export const setCreatorHideAfter = async (creator: string, hideAfter: string) => {
+  // let's hope we don't get interrupted here, could lose data, but no way to lock...
+  const { creatorSettings } = await getFromStorage({ creatorSettings: {} as Record<string, CreatorSettings> });
+  if (!(creator in creatorSettings)) creatorSettings[creator] = {};
+  hideAfter = hideAfter.trim();
+  creatorSettings[creator].hideAfter = hideAfter !== '' ? hideAfter : undefined;
+  await setToStorage({ creatorSettings });
+  return creatorSettings;
 };
 
 const timeMapping: Record<string, number> = {
