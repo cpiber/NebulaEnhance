@@ -1,9 +1,10 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
-import { creatorLink, isWatchProgress, queueBottonLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
-import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { creatorLink, isWatchProgress, queueBottonLocation, uploadTimeLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
+import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, uploadIsBefore, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
+import type { CreatorSettings } from './creator-settings';
 import { addCreatorSettings, init as initCreator } from './creator-settings';
 import { handle } from './message';
 
@@ -17,6 +18,7 @@ const optionsDefaults = {
   hiddenCreators: [] as string[],
   hideVideosEnabled: false,
   hideVideosPerc: 80,
+  creatorSettings: {} as Record<string, CreatorSettings>,
   visitedColor: '',
 };
 let options = { ...optionsDefaults };
@@ -29,6 +31,7 @@ export const nebula = async () => {
     hiddenCreators,
     hideVideosEnabled,
     hideVideosPerc,
+    creatorSettings,
     visitedColor,
   } = options = await getFromStorage(optionsDefaults);
 
@@ -117,7 +120,7 @@ const doVideoActions = debounce(() => {
   // hide creators
   if (isVideoListPage())
     Array.from(document.querySelectorAll<HTMLElement>(videoselector)).forEach(el =>
-      hideVideo(el, options.hiddenCreators, options.hideVideosEnabled, options.hideVideosPerc));
+      hideVideo(el, options.hiddenCreators, options.creatorSettings, options.hideVideosEnabled, options.hideVideosPerc));
 }, 500);
 
 const videoHoverLink = (e: HTMLElement) => {
@@ -283,12 +286,17 @@ const changeTheme = (e: MouseEvent) => {
   setToStorage({ theme });
 };
 
-const hideVideo = (el: HTMLElement, hiddenCreators: string[], hideWatched: boolean, hidePerc: number) => {
+const hideVideo = (el: HTMLElement, hiddenCreators: string[], creatorSettings: Record<string, CreatorSettings>, hideWatched: boolean, hidePerc: number) => {
   const creator = creatorLink(el)?.split('/')?.[1];
+  const uploadTime = Date.parse(uploadTimeLocation(el).dateTime);
   let hide = false;
   if (creator === '_dummy_channel_') hide = true;
   if (creator && hiddenCreators.indexOf(creator) !== -1) {
     console.debug('Hiding video by creator', creator, `https://${getBase()}/${creator}`);
+    hide = true;
+  }
+  if (creator && creator in creatorSettings && creatorSettings[creator].hideAfter && uploadIsBefore(uploadTime, creatorSettings[creator].hideAfter)) {
+    console.debug('Hiding video as too old, uploaded at', new Date(uploadTime));
     hide = true;
   }
   const watchProgress = watchProgressLocation(el);

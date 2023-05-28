@@ -45,6 +45,12 @@ export const setCreatorHideAfter = async (creator: string, hideAfter: string) =>
   return creatorSettings;
 };
 
+export const uploadIsBefore = (upload: number, seconds: number | string) => {
+  if (typeof seconds === 'string') seconds = parseTimeString(seconds);
+  const before = Date.now() - seconds * 1000;
+  return upload < before;
+};
+
 const timeMapping: Record<string, number> = {
   w: 7 * 24 * 60 * 60,
   d: 24 * 60 * 60,
