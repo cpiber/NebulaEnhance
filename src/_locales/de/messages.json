@@ -303,6 +303,10 @@
     "message": "Suchergebnis",
     "description": "Nebula video match confidence bei suche auf youtube."
   },
+  "pageCreatorSettings": {
+    "message": "Kanal Einstellungen",
+    "description": "Titel des Settings-Modal für Kanäle"
+  },
   "pageHideCreator": {
     "message": "Diesen Kanal verstecken",
     "description": "Button hinweis um creator zu verstecken."

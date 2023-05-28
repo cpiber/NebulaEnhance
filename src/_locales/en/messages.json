@@ -303,6 +303,10 @@
     "message": "Search-confidence",
     "description": "Nebula video match confidence for search on youtube."
   },
+  "pageCreatorSettings": {
+    "message": "Creator settings",
+    "description": "Title of creator-settings modal"
+  },
   "pageHideCreator": {
     "message": "Hide this creator",
     "description": "Button hint to hide creator."

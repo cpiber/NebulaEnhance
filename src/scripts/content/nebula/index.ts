@@ -1,18 +1,14 @@
-import iconHide from '../../../icons/hide.svg';
-import iconRSS from '../../../icons/rss.svg';
-import iconShow from '../../../icons/show.svg';
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { creatorLink, isWatchProgress, queueBottonLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
-import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getApiBase, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, toggleHideCreator, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
+import { addCreatorSettings, init as initCreator } from './creator-settings';
 import { handle } from './message';
 
 const msg = getBrowserInstance().i18n.getMessage;
 const addToQueue = msg('pageAddToQueue');
-const hideCreator = msg('pageHideCreator');
-const showCreator = msg('pageShowCreator');
 
 const optionsDefaults = {
   youtube: false,
@@ -44,13 +40,14 @@ export const nebula = async () => {
     console.debug('Detected theme', newtheme);
     setToStorage({ theme: newtheme });
   } catch { }
+  initCreator();
 
   // attach listeners
   window.addEventListener('message', handle);
   window.addEventListener('hashchange', hashChange);
   document.addEventListener(`${loadPrefix}-video`, maybeLoadComments);
   document.addEventListener(`${loadPrefix}-creator`, createLinkForAll);
-  document.addEventListener(`${loadPrefix}-creator`, insertHideButton);
+  document.addEventListener(`${loadPrefix}-creator`, addCreatorSettings);
   document.addEventListener(loadPrefix, doVideoActions);
   document.addEventListener(xhrPrefix, doVideoActions);
   document.body.addEventListener('mouseover', hover);
@@ -185,15 +182,6 @@ const click = async (e: MouseEvent) => {
     return;
   }
 
-  const hideCreator = target.closest('.enhancer-hideCreator');
-  if (hideCreator !== null) {
-    const h1 = hideCreator.parentElement?.children[1];
-    console.assert(h1.tagName.toLowerCase() === 'h1', 'Assumed tag of queried element to be `h1`, got `%s`', h1.tagName.toLowerCase());
-    const hide = h1.classList.toggle('hidden');
-    options.hiddenCreators = await toggleHideCreator(window.location.pathname.substring(1), hide);
-    return;
-  }
-
   const later = target.closest('.enhancer-queueButton');
   const link = target.closest<HTMLAnchorElement>(videoselector);
   if (link === null)
@@ -288,43 +276,6 @@ const createLinkForAll = () => {
   link.classList.add('enhancer-queueButton', 'enhancer-queueButtonAll');
   container.appendChild(link);
 };
-
-const insertHideButton = async () => {
-  document.querySelectorAll('.enhancer-hideCreator').forEach(e => e.remove());
-  const h1 = document.querySelector('h1');
-  const container = h1?.parentElement;
-  if (!container)
-    return;
-  const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? followFromContainer(container) : undefined;
-  if (follow) container.style.setProperty('--this-bg-color', window.getComputedStyle(follow).backgroundColor);
-  if (follow) container.style.setProperty('--this-border', window.getComputedStyle(follow).border);
-  const creator = window.location.pathname.split('/')[1];
-
-  const { rss: loadRss } = await getFromStorage({ rss: false });
-  if (loadRss) {
-    const rss = document.createElement('a');
-    if (follow) follow.before(rss); else container.appendChild(rss);
-    rss.href = `https://rss.${getApiBase()}/video/channels/${creator}.rss`;
-    rss.target = '_blank';
-    rss.classList.add('enhancer-rss');
-    if (!follow) rss.classList.add('enhancer-hideCreator-pre');
-    rss.innerHTML = iconRSS;
-  }
-
-  const buttonHidden = container.appendChild(document.createElement('button'));
-  buttonHidden.innerHTML = iconShow;
-  buttonHidden.classList.add('enhancer-hideCreator', 'hide');
-  buttonHidden.setAttribute('aria-label', hideCreator);
-  buttonHidden.title = hideCreator;
-  const buttonShown = container.appendChild(document.createElement('button'));
-  buttonShown.innerHTML = iconHide;
-  buttonShown.classList.add('enhancer-hideCreator', 'show');
-  buttonShown.setAttribute('aria-label', showCreator);
-  buttonShown.title = showCreator;
-  h1.classList.toggle('hidden', options.hiddenCreators.includes(creator));
-};
-
-const followFromContainer = (container: HTMLElement) => Array.from(container.children).filter(c => !c.classList.contains('enhancer-hideCreator')).pop();
 
 const changeTheme = (e: MouseEvent) => {
   const theme = (e.target as HTMLElement).dataset.value.toLowerCase();
