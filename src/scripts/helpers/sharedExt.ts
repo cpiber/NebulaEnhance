@@ -24,15 +24,13 @@ const invalidElements = browser.i18n.getMessage('miscTimeInvalidElements');
 
 export const toggleHideCreator = async (creator: string, hide: boolean) => {
   // let's hope we don't get interrupted here, could lose data, but no way to lock...
-  const { hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] });
-  const idx = hiddenCreators.indexOf(creator);
-  if (idx !== -1) hiddenCreators.splice(idx, 1);
-  if (hide) hiddenCreators.push(creator);
-  console.debug(hide ? 'Hiding creator' : 'Showing creator', creator,
-    '\nHidden creators:', hiddenCreators.length);
+  const { creatorSettings } = await getFromStorage({ creatorSettings: {} as Record<string, CreatorSettings> });
+  if (!(creator in creatorSettings)) creatorSettings[creator] = {};
+  creatorSettings[creator].hideCompletely = hide;
+  console.debug(hide ? 'Hiding creator' : 'Showing creator', creator);
   notification(hide ? hidingCreator : showingCreator);
-  await setToStorage({ hiddenCreators });
-  return hiddenCreators;
+  await setToStorage({ creatorSettings });
+  return creatorSettings;
 };
 
 export const setCreatorHideAfter = async (creator: string, hideAfter: string) => {

@@ -1,4 +1,5 @@
 import iconShow from '../../icons/show.svg';
+import type { CreatorSettings } from '../content/nebula/creator-settings';
 import { getChannel } from '../helpers/api';
 import { getBrowserInstance, getFromStorage, toggleHideCreator } from '../helpers/sharedExt';
 import { buildModal, withLoader } from './modal';
@@ -30,10 +31,10 @@ const buildCreator = (channel: Nebula.Channel) => {
 };
 
 export const showManageCreators = withLoader(async () => {
-  const { hiddenCreators } = await getFromStorage({ hiddenCreators: [] as string[] });
+  const { creatorSettings } = await getFromStorage({ creatorSettings: {} as Record<string, CreatorSettings> });
   // This could get expensive for long lists of channels...
   // but no way to query multiple slugs, alternative: check all at some point
-  const cr = await Promise.all(hiddenCreators.map(getChannel));
+  const cr = await Promise.all(Object.keys(creatorSettings).filter(c => creatorSettings[c].hideCompletely).map(getChannel));
   const c = cr.sort((a, b) => {
     const nameA = a.title.toUpperCase();
     const nameB = b.title.toUpperCase();

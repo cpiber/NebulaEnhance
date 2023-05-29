@@ -15,6 +15,7 @@ const savedtext = getBrowserInstance().i18n.getMessage('optionsSavedNote');
 
 export type CreatorSettings = {
   hideAfter?: string,
+  hideCompletely?: boolean,
 };
 
 export const init = () => {
@@ -53,10 +54,10 @@ const followFromContainer = (container: HTMLElement) => Array.from(container.chi
 
 const show = async () => {
   const creator = window.location.pathname.split('/')[1];
-  const { creatorSettings: { [creator]: settings }, hiddenCreators } = await getFromStorage({ creatorSettings: {} as Record<string, CreatorSettings>, hiddenCreators: [] as string[] });
+  const { creatorSettings: { [creator]: settings } } = await getFromStorage({ creatorSettings: {} as Record<string, CreatorSettings> });
 
   const container = document.createElement('div');
-  container.classList.toggle('hidden', hiddenCreators.includes(creator));
+  container.classList.toggle('hidden', settings?.hideCompletely);
   const creatorHidden = container.appendChild(document.createElement('div'));
   creatorHidden.appendChild(document.createElement('span')).textContent = hideCreator;
   creatorHidden.classList.add('enhancer-hideCreator', 'hide');

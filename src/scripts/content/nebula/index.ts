@@ -14,7 +14,6 @@ const optionsDefaults = {
   youtube: false,
   theme: '',
   customScriptPage: '',
-  hiddenCreators: [] as string[],
   hideVideosEnabled: false,
   hideVideosPerc: 80,
   creatorSettings: {} as Record<string, CreatorSettings>,
@@ -27,7 +26,6 @@ export const nebula = async () => {
     youtube,
     theme,
     customScriptPage,
-    hiddenCreators,
     hideVideosEnabled,
     hideVideosPerc,
     creatorSettings,
@@ -35,7 +33,7 @@ export const nebula = async () => {
   } = options = await getFromStorage(optionsDefaults);
 
   console.debug('Youtube:', youtube, 'Theme:', theme, 'visitedColor:', visitedColor,
-    '\nHiding', hiddenCreators.length, 'creators', '\tvideos?', hideVideosEnabled, 'with perc watched:', hideVideosPerc);
+    '\nhide videos?', hideVideosEnabled, 'with perc watched:', hideVideosPerc);
 
   if (!theme) try {
     const newtheme = JSON.parse(localStorage.getItem('colorSchemeSetting'));
@@ -119,7 +117,7 @@ const doVideoActions = debounce(() => {
   // hide creators
   if (isVideoListPage())
     Array.from(document.querySelectorAll<HTMLElement>(videoselector)).forEach(el =>
-      hideVideo(el, options.hiddenCreators, options.creatorSettings, options.hideVideosEnabled, options.hideVideosPerc));
+      hideVideo(el, options.creatorSettings, options.hideVideosEnabled, options.hideVideosPerc));
 }, 500);
 
 const videoHoverLink = (e: HTMLElement) => {
@@ -285,12 +283,12 @@ const changeTheme = (e: MouseEvent) => {
   setToStorage({ theme });
 };
 
-const hideVideo = (el: HTMLElement, hiddenCreators: string[], creatorSettings: Record<string, CreatorSettings>, hideWatched: boolean, hidePerc: number) => {
+const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSettings>, hideWatched: boolean, hidePerc: number) => {
   const creator = creatorLink(el)?.split('/')?.[1];
   const uploadTime = Date.parse(uploadTimeLocation(el).dateTime);
   let hide = false;
   if (creator === '_dummy_channel_') hide = true;
-  if (creator && hiddenCreators.indexOf(creator) !== -1) {
+  if (creator && creator in creatorSettings && creatorSettings[creator].hideCompletely) {
     console.debug('Hiding video by creator', creator, `https://${getBase()}/${creator}`);
     hide = true;
   }

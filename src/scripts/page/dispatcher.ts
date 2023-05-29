@@ -6,14 +6,13 @@ export const eventPrefix = 'enebula' as const;
 export const navigatePrefix = `${eventPrefix}-navigate` as const;
 export const loadPrefix = `${eventPrefix}-load` as const;
 export const xhrPrefix = `${eventPrefix}-xhr` as const;
-export const knownPages = [ 'myshows', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings' ] as const;
+export const knownPages = ['myshows', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings'] as const;
 
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
 export const videoselector = 'a[href^="/videos/"][aria-hidden]';
 
 const optionsDefaults = {
-  hiddenCreators: [] as string[],
   hideVideosEnabled: false,
   hideVideosPerc: 80,
   creatorSettings: {} as Record<string, CreatorSettings>,
@@ -42,7 +41,8 @@ export const init = async () => {
     ...xhrresponseget,
     get() {
       let responseText: string = xhrresponseget.get.apply(this);
-      const { hiddenCreators, hideVideosEnabled, hideVideosPerc, creatorHideAfter } = options;
+      const { creatorSettings, hideVideosEnabled, hideVideosPerc, creatorHideAfter } = options;
+      const hiddenCreators = Object.keys(creatorSettings).filter(c => creatorSettings[c].hideCompletely);
       collectEngagement(this, responseText);
       responseText = filterVideos(this, responseText, hiddenCreators, creatorHideAfter, hideVideosEnabled ? hideVideosPerc : undefined);
       responseText = filterFeatured(this, responseText, hiddenCreators, creatorHideAfter, hideVideosEnabled ? hideVideosPerc : undefined);
