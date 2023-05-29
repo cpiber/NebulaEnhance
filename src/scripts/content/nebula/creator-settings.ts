@@ -57,7 +57,7 @@ const show = async () => {
   const { creatorSettings: { [creator]: settings } } = await getFromStorage({ creatorSettings: {} as Record<string, CreatorSettings> });
 
   const container = document.createElement('div');
-  container.classList.toggle('hidden', settings?.hideCompletely);
+  container.classList.toggle('hidden', !!settings?.hideCompletely);
   const creatorHidden = container.appendChild(document.createElement('div'));
   creatorHidden.appendChild(document.createElement('span')).textContent = hideCreator;
   creatorHidden.classList.add('enhancer-hideCreator', 'hide');

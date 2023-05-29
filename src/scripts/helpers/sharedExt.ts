@@ -29,6 +29,7 @@ export const toggleHideCreator = async (creator: string, hide: boolean) => {
   creatorSettings[creator].hideCompletely = hide;
   console.debug(hide ? 'Hiding creator' : 'Showing creator', creator);
   notification(hide ? hidingCreator : showingCreator);
+  trimCreatorSettings(creatorSettings);
   await setToStorage({ creatorSettings });
   return creatorSettings;
 };
@@ -39,8 +40,17 @@ export const setCreatorHideAfter = async (creator: string, hideAfter: string) =>
   if (!(creator in creatorSettings)) creatorSettings[creator] = {};
   hideAfter = hideAfter.trim();
   creatorSettings[creator].hideAfter = hideAfter !== '' ? hideAfter : undefined;
+  trimCreatorSettings(creatorSettings);
   await setToStorage({ creatorSettings });
   return creatorSettings;
+};
+
+const trimCreatorSettings = (creatorSettings: Record<string, CreatorSettings>) => {
+  for (const prop in creatorSettings) {
+    if (!creatorSettings[prop].hideCompletely) delete creatorSettings[prop].hideCompletely;
+    if (!creatorSettings[prop].hideAfter) delete creatorSettings[prop].hideAfter;
+    if (!Object.keys(creatorSettings[prop]).length) delete creatorSettings[prop];
+  }
 };
 
 export const uploadIsBefore = (upload: number, seconds: number | string) => {

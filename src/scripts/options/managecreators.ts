@@ -35,7 +35,7 @@ export const showManageCreators = withLoader(async () => {
   // This could get expensive for long lists of channels...
   // but no way to query multiple slugs, alternative: check all at some point
   const cr = await Promise.all(Object.keys(creatorSettings).filter(c => creatorSettings[c].hideCompletely).map(getChannel));
-  const c = cr.sort((a, b) => {
+  const c = cr.filter(c => c !== null).sort((a, b) => {
     const nameA = a.title.toUpperCase();
     const nameB = b.title.toUpperCase();
     if (nameA < nameB) return -1;
