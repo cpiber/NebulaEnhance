@@ -44,7 +44,9 @@ export const getChannel = async (name: string) => {
       referrer: `https://${getApiBase()}/`,
       method: 'GET',
     });
-  } catch { return null; }
+  } catch {
+    return null;
+  }
 };
 
 export const getChannelVideos = async (name: string, num = Infinity) => {

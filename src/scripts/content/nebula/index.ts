@@ -28,7 +28,6 @@ export const nebula = async () => {
     customScriptPage,
     hideVideosEnabled,
     hideVideosPerc,
-    creatorSettings,
     visitedColor,
   } = options = await getFromStorage(optionsDefaults);
 
