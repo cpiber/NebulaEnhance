@@ -1,7 +1,7 @@
 import iconSettings from '../../icons/settings.svg';
 import { CreatorSettings, showSettingsModal } from '../content/nebula/creator-settings';
 import { getChannel } from '../helpers/api';
-import { getBrowserInstance, getFromStorage, parseTimeString, setCreatorHideAfter, toggleHideCreator } from '../helpers/sharedExt';
+import { getBrowserInstance, getFromStorage, parseTimeString, setCreatorHideAfter, setCreatorHideLonger, toggleHideCreator } from '../helpers/sharedExt';
 import { buildModal, withLoader } from './modal';
 
 const msg = getBrowserInstance().i18n.getMessage;
@@ -79,14 +79,27 @@ const click = async (creator: string, e: MouseEvent) => {
 const change = async (creator: string, e: Event) => {
   const target = e.target as HTMLInputElement;
 
-  if (target.id !== 'hide-after') return;
-  target.classList.toggle('has-value', !!target.value);
-  const warning = target.closest('.enhancer-field').nextElementSibling;
-  try {
-    warning.textContent = '';
-    parseTimeString(target.value);
-    await setCreatorHideAfter(creator, target.value);
-  } catch (ex) {
-    warning.textContent = ex;
+  if (target.id === 'hide-after') {
+    target.classList.toggle('has-value', !!target.value);
+    const warning = target.closest('.enhancer-field').nextElementSibling;
+    try {
+      warning.textContent = '';
+      parseTimeString(target.value);
+      await setCreatorHideAfter(creator, target.value);
+    } catch (ex) {
+      warning.textContent = ex;
+    }
+  }
+
+  if (target.id === 'hide-longer') {
+    target.classList.toggle('has-value', !!target.value);
+    const warning = target.closest('.enhancer-field').nextElementSibling;
+    try {
+      warning.textContent = '';
+      parseTimeString(target.value);
+      await setCreatorHideLonger(creator, target.value);
+    } catch (ex) {
+      warning.textContent = ex;
+    }
   }
 };

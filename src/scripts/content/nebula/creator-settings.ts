@@ -3,7 +3,7 @@ import iconRSS from '../../../icons/rss.svg';
 import iconSettings from '../../../icons/settings.svg';
 import iconShow from '../../../icons/show.svg';
 import { buildModal } from '../../helpers/modal';
-import { getApiBase, getBrowserInstance, getFromStorage, notification, parseTimeString, setCreatorHideAfter, toggleHideCreator } from '../../helpers/sharedExt';
+import { getApiBase, getBrowserInstance, getFromStorage, notification, parseTimeString, setCreatorHideAfter, setCreatorHideLonger, toggleHideCreator } from '../../helpers/sharedExt';
 
 const msg = getBrowserInstance().i18n.getMessage;
 const hideCreator = msg('pageHideCreator');
@@ -134,16 +134,18 @@ const click = async (e: MouseEvent) => {
   const target = e.target as HTMLElement;
 
   if (target.closest('.enhancer-creator-settings') !== null) return show();
+  const creator = window.location.pathname.split('/')[1];
 
   const hideCreator = target.closest('.enhancer-hideCreator');
   const container = document.querySelector('.creator-settings-modal .body > div');
   if (hideCreator === null || container === null) return;
   const hide = container.classList.toggle('hidden');
-  await toggleHideCreator(window.location.pathname.substring(1), hide);
+  await toggleHideCreator(creator, hide);
 };
 
 const change = async (e: Event) => {
   const target = e.target as HTMLInputElement;
+  const creator = window.location.pathname.split('/')[1];
 
   if (target.id === 'hide-after') {
     target.classList.toggle('has-value', !!target.value);
@@ -151,7 +153,7 @@ const change = async (e: Event) => {
     try {
       warning.textContent = '';
       parseTimeString(target.value);
-      await setCreatorHideAfter(window.location.pathname.substring(1), target.value);
+      await setCreatorHideAfter(creator, target.value);
       notification(savedtext);
     } catch (ex) {
       warning.textContent = ex;
@@ -164,7 +166,7 @@ const change = async (e: Event) => {
     try {
       warning.textContent = '';
       parseTimeString(target.value);
-      await setCreatorHideAfter(window.location.pathname.substring(1), target.value);
+      await setCreatorHideLonger(creator, target.value);
       notification(savedtext);
     } catch (ex) {
       warning.textContent = ex;
