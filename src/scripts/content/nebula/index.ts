@@ -1,7 +1,7 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
-import { creatorLink, isWatchProgress, queueBottonLocation, uploadTimeLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
-import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, setToStorage, uploadIsBefore, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { creatorLink, isWatchProgress, queueBottonLocation, uploadDurationLocation, uploadTimeLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
+import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, parseDuration, setToStorage, toTimeString, uploadIsBefore, uploadIsLongerThan, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { CreatorSettings, addCreatorSettings, init as initCreator } from './creator-settings';
@@ -285,6 +285,7 @@ const changeTheme = (e: MouseEvent) => {
 const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSettings>, hideWatched: boolean, hidePerc: number) => {
   const creator = creatorLink(el)?.split('/')?.[1];
   const uploadTime = Date.parse(uploadTimeLocation(el).dateTime);
+  const duration = parseDuration(uploadDurationLocation(el).textContent);
   let hide = false;
   if (creator === '_dummy_channel_') hide = true;
   if (creator && creator in creatorSettings && creatorSettings[creator].hideCompletely) {
@@ -293,6 +294,10 @@ const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSetti
   }
   if (creator && creator in creatorSettings && creatorSettings[creator].hideAfter && uploadIsBefore(uploadTime, creatorSettings[creator].hideAfter)) {
     console.debug('Hiding video as too old, uploaded at', new Date(uploadTime));
+    hide = true;
+  }
+  if (creator && creator in creatorSettings && creatorSettings[creator].hideIfLonger && uploadIsLongerThan(duration, creatorSettings[creator].hideIfLonger)) {
+    console.debug('Hiding video as too long, duration', toTimeString(duration));
     hide = true;
   }
   const watchProgress = watchProgressLocation(el);

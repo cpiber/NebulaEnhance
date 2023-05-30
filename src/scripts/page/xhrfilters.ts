@@ -1,4 +1,4 @@
-import { uploadIsBefore } from '../helpers/shared';
+import { uploadIsBefore, uploadIsLongerThan } from '../helpers/shared';
 
 /* eslint-disable camelcase */
 const createDummyVideo = (): Nebula.Video => ({
@@ -30,7 +30,7 @@ const createDummyVideo = (): Nebula.Video => ({
 const engagementCache: Record<string, number> = {};
 
 const vidregex = /^\/(?:library\/)?video_episodes\/*$/;
-export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[], creatorSettings: Record<string, number>, watchperc: number | undefined): string => {
+export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[], creatorHideAfter: Record<string, number>, creatorHideIfLonger: Record<string, number>, watchperc: number | undefined): string => {
   const url = xhr.responseURL;
   console.dev.debug('Considering', url, 'for filtering video list');
   if (url.indexOf('/video_episodes') === -1) return text;
@@ -56,9 +56,15 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
     const len3 = content.results.length;
     content.results = content.results.filter(r => {
       const creator = r.channel_slug;
-      return !(creator in creatorSettings) || !uploadIsBefore(Date.parse(r.published_at), creatorSettings[creator]);
+      return !(creator in creatorHideAfter) || !uploadIsBefore(Date.parse(r.published_at), creatorHideAfter[creator]);
     });
     console.debug('Hiding', len3 - content.results.length, 'older video(s)');
+    const len4 = content.results.length;
+    content.results = content.results.filter(r => {
+      const creator = r.channel_slug;
+      return !(creator in creatorHideIfLonger) || !uploadIsLongerThan(r.duration, creatorHideIfLonger[creator]);
+    });
+    console.debug('Hiding', len4 - content.results.length, 'long video(s)');
     if (len !== 0 && content.results.length === 0) content.results.push(createDummyVideo());
     return JSON.stringify(content);
   } catch (e) {
@@ -96,7 +102,7 @@ export const collectEngagement = (xhr: XMLHttpRequest, text: string): void => {
 };
 
 const featregex = /^\/featured\/*$/;
-export const filterFeatured = (xhr: XMLHttpRequest, text: string, filter: string[], creatorSettings: Record<string, number>, watchperc: number | undefined): string => {
+export const filterFeatured = (xhr: XMLHttpRequest, text: string, filter: string[], creatorHideAfter: Record<string, number>, creatorHideIfLonger: Record<string, number>, watchperc: number | undefined): string => {
   const url = xhr.responseURL;
   console.dev.debug('Considering', url, 'for filtering featured');
   if (url.indexOf('/featured') === -1) return text;
@@ -108,6 +114,7 @@ export const filterFeatured = (xhr: XMLHttpRequest, text: string, filter: string
     let hidden = 0;
     let watched = 0;
     let old = 0;
+    const long = 0;
     for (let i = 0; i < content.length; ++i) {
       if (content[i].type !== 'latest_videos') continue;
       const c = content[i] as Nebula.FeaturedVideos;
@@ -128,13 +135,20 @@ export const filterFeatured = (xhr: XMLHttpRequest, text: string, filter: string
       const len3 = c.items.length;
       c.items = c.items.filter(r => {
         const creator = r.channel_slug;
-        return !(creator in creatorSettings) || !uploadIsBefore(Date.parse(r.published_at), creatorSettings[creator]);
+        return !(creator in creatorHideAfter) || !uploadIsBefore(Date.parse(r.published_at), creatorHideAfter[creator]);
       });
       old += len3 - c.items.length;
+      const len4 = c.items.length;
+      c.items = c.items.filter(r => {
+        const creator = r.channel_slug;
+        return !(creator in creatorHideIfLonger) || !uploadIsLongerThan(r.duration, creatorHideIfLonger[creator]);
+      });
+      old += len4 - c.items.length;
     }
     console.debug('Hiding', hidden, 'video(s) by hidden creators');
     if (watchperc !== undefined) console.debug('Hiding', watched, 'watched video(s) with', Object.keys(engagementCache).length, 'in engagement cache');
     console.debug('Hiding', old, 'older video(s)');
+    console.debug('Hiding', long, 'long video(s)');
     return JSON.stringify(content);
   } catch (e) {
     console.groupCollapsed('Error filtering', url);

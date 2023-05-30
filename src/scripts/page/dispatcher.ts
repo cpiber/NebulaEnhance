@@ -17,6 +17,7 @@ const optionsDefaults = {
   hideVideosPerc: 80,
   creatorSettings: {} as Record<string, CreatorSettings>,
   creatorHideAfter: {} as Record<string, number>,
+  creatorHideIfLonger: {} as Record<string, number>,
 };
 let options = { ...optionsDefaults };
 
@@ -41,11 +42,11 @@ export const init = async () => {
     ...xhrresponseget,
     get() {
       let responseText: string = xhrresponseget.get.apply(this);
-      const { creatorSettings, hideVideosEnabled, hideVideosPerc, creatorHideAfter } = options;
+      const { creatorSettings, hideVideosEnabled, hideVideosPerc, creatorHideAfter, creatorHideIfLonger } = options;
       const hiddenCreators = Object.keys(creatorSettings).filter(c => creatorSettings[c].hideCompletely);
       collectEngagement(this, responseText);
-      responseText = filterVideos(this, responseText, hiddenCreators, creatorHideAfter, hideVideosEnabled ? hideVideosPerc : undefined);
-      responseText = filterFeatured(this, responseText, hiddenCreators, creatorHideAfter, hideVideosEnabled ? hideVideosPerc : undefined);
+      responseText = filterVideos(this, responseText, hiddenCreators, creatorHideAfter, creatorHideIfLonger, hideVideosEnabled ? hideVideosPerc : undefined);
+      responseText = filterFeatured(this, responseText, hiddenCreators, creatorHideAfter, creatorHideIfLonger, hideVideosEnabled ? hideVideosPerc : undefined);
       return responseText;
     },
   });
@@ -53,9 +54,14 @@ export const init = async () => {
   const localeTimeMappings = await sendMessage(Message.GET_MESSAGE, { message: 'miscTimeLocaleMappings' });
   const transformCreatorSettings = () => {
     options.creatorHideAfter = {};
+    options.creatorHideIfLonger = {};
     for (const prop in options.creatorSettings) {
-      if (!options.creatorSettings[prop].hideAfter) continue;
-      options.creatorHideAfter[prop] = parseTimeString(options.creatorSettings[prop].hideAfter, 'Time string contains invalid elements', localeTimeMappings, unit => `Invalid unit ${unit}`);
+      if (options.creatorSettings[prop].hideAfter) {
+        options.creatorHideAfter[prop] = parseTimeString(options.creatorSettings[prop].hideAfter, 'Time string contains invalid elements', localeTimeMappings, unit => `Invalid unit ${unit}`);
+      }
+      if (options.creatorSettings[prop].hideIfLonger) {
+        options.creatorHideIfLonger[prop] = parseTimeString(options.creatorSettings[prop].hideIfLonger, 'Time string contains invalid elements', localeTimeMappings, unit => `Invalid unit ${unit}`);
+      }
     }
   };
 

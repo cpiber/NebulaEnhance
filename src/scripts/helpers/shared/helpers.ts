@@ -192,6 +192,9 @@ export const uploadIsBefore = (upload: number, seconds: number) => {
   const before = Date.now() - seconds * 1000;
   return upload < before;
 };
+export const uploadIsLongerThan = (duration: number, seconds: number) => {
+  return duration > seconds;
+};
 
 const timeMapping: Record<string, number> = {
   w: 7 * 24 * 60 * 60,
@@ -223,3 +226,4 @@ export const toTimeString = (seconds: number): string => {
   console.assert(rest >= 0 && rest < 1, `Expected no rest, got ${rest}`);
   return str.trim();
 };
+export const parseDuration = (time: string): number => time.split(':').reverse().reduce((sum, v, i) => sum + (+v) * Math.pow(60, i), 0);

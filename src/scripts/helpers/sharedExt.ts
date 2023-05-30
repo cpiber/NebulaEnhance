@@ -71,4 +71,9 @@ export const uploadIsBefore = (upload: number, seconds: number | string) => {
   return upload < before;
 };
 
+export const uploadIsLongerThan = (duration: number, seconds: number | string) => {
+  if (typeof seconds === 'string') seconds = parseTimeString(seconds);
+  return duration > seconds;
+};
+
 export const parseTimeString = (str: string): number => _parseTimeString(str, invalidElements, localeTimeMappings, unit => browser.i18n.getMessage('miscTimeInvalidUnit', unit));
