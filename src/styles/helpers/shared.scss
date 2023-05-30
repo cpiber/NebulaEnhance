@@ -360,3 +360,47 @@
     }
   }
 }
+
+.enhancer-hideCreator {
+  cursor: pointer;
+
+  button {
+    height: 1em;
+  }
+
+  .creator-settings-modal .body > .hidden &.hide {
+    display: none;
+  }
+
+  .creator-settings-modal .body > :not(.hidden) &.show {
+    display: none;
+  }
+}
+
+.enhancer-creator-settings,
+.enhancer-hideCreator button {
+  border: none;
+  background: none;
+  margin-left: auto;
+  color: inherit;
+  cursor: pointer;
+  position: relative;
+  padding: 0 0 0 5px;
+
+  svg {
+    fill: white;
+    fill: currentcolor;
+    opacity: 0.7;
+    height: 100%;
+    width: auto;
+  }
+
+  @media only screen and (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    padding: 7px;
+    background-color: var(--this-bg-color, var(--bg-color));
+    border: var(--this-border, none);
+    border-radius: 15px;
+  }
+}

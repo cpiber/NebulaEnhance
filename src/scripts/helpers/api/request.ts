@@ -38,16 +38,10 @@ export const getVideo = (name: string) => request<Nebula.Video>(`https://content
   method: 'GET',
 });
 
-export const getChannel = async (name: string) => {
-  try {
-    return await request<Nebula.Channel>(`https://content.api.${getApiBase()}/content/${name}/`, {
-      referrer: `https://${getApiBase()}/`,
-      method: 'GET',
-    });
-  } catch {
-    return null;
-  }
-};
+export const getChannel = (name: string) => request<Nebula.Channel>(`https://content.api.${getApiBase()}/content/${name}/`, {
+  referrer: `https://${getApiBase()}/`,
+  method: 'GET',
+});
 
 export const getChannelVideos = async (name: string, num = Infinity) => {
   const channel = await getChannel(name);

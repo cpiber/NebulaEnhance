@@ -54,6 +54,10 @@ const followFromContainer = (container: HTMLElement) => Array.from(container.chi
 
 const show = async () => {
   const creator = window.location.pathname.split('/')[1];
+  return showSettingsModal(creator);
+};
+
+export const showSettingsModal = async (creator: string) => {
   const { creatorSettings: { [creator]: settings } } = await getFromStorage({ creatorSettings: {} as Record<string, CreatorSettings> });
 
   const container = document.createElement('div');
@@ -95,7 +99,7 @@ const show = async () => {
   const warn = container.appendChild(document.createElement('p'));
   warn.className = 'warning';
 
-  buildModal(modalTitle, container, 'creator-settings-modal');
+  return buildModal(modalTitle, container, 'creator-settings-modal');
 };
 
 const click = async (e: MouseEvent) => {

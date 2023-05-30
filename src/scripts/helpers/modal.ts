@@ -20,8 +20,12 @@ export const buildModal = (title: string, body?: Element, classes: string = unde
   content.className = 'body content';
   if (body) content.append(body);
   content.append(...more);
-  close.addEventListener('click', () => wrapper.style.display = 'none');
-  return wrapper;
+  return new Promise(resolve => {
+    close.addEventListener('click', () => {
+      wrapper.style.display = 'none';
+      resolve(void 0);
+    });
+  });
 };
 
 type RetPromise<T> = T extends (...args: any[]) => infer R ? R extends Promise<any> ? R : Promise<R> : never;
