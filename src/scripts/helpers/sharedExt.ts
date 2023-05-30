@@ -45,10 +45,22 @@ export const setCreatorHideAfter = async (creator: string, hideAfter: string) =>
   return creatorSettings;
 };
 
+export const setCreatorHideLonger = async (creator: string, hideLonger: string) => {
+  // let's hope we don't get interrupted here, could lose data, but no way to lock...
+  const { creatorSettings } = await getFromStorage({ creatorSettings: {} as Record<string, CreatorSettings> });
+  if (!(creator in creatorSettings)) creatorSettings[creator] = {};
+  hideLonger = hideLonger.trim();
+  creatorSettings[creator].hideIfLonger = hideLonger !== '' ? hideLonger : undefined;
+  trimCreatorSettings(creatorSettings);
+  await setToStorage({ creatorSettings });
+  return creatorSettings;
+};
+
 const trimCreatorSettings = (creatorSettings: Record<string, CreatorSettings>) => {
   for (const prop in creatorSettings) {
     if (!creatorSettings[prop].hideCompletely) delete creatorSettings[prop].hideCompletely;
     if (!creatorSettings[prop].hideAfter) delete creatorSettings[prop].hideAfter;
+    if (!creatorSettings[prop].hideIfLonger) delete creatorSettings[prop].hideIfLonger;
     if (!Object.keys(creatorSettings[prop]).length) delete creatorSettings[prop];
   }
 };

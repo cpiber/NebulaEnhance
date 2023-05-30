@@ -335,6 +335,14 @@
     "message": "Time after which to hide videos, empty to not hide, e.g. <code>1d</code>",
     "description": "Placeholder to show for hide-after settings"
   },
+  "pageHideLonger": {
+    "message": "Hide Videos if longer than:",
+    "description": "Title for hide-longer setting"
+  },
+  "pageHideLongerHint": {
+    "message": "Max. duration after which to hide videos, empty to not hide, e.g. <code>1d</code>",
+    "description": "Placeholder to show for hide-longer settings"
+  },
   "credits": {
     "message": "Constantin Piber :: <a href=\"https://github.com/cpiber/NebulaEnhance\" target=\"_blank\">Source</a> :: <a href=\"https://github.com/cpiber/NebulaEnhance/issues\" target=\"_blank\">Bugs and Feature Requests</a>",
     "description": "Credit footer."

@@ -11,10 +11,13 @@ const showCreator = msg('pageShowCreator');
 const modalTitle = msg('pageCreatorSettings');
 const hideAfter = msg('pageHideAfter');
 const hideAfterHint = msg('pageHideAfterHint');
+const hideLonger = msg('pageHideLonger');
+const hideLongerHint = msg('pageHideLongerHint');
 const savedtext = getBrowserInstance().i18n.getMessage('optionsSavedNote');
 
 export type CreatorSettings = {
   hideAfter?: string,
+  hideIfLonger?: string,
   hideCompletely?: boolean,
 };
 
@@ -79,25 +82,45 @@ export const showSettingsModal = async (creator: string) => {
 
   container.appendChild(document.createElement('br'));
 
-  const field = container.appendChild(document.createElement('div'));
-  field.className = 'enhancer-field';
-  const title = field.appendChild(document.createElement('h3'));
-  title.className = 'enhancer-field-title i18n';
-  title.textContent = hideAfter;
+  const after_field = container.appendChild(document.createElement('div'));
+  after_field.className = 'enhancer-field';
+  const after_title = after_field.appendChild(document.createElement('h3'));
+  after_title.className = 'enhancer-field-title i18n';
+  after_title.textContent = hideAfter;
 
-  const control = field.appendChild(document.createElement('div'));
-  control.className = 'enhancer-control';
-  const input = control.appendChild(document.createElement('input'));
-  input.className = 'enhancer-text-input is-monospace';
-  input.id = 'hide-after';
-  input.value = settings?.hideAfter ?? '';
-  input.classList.toggle('has-value', !!settings?.hideAfter);
-  const label = control.appendChild(document.createElement('label'));
-  label.htmlFor = 'hide-after';
-  label.innerHTML = hideAfterHint;
+  const after_control = after_field.appendChild(document.createElement('div'));
+  after_control.className = 'enhancer-control';
+  const after_input = after_control.appendChild(document.createElement('input'));
+  after_input.className = 'enhancer-text-input is-monospace';
+  after_input.id = 'hide-after';
+  after_input.value = settings?.hideAfter ?? '';
+  after_input.classList.toggle('has-value', !!settings?.hideAfter);
+  const after_label = after_control.appendChild(document.createElement('label'));
+  after_label.htmlFor = 'hide-after';
+  after_label.innerHTML = hideAfterHint;
 
-  const warn = container.appendChild(document.createElement('p'));
-  warn.className = 'warning';
+  const after_warn = container.appendChild(document.createElement('p'));
+  after_warn.className = 'warning';
+
+  const longer_field = container.appendChild(document.createElement('div'));
+  longer_field.className = 'enhancer-field';
+  const longer_title = longer_field.appendChild(document.createElement('h3'));
+  longer_title.className = 'enhancer-field-title i18n';
+  longer_title.textContent = hideLonger;
+
+  const longer_control = longer_field.appendChild(document.createElement('div'));
+  longer_control.className = 'enhancer-control';
+  const longer_input = longer_control.appendChild(document.createElement('input'));
+  longer_input.className = 'enhancer-text-input is-monospace';
+  longer_input.id = 'hide-longer';
+  longer_input.value = settings?.hideIfLonger ?? '';
+  longer_input.classList.toggle('has-value', !!settings?.hideIfLonger);
+  const longer_label = longer_control.appendChild(document.createElement('label'));
+  longer_label.htmlFor = 'hide-longer';
+  longer_label.innerHTML = hideLongerHint;
+
+  const longer_warn = container.appendChild(document.createElement('p'));
+  longer_warn.className = 'warning';
 
   return buildModal(modalTitle, container, 'creator-settings-modal');
 };
@@ -117,15 +140,29 @@ const click = async (e: MouseEvent) => {
 const change = async (e: Event) => {
   const target = e.target as HTMLInputElement;
 
-  if (target.id !== 'hide-after') return;
-  target.classList.toggle('has-value', !!target.value);
-  const warning = target.closest('.enhancer-field').nextElementSibling;
-  try {
-    warning.textContent = '';
-    parseTimeString(target.value);
-    await setCreatorHideAfter(window.location.pathname.substring(1), target.value);
-    notification(savedtext);
-  } catch (ex) {
-    warning.textContent = ex;
+  if (target.id === 'hide-after') {
+    target.classList.toggle('has-value', !!target.value);
+    const warning = target.closest('.enhancer-field').nextElementSibling;
+    try {
+      warning.textContent = '';
+      parseTimeString(target.value);
+      await setCreatorHideAfter(window.location.pathname.substring(1), target.value);
+      notification(savedtext);
+    } catch (ex) {
+      warning.textContent = ex;
+    }
+  }
+
+  if (target.id === 'hide-longer') {
+    target.classList.toggle('has-value', !!target.value);
+    const warning = target.closest('.enhancer-field').nextElementSibling;
+    try {
+      warning.textContent = '';
+      parseTimeString(target.value);
+      await setCreatorHideAfter(window.location.pathname.substring(1), target.value);
+      notification(savedtext);
+    } catch (ex) {
+      warning.textContent = ex;
+    }
   }
 };

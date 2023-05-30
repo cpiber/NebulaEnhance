@@ -7,6 +7,7 @@ import { buildModal, withLoader } from './modal';
 const msg = getBrowserInstance().i18n.getMessage;
 const creatorHidden = msg('pageCreatorHidden');
 const hideAfter = msg('pageHideAfter');
+const hideLonger = msg('pageHideLonger');
 
 const settingsModal = async (channel: string) => {
   const cl = click.bind(null, channel);
@@ -37,7 +38,8 @@ const buildCreator = (creatorSettings: Record<string, CreatorSettings>, channel:
   const details = h.appendChild(document.createElement('span'));
   details.className = 'details';
   if (s.hideCompletely) details.textContent = `(${creatorHidden})`;
-  else details.textContent = `(${hideAfter} ${s.hideAfter})`;
+  else if (s.hideAfter) details.textContent = `(${hideAfter} ${s.hideAfter})`;
+  else details.textContent = `(${hideLonger} ${s.hideIfLonger})`;
   const buttonSettings = h.appendChild(document.createElement('button'));
   buttonSettings.innerHTML = iconSettings;
   buttonSettings.classList.add('enhancer-creator-settings');
