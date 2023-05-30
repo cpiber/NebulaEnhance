@@ -145,6 +145,11 @@ label + .enhancer-control,
       fill: currentcolor;
     }
   }
+
+  .details {
+    font-size: 0.65em;
+    padding-left: 1em;
+  }
 }
 
 .manage-hidden .body > p {

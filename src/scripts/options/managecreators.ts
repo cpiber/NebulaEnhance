@@ -5,6 +5,8 @@ import { getBrowserInstance, getFromStorage, parseTimeString, setCreatorHideAfte
 import { buildModal, withLoader } from './modal';
 
 const msg = getBrowserInstance().i18n.getMessage;
+const creatorHidden = msg('pageCreatorHidden');
+const hideAfter = msg('pageHideAfter');
 
 const settingsModal = async (channel: string) => {
   const cl = click.bind(null, channel);
@@ -17,7 +19,8 @@ const settingsModal = async (channel: string) => {
   showManageCreators();
 };
 
-const buildCreator = (channel: Nebula.Channel) => {
+const buildCreator = (creatorSettings: Record<string, CreatorSettings>, channel: Partial<Nebula.Channel>) => {
+  const { [channel.slug]: s } = creatorSettings;
   const el = document.createElement('div');
   el.className = 'hidden-creator';
   const h = el.appendChild(document.createElement('h2'));
@@ -31,6 +34,10 @@ const buildCreator = (channel: Nebula.Channel) => {
   link.target = '_blank';
   link.innerText = channel.title;
   link.title = channel.slug;
+  const details = h.appendChild(document.createElement('span'));
+  details.className = 'details';
+  if (s.hideCompletely) details.textContent = `(${creatorHidden})`;
+  else details.textContent = `(${hideAfter} ${s.hideAfter})`;
   const buttonSettings = h.appendChild(document.createElement('button'));
   buttonSettings.innerHTML = iconSettings;
   buttonSettings.classList.add('enhancer-creator-settings');
@@ -53,7 +60,7 @@ export const showManageCreators = withLoader(async () => {
     if (nameA < nameB) return -1;
     if (nameA > nameB) return 1;
     return 0;
-  }).map(buildCreator);
+  }).map(c => buildCreator(creatorSettings, c));
   buildModal(msg('optionsManageHiddenCreators'), msg('optionsManageHiddenCreatorsNone'), 'manage-hidden', ...c);
 });
 
