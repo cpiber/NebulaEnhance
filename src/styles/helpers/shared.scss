@@ -23,6 +23,7 @@
       color: $gray;
       font-size: 12px;
       left: 16px;
+      right: 16px;
       position: absolute;
       top: 50%;
       margin-top: -8px;
@@ -31,6 +32,9 @@
       z-index: 100;
       transform: none;
       pointer-events: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     input {
@@ -68,7 +72,8 @@
         &[placeholder] {
           & + label {
             color: $blueish_light;
-            transform: scale(0.8) translate(-5px, -8px);
+            transform: translate(-5px, -8px);
+            font-size: 70%;
           }
         }
 
@@ -264,10 +269,9 @@
   }
 
   @media only screen and (max-width: 768px) {
-    width: 30px;
-    height: 30px;
+    height: 30px !important;
     padding: 7px;
-    background-color: var(--this-bg-color, var(--bg-color));
+    background-color: var(--this-bg-color, rgb(111, 188, 230));
     border: var(--this-border, none);
     border-radius: 15px;
   }

@@ -33,6 +33,9 @@ export const addCreatorSettings = async () => {
   const container = h1?.parentElement;
   if (!container) return;
   const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? followFromContainer(container) : undefined;
+  const link = document.querySelector('a');
+  if (link) container.style.setProperty('--this-bg-color', window.getComputedStyle(link).color);
+  if (link) container.style.setProperty('--this-border', window.getComputedStyle(link).color);
   if (follow) container.style.setProperty('--this-bg-color', window.getComputedStyle(follow).backgroundColor);
   if (follow) container.style.setProperty('--this-border', window.getComputedStyle(follow).border);
   const creator = window.location.pathname.split('/')[1];
@@ -87,6 +90,7 @@ export const showSettingsModal = async (creator: string) => {
   const after_title = after_field.appendChild(document.createElement('h3'));
   after_title.className = 'enhancer-field-title i18n';
   after_title.textContent = hideAfter;
+  after_title.title = hideAfterHint.replace(/<\/?\w+>/g, '');
 
   const after_control = after_field.appendChild(document.createElement('div'));
   after_control.className = 'enhancer-control';
@@ -107,6 +111,7 @@ export const showSettingsModal = async (creator: string) => {
   const longer_title = longer_field.appendChild(document.createElement('h3'));
   longer_title.className = 'enhancer-field-title i18n';
   longer_title.textContent = hideLonger;
+  longer_title.title = hideLongerHint.replace(/<\/?\w+>/g, '');
 
   const longer_control = longer_field.appendChild(document.createElement('div'));
   longer_control.className = 'enhancer-control';
