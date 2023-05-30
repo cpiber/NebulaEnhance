@@ -85,47 +85,47 @@ export const showSettingsModal = async (creator: string) => {
 
   container.appendChild(document.createElement('br'));
 
-  const after_field = container.appendChild(document.createElement('div'));
-  after_field.className = 'enhancer-field';
-  const after_title = after_field.appendChild(document.createElement('h3'));
-  after_title.className = 'enhancer-field-title i18n';
-  after_title.textContent = hideAfter;
-  after_title.title = hideAfterHint.replace(/<\/?\w+>/g, '');
+  const afterField = container.appendChild(document.createElement('div'));
+  afterField.className = 'enhancer-field';
+  const afterTitle = afterField.appendChild(document.createElement('h3'));
+  afterTitle.className = 'enhancer-field-title i18n';
+  afterTitle.textContent = hideAfter;
+  afterTitle.title = hideAfterHint.replace(/<\/?\w+>/g, '');
 
-  const after_control = after_field.appendChild(document.createElement('div'));
-  after_control.className = 'enhancer-control';
-  const after_input = after_control.appendChild(document.createElement('input'));
-  after_input.className = 'enhancer-text-input is-monospace';
-  after_input.id = 'hide-after';
-  after_input.value = settings?.hideAfter ?? '';
-  after_input.classList.toggle('has-value', !!settings?.hideAfter);
-  const after_label = after_control.appendChild(document.createElement('label'));
-  after_label.htmlFor = 'hide-after';
-  after_label.innerHTML = hideAfterHint;
+  const afterControl = afterField.appendChild(document.createElement('div'));
+  afterControl.className = 'enhancer-control';
+  const afterInput = afterControl.appendChild(document.createElement('input'));
+  afterInput.className = 'enhancer-text-input is-monospace';
+  afterInput.id = 'hide-after';
+  afterInput.value = settings?.hideAfter ?? '';
+  afterInput.classList.toggle('has-value', !!settings?.hideAfter);
+  const afterLabel = afterControl.appendChild(document.createElement('label'));
+  afterLabel.htmlFor = 'hide-after';
+  afterLabel.innerHTML = hideAfterHint;
 
-  const after_warn = container.appendChild(document.createElement('p'));
-  after_warn.className = 'warning';
+  const afterWarn = container.appendChild(document.createElement('p'));
+  afterWarn.className = 'warning';
 
-  const longer_field = container.appendChild(document.createElement('div'));
-  longer_field.className = 'enhancer-field';
-  const longer_title = longer_field.appendChild(document.createElement('h3'));
-  longer_title.className = 'enhancer-field-title i18n';
-  longer_title.textContent = hideLonger;
-  longer_title.title = hideLongerHint.replace(/<\/?\w+>/g, '');
+  const longerField = container.appendChild(document.createElement('div'));
+  longerField.className = 'enhancer-field';
+  const longerTitle = longerField.appendChild(document.createElement('h3'));
+  longerTitle.className = 'enhancer-field-title i18n';
+  longerTitle.textContent = hideLonger;
+  longerTitle.title = hideLongerHint.replace(/<\/?\w+>/g, '');
 
-  const longer_control = longer_field.appendChild(document.createElement('div'));
-  longer_control.className = 'enhancer-control';
-  const longer_input = longer_control.appendChild(document.createElement('input'));
-  longer_input.className = 'enhancer-text-input is-monospace';
-  longer_input.id = 'hide-longer';
-  longer_input.value = settings?.hideIfLonger ?? '';
-  longer_input.classList.toggle('has-value', !!settings?.hideIfLonger);
-  const longer_label = longer_control.appendChild(document.createElement('label'));
-  longer_label.htmlFor = 'hide-longer';
-  longer_label.innerHTML = hideLongerHint;
+  const longerControl = longerField.appendChild(document.createElement('div'));
+  longerControl.className = 'enhancer-control';
+  const longerInput = longerControl.appendChild(document.createElement('input'));
+  longerInput.className = 'enhancer-text-input is-monospace';
+  longerInput.id = 'hide-longer';
+  longerInput.value = settings?.hideIfLonger ?? '';
+  longerInput.classList.toggle('has-value', !!settings?.hideIfLonger);
+  const longerLabel = longerControl.appendChild(document.createElement('label'));
+  longerLabel.htmlFor = 'hide-longer';
+  longerLabel.innerHTML = hideLongerHint;
 
-  const longer_warn = container.appendChild(document.createElement('p'));
-  longer_warn.className = 'warning';
+  const longerWarn = container.appendChild(document.createElement('p'));
+  longerWarn.className = 'warning';
 
   return buildModal(modalTitle, container, 'creator-settings-modal');
 };
