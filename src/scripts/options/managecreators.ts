@@ -5,9 +5,7 @@ import { getBrowserInstance, getFromStorage, parseTimeString, setCreatorHideAfte
 import { buildModal, withLoader } from './modal';
 
 const msg = getBrowserInstance().i18n.getMessage;
-const creatorHidden = msg('pageCreatorHidden');
-const hideAfter = msg('pageHideAfter');
-const hideLonger = msg('pageHideLonger');
+const textSettings = JSON.parse(msg('optionsCreatorTexts'));
 
 const settingsModal = async (channel: string) => {
   const cl = click.bind(null, channel);
@@ -37,9 +35,16 @@ const buildCreator = (creatorSettings: Record<string, CreatorSettings>, channel:
   link.title = channel.slug;
   const details = h.appendChild(document.createElement('span'));
   details.className = 'details';
-  if (s.hideCompletely) details.textContent = `(${creatorHidden})`;
-  else if (s.hideAfter) details.textContent = `(${hideAfter} ${s.hideAfter})`;
-  else details.textContent = `(${hideLonger} ${s.hideIfLonger})`;
+  details.textContent = `(${textSettings.prefix} `;
+  if (s.hideCompletely) details.textContent += textSettings.completely;
+  else {
+    const parts = [];
+    if (s.hideAfter) parts.push(textSettings.after.replace(/\{\}/g, s.hideAfter));
+    if (s.hideIfLonger) parts.push(textSettings.longer.replace(/\{\}/g, s.hideIfLonger));
+    console.assert(parts.length > 0, 'Expected at least one setting');
+    details.textContent += parts.join(textSettings.separator);
+  }
+  details.textContent += ')';
   const buttonSettings = h.appendChild(document.createElement('button'));
   buttonSettings.innerHTML = iconSettings;
   buttonSettings.classList.add('enhancer-creator-settings');

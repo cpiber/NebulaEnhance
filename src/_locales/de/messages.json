@@ -175,6 +175,10 @@
     "message": "Keine versteckten Kanäle",
     "description": "Hinweis, dass keine creators versteckt sind."
   },
+  "optionsCreatorTexts": {
+    "message": "{\"separator\":\" oder \",\"prefix\":\"Verstecke\",\"completely\":\"alle Videos\",\"after\":\"älter als {}\",\"longer\":\"länger als {}\"}",
+    "description": "JSON-description of hide state per creator"
+  },
   "optionsCustomScriptPageTitle": {
     "message": "Custom Script für Webseite",
     "description": "Beschriftung fürs Einfügen von custom scripts zur Webseite der Optionen Seite."

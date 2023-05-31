@@ -175,6 +175,10 @@
     "message": "No creators hidden",
     "description": "Hint that no creators are hidden."
   },
+  "optionsCreatorTexts": {
+    "message": "{\"separator\":\" or \",\"prefix\":\"Hide\",\"completely\":\"all videos\",\"after\":\"older than {}\",\"longer\":\"longer than {}\"}",
+    "description": "JSON-description of hide state per creator"
+  },
   "optionsHideVideosTitle": {
     "message": "Hide watched videos",
     "description": "Label for Hide videos of options page."
