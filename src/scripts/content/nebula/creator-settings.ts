@@ -3,11 +3,13 @@ import iconRSS from '../../../icons/rss.svg';
 import iconSettings from '../../../icons/settings.svg';
 import iconShow from '../../../icons/show.svg';
 import { buildModal } from '../../helpers/modal';
-import { getApiBase, getBrowserInstance, getFromStorage, notification, parseTimeString, setCreatorHideAfter, setCreatorHideLonger, toggleHideCreator } from '../../helpers/sharedExt';
+import { getApiBase, getBrowserInstance, getFromStorage, notification, parseTimeString, setCreatorHideAfter, setCreatorHideLonger, toggleHideCreator, toggleHideCreatorPlus } from '../../helpers/sharedExt';
 
 const msg = getBrowserInstance().i18n.getMessage;
 const hideCreator = msg('pageHideCreator');
 const showCreator = msg('pageShowCreator');
+const hideCreatorPlus = msg('pageHideCreatorPlus');
+const showCreatorPlus = msg('pageShowCreatorPlus');
 const modalTitle = msg('pageCreatorSettings');
 const hideAfter = msg('pageHideAfter');
 const hideAfterHint = msg('pageHideAfterHint');
@@ -19,6 +21,7 @@ export type CreatorSettings = {
   hideAfter?: string,
   hideIfLonger?: string,
   hideCompletely?: boolean,
+  hidePlus?: boolean,
 };
 
 export const init = () => {
@@ -85,6 +88,22 @@ export const showSettingsModal = async (creator: string) => {
   buttonShown.setAttribute('aria-label', showCreator);
   buttonShown.title = showCreator;
 
+  container.classList.toggle('hide-plus', !!settings?.hidePlus);
+  const creatorPlusHidden = container.appendChild(document.createElement('div'));
+  creatorPlusHidden.appendChild(document.createElement('span')).textContent = hideCreatorPlus;
+  creatorPlusHidden.classList.add('enhancer-hideCreatorPlus', 'hide');
+  const buttonPlusHidden = creatorPlusHidden.appendChild(document.createElement('button'));
+  buttonPlusHidden.innerHTML = iconShow;
+  buttonPlusHidden.setAttribute('aria-label', hideCreatorPlus);
+  buttonPlusHidden.title = hideCreatorPlus;
+  const creatorPlusShown = container.appendChild(document.createElement('div'));
+  creatorPlusShown.appendChild(document.createElement('span')).textContent = showCreatorPlus;
+  creatorPlusShown.classList.add('enhancer-hideCreatorPlus', 'show');
+  const buttonPlusShown = creatorPlusShown.appendChild(document.createElement('button'));
+  buttonPlusShown.innerHTML = iconHide;
+  buttonPlusShown.setAttribute('aria-label', showCreatorPlus);
+  buttonPlusShown.title = showCreatorPlus;
+
   container.appendChild(document.createElement('br'));
 
   const afterField = container.appendChild(document.createElement('div'));
@@ -136,10 +155,17 @@ export const btnClick = async (creator: string, e: Event) => {
   const target = e.target as HTMLElement;
 
   const hideCreator = target.closest('.enhancer-hideCreator');
+  const hideCreatorPlus = target.closest('.enhancer-hideCreatorPlus');
   const container = document.querySelector('.creator-settings-modal .body > div');
-  if (hideCreator === null || container === null) return;
-  const hide = container.classList.toggle('hidden');
-  await toggleHideCreator(creator, hide);
+  if (container === null) return;
+  if (hideCreator !== null) {
+    const hide = container.classList.toggle('hidden');
+    await toggleHideCreator(creator, hide);
+  }
+  if (hideCreatorPlus !== null) {
+    const hide = container.classList.toggle('hide-plus');
+    await toggleHideCreatorPlus(creator, hide);
+  }
 };
 
 const click = async (e: MouseEvent) => {

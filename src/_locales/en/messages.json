@@ -176,7 +176,7 @@
     "description": "Hint that no creators are hidden."
   },
   "optionsCreatorTexts": {
-    "message": "{\"separator\":\" or \",\"prefix\":\"Hide\",\"completely\":\"all videos\",\"after\":\"older than {}\",\"longer\":\"longer than {}\"}",
+    "message": "{\"separator\":\" or \",\"prefix\":\"Hide\",\"completely\":\"all videos\",\"plus\":\"plus content\",\"after\":\"older than {}\",\"longer\":\"longer than {}\"}",
     "description": "JSON-description of hide state per creator"
   },
   "optionsHideVideosTitle": {
@@ -319,12 +319,28 @@
     "message": "Show this creator again",
     "description": "Button hint to unhide creator."
   },
+  "pageHideCreatorPlus": {
+    "message": "Hide nebula plus content",
+    "description": "Button hint to hide creator."
+  },
+  "pageShowCreatorPlus": {
+    "message": "Show nebula plus content again",
+    "description": "Button hint to unhide creator."
+  },
   "pageHidingCreator": {
     "message": "Hiding creator",
     "description": "Text for `hiding` notification."
   },
   "pageShowingCreator": {
     "message": "Showing creator again",
+    "description": "Text for `hiding` notification."
+  },
+  "pageHidingCreatorPlus": {
+    "message": "Hiding nebula plus content",
+    "description": "Text for `hiding` notification."
+  },
+  "pageShowingCreatorPlus": {
+    "message": "Showing nebula plus content again",
     "description": "Text for `hiding` notification."
   },
   "pageCreatorHidden": {

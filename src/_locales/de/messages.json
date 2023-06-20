@@ -176,7 +176,7 @@
     "description": "Hinweis, dass keine creators versteckt sind."
   },
   "optionsCreatorTexts": {
-    "message": "{\"separator\":\" oder \",\"prefix\":\"Verstecke\",\"completely\":\"alle Videos\",\"after\":\"älter als {}\",\"longer\":\"länger als {}\"}",
+    "message": "{\"separator\":\" oder \",\"prefix\":\"Verstecke\",\"completely\":\"alle Videos\",\"plus\":\"Plus Inhalte\",\"after\":\"älter als {}\",\"longer\":\"länger als {}\"}",
     "description": "JSON-description of hide state per creator"
   },
   "optionsCustomScriptPageTitle": {
@@ -319,12 +319,28 @@
     "message": "Diesen Kanal wieder anzeigen",
     "description": "Button hinweis um creator nicht mehr zu verstecken."
   },
+  "pageHideCreatorPlus": {
+    "message": "Nebula Plus Inhalt verstecken",
+    "description": "Button hinweis um creator zu verstecken."
+  },
+  "pageShowCreatorPlus": {
+    "message": "Nebula Plus Inhalt wieder anzeigen",
+    "description": "Button hinweis um creator nicht mehr zu verstecken."
+  },
   "pageHidingCreator": {
     "message": "Kanal wird versteckt",
     "description": "Text für `hiding` notification."
   },
   "pageShowingCreator": {
     "message": "Kanal wird wieder angezeigt",
+    "description": "Text für `hiding` notification."
+  },
+  "pageHidingCreatorPlus": {
+    "message": "Nebula Plus Inhalt wird versteckt",
+    "description": "Text für `hiding` notification."
+  },
+  "pageShowingCreatorPlus": {
+    "message": "Nebula Plus Inhalt wird wieder angezeigt",
     "description": "Text für `hiding` notification."
   },
   "pageCreatorHidden": {

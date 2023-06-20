@@ -250,8 +250,25 @@
   }
 }
 
+.enhancer-hideCreatorPlus {
+  cursor: pointer;
+
+  button {
+    height: 1em;
+  }
+
+  .creator-settings-modal .body > .hide-plus &.hide {
+    display: none;
+  }
+
+  .creator-settings-modal .body > :not(.hide-plus) &.show {
+    display: none;
+  }
+}
+
 .enhancer-creator-settings,
-.enhancer-hideCreator button {
+.enhancer-hideCreator button,
+.enhancer-hideCreatorPlus button {
   border: none;
   background: none;
   margin-left: auto;

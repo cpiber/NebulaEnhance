@@ -41,6 +41,7 @@ const buildCreator = (creatorSettings: Record<string, CreatorSettings>, channel:
     const parts = [];
     if (s.hideAfter) parts.push(textSettings.after.replace(/\{\}/g, s.hideAfter));
     if (s.hideIfLonger) parts.push(textSettings.longer.replace(/\{\}/g, s.hideIfLonger));
+    if (s.hidePlus) parts.push(textSettings.plus);
     console.assert(parts.length > 0, 'Expected at least one setting');
     details.textContent += parts.join(textSettings.separator);
   }
