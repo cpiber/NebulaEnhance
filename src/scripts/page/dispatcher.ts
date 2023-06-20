@@ -45,8 +45,8 @@ export const init = async () => {
       const { creatorSettings, hideVideosEnabled, hideVideosPerc, creatorHideAfter, creatorHideIfLonger } = options;
       const hiddenCreators = Object.keys(creatorSettings).filter(c => creatorSettings[c].hideCompletely);
       collectEngagement(this, responseText);
-      responseText = filterVideos(this, responseText, hiddenCreators, creatorHideAfter, creatorHideIfLonger, hideVideosEnabled ? hideVideosPerc : undefined);
-      responseText = filterFeatured(this, responseText, hiddenCreators, creatorHideAfter, creatorHideIfLonger, hideVideosEnabled ? hideVideosPerc : undefined);
+      responseText = filterVideos(this, responseText, hiddenCreators, creatorSettings, creatorHideAfter, creatorHideIfLonger, hideVideosEnabled ? hideVideosPerc : undefined);
+      responseText = filterFeatured(this, responseText, hiddenCreators, creatorSettings, creatorHideAfter, creatorHideIfLonger, hideVideosEnabled ? hideVideosPerc : undefined);
       return responseText;
     },
   });

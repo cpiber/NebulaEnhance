@@ -1,6 +1,6 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
-import { creatorLink, isWatchProgress, queueBottonLocation, uploadDurationLocation, uploadTimeLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
+import { creatorLink, isPlusContent, isWatchProgress, queueBottonLocation, uploadDurationLocation, uploadTimeLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
 import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, parseDuration, setToStorage, toTimeString, uploadIsBefore, uploadIsLongerThan, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
 import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
@@ -290,6 +290,10 @@ const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSetti
   if (creator === '_dummy_channel_') hide = true;
   if (creator && creator in creatorSettings && creatorSettings[creator].hideCompletely) {
     console.debug('Hiding video by creator', creator, `https://${getBase()}/${creator}`);
+    hide = true;
+  }
+  if (creator && creator in creatorSettings && creatorSettings[creator].hidePlus && isPlusContent(el)) {
+    console.debug('Hiding video with plus content');
     hide = true;
   }
   if (creator && creator in creatorSettings && creatorSettings[creator].hideAfter && uploadIsBefore(uploadTime, creatorSettings[creator].hideAfter)) {
