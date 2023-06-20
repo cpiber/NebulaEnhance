@@ -324,11 +324,11 @@
     "description": "Titel des Settings-Modal für Kanäle"
   },
   "pageHideCreator": {
-    "message": "Diesen Kanal verstecken",
+    "message": "Alle Vidoes dieses Kanals verstecken",
     "description": "Button hinweis um creator zu verstecken."
   },
   "pageShowCreator": {
-    "message": "Diesen Kanal wieder anzeigen",
+    "message": "Alle Vidoes dieses Kanals wieder anzeigen",
     "description": "Button hinweis um creator nicht mehr zu verstecken."
   },
   "pageHideCreatorPlus": {
@@ -360,7 +360,7 @@
     "description": "Hinweis zu verstecktem Kanal."
   },
   "pageHideAfter": {
-    "message": "Videos verstecken nach:",
+    "message": "Videos verstecken, die älter sind als:",
     "description": "Titel für hide-after Einstellung"
   },
   "pageHideAfterHint": {

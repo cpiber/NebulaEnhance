@@ -324,11 +324,11 @@
     "description": "Title of creator-settings modal"
   },
   "pageHideCreator": {
-    "message": "Hide this creator",
+    "message": "Hide all videos of this creator",
     "description": "Button hint to hide creator."
   },
   "pageShowCreator": {
-    "message": "Show this creator again",
+    "message": "Show all videos of this creator again",
     "description": "Button hint to unhide creator."
   },
   "pageHideCreatorPlus": {
@@ -360,7 +360,7 @@
     "description": "Hint on hidden creator."
   },
   "pageHideAfter": {
-    "message": "Hide Videos after:",
+    "message": "Hide Videos older than:",
     "description": "Title for hide-after setting"
   },
   "pageHideAfterHint": {
