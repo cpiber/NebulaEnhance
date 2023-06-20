@@ -75,6 +75,7 @@ const trimCreatorSettings = (creatorSettings: Record<string, CreatorSettings>) =
     if (!creatorSettings[prop].hideCompletely) delete creatorSettings[prop].hideCompletely;
     if (!creatorSettings[prop].hideAfter) delete creatorSettings[prop].hideAfter;
     if (!creatorSettings[prop].hideIfLonger) delete creatorSettings[prop].hideIfLonger;
+    if (!creatorSettings[prop].hidePlus) delete creatorSettings[prop].hidePlus;
     if (!Object.keys(creatorSettings[prop]).length) delete creatorSettings[prop];
   }
 };
