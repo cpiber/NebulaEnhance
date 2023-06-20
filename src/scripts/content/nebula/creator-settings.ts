@@ -132,11 +132,8 @@ export const showSettingsModal = async (creator: string) => {
   return buildModal(modalTitle, container, 'creator-settings-modal');
 };
 
-const click = async (e: MouseEvent) => {
+export const btnClick = async (creator: string, e: Event) => {
   const target = e.target as HTMLElement;
-
-  if (target.closest('.enhancer-creator-settings') !== null) return show();
-  const creator = window.location.pathname.split('/')[1];
 
   const hideCreator = target.closest('.enhancer-hideCreator');
   const container = document.querySelector('.creator-settings-modal .body > div');
@@ -145,9 +142,16 @@ const click = async (e: MouseEvent) => {
   await toggleHideCreator(creator, hide);
 };
 
-const change = async (e: Event) => {
-  const target = e.target as HTMLInputElement;
+const click = async (e: MouseEvent) => {
+  const target = e.target as HTMLElement;
+
+  if (target.closest('.enhancer-creator-settings') !== null) return show();
   const creator = window.location.pathname.split('/')[1];
+  await btnClick(creator, e);
+};
+
+export const inputChange = async (creator: string, e: Event) => {
+  const target = e.target as HTMLInputElement;
 
   if (target.id === 'hide-after') {
     target.classList.toggle('has-value', !!target.value);
@@ -174,4 +178,9 @@ const change = async (e: Event) => {
       warning.textContent = ex;
     }
   }
+};
+
+const change = async (e: Event) => {
+  const creator = window.location.pathname.split('/')[1];
+  await inputChange(creator, e);
 };

@@ -1,15 +1,15 @@
 import iconSettings from '../../icons/settings.svg';
-import { CreatorSettings, showSettingsModal } from '../content/nebula/creator-settings';
+import { CreatorSettings, btnClick, inputChange, showSettingsModal } from '../content/nebula/creator-settings';
 import { getChannel } from '../helpers/api';
-import { getBrowserInstance, getFromStorage, parseTimeString, setCreatorHideAfter, setCreatorHideLonger, toggleHideCreator } from '../helpers/sharedExt';
+import { getBrowserInstance, getFromStorage } from '../helpers/sharedExt';
 import { buildModal, withLoader } from './modal';
 
 const msg = getBrowserInstance().i18n.getMessage;
 const textSettings = JSON.parse(msg('optionsCreatorTexts'));
 
 const settingsModal = async (channel: string) => {
-  const cl = click.bind(null, channel);
-  const ch = change.bind(null, channel);
+  const cl = btnClick.bind(null, channel);
+  const ch = inputChange.bind(null, channel);
   document.addEventListener('click', cl);
   document.addEventListener('keyup', ch);
   await showSettingsModal(channel);
@@ -70,41 +70,3 @@ export const showManageCreators = withLoader(async () => {
   }).map(c => buildCreator(creatorSettings, c));
   buildModal(msg('optionsManageHiddenCreators'), msg('optionsManageHiddenCreatorsNone'), 'manage-hidden', ...c);
 });
-
-const click = async (creator: string, e: MouseEvent) => {
-  const target = e.target as HTMLElement;
-
-  const hideCreator = target.closest('.enhancer-hideCreator');
-  const container = document.querySelector('.creator-settings-modal .body > div');
-  if (hideCreator === null || container === null) return;
-  const hide = container.classList.toggle('hidden');
-  await toggleHideCreator(creator, hide);
-};
-
-const change = async (creator: string, e: Event) => {
-  const target = e.target as HTMLInputElement;
-
-  if (target.id === 'hide-after') {
-    target.classList.toggle('has-value', !!target.value);
-    const warning = target.closest('.enhancer-field').nextElementSibling;
-    try {
-      warning.textContent = '';
-      parseTimeString(target.value);
-      await setCreatorHideAfter(creator, target.value);
-    } catch (ex) {
-      warning.textContent = ex;
-    }
-  }
-
-  if (target.id === 'hide-longer') {
-    target.classList.toggle('has-value', !!target.value);
-    const warning = target.closest('.enhancer-field').nextElementSibling;
-    try {
-      warning.textContent = '';
-      parseTimeString(target.value);
-      await setCreatorHideLonger(creator, target.value);
-    } catch (ex) {
-      warning.textContent = ex;
-    }
-  }
-};
