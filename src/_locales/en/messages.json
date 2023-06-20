@@ -83,6 +83,14 @@
     "message": "Whether clicking on the subtitle button of the player should use the first available track if it is the only one.",
     "description": "Hint for Subtitle of options page."
   },
+  "optionsExpandTitle": {
+    "message": "Expand video on load",
+    "description": "Label for Expand of options page."
+  },
+  "optionsExpandHint": {
+    "message": "If set the video will be expanded to the size of the window on load. This can also be done manually in the player.",
+    "description": "Hint for Expand of options page."
+  },
   "optionsLoadYoutubeTitle": {
     "message": "Load YouTube link",
     "description": "Label for LoadYoutube of options page."

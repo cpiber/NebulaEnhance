@@ -4,7 +4,7 @@ import type { Player } from '../player';
 import { newButton } from './htmlhelper';
 import { Tooltip } from './tooltip';
 
-const createExpandButton = async (player: Player, options: { playbackChange: number; }) => {
+const createExpandButton = async (player: Player) => {
   const expand = await sendMessage(Message.GET_MESSAGE, { message: 'playerExpand' });
 
   const button = newButton(expand, iconExpand);

@@ -83,6 +83,14 @@
     "message": "Ob beim Klick auf den Untertitel-Knopf die erste Spur aktiviert werden soll, wenn sie die einzige ist.",
     "description": "Hilfstext für Subtitle der Optionen Seite."
   },
+  "optionsExpandTitle": {
+    "message": "Video vergrößtert starten",
+    "description": "Beschriftung für Expand der Optionen Seite."
+  },
+  "optionsExpandHint": {
+    "message": "Wenn gesetzt, dann wird das Video beim Laden auf Fenstergröße erweitert. Es gibt die Option auch manuell im Spieler.",
+    "description": "Hilfstext für Expand der Optionen Seite."
+  },
   "optionsLoadYoutubeTitle": {
     "message": "YouTube Videolink laden",
     "description": "Beschriftung für LoadYoutube der Optionen Seite."
