@@ -259,6 +259,10 @@
     "message": "Neue Geschwindigkeit",
     "description": "'Speed' text im popup."
   },
+  "playerExpand": {
+    "message": "Video zu Fenstergröße vergrößern",
+    "description": "'Expand' text im Tooltip."
+  },
   "pageAddToQueue": {
     "message": "Zur Warteschlange hinzufügen",
     "description": "Versteckter Hinweis fürs hinzufügen zur Warteschlange."

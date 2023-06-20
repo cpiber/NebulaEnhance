@@ -259,6 +259,10 @@
     "message": "New Speed",
     "description": "'Speed' text in popup."
   },
+  "playerExpand": {
+    "message": "Expand player to window size",
+    "description": "'Expand' text in tooltip."
+  },
   "pageAddToQueue": {
     "message": "Add to queue",
     "description": "Hidden hint for queue button."

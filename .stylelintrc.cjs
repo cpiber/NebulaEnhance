@@ -20,6 +20,7 @@ module.exports = {
     'scss/dollar-variable-pattern': null,
     'selector-attribute-quotes': 'always',
     'selector-class-pattern': null,
+    'selector-id-pattern': null,
     'selector-list-comma-newline-after': null,
     'selector-type-case': 'lower',
     'string-quotes': 'single',

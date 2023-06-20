@@ -2,6 +2,21 @@
 @import './queue/queue';
 @import './queue/queue_share';
 
+html.enhancer-fullVideo {
+  #NebulaApp > :last-child {
+    z-index: 100;
+  }
+
+  #video-player {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    max-width: unset;
+    max-height: unset;
+    margin: 0;
+  }
+}
+
 a[href='/videos/_dummy_episode_'] {
   &,
   & + div {
