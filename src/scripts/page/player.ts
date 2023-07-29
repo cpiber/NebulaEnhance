@@ -1,7 +1,6 @@
 import createExpandButton from './components/fullscreen';
 import createQueueButton, { toggleQueueButton } from './components/queue';
 import createSpeedDial from './components/speeddial';
-import attachTime from './components/time';
 import attachVolumeText, { toggleVolumeShow } from './components/volume';
 import { init as initDispatch, loadPrefix } from './dispatcher';
 import { Message, arrFromLengthy, getFromStorage, onStorageChange, sendMessage } from './sharedpage';
@@ -99,7 +98,6 @@ const addPlayerControls = async (player: Player) => {
   const left = controls[0];
   const right = controls[controls.length - 1];
   attachVolumeText(player, controls, options);
-  attachTime(player, controls);
   right.prepend(await createExpandButton(player), await createSpeedDial(player, options));
   left.children[0].after(await createQueueButton(player, true));
   left.prepend(await createQueueButton(player, false));
