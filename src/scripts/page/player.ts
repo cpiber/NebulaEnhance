@@ -159,10 +159,10 @@ const addPlayerControls = async (player: Player) => {
     const container = componentSlot(comp, options.playerSettings[comp], left, right);
     const bidx = builtinComponents.indexOf(comp as any);
     const oidx = oursComponents.indexOf(comp as any);
-    if (bidx >= 0) {
+    if (bidx >= 0 && builtins[bidx] !== null) {
       builtins[bidx].classList.remove('enhancer-hidden');
       container.appendChild(builtins[bidx]);
-    } else if (ours[oidx] !== null) {
+    } else if (oidx >= -1 && ours[oidx] !== null) {
       ours[oidx].classList.remove('enhancer-hidden');
       container.appendChild(ours[oidx]);
     }

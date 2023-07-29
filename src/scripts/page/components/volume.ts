@@ -9,7 +9,7 @@ const attachVolumeText = (player: Player, controls: NodeListOf<Element>, options
   player.querySelector('.enhancer-volume')?.remove();
   const text = document.createElement('div');
   text.className = findTime(controls).className;
-  text.classList.remove('enhancer-hidden');
+  text.classList.toggle('enhancer-hidden', volume.classList.contains('enhancer-hidden'));
   text.classList.add('enhancer-volume');
   volume.classList.add('enhancer-volume-controller');
   if (!options.volumeShow)
