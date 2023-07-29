@@ -68,7 +68,7 @@ const render = (settings: Partial<Settings>, selected: Comp = undefined) => {
     icon.className = 'video-icon';
     icon.innerHTML = nameToIcon[comp];
     icon.id = comp;
-    if (['queue-prev', 'queue-next'].indexOf(comp) >= 0) icon.classList.add('max');
+    if ([ 'queue-prev', 'queue-next' ].indexOf(comp) >= 0) icon.classList.add('max');
     if (selected === comp) icon.classList.add('selected');
     if (!(settings[comp]?.enabled ?? true)) icon.classList.add('disabled');
     container.appendChild(icon);

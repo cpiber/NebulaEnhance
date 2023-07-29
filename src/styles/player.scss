@@ -1,13 +1,14 @@
-@import './helpers/variables.scss';
+@import './helpers/variables';
 
 .video-mock {
   height: 80px;
   width: 100%;
   margin: 12px auto;
-  padding: 0px 8px;
+  padding: 0 8px;
   font-size: 12px;
+
   // stolen from nebula.tv
-  background-image: linear-gradient(to top, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.738) 19%, rgba(0, 0, 0, 0.54) 34%, rgba(0, 0, 0, 0.38) 47%, rgba(0, 0, 0, 0.28) 56.5%, rgba(0, 0, 0, 0.194) 65%, rgba(0, 0, 0, 0.126) 73%, rgba(0, 0, 0, 0.075) 80.2%, rgba(0, 0, 0, 0.042) 86.1%, rgba(0, 0, 0, 0.02) 91%, rgba(0, 0, 0, 0.008) 95.2%, rgba(0, 0, 0, 0.002) 98.2%, rgba(0, 0, 0, 0) 100%);
+  background-image: linear-gradient(to top, rgb(0 0 0) 0%, rgb(0 0 0 / 0.738) 19%, rgb(0 0 0 / 0.54) 34%, rgb(0 0 0 / 0.38) 47%, rgb(0 0 0 / 0.28) 56.5%, rgb(0 0 0 / 0.194) 65%, rgb(0 0 0 / 0.126) 73%, rgb(0 0 0 / 0.075) 80.2%, rgb(0 0 0 / 0.042) 86.1%, rgb(0 0 0 / 0.02) 91%, rgb(0 0 0 / 0.008) 95.2%, rgb(0 0 0 / 0.002) 98.2%, rgb(0 0 0 / 0) 100%);
   border-bottom-left-radius: 18px;
   border-bottom-right-radius: 18px;
   display: flex;
@@ -20,6 +21,15 @@
     > div {
       margin: 8px 4px;
 
+      svg {
+        width: 32px;
+        height: auto;
+
+        path:not([stroke]):not([fill]) {
+          fill: currentcolor;
+        }
+      }
+
       &.disabled:not(.selected) {
         opacity: 0.4;
       }
@@ -30,6 +40,7 @@
         path:not([stroke]):not([fill]), path[fill] {
           fill: $blueish_dark;
         }
+
         path[stroke] {
           stroke: $blueish_dark;
         }
@@ -42,15 +53,6 @@
       &#queue-prev svg {
         transform: scaleX(-1);
       }
-
-      svg {
-        width: 32px;
-        height: auto;
-
-        path:not([stroke]):not([fill]) {
-          fill: currentColor;
-        }
-      }
     }
   }
 
@@ -61,7 +63,7 @@
 
 .configure-player {
   .enhancer-button {
-    margin: 0px 16px;
+    margin: 0 16px;
 
     & + .enhancer-button {
       margin-left: 0;

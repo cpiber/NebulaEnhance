@@ -37,10 +37,10 @@ export const defaultPositions: Record<Comp, number> = {
   'expand': -7,
   'speeddial': -6,
 };
-export const toSorted = (settings: Partial<Settings>, includeDisalbed = false) => [...builtin, ...ours]
+export const toSorted = (settings: Partial<Settings>, includeDisalbed = false) => [ ...builtin, ...ours ]
   .filter(c => includeDisalbed || (settings[c]?.enabled ?? true))
   .sort((a, b) => (settings[a]?.position ?? defaultPositions[a]) - (settings[b]?.position ?? defaultPositions[b]));
-export const minMaxPos = (settings: Partial<Settings>, includeDisalbed = false) => [...builtin, ...ours]
+export const minMaxPos = (settings: Partial<Settings>, includeDisalbed = false) => [ ...builtin, ...ours ]
   .filter(c => includeDisalbed || (settings[c]?.enabled ?? true))
   .reduce((acc, c) => {
     const cur = (settings[c]?.position ?? defaultPositions[c]);

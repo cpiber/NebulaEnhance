@@ -18,7 +18,7 @@ export const newButton = (label: string, id: string, icon: SVGSVGElement | strin
 export const findTime = (controls: NodeListOf<Element>): HTMLElement => {
   for (const side of Array.from(controls)) {
     for (const comp of Array.from(side.childNodes)) {
-      if (comp.childNodes.length === 3 && (comp.childNodes[1] as HTMLElement).innerHTML === "&nbsp;/&nbsp;") return comp as HTMLElement;
+      if (comp.childNodes.length === 3 && (comp.childNodes[1] as HTMLElement).innerHTML === '&nbsp;/&nbsp;') return comp as HTMLElement;
     }
   }
   return null;

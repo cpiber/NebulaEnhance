@@ -147,7 +147,7 @@ const addPlayerControls = async (player: Player) => {
     } else if (oursComponents[i] === 'speeddial') {
       ours[i] = await createSpeedDial(player, options);
     } else {
-      console.assert(false, "Unknown component", oursComponents[i]);
+      console.assert(false, 'Unknown component', oursComponents[i]);
     }
   }
   // remove from DOM for insertion in order
