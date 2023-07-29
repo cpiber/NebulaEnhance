@@ -37,7 +37,16 @@ export const defaultPositions: Record<Comp, number> = {
   'expand': -7,
   'speeddial': -6,
 };
-export const toSorted = (settings: Partial<Settings>) => [...builtin, ...ours]
-  .filter(c => settings[c]?.enabled ?? true)
+export const toSorted = (settings: Partial<Settings>, includeDisalbed = false) => [...builtin, ...ours]
+  .filter(c => includeDisalbed || (settings[c]?.enabled ?? true))
   .sort((a, b) => (settings[a]?.position ?? defaultPositions[a]) - (settings[b]?.position ?? defaultPositions[b]));
-export const slot = <S, T>(name: Comp, comp: PlayerComponentSetting, left: S, right: T): S | T => (comp?.position || defaultPositions[name]) < 0 ? right : left;
+export const minMaxPos = (settings: Partial<Settings>, includeDisalbed = false) => [...builtin, ...ours]
+  .filter(c => includeDisalbed || (settings[c]?.enabled ?? true))
+  .reduce((acc, c) => {
+    const cur = (settings[c]?.position ?? defaultPositions[c]);
+    const n = { ...acc };
+    if (cur < acc.min) n.min = cur;
+    if (cur > acc.max) n.max = cur;
+    return n;
+  }, { min: 0, max: 0 });
+export const slot = <S, T>(name: Comp, comp: PlayerComponentSetting, left: S, right: T): S | T => (comp?.position ?? defaultPositions[name]) < 0 ? right : left;

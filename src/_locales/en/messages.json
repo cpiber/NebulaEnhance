@@ -91,6 +91,70 @@
     "message": "If set the video will be expanded to the size of the window on load. This can also be done manually in the player.",
     "description": "Hint for Expand of options page."
   },
+  "optionsPlayerConfigureTitle": {
+    "message": "Configure player",
+    "description": "Label for PlayerConfigure of options page."
+  },
+  "optionsPlayerConfigure": {
+    "message": "Configure elements",
+    "description": "Button for PlayerConfigure of options page."
+  },
+  "optionsPlayerConfigureRight": {
+    "message": "Move right",
+    "description": "Label for moving of PlayerConfigure of options page."
+  },
+  "optionsPlayerConfigureLeft": {
+    "message": "Move left",
+    "description": "Label for moving of PlayerConfigure of options page."
+  },
+  "optionsCompPlay": {
+    "message": "Play button",
+    "description": "Title for Play component"
+  },
+  "optionsCompVolume": {
+    "message": "Volume button",
+    "description": "Title for Volume component"
+  },
+  "optionsCompAutoplay": {
+    "message": "Autoplay button",
+    "description": "Title for Autoplay component"
+  },
+  "optionsCompSubtitles": {
+    "message": "Subtitles button",
+    "description": "Title for Subtitles component"
+  },
+  "optionsCompSettings": {
+    "message": "Settings button",
+    "description": "Title for Settings component"
+  },
+  "optionsCompTheater": {
+    "message": "Theater button",
+    "description": "Title for Theater component"
+  },
+  "optionsCompFullscreen": {
+    "message": "Fullscreen button",
+    "description": "Title for Fullscreen component"
+  },
+  "optionsCompQueueBack": {
+    "message": "Back button",
+    "description": "Title for QueueBack component"
+  },
+  "optionsCompQueueNext": {
+    "message": "Next button",
+    "description": "Title for QueueNext component"
+  },
+  "optionsCompTime": {
+    "message": "Time element",
+    "description": "Title for Time component"
+  },
+  "optionsCompExpand": {
+    "message": "Expand button",
+    "description": "Title for Expand component"
+  },
+  "optionsCompSpeed": {
+    "message": "Speed button",
+    "description": "Title for Speed component"
+  },
   "optionsLoadYoutubeTitle": {
     "message": "Load YouTube link",
     "description": "Label for LoadYoutube of options page."

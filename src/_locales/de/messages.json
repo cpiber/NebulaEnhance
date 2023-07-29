@@ -91,6 +91,70 @@
     "message": "Wenn gesetzt, dann wird das Video beim Laden auf Fenstergröße erweitert. Es gibt die Option auch manuell im Spieler.",
     "description": "Hilfstext für Expand der Optionen Seite."
   },
+  "optionsPlayerConfigureTitle": {
+    "message": "Videospieler konfigurieren",
+    "description": "Beschriftung für PlayerConfigure der Optionen Seite."
+  },
+  "optionsPlayerConfigure": {
+    "message": "Elemente anpassen",
+    "description": "Button für PlayerConfigure der Optionen Seite."
+  },
+  "optionsPlayerConfigureRight": {
+    "message": "Nach rechts",
+    "description": "Beschriftung für moving of PlayerConfigure der Optionen Seite."
+  },
+  "optionsPlayerConfigureLeft": {
+    "message": "Nach links",
+    "description": "Beschriftung für moving of PlayerConfigure der Optionen Seite."
+  },
+  "optionsCompPlay": {
+    "message": "Play Knopf",
+    "description": "Beschriftung für Play Komponente"
+  },
+  "optionsCompVolume": {
+    "message": "Lautstärke",
+    "description": "Beschriftung für Volume Komponente"
+  },
+  "optionsCompAutoplay": {
+    "message": "Autoplay Knopf",
+    "description": "Beschriftung für Autoplay Komponente"
+  },
+  "optionsCompSubtitles": {
+    "message": "Untertitel Knopf",
+    "description": "Beschriftung für Subtitles Komponente"
+  },
+  "optionsCompSettings": {
+    "message": "Einstellungen Knopf",
+    "description": "Beschriftung für Settings Komponente"
+  },
+  "optionsCompTheater": {
+    "message": "Theatermodus Knopf",
+    "description": "Beschriftung für Theater Komponente"
+  },
+  "optionsCompFullscreen": {
+    "message": "Vollbildmodus Knopf",
+    "description": "Beschriftung für Fullscreen Komponente"
+  },
+  "optionsCompQueueBack": {
+    "message": "Zurück Knopf",
+    "description": "Beschriftung für QueueBack Komponente"
+  },
+  "optionsCompQueueNext": {
+    "message": "Nächste Knopf",
+    "description": "Beschriftung für QueueNext Komponente"
+  },
+  "optionsCompTime": {
+    "message": "Zeit Element",
+    "description": "Beschriftung für Time Komponente"
+  },
+  "optionsCompExpand": {
+    "message": "Vergrößern Knopf",
+    "description": "Beschriftung für Expand Komponente"
+  },
+  "optionsCompSpeed": {
+    "message": "Geschwindigkeit Knopf",
+    "description": "Beschriftung für Speed Komponente"
+  },
   "optionsLoadYoutubeTitle": {
     "message": "YouTube Videolink laden",
     "description": "Beschriftung für LoadYoutube der Optionen Seite."

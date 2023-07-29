@@ -19,6 +19,21 @@
     > div {
       margin: 8px 4px;
 
+      &.disabled:not(.selected) {
+        opacity: 0.4;
+      }
+
+      &.selected {
+        color: $blueish_dark;
+
+        path:not([stroke]):not([fill]), path[fill] {
+          fill: $blueish_dark;
+        }
+        path[stroke] {
+          stroke: $blueish_dark;
+        }
+      }
+
       &.max svg {
         height: 16px;
       }
@@ -40,5 +55,15 @@
 
   &-left {
     margin-right: auto;
+  }
+}
+
+.configure-player {
+  .enhancer-button {
+    margin: 0px 16px;
+
+    & + .enhancer-button {
+      margin-left: 0;
+    }
   }
 }

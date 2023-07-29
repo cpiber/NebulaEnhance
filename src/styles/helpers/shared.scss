@@ -169,7 +169,6 @@
 .enhancer-button {
   appearance: none;
   border: 1px solid $blueish;
-  cursor: pointer;
   font-family: inherit;
   line-height: 1em;
   text-shadow: none;
@@ -182,6 +181,13 @@
   width: auto;
   pointer-events: all;
   box-shadow: none;
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+  &:disabled {
+    opacity: 0.6;
+  }
 
   &:focus {
     box-shadow: $blueish_transparent 0 0 10px;
