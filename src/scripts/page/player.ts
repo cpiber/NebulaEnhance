@@ -162,7 +162,7 @@ const addPlayerControls = async (player: Player) => {
     if (bidx >= 0 && builtins[bidx] !== null) {
       builtins[bidx].classList.remove('enhancer-hidden');
       container.appendChild(builtins[bidx]);
-    } else if (oidx >= -1 && ours[oidx] !== null) {
+    } else if (oidx >= 0 && ours[oidx] !== null) {
       ours[oidx].classList.remove('enhancer-hidden');
       container.appendChild(ours[oidx]);
     }
