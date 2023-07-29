@@ -1,3 +1,4 @@
+@import './helpers/variables.scss';
 
 .video-mock {
   height: 80px;
@@ -38,7 +39,7 @@
         height: 16px;
       }
 
-      &#queue-back svg {
+      &#queue-prev svg {
         transform: scaleX(-1);
       }
 

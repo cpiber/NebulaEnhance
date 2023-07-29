@@ -8,7 +8,7 @@ const createSpeedDial = async (player: Player, options: { playbackChange: number
   const speedMsg = `${await sendMessage(Message.GET_MESSAGE, { message: 'playerNewSpeed' })}:`;
   const speed = await sendMessage(Message.GET_MESSAGE, { message: 'playerSpeed' });
 
-  const button = newButton(speed, iconSpeed);
+  const button = newButton(speed, 'speeddial', iconSpeed);
   const tooltip = new Tooltip(button, 'speed').appendToPlayer(player);
 
   const updateTooltip = () => {

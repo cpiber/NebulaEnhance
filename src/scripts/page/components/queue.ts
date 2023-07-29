@@ -11,7 +11,7 @@ const createQueueButton = async (player: Player, next: boolean) => {
   const click = next ? () => sendMessage(Message.QUEUE_NEXT, null, false) : () => sendMessage(Message.QUEUE_PREV, null, false);
   const text = await sendMessage(Message.GET_MESSAGE, { message: `pageQueue${next ? 'Next' : 'Prev'}` });
 
-  const button = newButton(text, iconNext, 'disabled', 'enhancer-queue-control', `enhancer-queue-control-${next ? 'next' : 'prev'}`);
+  const button = newButton(text, `queue-${next ? 'next' : 'prev'}`, iconNext, 'disabled', 'enhancer-queue-control', `enhancer-queue-control-${next ? 'next' : 'prev'}`);
   const tooltip = new Tooltip(button, `queue-${next ? 'next' : 'prev'}`, text).setKey(next ? 'n' : 'p').appendToPlayer(player);
 
   const toggleTooltip = (force?: boolean) => {

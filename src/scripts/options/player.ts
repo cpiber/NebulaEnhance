@@ -24,7 +24,7 @@ const nameToIcon: Record<Comp, string> = {
   'settings-button': iconSettings,
   'theater-mode-button': iconTheater,
   'fullscreen-mode-button': iconFullscreen,
-  'queue-back': iconNext,
+  'queue-prev': iconNext,
   'queue-next': iconNext,
   'time': '<div class="enhancer-time">00:16&nbsp;/&nbsp;25:02</div>',
   'expand': iconExpand,
@@ -38,7 +38,7 @@ const nameToTitle: Record<Comp, string> = {
   'settings-button': msg('optionsCompSettings'),
   'theater-mode-button': msg('optionsCompTheater'),
   'fullscreen-mode-button': msg('optionsCompFullscreen'),
-  'queue-back': msg('optionsCompQueueBack'),
+  'queue-prev': msg('optionsCompQueueBack'),
   'queue-next': msg('optionsCompQueueNext'),
   'time': msg('optionsCompTime'),
   'expand': msg('optionsCompExpand'),
@@ -68,7 +68,7 @@ const render = (settings: Partial<Settings>, selected: Comp = undefined) => {
     icon.className = 'video-icon';
     icon.innerHTML = nameToIcon[comp];
     icon.id = comp;
-    if (['queue-back', 'queue-next'].indexOf(comp) >= 0) icon.classList.add('max');
+    if (['queue-prev', 'queue-next'].indexOf(comp) >= 0) icon.classList.add('max');
     if (selected === comp) icon.classList.add('selected');
     if (!(settings[comp]?.enabled ?? true)) icon.classList.add('disabled');
     container.appendChild(icon);

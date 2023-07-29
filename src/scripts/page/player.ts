@@ -1,4 +1,6 @@
+import { Settings, builtin as builtinComponents, slot as componentSlot, toSorted as componentsSorted, ours as oursComponents } from './components';
 import createExpandButton from './components/fullscreen';
+import { findTime } from './components/htmlhelper';
 import createQueueButton, { toggleQueueButton } from './components/queue';
 import createSpeedDial from './components/speeddial';
 import attachVolumeText, { toggleVolumeShow } from './components/volume';
@@ -17,6 +19,7 @@ const optionsDefaults = {
   volumeLog: false,
   useFirstSubtitle: false,
   autoExpand: false,
+  playerSettings: {} as Partial<Settings>,
 };
 let options = { ...optionsDefaults };
 
@@ -92,15 +95,87 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<Player>((
     }
   }, 100);
 });
+export const waitForSubtitles = (player: Player, maxiter: number | null = 10) => new Promise<HTMLElement>((resolve, reject) => {
+  let iter = 0;
+  const i = window.setInterval(() => {
+    if (maxiter !== null && iter++ > maxiter) {
+      window.clearInterval(i);
+      reject('No element found');
+      return;
+    }
+    const sub = player.parentElement.querySelector<HTMLElement>('#subtitles-toggle-button');
+    if (sub) {
+      window.clearInterval(i);
+      resolve(sub);
+    }
+  }, 100);
+});
 
 const addPlayerControls = async (player: Player) => {
+  try {
+    await waitForSubtitles(player);
+  } catch { }
+
   const controls = player.parentElement.querySelectorAll('.icon-spacing');
   const left = controls[0];
   const right = controls[controls.length - 1];
+  const collect = (id: string) => {
+    if (id === 'time') return findTime(controls);
+    let node = player.parentElement.querySelector(`#${id}`);
+    console.dev.debug(id, node);
+    while (node !== null) {
+      const parent = node.parentElement;
+      if (parent === left || parent === right) break;
+      node = parent;
+    }
+    return node;
+  };
+  const builtins = builtinComponents.map(collect);
+  const ours = oursComponents.map(collect);
+  for (let i = 0; i < oursComponents.length; i++) {
+    if (ours[i] !== null) continue;
+    if (oursComponents[i] === 'queue-prev') {
+      ours[i] = await createQueueButton(player, false);
+    } else if (oursComponents[i] === 'queue-next') {
+      ours[i] = await createQueueButton(player, true);
+    } else if (oursComponents[i] === 'expand') {
+      ours[i] = await createExpandButton(player);
+    } else if (oursComponents[i] === 'speeddial') {
+      ours[i] = await createSpeedDial(player, options);
+    } else {
+      console.assert(false, "Unknown component", oursComponents[i]);
+    }
+  }
+  // remove from DOM for insertion in order
+  left.childNodes.forEach(n => n.remove());
+  right.childNodes.forEach(n => n.remove());
+
+  const sorted = componentsSorted(options.playerSettings);
+  for (const comp of sorted) {
+    const container = componentSlot(comp, options.playerSettings[comp], left, right);
+    const bidx = builtinComponents.indexOf(comp as any);
+    const oidx = oursComponents.indexOf(comp as any);
+    if (bidx >= 0) {
+      builtins[bidx].classList.remove('enhancer-hidden');
+      container.appendChild(builtins[bidx]);
+    } else if (ours[oidx] !== null) {
+      ours[oidx].classList.remove('enhancer-hidden');
+      container.appendChild(ours[oidx]);
+    }
+  }
+  // re-attach disabled components for compatibility
+  for (let i = 0; i < builtinComponents.length; i++) {
+    if (options.playerSettings[builtinComponents[i]]?.enabled ?? true) continue;
+    builtins[i].classList.add('enhancer-hidden');
+    left.appendChild(builtins[i]);
+  }
+  for (let i = 0; i < oursComponents.length; i++) {
+    if (options.playerSettings[oursComponents[i]]?.enabled ?? true) continue;
+    ours[i].classList.add('enhancer-hidden');
+    left.appendChild(ours[i]);
+  }
+
   attachVolumeText(player, controls, options);
-  right.prepend(await createExpandButton(player), await createSpeedDial(player, options));
-  left.children[0].after(await createQueueButton(player, true));
-  left.prepend(await createQueueButton(player, false));
 };
 
 export const updatePlayerControls = (player: Player, canNext: boolean, canPrev: boolean) => {

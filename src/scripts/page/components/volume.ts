@@ -1,12 +1,15 @@
 import type { Player } from '../player';
+import { findTime } from './htmlhelper';
 
 export const toggleVolumeShow = (player: Player, volumeShow: boolean) =>
   player.parentElement.querySelector('.enhancer-volume').classList.toggle('volume-conditional', !volumeShow);
 
 const attachVolumeText = (player: Player, controls: NodeListOf<Element>, options: { volumeShow: boolean; }) => {
-  const volume = controls[0].children[1] as HTMLElement;
+  const volume = player.parentElement.querySelector('#volume-toggle-button').parentElement;
+  player.querySelector('.enhancer-volume')?.remove();
   const text = document.createElement('div');
-  text.className = controls[0].lastElementChild.className;
+  text.className = findTime(controls).className;
+  text.classList.remove('enhancer-hidden');
   text.classList.add('enhancer-volume');
   volume.classList.add('enhancer-volume-controller');
   if (!options.volumeShow)

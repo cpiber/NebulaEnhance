@@ -7,6 +7,7 @@ export type PlayerComponentSetting = {
 export const builtin = [
   'toggle-play-button',
   'volume-toggle-button',
+  'time',
   'auto-play-switch',
   'subtitles-toggle-button',
   'settings-button',
@@ -14,9 +15,8 @@ export const builtin = [
   'fullscreen-mode-button',
 ] as const;
 export const ours = [
-  'queue-back',
+  'queue-prev',
   'queue-next',
-  'time',
   'expand',
   'speeddial',
 ] as const;
@@ -31,7 +31,7 @@ export const defaultPositions: Record<Comp, number> = {
   'settings-button': -3,
   'theater-mode-button': -2,
   'fullscreen-mode-button': -1,
-  'queue-back': 0,
+  'queue-prev': 0,
   'queue-next': 2,
   'time': 4,
   'expand': -7,

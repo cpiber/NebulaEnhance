@@ -7,7 +7,7 @@ import { Tooltip } from './tooltip';
 const createExpandButton = async (player: Player) => {
   const expand = await sendMessage(Message.GET_MESSAGE, { message: 'playerExpand' });
 
-  const button = newButton(expand, iconExpand);
+  const button = newButton(expand, 'expand', iconExpand);
   const tooltip = new Tooltip(button, 'expand', expand).appendToPlayer(player);
 
   const toggleTooltip = (force?: boolean) => {
