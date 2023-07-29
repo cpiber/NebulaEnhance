@@ -1,0 +1,17 @@
+<!-- Note: This is the official nebula fullscreen icon -->
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g class="topRight">
+  <path d="M25 13.5H23V9H19V7H25V13.5Z" fill="currentColor" />
+</g>
+<g class="topLeft">
+  <path d="M9 13.5H7V7H13V9H9V13.5Z" fill="currentColor" />
+</g>
+<g class="bottomRight">
+  <path d="M25 25H19V23H23V18.5H25V25Z" fill="currentColor" />
+</g>
+<g class="bottomLeft">
+  <path d="M13 25H7V18.5H9V23H13V25Z" fill="currentColor" />
+</g>
+</svg>

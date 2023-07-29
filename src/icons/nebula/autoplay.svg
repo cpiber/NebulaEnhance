@@ -1,0 +1,6 @@
+<!-- Note: This is the official nebula autoplay icon -->
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Vector" d="M11.0449 20C8.9206 20 7.20001 18.21 7.20001 16C7.20001 13.79 8.9206 12 11.0449 12C15.8318 12 16.1682 20 20.9551 20C23.0794 20 24.8 18.21 24.8 16C24.8 13.79 23.0794 12 20.9551 12C16.1682 12 15.8318 20 11.0449 20Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" />
+</svg>

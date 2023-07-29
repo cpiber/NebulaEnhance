@@ -12,9 +12,9 @@ const attachVolumeText = (player: Player, controls: NodeListOf<Element>, options
   if (!options.volumeShow)
     text.classList.add('volume-conditional');
 
-  const updateTime = () => text.textContent = `${(player.volume * 100).toFixed(0)}%`;
-  player.addEventListener('volumechange', updateTime);
-  updateTime();
+  const updateVolume = () => text.textContent = `${(player.volume * 100).toFixed(0)}%`;
+  player.addEventListener('volumechange', updateVolume);
+  updateVolume();
   volume.after(text);
   return text;
 };

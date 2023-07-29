@@ -1,5 +1,5 @@
 import iconHide from '../../../icons/hide.svg';
-import iconRSS from '../../../icons/rss.svg';
+import iconRSS from '../../../icons/nebula/rss.svg';
 import iconSettings from '../../../icons/settings.svg';
 import iconShow from '../../../icons/show.svg';
 import { buildModal } from '../../helpers/modal';

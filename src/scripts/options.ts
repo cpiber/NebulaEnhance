@@ -3,6 +3,7 @@ import { BrowserMessage, getBrowserInstance, getFromStorage, notification, setTo
 import { load } from './options/form';
 import { showLogs } from './options/logs';
 import { showManageCreators } from './options/managecreators';
+import { showConfigurePlayers } from './options/player';
 import { Settings, toData } from './options/settings';
 import { standalone } from './options/standalone';
 
@@ -68,6 +69,7 @@ document.querySelector('#purgeCacheNow').addEventListener('click', async () => {
 });
 document.querySelector('#showChangelogsNow').addEventListener('click', () => showLogs(getBrowserInstance().runtime.getManifest().version));
 document.querySelector('#manageHiddenCreators').addEventListener('click', showManageCreators);
+document.querySelector('#configurePlayer').addEventListener('click', showConfigurePlayers);
 
 // load initial values from storage
 load(true)
