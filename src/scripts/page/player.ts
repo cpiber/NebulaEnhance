@@ -50,6 +50,7 @@ export const init = async () => {
     if (!player) return;
     player.autoplay = options.autoplay;
     toggleVolumeShow(player, options.volumeShow);
+    addPlayerControls(player);
   });
 };
 
@@ -111,7 +112,10 @@ export const waitForSubtitles = (player: Player, maxiter: number | null = 10) =>
   }, 100);
 });
 
+let playerControlLock = false;
 const addPlayerControls = async (player: Player) => {
+  if (playerControlLock) return;
+  playerControlLock = true;
   try {
     await waitForSubtitles(player);
   } catch { }
@@ -147,8 +151,8 @@ const addPlayerControls = async (player: Player) => {
     }
   }
   // remove from DOM for insertion in order
-  left.childNodes.forEach(n => n.remove());
-  right.childNodes.forEach(n => n.remove());
+  while (left.childNodes.length > 0) left.childNodes[0].remove();
+  while (right.childNodes.length > 0) right.childNodes[0].remove();
 
   const sorted = componentsSorted(options.playerSettings);
   for (const comp of sorted) {
@@ -176,6 +180,7 @@ const addPlayerControls = async (player: Player) => {
   }
 
   attachVolumeText(player, controls, options);
+  playerControlLock = false;
 };
 
 export const updatePlayerControls = (player: Player, canNext: boolean, canPrev: boolean) => {
