@@ -76,7 +76,7 @@ export const initPlayer = async () => {
   player._enhancerInit = true;
 };
 
-export const findAPlayer = () => document.querySelector<Player>('video#video');
+export const findAPlayer = () => document.querySelector<Player>('#video-player video');
 
 export const getAPlayer = (maxiter: number | null = 10) => new Promise<Player>((resolve, reject) => {
   let iter = 0;
