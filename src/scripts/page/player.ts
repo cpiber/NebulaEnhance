@@ -1,5 +1,5 @@
 import { Settings, builtin as builtinComponents, slot as componentSlot, toSorted as componentsSorted, ours as oursComponents } from './components';
-import createExpandButton from './components/fullscreen';
+import createExpandButton from './components/expand';
 import { findTime } from './components/htmlhelper';
 import createQueueButton, { toggleQueueButton } from './components/queue';
 import createSpeedDial from './components/speeddial';
@@ -224,6 +224,9 @@ const keydownHandler = (e: KeyboardEvent) => {
       break;
     case ' ': // normally handled by video.js, but they don't use capture, see #12
       player.paused ? player.play() : player.pause();
+      break;
+    case 'x':
+      document.body.parentElement.classList.toggle('enhancer-fullVideo');
       break;
     case 'n':
       sendMessage(Message.QUEUE_NEXT, null, false);
