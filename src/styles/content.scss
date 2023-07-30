@@ -273,14 +273,42 @@ div.enhancer-volume {
   transition: width 0.25s ease-in-out;
   overflow: hidden;
   margin-right: -8px;
+  height: 100%;
+  margin-left: auto;
 
-  &:not(.enhancer-conditional),
-  .enhancer-volume-controller:hover ~ & {
+  &:not(.volume-conditional),
+  #volume-controller-conditional:hover &,
+  #volume-controller-conditional:active & {
     width: 3.5em;
   }
 
   &.volume-conditional {
     width: 0;
+  }
+}
+
+div#volume-controller-conditional,
+div#volume-controller {
+  .volume-slider-container {
+    transition: opacity 0.4s ease-in-out 0.1s, margin-right 0.2s ease-in-out;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover, &:active {
+      width: calc(120px + 3.5em);
+
+      .volume-slider-container {
+        margin-right: calc(3.5em - 8px);
+      }
+    }
+  }
+}
+
+div#volume-controller {
+  width: calc(33px + 3.5em);
+  
+  .volume-slider-container {
+    margin-right: calc(3.5em - 8px);
   }
 }
 
@@ -310,7 +338,7 @@ div.enhancer-queue-control {
   }
 }
 
-.enhancer-hidden {
+div.enhancer-hidden {
   display: none;
 }
 
