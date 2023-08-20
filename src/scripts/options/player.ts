@@ -8,7 +8,7 @@ import iconTheater from '../../icons/nebula/theater.svg';
 import iconVolume from '../../icons/nebula/volume.svg';
 import iconNext from '../../icons/next.svg';
 import iconSpeed from '../../icons/speed.svg';
-import { getBrowserInstance, getFromStorage, setToStorage } from '../helpers/sharedExt';
+import { getBrowserInstance, getFromStorage, isMobile, setToStorage } from '../helpers/sharedExt';
 import { Settings, builtin, defaultPositions, minMaxPos, ours as ourComponents, slot, toSorted } from '../page/components';
 import { buildModal, withLoader } from './modal';
 
@@ -46,21 +46,27 @@ const nameToTitle: Record<Comp, string> = {
 };
 
 const render = (settings: Partial<Settings>, selected: Comp = undefined) => {
+  console.debug('Rendering for mobile?', isMobile());
   const wrapper = document.createElement('div');
   const vid = wrapper.appendChild(document.createElement('div'));
   vid.className = 'video-mock';
+  if (isMobile()) vid.className += ' shadow-left';
+  const vid2 = isMobile() ? wrapper.appendChild(document.createElement('div')) : null;
+  if (vid2) vid2.className = 'video-mock right shadow-right';
   const left = vid.appendChild(document.createElement('div'));
   left.className = 'video-mock-left';
-  const right = vid.appendChild(document.createElement('div'));
+  const right = (!isMobile() ? vid : vid2).appendChild(document.createElement('div'));
   right.className = 'video-mock-right';
-  vid.addEventListener('click', e => {
+  const rerenderSel = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     const sel = target.closest('.video-icon');
     if (sel === null || sel.id === selected) return;
     wrapper.replaceWith(render(settings, sel.id as Comp));
-  }); // removing the element also removes the event listener, no need to clean this up
+  }; // removing the element also removes the event listener, no need to clean this up
+  vid.addEventListener('click', rerenderSel);
+  if (vid2) vid2.addEventListener('click', rerenderSel);
 
-  const sorted = toSorted(settings, true);
+  const sorted = !isMobile() ? toSorted(settings, true) : toSorted(settings, true).filter(b => [ 'volume-toggle-button', 'theater-mode-button' ].indexOf(b) === -1);
   console.dev.log('render', selected, settings, sorted);
   for (const comp of sorted) {
     const container = slot(comp, settings[comp], left, right);
