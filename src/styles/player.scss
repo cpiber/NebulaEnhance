@@ -6,6 +6,7 @@
   margin: 12px auto;
   padding: 0 8px;
   font-size: 12px;
+  color: $fg_dark;
 
   // stolen from nebula.tv
   background-image: linear-gradient(to top, rgb(0 0 0) 0%, rgb(0 0 0 / 0.738) 19%, rgb(0 0 0 / 0.54) 34%, rgb(0 0 0 / 0.38) 47%, rgb(0 0 0 / 0.28) 56.5%, rgb(0 0 0 / 0.194) 65%, rgb(0 0 0 / 0.126) 73%, rgb(0 0 0 / 0.075) 80.2%, rgb(0 0 0 / 0.042) 86.1%, rgb(0 0 0 / 0.02) 91%, rgb(0 0 0 / 0.008) 95.2%, rgb(0 0 0 / 0.002) 98.2%, rgb(0 0 0 / 0) 100%);
@@ -62,11 +63,7 @@
 }
 
 .configure-player {
-  .enhancer-button {
+  .enhancer-button:not(:last-child) {
     margin: 0 16px;
-
-    & + .enhancer-button {
-      margin-left: 0;
-    }
   }
 }
