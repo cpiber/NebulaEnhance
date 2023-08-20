@@ -3,7 +3,7 @@ import { arrFromLengthy } from '../sharedpage';
 const strToSVG = (str: string): SVGSVGElement => document.createRange().createContextualFragment(str).querySelector('svg');
 
 export const newButton = (label: string, id: string, icon: SVGSVGElement | string, ...classes: string[]) => {
-  const b = document.getElementById('theater-mode-button').cloneNode(true) as HTMLElement;
+  const b = document.getElementById('fullscreen-mode-button').cloneNode(true) as HTMLElement;
   b.id = id;
   b.removeAttribute('data-shortcuts');
   b.classList.add(...classes);
