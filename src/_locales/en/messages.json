@@ -335,6 +335,14 @@
     "message": "Expand player to window size",
     "description": "'Expand' text in tooltip."
   },
+  "playerFrameBack": {
+    "message": "Jump frame back",
+    "description": "Notification text for 'frame back' action"
+  },
+  "playerFrameForward": {
+    "message": "Jump frame forward",
+    "description": "Notification text for 'frame back' action"
+  },
   "pageAddToQueue": {
     "message": "Add to queue",
     "description": "Hidden hint for queue button."

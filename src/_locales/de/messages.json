@@ -335,6 +335,14 @@
     "message": "Video zu Fenstergröße vergrößern",
     "description": "'Expand' text im Tooltip."
   },
+  "playerFrameBack": {
+    "message": "Frame zurück",
+    "description": "Notification text für 'frame back' Aktion"
+  },
+  "playerFrameForward": {
+    "message": "Frame nach vorne",
+    "description": "Notification text für 'frame back' Aktion"
+  },
   "pageAddToQueue": {
     "message": "Zur Warteschlange hinzufügen",
     "description": "Versteckter Hinweis fürs hinzufügen zur Warteschlange."

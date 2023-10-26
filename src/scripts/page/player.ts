@@ -5,7 +5,7 @@ import createQueueButton, { toggleQueueButton } from './components/queue';
 import createSpeedDial from './components/speeddial';
 import attachVolumeText, { toggleVolumeShow } from './components/volume';
 import { init as initDispatch, loadPrefix } from './dispatcher';
-import { Message, arrFromLengthy, getFromStorage, onStorageChange, sendMessage } from './sharedpage';
+import { Message, arrFromLengthy, getFromStorage, notification, onStorageChange, sendMessage } from './sharedpage';
 
 export type Player = HTMLVideoElement & { _enhancerInit: boolean; };
 
@@ -22,6 +22,7 @@ const optionsDefaults = {
   playerSettings: {} as Partial<Settings>,
 };
 let options = { ...optionsDefaults };
+const msgs: Record<string, string> = {};
 
 export const init = async () => {
   const {
@@ -37,6 +38,10 @@ export const init = async () => {
   document.addEventListener('pointerup', clickHandler, { capture: true });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
   await initDispatch();
+
+  msgs['playerFrameBack'] = await sendMessage(Message.GET_MESSAGE, { message: 'playerFrameBack' });
+  msgs['playerFrameForward'] = await sendMessage(Message.GET_MESSAGE, { message: 'playerFrameForward' });
+  msgs['playerSpeed'] = await sendMessage(Message.GET_MESSAGE, { message: 'playerSpeed' });
 
   onStorageChange(changed => {
     console.dev.log('Options changed');
@@ -202,9 +207,11 @@ const keydownHandler = (e: KeyboardEvent) => {
   switch (pressedKey) {
     case ',':
       player.currentTime = player.currentTime - 0.03; // "frame" back
+      notification(msgs['playerFrameBack']);
       break;
     case '.':
       player.currentTime = player.currentTime + 0.03; // "frame" forward
+      notification(msgs['playerFrameForward']);
       break;
     case '0': case '1': case '2': case '3': case '4':
     case '5': case '6': case '7': case '8': case '9':
@@ -218,9 +225,11 @@ const keydownHandler = (e: KeyboardEvent) => {
       break;
     case '<':
       player.playbackRate = Math.max(Math.round((player.playbackRate - options.playbackChange) * 100) / 100, 0.1);
+      notification(`${msgs['playerSpeed']}: ${player.playbackRate}`);
       break;
     case '>':
       player.playbackRate = Math.round((player.playbackRate + options.playbackChange) * 100) / 100;
+      notification(`${msgs['playerSpeed']}: ${player.playbackRate}`);
       break;
     case ' ': // normally handled by video.js, but they don't use capture, see #12
       player.paused ? player.play() : player.pause();
