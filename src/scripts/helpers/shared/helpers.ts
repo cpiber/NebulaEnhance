@@ -33,7 +33,7 @@ export const calcOuterBounds = (e: HTMLElement) => {
 
 export const isMobile = () => window.matchMedia('(any-pointer: coarse), (any-hover: none)').matches;
 export const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
-export const isVideoListPage = () => !!window.location.pathname.match(/^\/(?:|videos\/?|myshows\/?)$/);
+export const isVideoListPage = () => !!window.location.pathname.match(/^\/(?:|videos\/?|myshows\/?|library\/.*)$/);
 export const getBase = () => 'nebula.tv';
 export const getApiBase = () => 'nebula.app';
 export const clone = typeof cloneInto !== 'undefined' ?

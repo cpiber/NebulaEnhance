@@ -2,7 +2,7 @@ import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { creatorLink, isPlusContent, isWatchProgress, queueBottonLocation, uploadDurationLocation, uploadTimeLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
 import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, parseDuration, setToStorage, toTimeString, uploadIsBefore, uploadIsLongerThan, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
-import { creatorRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
+import { creatorRegex, explicitHistoryPageRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
 import { CreatorSettings, addCreatorSettings, init as initCreator } from './creator-settings';
 import { handle } from './message';
@@ -288,31 +288,34 @@ const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSetti
   const uploadTime = Date.parse(uploadTimeLocation(el).dateTime);
   const duration = parseDuration(uploadDurationLocation(el).textContent);
   let hide = false;
+  const showWatched = explicitHistoryPageRegex.test(window.location.pathname);
   if (creator === '_dummy_channel_') hide = true;
   if (creator && creator in creatorSettings && creatorSettings[creator].hideCompletely) {
     console.debug('Hiding video by creator', creator, `https://${getBase()}/${creator}`);
     hide = true;
   }
-  if (creator && creator in creatorSettings && creatorSettings[creator].hidePlus && isPlusContent(el)) {
-    console.debug('Hiding video with plus content');
-    hide = true;
-  }
-  if (creator && creator in creatorSettings && creatorSettings[creator].hideAfter && uploadIsBefore(uploadTime, creatorSettings[creator].hideAfter)) {
-    console.debug('Hiding video as too old, uploaded at', new Date(uploadTime));
-    hide = true;
-  }
-  if (creator && creator in creatorSettings && creatorSettings[creator].hideIfLonger && uploadIsLongerThan(duration, creatorSettings[creator].hideIfLonger)) {
-    console.debug('Hiding video as too long, duration', toTimeString(duration));
-    hide = true;
-  }
-  const watchProgress = watchProgressLocation(el);
-  if (hideWatched && watchProgress && isWatchProgress(watchProgress)) {
-    const ww = getComputedStyle(watchProgress.children[0]).width;
-    const pw = getComputedStyle(watchProgress).width;
-    const percent = (+ww.slice(0, -2)) / (+pw.slice(0, -2)) * 100;
-    if (percent > hidePerc) {
-      console.debug('Hiding video above watch percent', hidePerc, `(was ${percent})`);
+  if (!showWatched) {
+    if (creator && creator in creatorSettings && creatorSettings[creator].hidePlus && isPlusContent(el)) {
+      console.debug('Hiding video with plus content');
       hide = true;
+    }
+    if (creator && creator in creatorSettings && creatorSettings[creator].hideAfter && uploadIsBefore(uploadTime, creatorSettings[creator].hideAfter)) {
+      console.debug('Hiding video as too old, uploaded at', new Date(uploadTime));
+      hide = true;
+    }
+    if (creator && creator in creatorSettings && creatorSettings[creator].hideIfLonger && uploadIsLongerThan(duration, creatorSettings[creator].hideIfLonger)) {
+      console.debug('Hiding video as too long, duration', toTimeString(duration));
+      hide = true;
+    }
+    const watchProgress = watchProgressLocation(el);
+    if (hideWatched && watchProgress && isWatchProgress(watchProgress)) {
+      const ww = getComputedStyle(watchProgress.children[0]).width;
+      const pw = getComputedStyle(watchProgress).width;
+      const percent = (+ww.slice(0, -2)) / (+pw.slice(0, -2)) * 100;
+      if (percent > hidePerc) {
+        console.debug('Hiding video above watch percent', hidePerc, `(was ${percent})`);
+        hide = true;
+      }
     }
   }
   if (!hide) return;

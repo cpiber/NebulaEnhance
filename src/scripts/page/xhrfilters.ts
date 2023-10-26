@@ -31,7 +31,7 @@ const createDummyVideo = (): Nebula.Video => ({
 const engagementCache: Record<string, number> = {};
 
 const vidregex = /^\/(?:library\/)?video_episodes\/*$/;
-export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[], creatorSettings: Record<string, CreatorSettings>, creatorHideAfter: Record<string, number>, creatorHideIfLonger: Record<string, number>, watchperc: number | undefined): string => {
+export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[], creatorSettings: Record<string, CreatorSettings>, creatorHideAfter: Record<string, number>, creatorHideIfLonger: Record<string, number>, watchperc: number | undefined, showWatched: boolean): string => {
   const url = xhr.responseURL;
   console.dev.debug('Considering', url, 'for filtering video list');
   if (url.indexOf('/video_episodes') === -1) return text;
@@ -44,34 +44,36 @@ export const filterVideos = (xhr: XMLHttpRequest, text: string, filter: string[]
     content.results = content.results.filter(r => !filter.includes(r.channel_slug));
     const len2 = content.results.length;
     console.debug('Hiding', len - len2, 'video(s) by hidden creators');
-    if (watchperc !== undefined) {
+    if (!showWatched) {
+      if (watchperc !== undefined) {
+        content.results = content.results.filter(r => {
+          if ((r.engagement?.progress?.value ?? null) === null && !(r.id in engagementCache)) return true;
+          const engagement = r.engagement?.progress?.value ?? engagementCache[r.id];
+          console.assert(engagement !== undefined && engagement !== null, 'Expected engagement value', r.engagement, engagementCache[r.id]);
+          const p = engagement / r.duration * 100;
+          return p <= watchperc;
+        });
+        console.debug('Hiding', len2 - content.results.length, 'watched video(s) with', Object.keys(engagementCache).length, 'in engagement cache');
+      }
+      const len3 = content.results.length;
       content.results = content.results.filter(r => {
-        if ((r.engagement?.progress?.value ?? null) === null && !(r.id in engagementCache)) return true;
-        const engagement = r.engagement?.progress?.value ?? engagementCache[r.id];
-        console.assert(engagement !== undefined && engagement !== null, 'Expected engagement value', r.engagement, engagementCache[r.id]);
-        const p = engagement / r.duration * 100;
-        return p <= watchperc;
+        const creator = r.channel_slug;
+        return !(creator in creatorHideAfter) || !uploadIsBefore(Date.parse(r.published_at), creatorHideAfter[creator]);
       });
-      console.debug('Hiding', len2 - content.results.length, 'watched video(s) with', Object.keys(engagementCache).length, 'in engagement cache');
+      console.debug('Hiding', len3 - content.results.length, 'older video(s)');
+      const len4 = content.results.length;
+      content.results = content.results.filter(r => {
+        const creator = r.channel_slug;
+        return !(creator in creatorHideIfLonger) || !uploadIsLongerThan(r.duration, creatorHideIfLonger[creator]);
+      });
+      console.debug('Hiding', len4 - content.results.length, 'long video(s)');
+      const len5 = content.results.length;
+      content.results = content.results.filter(r => {
+        const creator = r.channel_slug;
+        return !(creator in creatorSettings) || !creatorSettings[creator].hidePlus || !r.attributes.includes('is_nebula_plus');
+      });
+      console.debug('Hiding', len5 - content.results.length, 'plus video(s)');
     }
-    const len3 = content.results.length;
-    content.results = content.results.filter(r => {
-      const creator = r.channel_slug;
-      return !(creator in creatorHideAfter) || !uploadIsBefore(Date.parse(r.published_at), creatorHideAfter[creator]);
-    });
-    console.debug('Hiding', len3 - content.results.length, 'older video(s)');
-    const len4 = content.results.length;
-    content.results = content.results.filter(r => {
-      const creator = r.channel_slug;
-      return !(creator in creatorHideIfLonger) || !uploadIsLongerThan(r.duration, creatorHideIfLonger[creator]);
-    });
-    console.debug('Hiding', len4 - content.results.length, 'long video(s)');
-    const len5 = content.results.length;
-    content.results = content.results.filter(r => {
-      const creator = r.channel_slug;
-      return !(creator in creatorSettings) || !creatorSettings[creator].hidePlus || !r.attributes.includes('is_nebula_plus');
-    });
-    console.debug('Hiding', len5 - content.results.length, 'plus video(s)');
     if (len !== 0 && content.results.length === 0) content.results.push(createDummyVideo());
     return JSON.stringify(content);
   } catch (e) {

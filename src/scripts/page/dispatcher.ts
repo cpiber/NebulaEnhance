@@ -6,11 +6,12 @@ export const eventPrefix = 'enebula' as const;
 export const navigatePrefix = `${eventPrefix}-navigate` as const;
 export const loadPrefix = `${eventPrefix}-load` as const;
 export const xhrPrefix = `${eventPrefix}-xhr` as const;
-export const knownPages = [ 'myshows', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings' ] as const;
+export const knownPages = [ 'library', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings' ] as const;
 
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
 export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
 export const videoselector = 'a[href^="/videos/"][aria-hidden]';
+export const explicitHistoryPageRegex = /^\/library\/(watch-later|watch-history|saved-episodes|listen-history|classes-in-progress|saved-classes|lesson-history)/;
 
 const optionsDefaults = {
   hideVideosEnabled: false,
@@ -41,11 +42,12 @@ export const init = async () => {
   Object.defineProperty(window.XMLHttpRequest.prototype, 'responseText', {
     ...xhrresponseget,
     get() {
+      const showWatched = explicitHistoryPageRegex.test(window.location.pathname);
       let responseText: string = xhrresponseget.get.apply(this);
       const { creatorSettings, hideVideosEnabled, hideVideosPerc, creatorHideAfter, creatorHideIfLonger } = options;
       const hiddenCreators = Object.keys(creatorSettings).filter(c => creatorSettings[c].hideCompletely);
       collectEngagement(this, responseText);
-      responseText = filterVideos(this, responseText, hiddenCreators, creatorSettings, creatorHideAfter, creatorHideIfLonger, hideVideosEnabled ? hideVideosPerc : undefined);
+      responseText = filterVideos(this, responseText, hiddenCreators, creatorSettings, creatorHideAfter, creatorHideIfLonger, hideVideosEnabled ? hideVideosPerc : undefined, showWatched);
       responseText = filterFeatured(this, responseText, hiddenCreators, creatorSettings, creatorHideAfter, creatorHideIfLonger, hideVideosEnabled ? hideVideosPerc : undefined);
       return responseText;
     },
