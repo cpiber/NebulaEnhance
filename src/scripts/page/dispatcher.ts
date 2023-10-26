@@ -89,20 +89,20 @@ const navigation = () => {
 
   const vmatch = newpath.match(videoUrlMatch);
   if (vmatch)
-    return naviage('video', oldurl, { video: vmatch[1] });
+    return navigate('video', oldurl, { video: vmatch[1] });
   if (newpath.match(/^\/$/))
-    return naviage('home', oldurl);
+    return navigate('home', oldurl);
   const kmatch = newpath.match(knownRegex);
   if (kmatch)
-    return naviage(kmatch[1], oldurl, { more: kmatch[2] });
+    return navigate(kmatch[1], oldurl, { more: kmatch[2] });
   const cmatch = newpath.match(creatorRegex);
-  return naviage('creator', oldurl, { who: cmatch[1], more: cmatch[2] });
+  return navigate('creator', oldurl, { who: cmatch[1], more: cmatch[2] });
 };
 
 let currentDetail: { detail: { page: string, from: string, [key: string]: any; }; } = null;
 let currentlyloading: string = null;
 let loadInterval = 0;
-const naviage = (page: string, from: string, data: { [key: string]: any; } = {}) => {
+const navigate = (page: string, from: string, data: { [key: string]: any; } = {}) => {
   console.debug('Navigating to page', page, 'from', from);
   const detail = clone({ detail: { page, from, ...data } });
   currentDetail = detail;
