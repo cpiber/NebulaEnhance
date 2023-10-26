@@ -3,8 +3,6 @@
 [English](README.md) / [Deutsch](README.DE.md)
 
 [![Build + Test](https://badgen.net/github/checks/cpiber/NebulaEnhance/?label=build)](https://github.com/cpiber/NebulaEnhance/actions/)
-[![Dependencies](https://badgen.net/david/dep/cpiber/NebulaEnhance/)](https://david-dm.org/cpiber/NebulaEnhance)
-[![DevDependencies](https://badgen.net/david/dev/cpiber/NebulaEnhance/)](https://david-dm.org/cpiber/NebulaEnhance?type=dev)
 [![codecov](https://badgen.net/codecov/c/github/cpiber/NebulaEnhance)](https://codecov.io/gh/cpiber/NebulaEnhance)
 
 
