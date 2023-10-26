@@ -68,7 +68,7 @@ const run = debounce(async () => {
 
     // accessing custom attributes is not possible from content scripts, so inject this helper
     const channelID = await injectFunctionWithReturn(document.body, () =>
-      (document.querySelector('ytd-video-owner-renderer.ytd-video-secondary-info-renderer') as any).__data.data.navigationEndpoint.browseEndpoint.browseId as string);
+      (document.querySelector('ytd-channel-name .yt-simple-endpoint') as any).data.browseEndpoint.browseId as string);
     const channelName = channelElement.href.split('/').pop();
     const videoTitle = titleElement.textContent;
     const vid: nebulavideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_VID, channelID, channelName, videoTitle });
@@ -80,13 +80,13 @@ const run = debounce(async () => {
     if (!document.querySelector('.watch-on-nebula')) oldid = null;
     if (oldid === vidID) yield true; // retry
     oldid = vidID;
-    if ((window.history.state || {})['_enhancer_checked'] === true) return console.debug('Ignoring video since already processed');
 
     if (!vid) return remove();
     console.dev.log('Found video:', vid);
 
     subscribeElement.before(constructButton(vid));
     subscribeElement.closest<HTMLDivElement>('#top-row.ytd-watch-metadata').style.display = 'block'; // not the prettiest, but it works
+    if ((window.history.state || {})['_enhancer_checked'] === true) return console.debug('Ignoring video since already processed');
 
     const { ytOpenTab: doOpenTab, ytMuteOnly: muteOnly, ytReplaceTab: replaceTab } = options;
     console.dev.debug('Referer:', document.referrer);
