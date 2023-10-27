@@ -5,12 +5,12 @@ const stop = () => {
   timeout = 0;
 };
 
-export const notification = (text: string | HTMLElement, duration = 1600) => {
+export const notification = (text: string | HTMLElement, duration = 1600, source: HTMLElement = document.body) => {
   if (timeout) {
     stop();
     document.querySelector('.notification')?.remove();
   }
-  const n = document.querySelector<HTMLDivElement>('.notification') || document.body.appendChild(document.createElement('div'));
+  const n = source.querySelector<HTMLDivElement>('.notification') || source.appendChild(document.createElement('div'));
   n.classList.add('notification');
   n.classList.remove('show');
   const content = typeof text === 'string' ? document.createTextNode(text) : text;

@@ -203,15 +203,16 @@ const keydownHandler = (e: KeyboardEvent) => {
   const player = findAPlayer();
   if (!player)
     return;
+  const wrapper = player.closest<HTMLElement>('#video-player');
 
   switch (pressedKey) {
     case ',':
       player.currentTime = player.currentTime - 0.03; // "frame" back
-      notification(msgs['playerFrameBack']);
+      notification(msgs['playerFrameBack'], 1000, wrapper);
       break;
     case '.':
       player.currentTime = player.currentTime + 0.03; // "frame" forward
-      notification(msgs['playerFrameForward']);
+      notification(msgs['playerFrameForward'], 1000, wrapper);
       break;
     case '0': case '1': case '2': case '3': case '4':
     case '5': case '6': case '7': case '8': case '9':
@@ -225,11 +226,11 @@ const keydownHandler = (e: KeyboardEvent) => {
       break;
     case '<':
       player.playbackRate = Math.max(Math.round((player.playbackRate - options.playbackChange) * 100) / 100, 0.1);
-      notification(`${msgs['playerSpeed']}: ${player.playbackRate}`);
+      notification(`${msgs['playerSpeed']}: ${player.playbackRate}`, 1000, wrapper);
       break;
     case '>':
       player.playbackRate = Math.round((player.playbackRate + options.playbackChange) * 100) / 100;
-      notification(`${msgs['playerSpeed']}: ${player.playbackRate}`);
+      notification(`${msgs['playerSpeed']}: ${player.playbackRate}`, 1000, wrapper);
       break;
     case ' ': // normally handled by video.js, but they don't use capture, see #12
       player.paused ? player.play() : player.pause();
