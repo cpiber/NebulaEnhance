@@ -64,14 +64,17 @@ export const setSettings = async (set: { [key: string]: string | boolean; }) => 
   const pg = await b.newPage();
   await pg.goto(optionsURL);
   const form = await expect(pg).toMatchElement('form');
+  const textSet = { ...set };
   for (const key in set) {
     if (typeof (set[key]) !== 'boolean')
       continue;
     // need to check booleans manually
     await form.$eval(`[name="${key}"]`, (el: HTMLInputElement, val: boolean) => el.checked = val, set[key]);
-    delete set[key];
+    console.log('Setting', key, 'to', set[key]);
+    delete textSet[key];
+    await pg.waitForTimeout(1000);
   }
-  await expect(pg).toFillForm('form', set, { timeout: 1000 });
+  await expect(pg).toFillForm('form', textSet, { timeout: 1000 });
   await expect(pg).toClick('button[type="submit"]');
   await page.waitForTimeout(100); // wait for saving to finish
   await pg.close();

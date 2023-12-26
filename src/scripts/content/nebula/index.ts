@@ -254,7 +254,7 @@ const loadComments = async () => {
     time.after(dot, v);
   } catch (err) {
     console.debug('Request failed:', err);
-    console.dev.error(err);
+    console.dev.error('Failed loading comments:', err);
     const er = document.createElement('span');
     er.classList.add('enhancer-yt-err');
     er.textContent = `${err}`;
@@ -284,41 +284,45 @@ const changeTheme = (e: MouseEvent) => {
 };
 
 const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSettings>, hideWatched: boolean, hidePerc: number) => {
-  const creator = creatorLink(el)?.split('/')?.[1];
-  const uploadTime = Date.parse(uploadTimeLocation(el).dateTime);
-  const duration = parseDuration(uploadDurationLocation(el).textContent);
-  let hide = false;
-  const showWatched = explicitHistoryPageRegex.test(window.location.pathname);
-  if (creator === '_dummy_channel_') hide = true;
-  if (creator && creator in creatorSettings && creatorSettings[creator].hideCompletely) {
-    console.debug('Hiding video by creator', creator, `https://${getBase()}/${creator}`);
-    hide = true;
-  }
-  if (!showWatched) {
-    if (creator && creator in creatorSettings && creatorSettings[creator].hidePlus && isPlusContent(el)) {
-      console.debug('Hiding video with plus content');
+  try {
+    const creator = creatorLink(el)?.split('/')?.[1];
+    const uploadTime = Date.parse(uploadTimeLocation(el).dateTime);
+    const duration = parseDuration(uploadDurationLocation(el).textContent);
+    let hide = false;
+    const showWatched = explicitHistoryPageRegex.test(window.location.pathname);
+    if (creator === '_dummy_channel_') hide = true;
+    if (creator && creator in creatorSettings && creatorSettings[creator].hideCompletely) {
+      console.debug('Hiding video by creator', creator, `https://${getBase()}/${creator}`);
       hide = true;
     }
-    if (creator && creator in creatorSettings && creatorSettings[creator].hideAfter && uploadIsBefore(uploadTime, creatorSettings[creator].hideAfter)) {
-      console.debug('Hiding video as too old, uploaded at', new Date(uploadTime));
-      hide = true;
-    }
-    if (creator && creator in creatorSettings && creatorSettings[creator].hideIfLonger && uploadIsLongerThan(duration, creatorSettings[creator].hideIfLonger)) {
-      console.debug('Hiding video as too long, duration', toTimeString(duration));
-      hide = true;
-    }
-    const watchProgress = watchProgressLocation(el);
-    if (hideWatched && watchProgress && isWatchProgress(watchProgress)) {
-      const ww = getComputedStyle(watchProgress.children[0]).width;
-      const pw = getComputedStyle(watchProgress).width;
-      const percent = (+ww.slice(0, -2)) / (+pw.slice(0, -2)) * 100;
-      if (percent > hidePerc) {
-        console.debug('Hiding video above watch percent', hidePerc, `(was ${percent})`);
+    if (!showWatched) {
+      if (creator && creator in creatorSettings && creatorSettings[creator].hidePlus && isPlusContent(el)) {
+        console.debug('Hiding video with plus content');
         hide = true;
       }
+      if (creator && creator in creatorSettings && creatorSettings[creator].hideAfter && uploadIsBefore(uploadTime, creatorSettings[creator].hideAfter)) {
+        console.debug('Hiding video as too old, uploaded at', new Date(uploadTime));
+        hide = true;
+      }
+      if (creator && creator in creatorSettings && creatorSettings[creator].hideIfLonger && uploadIsLongerThan(duration, creatorSettings[creator].hideIfLonger)) {
+        console.debug('Hiding video as too long, duration', toTimeString(duration));
+        hide = true;
+      }
+      const watchProgress = watchProgressLocation(el);
+      if (hideWatched && watchProgress && isWatchProgress(watchProgress)) {
+        const ww = getComputedStyle(watchProgress.children[0]).width;
+        const pw = getComputedStyle(watchProgress).width;
+        const percent = (+ww.slice(0, -2)) / (+pw.slice(0, -2)) * 100;
+        if (percent > hidePerc) {
+          console.debug('Hiding video above watch percent', hidePerc, `(was ${percent})`);
+          hide = true;
+        }
+      }
     }
+    if (!hide) return;
+    if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
+    else el.parentElement.classList.add('enhancer-hiddenVideo');
+  } catch (err) {
+    console.error(err);
   }
-  if (!hide) return;
-  if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
-  else el.parentElement.classList.add('enhancer-hiddenVideo');
 };
