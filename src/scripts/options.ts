@@ -80,6 +80,25 @@ load(true)
   .then(hChange)
   .then(vidChange);
 
+document.querySelector('[href="#save"]').addEventListener('click', async e => {
+  e.preventDefault();
+  const opt = await getFromStorage<Record<string, any>>();
+  delete opt['lastVersion'];
+  delete opt['lastpurged'];
+  const blob = new Blob([JSON.stringify(opt)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const elem = document.createElement('a');
+  try {
+    elem.href = url;
+    elem.download = 'settings.json';
+    document.body.appendChild(elem);
+    elem.click();
+  } finally {
+    document.body.removeChild(elem);
+    URL.revokeObjectURL(url);
+  }
+});
+
 // changelog
 (async () => {
   standalone(document.body.classList.contains('standalone'));

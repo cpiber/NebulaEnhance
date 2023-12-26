@@ -323,6 +323,14 @@
     "message": "Speichern",
     "description": "'save' button."
   },
+  "buttonExport": {
+    "message": "Einstellungen exportieren",
+    "description": "'export' button."
+  },
+  "buttonImport": {
+    "message": "Einstellungen importieren",
+    "description": "'import' button."
+  },
   "playerSpeed": {
     "message": "Geschwindigkeit",
     "description": "'Speed' text im scroll dial Tooltip."

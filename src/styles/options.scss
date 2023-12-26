@@ -65,11 +65,19 @@ form {
   margin-top: 24px;
 }
 
-.hint {
-  display: block;
+.hint,
+.small-text {
   font-size: 12px;
   opacity: 0.6;
   margin: 8px 0 0;
+}
+
+.small-text[href="#save"] {
+  margin-left: 20px;
+}
+
+.small-text[href="#load"] {
+  margin-left: 5px;
 }
 
 label + .enhancer-control,

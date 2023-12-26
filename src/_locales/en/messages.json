@@ -323,6 +323,14 @@
     "message": "Save",
     "description": "Common 'save' button."
   },
+  "buttonExport": {
+    "message": "Export options",
+    "description": "Common 'export' button."
+  },
+  "buttonImport": {
+    "message": "Import options",
+    "description": "Common 'import' button."
+  },
   "playerSpeed": {
     "message": "Speed",
     "description": "'Speed' text in scroll dial tooltip."
