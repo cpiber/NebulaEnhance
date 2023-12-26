@@ -319,6 +319,10 @@
     "message": "Gespeichert",
     "description": "Text für `saved` notification."
   },
+  "optionsImportWarning": {
+    "message": "**Achtung**: Importieren Sie nur selbst-exportierte Einstellungen. Einstellungen können sensitive Werte beinhalten.\n\nManuell bearbeitete Dateien können unvorhergesehene Konsequenzen ziehen; importieren Sie nur *reine* Dateien.",
+    "description": "Notiz zu 'import' button."
+  },
   "buttonSave": {
     "message": "Speichern",
     "description": "'save' button."

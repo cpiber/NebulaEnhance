@@ -1,12 +1,15 @@
+import { marked } from 'marked';
 import { purgeCache } from './background/ext';
+import { buildModal } from './helpers/modal';
 import { BrowserMessage, getBrowserInstance, getFromStorage, notification, setToStorage } from './helpers/sharedExt';
-import { load } from './options/form';
+import { load, saveDirect } from './options/form';
 import { showLogs } from './options/logs';
 import { showManageCreators } from './options/managecreators';
 import { showConfigurePlayers } from './options/player';
 import { Settings, toData } from './options/settings';
 import { standalone } from './options/standalone';
 
+const msg = getBrowserInstance().i18n.getMessage;
 const cl = decodeURIComponent(window.location.hash.slice(1)).split(' ').filter(c => !!c);
 if (cl.length)
   document.body.classList.add(...cl);
@@ -97,6 +100,41 @@ document.querySelector('[href="#save"]').addEventListener('click', async e => {
     document.body.removeChild(elem);
     URL.revokeObjectURL(url);
   }
+});
+document.querySelector('[href="#load"]').addEventListener('click', async e => {
+  e.preventDefault();
+  const m = msg('optionsImportWarning').split('\n');
+  const pars = m.map(l => {
+    const p = document.createElement('div');
+    p.innerHTML = marked(l);
+    return p;
+  });
+  const load = document.createElement('input');
+  load.type = 'file';
+  load.accept = 'application/json,.json';
+  buildModal(msg('buttonImport'), null, 'import-modal', ...pars, load);
+  load.addEventListener('change', async ev => {
+    ev.preventDefault();
+    if (load.files.length === 0) return;
+    try {
+      const file = load.files[0];
+      const reader = new FileReader();
+      const opt = JSON.parse(await new Promise<string>((resolve, reject) => {
+        reader.addEventListener('load', loadEv => resolve(loadEv.target.result as string), false);
+        reader.addEventListener('error', reject);
+        reader.readAsText(file);
+      }));
+      console.log('Restoring options');
+      console.dev.debug(opt);
+      els.youtube.checked = !!opt.youtube;
+      await setToStorage(opt);
+      window.removeEventListener('beforeunload', saveDirect);
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      alert((err as Error)?.message || err);
+    }
+  });
 });
 
 // changelog

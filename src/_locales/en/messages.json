@@ -319,6 +319,10 @@
     "message": "Saved",
     "description": "Text for `saved` notification."
   },
+  "optionsImportWarning": {
+    "message": "**Warning**: Import only self-exported settings. Settings can contain sensitive values.\n\nImporting manually edited files can have unforseen consequences; only import *clean* files.",
+    "description": "Note for 'import' button."
+  },
   "buttonSave": {
     "message": "Save",
     "description": "Common 'save' button."

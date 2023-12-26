@@ -22,6 +22,7 @@ export const load = async (doSave = false) => {
   if (doSave)
     save(false);
 };
+export const saveDirect = () => save();
 
 const debouncedSave = debounce(save, 400);
 const delayedSave = () => toData().then(() => debouncedSave());
@@ -31,7 +32,7 @@ form.addEventListener('submit', e => {
   e.preventDefault();
   save(true);
 });
-window.addEventListener('beforeunload', () => save());
+window.addEventListener('beforeunload', saveDirect);
 
 // autosave
 Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')).forEach(e => {
