@@ -5,7 +5,7 @@ const goChannel = getBrowserInstance().i18n.getMessage('pageGoChannel');
 const videoConfidence = getBrowserInstance().i18n.getMessage('pageVideoConfidence');
 const searchConfidence = getBrowserInstance().i18n.getMessage('pageSearchConfidence');
 
-export const constructButton = (vid: nebulavideo) => {
+export const constructButton = (vid: nebulavideo, isMobile = false) => {
   if (!document.querySelector('.watch-on-nebula') || document.querySelector('.watch-on-nebula').children.length === 0) {
     Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.remove());
     // for some reason youtube custom elements clear their inner html in construct, so we have to do it like this
@@ -24,7 +24,7 @@ export const constructButton = (vid: nebulavideo) => {
     bdiv.className = 'cbox yt-spec-button-shape-next--button-text-content';
     const bspan = bdiv.appendChild(document.createElement('span'));
     bspan.className = 'yt-core-attributed-string yt-core-attributed-string--white-space-no-wrap';
-    bspan.textContent = watchOnNebula;
+    bspan.textContent = isMobile ? 'Nebula' : watchOnNebula;
     bspan.setAttribute('href', vid.link);
     const bfeedback = btn.appendChild(document.createElement('yt-touch-feedback-shape'));
     bfeedback.style.borderRadius = 'inherit';
