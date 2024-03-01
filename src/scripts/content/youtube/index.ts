@@ -54,30 +54,37 @@ const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vid
   action.cancel();
   if (!options.watchnebula) return Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.remove());
   let first = true;
+  let channelName = channelNice;
 
-  await action.run(async function* () {
+  async function* videoDetailsFromDOM() {
+    if (first && vidID && videoTitle && channelID && channelNice) return;
+
     const channelElement = document.querySelector<HTMLAnchorElement>(
       '.ytd-video-owner-renderer + * .yt-formatted-string[href^="/channel/"], .ytd-video-owner-renderer + * .yt-formatted-string[href^="/@"]');
     const titleElement = document.querySelector<HTMLHeadingElement>('h1.ytd-video-primary-info-renderer');
-    const subscribeElement = document.querySelector<HTMLDivElement>('ytd-watch-metadata #subscribe-button, ytd-video-secondary-info-renderer #subscribe-button');
     const idElement = document.querySelector('.ytd-page-manager[video-id]');
-    console.dev.debug('Elements', !!channelElement, !!titleElement, !!subscribeElement, !!idElement);
-    if (!channelElement || !titleElement || !subscribeElement || !idElement) yield true; // retry
+    console.dev.debug('Elements', !!channelElement, !!titleElement, !!idElement);
+    if (!channelElement || !titleElement || !idElement) yield true; // retry
 
     // accessing custom attributes is not possible from content scripts, so inject this helper
     const foundChannelID = await injectFunctionWithReturn(document.body, () =>
       (document.querySelector('ytd-channel-name .yt-simple-endpoint') as any).data.browseEndpoint.browseId as string);
     channelID ??= foundChannelID;
-    let channelName = channelElement.href.split('/').pop();
     if (first && channelID !== foundChannelID) {
       channelName = channelNice;
     } else if (!first && channelID !== foundChannelID) {
       yield true; // retry
+    } else {
+      channelName = channelElement.href.split('/').pop();
     }
 
     videoTitle ??= titleElement.textContent;
-    const vid: nebulavideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_VID, channelID, channelName, channelNice, videoTitle });
     vidID ??= idElement.getAttribute('video-id');
+  }
+
+  await action.run(async function* () {
+    yield* videoDetailsFromDOM();
+    const vid: nebulavideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_VID, channelID, channelName, channelNice, videoTitle });
     console.debug('got video information',
       '\nchannelID:', channelID, 'channelName:', channelName, '(', channelNice, ')', 'videoTitle:', videoTitle, 'vidID:', vidID,
       '\non nebula?', !!vid);
@@ -90,6 +97,9 @@ const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vid
     if (!vid) return remove();
     console.dev.log('Found video:', vid);
     first = false;
+
+    const subscribeElement = document.querySelector<HTMLDivElement>('ytd-watch-metadata #subscribe-button, ytd-video-secondary-info-renderer #subscribe-button');
+    if (!subscribeElement) yield true; // retry
 
     subscribeElement.before(constructButton(vid));
     subscribeElement.closest<HTMLDivElement>('#top-row.ytd-watch-metadata').style.display = 'block'; // not the prettiest, but it works
