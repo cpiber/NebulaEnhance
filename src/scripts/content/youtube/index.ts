@@ -32,30 +32,28 @@ export const youtube = async () => {
   Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.remove());
   setTimeout(run, 0);
 
-  window.addEventListener('yt-action', (ev: CustomEvent) => {
-    if (!ev.detail) return;
-    const act = ev.detail.actionName;
-    console.dev.debug(`yt action: ${act}`);
-    if (![ 'yt-history-load', 'yt-history-pop', 'ytd-log-youthere-nav', 'yt-deactivate-miniplayer-action' ].includes(act) &&
-      document.querySelector('.watch-on-nebula')) return;
-    console.dev.log(`yt action triggered re-run: ${act}`);
-    setTimeout(run, 100);
+  window.addEventListener('yt-navigate-finish', (e: CustomEvent) => {
+    console.dev.log('NAVIGATE', e);
+    const vidDetails = e.detail?.response?.playerResponse?.videoDetails as YouTubePlayer.VideoDetails;
+    remove();
+    if (!vidDetails) return;
+    console.log('VID id', vidDetails.videoId, 'title', vidDetails.title, 'CHANNEL author', vidDetails.author, 'Id', vidDetails.channelId);
+    run({ vidID: vidDetails.videoId, videoTitle: vidDetails.title, channelID: vidDetails.channelId, channelNice: vidDetails.author });
   });
 };
 
 const action = new CancellableRepeatingAction();
-let oldid: string = null;
-const run = debounce(async () => {
-  const remove = () => Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.style.display = 'none');
+const remove = () => Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.style.display = 'none');
+const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vidID?: string, videoTitle?: string, channelID?: string, channelNice?: string; } = {}) => {
   if (!location.pathname.startsWith('/watch')) {
     console.dev.log('not a video');
     action.cancel();
     remove();
-    oldid = null;
     return;
   }
   action.cancel();
   if (!options.watchnebula) return Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.remove());
+  let first = true;
 
   await action.run(async function* () {
     const channelElement = document.querySelector<HTMLAnchorElement>(
@@ -67,22 +65,31 @@ const run = debounce(async () => {
     if (!channelElement || !titleElement || !subscribeElement || !idElement) yield true; // retry
 
     // accessing custom attributes is not possible from content scripts, so inject this helper
-    const channelID = await injectFunctionWithReturn(document.body, () =>
+    const foundChannelID = await injectFunctionWithReturn(document.body, () =>
       (document.querySelector('ytd-channel-name .yt-simple-endpoint') as any).data.browseEndpoint.browseId as string);
-    const channelName = channelElement.href.split('/').pop();
-    const videoTitle = titleElement.textContent;
-    const vid: nebulavideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_VID, channelID, channelName, videoTitle });
-    const vidID = idElement.getAttribute('video-id');
+    channelID ??= foundChannelID;
+    let channelName = channelElement.href.split('/').pop();
+    if (first && channelID !== foundChannelID) {
+      channelName = channelNice;
+    } else if (!first && channelID !== foundChannelID) {
+      yield true; // retry
+    }
+
+    videoTitle ??= titleElement.textContent;
+    const vid: nebulavideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_VID, channelID, channelName, channelNice, videoTitle });
+    vidID ??= idElement.getAttribute('video-id');
     console.debug('got video information',
-      '\nchannelID:', channelID, 'channelName:', channelName, 'videoTitle:', videoTitle, 'vidID:', vidID, '(', oldid, ')',
+      '\nchannelID:', channelID, 'channelName:', channelName, '(', channelNice, ')', 'videoTitle:', videoTitle, 'vidID:', vidID,
       '\non nebula?', !!vid);
 
-    if (!document.querySelector('.watch-on-nebula')) oldid = null;
-    if (oldid === vidID) yield true; // retry
-    oldid = vidID;
-
+    if (!vid && first) {
+      console.dev.log('Retrying afterwards with channel name');
+      first = false;
+      yield true; // retry when we have a channel name
+    }
     if (!vid) return remove();
     console.dev.log('Found video:', vid);
+    first = false;
 
     subscribeElement.before(constructButton(vid));
     subscribeElement.closest<HTMLDivElement>('#top-row.ytd-watch-metadata').style.display = 'block'; // not the prettiest, but it works

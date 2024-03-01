@@ -46,6 +46,24 @@ declare namespace YouTube {
 declare namespace YouTubePlayer {
   type PlayerEvent = 'CONNECTION_ISSUE' | 'SIZE_CLICKED' | 'SUBSCRIBE' | 'UNSUBSCRIBE' | 'WATCH_LATER_VIDEO_ADDED' | 'WATCH_LATER_VIDEO_REMOVED' | 'changeEngagementPanelVisibility' | 'cinematicSettingsToggleChange' | 'innertubeCommand' | 'onAdStateChange' | 'onAutonavChangeRequest' | 'onAutonavCoundownStarted' | 'onAutonavPauseRequest' | 'onCollapseMiniplayer' | 'onFeedbackArticleRequest' | 'onFeedbackStartRequest' | 'onFullerscreenEduClicked' | 'onFullscreenChange' | 'onOfflineOperationFailure' | 'onOrchestrationBecameLeader' | 'onOrchestrationLostLeader' | 'onPlayVideo' | 'onStateChange' | 'onVideoDataChange' | 'onVideoProgress' | 'onYpcContentRequest' | 'onYtShowToast' | 'updateEngagementPanelAction' | 'updateKevlarOrC3Companion';
 
+  type VideoDetails = {
+    allowRatings: boolean,
+    author: string,
+    channelId: string,
+    isCrawlable: boolean,
+    isLiveContent: boolean,
+    isOwnerViewing: boolean,
+    isPrivate: boolean,
+    isUnpluggedCorpus: boolean,
+    keywords: string[],
+    lengthSeconds: string,
+    shortDescription: string,
+    thumbnail: { thumbnails: Array<{ url: string, width: number, height: number; }>; },
+    title: string,
+    videoId: string,
+    viewCount: string,
+  };
+
   type MediaPlayer = {
     pauseVideo(): void;
     playVideo(): void;

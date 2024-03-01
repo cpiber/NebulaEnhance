@@ -90,11 +90,11 @@ const getYoutubeId = async (message: { [key: string]: any; }) => {
 
 const getNebulaVideo = async (message: { [key: string]: any; }): Promise<nebulavideo> => {
   await purgeCacheIfNecessary();
-  const { channelID, channelName, videoTitle } = message;
+  const { channelID, channelName, videoTitle, channelNice } = message;
   if (!channelID && !channelName) throw 'not enough information';
 
   const creators = await loadCreators();
-  const creator = creators.find(c => c.channel === channelID || c.name === channelName || c.nebulaAlt === channelName);
+  const creator = creators.find(c => c.channel === channelID || c.name === channelName || c.name === channelNice || c.nebulaAlt === channelName);
   console.debug('creator:', creator, '\nchannelID:', channelID, '\nvideoTitle:', videoTitle);
   if (!creator) return;
 
