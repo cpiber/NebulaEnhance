@@ -4,13 +4,13 @@
 
 html.enhancer-fullVideo {
   #NebulaApp > :last-child {
-    z-index: 100;
+    z-index: 101;
   }
 
   #video-player {
     position: fixed;
     inset: 0;
-    z-index: 100;
+    z-index: 101;
     max-width: unset;
     max-height: unset;
     margin: 0;
