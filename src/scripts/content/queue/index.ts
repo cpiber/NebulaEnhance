@@ -23,6 +23,7 @@ export class Queue extends QueueMethods {
   protected shareLinkEl: HTMLInputElement;
   protected shareHereEl: HTMLInputElement;
   protected listeners: Listener[];
+  protected hasHistoryGlobal: boolean;
 
   protected constructor() {
     super();

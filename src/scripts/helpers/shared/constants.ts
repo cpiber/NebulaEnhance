@@ -8,6 +8,8 @@ export const enum Message {
   GET_QSTATUS = 'getQueueStatus',
 
   REGISTER_LISTENER = 'registerListener',
+
+  HISTORY = 'enhancer-history',
 }
 export const isQueueMessage = (msg: string) => msg.startsWith('queue');
 

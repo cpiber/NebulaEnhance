@@ -1,7 +1,7 @@
 import { addToStore } from './add';
 import { clear, enqueue, enqueueNow, remove } from './enqueue';
 import { emit, onChange } from './events';
-import { goto, gotoNext, gotoPrev, updateText } from './go';
+import { goto, gotoNext, gotoPrev, setupHistory, updateText } from './go';
 import { html } from './html';
 import type { Queue } from './index';
 import { handleMessage } from './listener';
@@ -33,6 +33,7 @@ export class QueueMethods {
   protected emit = emit;
   protected setStorage = setStorage;
   restoreStorage = restoreStorage;
+  setupHistory = setupHistory;
 }
 
 export function initElement(this: Queue) {

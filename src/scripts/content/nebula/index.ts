@@ -59,7 +59,8 @@ export const nebula = async () => {
   // start up own content
   const queue = Queue.get(); // initialize
   await hashChange();
-  await Queue.get().restoreStorage();
+  await queue.setupHistory();
+  await queue.restoreStorage();
   await maybeLoadComments();
 
   // inject custom script (if available)
