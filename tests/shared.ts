@@ -1,4 +1,4 @@
-import { setTimeout } from "node:timers/promises";
+import { setTimeout } from 'node:timers/promises';
 import type { Browser } from 'puppeteer';
 import { videoselector as videoSelector } from '../src/scripts/page/dispatcher';
 

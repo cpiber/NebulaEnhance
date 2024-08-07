@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { setTimeout } from "node:timers/promises";
+import { setTimeout } from 'node:timers/promises';
 import { addToQueue, expectQueueLength, getNthVideo, login, maybeLogin, qbuttSelector, queueSelector, titles, videoSelector } from '../shared';
 
 jest.setTimeout(20000);
