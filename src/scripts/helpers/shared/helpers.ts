@@ -102,7 +102,7 @@ export function injectFunctionWithReturn<T extends any[], R>(node: HTMLElement, 
       const data = parseTypeObject<{ type: string, ret?: R, err: any; }>(ev.data);
       if (data.type !== e) return;
       window.removeEventListener('message', listener);
-      'ret' in data ? resolve(data.ret) : reject(data.err);
+      if ('ret' in data) resolve(data.ret); else reject(data.err);
     };
     window.addEventListener('message', listener);
     const script = document.createElement('script');
@@ -133,7 +133,7 @@ export const getCookie = (name: string) => {
 export const parseMaybeJSON = (data: string) => {
   try {
     return JSON.parse(data);
-  } catch (err) {
+  } catch {
     return data;
   }
 };

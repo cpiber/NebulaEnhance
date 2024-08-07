@@ -28,8 +28,8 @@ export abstract class DOMArray<T> extends Array<T> {
     }
     for (let i = 0; i < elements?.length || 0; i++) {
       const node = n ? this.createNode(elements[i]) : nodes[i];
-      if (s === null)
-        this.root.firstChild === null ? this.root.append(node) : this.root.firstChild.before(node);
+      if (s === null && this.root.firstChild === null) this.root.append(node);
+      else if (s === null) this.root.firstChild.before(node);
       else s.after(node);
       s = node;
     }

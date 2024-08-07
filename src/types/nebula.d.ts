@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+
 
 declare namespace Nebula {
   type PagedRequest<T> = {

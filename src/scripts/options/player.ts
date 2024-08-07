@@ -138,5 +138,5 @@ const render = (settings: Partial<Settings>, selected: Comp = undefined) => {
 
 export const showConfigurePlayers = withLoader(async () => {
   const { playerSettings } = await getFromStorage<{ playerSettings: Partial<Settings>; }>({ playerSettings: {} });
-  buildModal(msg('optionsPlayerConfigure'), '', 'configure-player', render(playerSettings));
+  await buildModal(msg('optionsPlayerConfigure'), '', 'configure-player', render(playerSettings));
 });

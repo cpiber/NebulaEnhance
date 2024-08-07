@@ -5,10 +5,11 @@
 import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
+import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import chalk from 'chalk-template';
 import { config } from 'dotenv';
-import glob from 'glob';
+import { globSync } from 'glob';
 import nodeEval from 'node-eval';
 import path from 'path';
 import presetEnv from 'postcss-preset-env';
@@ -17,7 +18,6 @@ import 'rollup';
 import copy from 'rollup-plugin-copy';
 import postcss from 'rollup-plugin-postcss';
 import { string } from 'rollup-plugin-string';
-import { terser } from 'rollup-plugin-terser';
 config();
 
 const w = watch => watch ? {
@@ -61,7 +61,7 @@ const jsplugins = () => [
   }),
 ];
 const js = (args) =>
-  glob.sync('src/scripts/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.ts' ] }).map(e => {
+  globSync('src/scripts/*.ts', { ignore: [ 'src/**/_*.ts', 'src/**/*.d.ts' ] }).map(e => {
     const d = e.replace(/(^|\/)src\//, '$1extension-dist/');
     // Report destination paths on console
     if (!args.silent)
@@ -97,7 +97,7 @@ const js = (args) =>
  * CSS BUILD
  */
 const css = (args) =>
-  glob.sync('src/styles/*.@(sa|sc|c)ss', { ignore: ['src/**/_*.@(sa|sc|c)ss'] }).map(e => {
+  globSync('src/styles/*.@(sa|sc|c)ss', { ignore: ['src/**/_*.@(sa|sc|c)ss'] }).map(e => {
     const d = e.replace(/(^|\/)src\//, '$1extension-dist/');
     const ext = e.match(/.(sa|sc|c)ss$/)[1];
     // Report destination paths on console
@@ -248,7 +248,7 @@ function addWatch(id) {
   return {
     name: 'watch-external',
     buildStart() {
-      glob.sync(id).forEach(f => this.addWatchFile(f));
+      globSync(id).forEach(f => this.addWatchFile(f));
     },
   };
 }

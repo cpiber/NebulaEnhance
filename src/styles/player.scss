@@ -28,7 +28,7 @@
         width: 32px;
         height: auto;
 
-        path:not([stroke]):not([fill]) {
+        path:not([stroke], [fill]) {
           fill: currentcolor;
         }
       }
@@ -40,7 +40,7 @@
       &.selected {
         color: $blueish_dark;
 
-        path:not([stroke]):not([fill]), path[fill] {
+        path:not([stroke], [fill]), path[fill] {
           fill: $blueish_dark;
         }
 

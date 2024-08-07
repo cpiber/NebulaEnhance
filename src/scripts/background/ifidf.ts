@@ -9,7 +9,7 @@ type VideoConfidence = {
   confidence: number,
   video: string,
 };
-type Cache = { [key: string]: VideoConfidence };
+type Cache = { [key: string]: VideoConfidence; };
 
 export const creatorHasVideo = async <T extends SearchableVideo>(vidcache: Cache, title: string, load: () => Promise<T[]>) => {
   if (!title)
@@ -26,6 +26,7 @@ const MIN_PROB = 0.3;
 // lowercase, remove accents, split at spaces and sentence marks, remove common words, replace [0-12] with written words
 const exclude = [ 'the', 'is', 'a', 'and', 'or', 'as', 'of', 'be' ];
 const numbers = [ 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve' ];
+// @ts-expect-error regex works, don't touch
 const split = (s: string) => normalizeString(s).split(/([\s\-_.,?!:;|]|\p{Pd})+/)
   .filter(t => t.trim() && exclude.indexOf(t) === -1)
   .map(v => numbers[+v] || v);

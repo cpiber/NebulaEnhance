@@ -104,11 +104,11 @@ document.querySelector('[href="#save"]').addEventListener('click', async e => {
 document.querySelector('[href="#load"]').addEventListener('click', async e => {
   e.preventDefault();
   const m = msg('optionsImportWarning').split('\n');
-  const pars = m.map(l => {
+  const pars = await Promise.all(m.map(async l => {
     const p = document.createElement('div');
-    p.innerHTML = marked(l);
+    p.innerHTML = await marked(l);
     return p;
-  });
+  }));
   const load = document.createElement('input');
   load.type = 'file';
   load.accept = 'application/json,.json';

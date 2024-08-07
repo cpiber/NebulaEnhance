@@ -12,20 +12,14 @@
 
   &-bg {
     position: fixed;
-    top: 20px;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+    inset: 20px;
     display: flex;
     align-items: center;
 
     &::before {
       content: '';
       position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      inset: 0;
       background-color: var(--bg-color);
       opacity: 0.9;
     }
@@ -35,10 +29,7 @@
     }
 
     @media (max-width: $mobile) {
-      top: 4px;
-      bottom: 4px;
-      left: 4px;
-      right: 4px;
+      inset: 4px;
     }
   }
 

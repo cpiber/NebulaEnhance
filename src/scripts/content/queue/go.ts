@@ -1,5 +1,5 @@
 import type { History } from 'history';
-import { getBrowserInstance, injectFunctionWithReturn, Message, sendMessage } from '../../helpers/sharedExt';
+import { Message, getBrowserInstance, injectFunctionWithReturn, sendMessage } from '../../helpers/sharedExt';
 import type { Queue } from './index';
 
 const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
@@ -13,21 +13,22 @@ export async function setupHistory(this: Queue) {
         while (true) {
           if (obj.stateNode && obj.stateNode.history) {
             if (obj.stateNode.history.__enhancer_handled) return true;
+            /* eslint-disable-next-line camelcase */
             obj.stateNode.history.__enhancer_handled = true;
             const history = obj.stateNode.history as History;
             window.addEventListener('message', ev => {
               try {
                 const data = JSON.parse(ev.data);
-                if (data.type !== "enhancer-history") return;
+                if (data.type !== 'enhancer-history') return;
                 switch (data.action) {
-                  case "push":
+                  case 'push':
                     history.push(data.to, data.state);
                     break;
-                  case "replace":
+                  case 'replace':
                     history.replace(data.to, data.state);
                     break;
                 }
-              } catch (e) { }
+              } catch { }
             });
             return true;
           }
@@ -55,7 +56,7 @@ export function goto(this: Queue, index: number, go = true) {
       // React exposes the props via a custom property, and somewhere in that tree
       // we find the history (History, Navigator, react-router uses both names)
       // this is only accessible from the page, so send a message to the listener
-      sendMessage(Message.HISTORY, { action: "push", to: url }, false);
+      sendMessage(Message.HISTORY, { action: 'push', to: url }, false);
     } else {
       // trick router into accepting my url without reloading page
       // sadly, we can't really remove the fake states, it completely breaks

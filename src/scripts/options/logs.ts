@@ -43,7 +43,7 @@ export const showLogs = withLoader(async (currentVersion: string, installed = fa
   if (!releases)
     return;
   const cv = `v${currentVersion}`;
-  const rs = releases.map(r => ({ ...r, body: DOMPurify.sanitize(marked(r.body)) })).map(r => buildVersion(cv, r));
+  const rs = await Promise.all(releases.map(async r => ({ ...r, body: DOMPurify.sanitize(await marked(r.body)) })).map(async r => buildVersion(cv, await r)));
   const last = document.createElement('p');
   last.className = 'all-releases';
   const full = last.appendChild(document.createElement('a'));

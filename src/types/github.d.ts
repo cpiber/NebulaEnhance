@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+
 
 declare namespace Github {
   type Author = {

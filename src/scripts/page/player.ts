@@ -233,7 +233,7 @@ const keydownHandler = (e: KeyboardEvent) => {
       notification(`${msgs['playerSpeed']}: ${player.playbackRate}`, 1000, wrapper);
       break;
     case ' ': // normally handled by video.js, but they don't use capture, see #12
-      player.paused ? player.play() : player.pause();
+      if (player.paused) player.play(); else player.pause();
       break;
     case 'x':
       document.body.parentElement.classList.toggle('enhancer-fullVideo');
