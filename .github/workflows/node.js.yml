@@ -25,6 +25,8 @@ jobs:
           pnpm-
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
+      with:
+        run_install: true
     - name: Find version
       run: |
         npm run env | grep npm_package_version >> $GITHUB_ENV
@@ -64,6 +66,8 @@ jobs:
           pnpm-
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
+      with:
+        run_install: true
     - name: Find version
       run: |
         npm run env | grep npm_package_version >> $GITHUB_ENV
@@ -124,6 +128,8 @@ jobs:
           pnpm-
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
+      with:
+        run_install: true
       
     - name: Clear jest cache
       run: npx jest --clear-cache
@@ -155,6 +161,8 @@ jobs:
           pnpm-
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
+      with:
+        run_install: true
     - name: Find version
       run: |
         npm run env | grep npm_package_version >> $GITHUB_ENV
@@ -200,6 +208,8 @@ jobs:
           pnpm-
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
+      with:
+        run_install: true
     - name: Find version
       run: |
         npm run env | grep npm_package_version >> $GITHUB_ENV
@@ -259,6 +269,8 @@ jobs:
           pnpm-
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
+      with:
+        run_install: true
     - name: Build and run all tests
       run: xvfb-run --auto-servernum npm run build
       env:
