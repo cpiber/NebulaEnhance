@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+import { setTimeout } from "node:timers/promises";
 import { addToQueue, expectQueueLength, getNthVideo, login, maybeLogin, qbuttSelector, queueSelector, titles, videoSelector } from '../shared';
 
 jest.setTimeout(20000);
@@ -19,7 +20,7 @@ beforeEach(maybeLogin(async () => {
 
 afterEach(async () => {
   await page.evaluate(() => window.localStorage.clear());
-  await page.waitForTimeout(2000);
+  await setTimeout(2000);
 });
 
 describe('videos page', () => {
@@ -173,7 +174,7 @@ describe('queue', () => {
     await page.evaluate(() => window.localStorage.removeItem('enhancer-queue'));
 
     await page.evaluate(hash => window.location.hash = hash, url.slice(url.indexOf('#')));
-    await page.waitForTimeout(100);
+    await setTimeout(100);
     await expect(titles()).resolves.toEqual(before);
   });
 

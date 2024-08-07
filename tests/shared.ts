@@ -1,3 +1,4 @@
+import { setTimeout } from "node:timers/promises";
 import type { Browser } from 'puppeteer';
 import { videoselector as videoSelector } from '../src/scripts/page/dispatcher';
 
@@ -43,7 +44,7 @@ export const login = async (force = false) => {
   try {
     await page.waitForResponse('https://users.api.nebula.app/api/v1/authorization/', { timeout: 5000 }); // wait until logged in
   } catch { }
-  await page.waitForTimeout(1000);
+  await setTimeout(1000);
 };
 
 export const maybeLogin = (cb: () => Promise<void>) => async () => {
@@ -72,10 +73,10 @@ export const setSettings = async (set: { [key: string]: string | boolean; }) => 
     await form.$eval(`[name="${key}"]`, (el: HTMLInputElement, val: boolean) => el.checked = val, set[key]);
     console.log('Setting', key, 'to', set[key]);
     delete textSet[key];
-    await pg.waitForTimeout(1000);
+    await setTimeout(1000);
   }
   await expect(pg).toFillForm('form', textSet, { timeout: 1000 });
   await expect(pg).toClick('button[type="submit"]');
-  await page.waitForTimeout(100); // wait for saving to finish
+  await setTimeout(100); // wait for saving to finish
   await pg.close();
 };
