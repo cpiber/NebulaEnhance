@@ -101,6 +101,8 @@ let currentlyloading: string = null;
 let loadInterval = 0;
 const navigate = (page: string, from: string, data: { [key: string]: any; } = {}) => {
   console.debug('Navigating to page', page, 'from', from);
+  document.body.parentElement.classList.remove(...Array.from(document.body.parentElement.classList).filter(x => x.startsWith('page-')));
+  document.body.parentElement.classList.add(`page-${page}`);
   const detail = clone({ detail: { page, from, ...data } });
   currentDetail = detail;
   document.dispatchEvent(new CustomEvent(navigatePrefix, detail));
