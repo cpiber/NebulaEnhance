@@ -1,10 +1,10 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { creatorLink, isPlusContent, isWatchProgress, queueBottonLocation, uploadDurationLocation, uploadTimeLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
-import { BrowserMessage, calcOuterBounds, clone, debounce, devClone, devExport, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, parseDuration, setToStorage, toTimeString, uploadIsBefore, uploadIsLongerThan, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
-import { creatorRegex, explicitHistoryPageRegex, loadPrefix, videoselector, xhrPrefix } from '../../page/dispatcher';
+import { BrowserMessage, calcOuterBounds, clone, creatorRegex, debounce, devClone, devExport, explicitHistoryPageRegex, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, parseDuration, setToStorage, toTimeString, uploadIsBefore, uploadIsLongerThan, videoselector, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { loadPrefix, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
-import { CreatorSettings, addCreatorSettings, init as initCreator } from './creator-settings';
+import { addCreatorSettings, CreatorSettings, init as initCreator } from './creator-settings';
 import { handle } from './message';
 
 const msg = getBrowserInstance().i18n.getMessage;

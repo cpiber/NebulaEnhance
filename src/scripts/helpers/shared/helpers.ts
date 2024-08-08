@@ -1,3 +1,12 @@
+export const knownPages = ['library', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings', 'explore'] as const;
+export const knownHomePages = ['featured', 'originals', 'culture', 'science', 'history', 'podcasts', 'classes'] as const;
+
+export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
+export const knownHomeRegex = new RegExp(`^\\/(${knownHomePages.join('|')})(?:\\/(.+))?\\/?$`);
+export const creatorRegex = /^\/([^/]+)(?:\/(.+))?\/?$/;
+export const videoselector = 'a[href^="/videos/"][aria-hidden]';
+export const explicitHistoryPageRegex = /^\/library\/(watch-later|watch-history|saved-episodes|listen-history|classes-in-progress|saved-classes|lesson-history)/;
+
 export const videoUrlMatch = /^\/videos\/(.+?)\/?$/;
 
 export const dot = (t1: number[], t2: number[]) => t1.length === t2.length && t1.reduce((prev, cur, index) => prev + cur * t2[index], 0);
@@ -33,7 +42,7 @@ export const calcOuterBounds = (e: HTMLElement) => {
 
 export const isMobile = () => window.matchMedia('(any-pointer: coarse), (any-hover: none)').matches;
 export const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
-export const isVideoListPage = () => !!window.location.pathname.match(/^\/(?:|videos\/?|myshows\/?|library\/.*)$/);
+export const isVideoListPage = () => !!window.location.pathname.match(knownHomeRegex) || !!window.location.pathname.match(/^\/(videos\/?|myshows\/?|library|library\/.*|explore\/.*)$/);
 export const getBase = () => 'nebula.tv';
 export const getApiBase = () => 'nebula.app';
 export const clone = typeof cloneInto !== 'undefined' ?

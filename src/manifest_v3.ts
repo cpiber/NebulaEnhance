@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 const manifest: browser._manifest.WebExtensionManifest = {
   manifest_version: 3,
   name: '__MSG_title__',
