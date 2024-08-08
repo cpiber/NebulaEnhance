@@ -1,10 +1,10 @@
 import iconWatchLater from '../../../icons/watchlater.svg';
 import { enqueueChannelVideos } from '../../helpers/api';
 import { creatorLink, isPlusContent, isWatchProgress, queueBottonLocation, uploadDurationLocation, uploadTimeLocation, watchLaterLocation, watchProgressLocation } from '../../helpers/locations';
-import { BrowserMessage, calcOuterBounds, clone, creatorRegex, debounce, devClone, devExport, explicitHistoryPageRegex, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, parseDuration, setToStorage, toTimeString, uploadIsBefore, uploadIsLongerThan, videoselector, videoUrlMatch, ytvideo } from '../../helpers/sharedExt';
+import { BrowserMessage, calcOuterBounds, clone, creatorRegex, debounce, devClone, devExport, explicitHistoryPageRegex, getBase, getBrowserInstance, getFromStorage, injectScript, isMobile, isVideoListPage, isVideoPage, parseDuration, setToStorage, toTimeString, uploadIsBefore, uploadIsLongerThan, videoUrlMatch, videoselector, ytvideo } from '../../helpers/sharedExt';
 import { loadPrefix, xhrPrefix } from '../../page/dispatcher';
 import { Queue } from '../queue';
-import { addCreatorSettings, CreatorSettings, init as initCreator } from './creator-settings';
+import { CreatorSettings, addCreatorSettings, init as initCreator } from './creator-settings';
 import { handle } from './message';
 
 const msg = getBrowserInstance().i18n.getMessage;
