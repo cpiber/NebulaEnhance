@@ -4,7 +4,7 @@ export const queueBottonLocation = (img: HTMLImageElement) => img.parentElement.
 export const durationLocation = (img: HTMLImageElement) => queueBottonLocation(img).querySelector('time').parentElement;
 export const watchLaterLocation = (img: HTMLImageElement) => queueBottonLocation(img).querySelector('[data-icon-itself]');
 export const titleLocation = (link: HTMLElement) => link.nextElementSibling.querySelector('h3');
-export const creatorLocation = (link: HTMLElement) => isVideoListPage() ? titleLocation(link).nextElementSibling.firstElementChild : document.querySelector('h2');
+export const creatorLocation = (link: HTMLElement) => isVideoListPage() ? titleLocation(link).nextElementSibling.firstElementChild : document.querySelector('h1');
 export const watchProgressLocation = (link: HTMLElement) => link.querySelector('picture')?.parentElement?.lastElementChild as HTMLDivElement;
 export const uploadTimeLocation = (link: HTMLElement) => link.nextElementSibling?.querySelector('time');
 export const uploadDurationLocation = (link: HTMLElement) => link.querySelector('time');
