@@ -42,10 +42,6 @@ const manifest: browser._manifest.WebExtensionManifest = {
     '*://content.api.nebula.app/*',
     '*://*.nebula.tv/*',
   ],
-  // @ts-expect-error for some reason these are not present? but specified in guide: https://developer.chrome.com/docs/extensions/develop/migrate/manifest
-  optional_host_permissions: [
-    '*://*.googleapis.com/*',
-  ],
   action: {
     default_icon: {
       128: 'icons/icon_128.png',

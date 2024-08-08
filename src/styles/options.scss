@@ -245,6 +245,10 @@ body {
       padding-top: 0;
     }
   }
+
+  &.mv3 .mv2 {
+    display: none;
+  }
 }
 
 .mobile {

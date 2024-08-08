@@ -39,16 +39,17 @@ const question = q => new Promise(resolve => readline.question(q, answer => reso
 /**
  * JS BUILD
  */
-const jsreplace = (dev = !process.env.BUILD) => ({
+const jsreplace = (dev = !process.env.BUILD, v3 = false) => ({
   '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
   '__DEV__': JSON.stringify(dev),
+  '__MV3__': JSON.stringify(v3),
   'console.dev.log': dev ? 'console.log' : '(()=>{})',
   'console.dev.debug': dev ? 'console.debug' : '(()=>{})',
   'console.dev.warn': dev ? 'console.warn' : '(()=>{})',
   'console.dev.error': dev ? 'console.error' : '(()=>{})',
   'preventAssignment': true,
 });
-const jsplugins = () => [
+const jsplugins = (args) => [
   string({
     include: '**/*.svg',
   }),
@@ -57,7 +58,7 @@ const jsplugins = () => [
   }),
   commonjs(),
   replace({
-    ...jsreplace(),
+    ...jsreplace(!process.env.BUILD, args.configV3),
   }),
 ];
 const js = (args) =>
@@ -84,7 +85,7 @@ const js = (args) =>
         typescript({
           tsconfig: process.env.BUILD ? './tsconfig.prod.json' : './tsconfig.json',
         }),
-        ...jsplugins(),
+        ...jsplugins(args),
         process.env.BUILD && !process.env.NO_MINIFY && terser({ format: { comments: false } }),
       ],
       watch: w(args.watch),

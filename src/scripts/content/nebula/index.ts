@@ -238,6 +238,7 @@ const loadComments = async () => {
   console.debug(`Requesting '${title}' by ${creator} (${nebula})`);
 
   try {
+    // TODO: in MV3 this always returns false for some reason, even if the creator loading is fixed, so disable for now
     const vid: ytvideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_YTID, creator, title, nebula });
     e.querySelectorAll('.enhancer-yt, .enhancer-yt-err, .enhancer-yt-outside, .enhancer-yt-inside').forEach(e => e.remove());
     console.debug('Found video:', vid);

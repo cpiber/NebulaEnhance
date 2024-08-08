@@ -13,6 +13,8 @@ const msg = getBrowserInstance().i18n.getMessage;
 const cl = decodeURIComponent(window.location.hash.slice(1)).split(' ').filter(c => !!c);
 if (cl.length)
   document.body.classList.add(...cl);
+if (__MV3__)
+  document.body.classList.add('mv3');
 
 const els = Settings.get();
 const purgeField = document.querySelector('#purgeCacheField');
