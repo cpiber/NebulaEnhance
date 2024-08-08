@@ -217,6 +217,8 @@ jobs:
         files: |
           web-ext-artifacts/enhancer_for_nebula-v3-${{ env.npm_package_version }}.zip
         fail_on_unmatched_files: true
+        draft: true
+        name: Version ${{ env.npm_package_version }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
