@@ -167,6 +167,9 @@ const click = async (e: MouseEvent) => {
   const q = Queue.get();
   const target = e.target as HTMLElement;
 
+  if (target.closest('.nebula-watch-later'))
+    return;
+
   if (target.closest('main [role="listbox"]') && location.pathname.startsWith('/settings/preferences'))
     return changeTheme(e);
 
