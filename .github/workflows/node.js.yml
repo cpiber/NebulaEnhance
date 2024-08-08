@@ -200,6 +200,25 @@ jobs:
         name: Version ${{ env.npm_package_version }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Get build files
+      uses: actions/download-artifact@v3
+      with:
+        name: enhancer_for_nebula_v3-${{ env.npm_package_version }}
+        path: |
+          extension-dist/
+        
+    - name: Package extension
+      run: npx web-ext build --filename '{name}-v3-{version}.zip'
+
+    - name: Push to release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          web-ext-artifacts/enhancer_for_nebula-v3-${{ env.npm_package_version }}.zip
+        fail_on_unmatched_files: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   lint:
     name: Lint
