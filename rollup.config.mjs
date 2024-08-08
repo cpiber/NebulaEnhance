@@ -130,13 +130,13 @@ const css = (args) =>
  */
 const other = (args) => {
   if (!args.silent)
-    console.info(chalk`{blueBright [Rollup build]} Copying files and generating manifest`);
+    console.info(chalk`{blueBright [Rollup build]} Copying files and generating manifest ${args.configV3 ? 'MV3' : 'MV2'}`);
   const otherglob = 'src/**/*.!(d.ts|ts|js|xcf|@(sa|sc|c)ss)';
   /**
    * @type {import('rollup').RollupOptions}
    */
   const conf = {
-    input: 'src/manifest.ts',
+    input: args.configV3 ? 'src/manifest_v3.ts' : 'src/manifest.ts',
     output: {
       dir: 'extension-dist',
       format: 'cjs',
@@ -151,7 +151,7 @@ const other = (args) => {
         __VERSION__: JSON.stringify(process.env.npm_package_version),
         preventAssignment: true,
       }),
-      writeJSON(),
+      writeJSON(args.configV3 ? 'manifest_v3.js' : 'manifest.js'),
       copy({
         targets: [
           { src: otherglob, dest: 'extension-dist' },
@@ -223,7 +223,7 @@ function remove() {
 /**
  * @returns {import('rollup').Plugin}
  */
-function writeJSON(filename = 'manifest.js') {
+function writeJSON(filename = 'manifest.js', outfilename = 'manifest.json') {
   return {
     name: 'write-json',
     generateBundle(_, bundle, isWrite) {
@@ -232,7 +232,7 @@ function writeJSON(filename = 'manifest.js') {
       const manifest = nodeEval(bundle[filename].code);
       this.emitFile({
         type: 'asset',
-        fileName: filename.replace(/\.js$/, '.json'),
+        fileName: outfilename,
         source: JSON.stringify(manifest, null, process.env.BUILD ? undefined : 2),
       });
       delete bundle[filename];

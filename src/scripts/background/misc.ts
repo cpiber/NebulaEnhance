@@ -1,4 +1,5 @@
 
+// TODO: In MV3, DOMParser needs to work with an offscreen document instead: https://developer.chrome.com/docs/extensions/develop/migrate/to-service-workers#move-dom-and-window
 export const loadCreators = async () => {
   const res = await fetch('https://talent.nebula.tv/creators/');
   const body = await res.text();

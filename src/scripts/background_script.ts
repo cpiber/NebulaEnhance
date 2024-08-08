@@ -8,9 +8,14 @@ const videoFetchNebula = 50;
 
 const { local, sync } = getBrowserInstance().storage;
 
-getBrowserInstance().browserAction.onClicked.addListener(() => openOptions());
+if (getBrowserInstance().action) {
+  getBrowserInstance().action.onClicked.addListener(() => openOptions());
+} else {
+  getBrowserInstance().browserAction.onClicked.addListener(() => openOptions());
+}
 
 getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [key: string]: any; }) => {
+  const keepAlive = setInterval(getBrowserInstance().runtime.getPlatformInfo, 25 * 1000);
   try {
     const msg = parseTypeObject(message);
     console.dev.log('Handling message', msg);
@@ -24,7 +29,10 @@ getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [k
       case BrowserMessage.GET_VID:
         return getNebulaVideo(msg);
     }
-  } catch { }
+  } catch {
+  } finally {
+    clearInterval(keepAlive);
+  }
 });
 
 getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
