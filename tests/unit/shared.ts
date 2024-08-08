@@ -18,8 +18,8 @@ describe('dot product operations', () => {
   });
 
   test('multi-dimensional', () => {
-    const a1 = [1, 2, 3];
-    const a2 = [3, 2, 1];
+    const a1 = [ 1, 2, 3 ];
+    const a2 = [ 3, 2, 1 ];
     const d = a1[0] * a2[0] + a1[1] * a2[1] + a1[2] * a2[2];
     expect(dot(a1, a2)).toBeCloseTo(d);
   });
@@ -35,7 +35,7 @@ describe('norm (vector square-length)', () => {
   });
 
   test('multi-dimensional', () => {
-    expect(norm([1, 2, 3])).toBeCloseTo(Math.sqrt(1 * 1 + 2 * 2 + 3 * 3));
+    expect(norm([ 1, 2, 3 ])).toBeCloseTo(Math.sqrt(1 * 1 + 2 * 2 + 3 * 3));
   });
 });
 
@@ -45,15 +45,15 @@ describe('array occurence', () => {
   });
 
   test('only one value', () => {
-    expect([1, 1, 1].occurence()).toEqual({ values: [1], occurences: [3] });
+    expect([ 1, 1, 1 ].occurence()).toEqual({ values: [1], occurences: [3] });
   });
 
   test('only one value each', () => {
-    expect([1, 2, 3].occurence()).toEqual({ values: [1, 2, 3], occurences: [1, 1, 1] });
+    expect([ 1, 2, 3 ].occurence()).toEqual({ values: [ 1, 2, 3 ], occurences: [ 1, 1, 1 ] });
   });
 
   test('interleaving values', () => {
-    expect([3, 1, 2, 1, 3, 3, 2].occurence()).toEqual({ values: [1, 2, 3], occurences: [2, 2, 3] });
+    expect([ 3, 1, 2, 1, 3, 3, 2 ].occurence()).toEqual({ values: [ 1, 2, 3 ], occurences: [ 2, 2, 3 ] });
   });
 });
 
@@ -64,11 +64,11 @@ describe('array equality', () => {
 
   test('different items', () => {
     expect([1].equals([2])).toBe(false);
-    expect([1, 2, 3].equals([2, 1, 3])).toBe(false);
+    expect([ 1, 2, 3 ].equals([ 2, 1, 3 ])).toBe(false);
   });
 
   test('same values', () => {
-    expect([1, 2, 3].equals([1, 2, 3])).toBe(true);
+    expect([ 1, 2, 3 ].equals([ 1, 2, 3 ])).toBe(true);
   });
 });
 
@@ -137,7 +137,7 @@ describe('other', () => {
   });
 
   test('arrFromLengthy lets arrays be', () => {
-    const test = [1, 2, 3];
+    const test = [ 1, 2, 3 ];
     expect(arrFromLengthy(test)).toEqual(test);
   });
 });
