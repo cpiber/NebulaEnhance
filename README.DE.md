@@ -2,9 +2,6 @@
 
 [English](README.md) / [Deutsch](README.DE.md)
 
-[![Build + Test](https://badgen.net/github/checks/cpiber/NebulaEnhance/?label=build)](https://github.com/cpiber/NebulaEnhance/actions/)
-[![codecov](https://badgen.net/codecov/c/github/cpiber/NebulaEnhance)](https://codecov.io/gh/cpiber/NebulaEnhance)
-
 
 # Enhancer for Nebula
 
