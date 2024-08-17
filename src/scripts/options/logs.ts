@@ -7,9 +7,15 @@ const msg = getBrowserInstance().i18n.getMessage;
 const owner = 'cpiber';
 const repo = 'NebulaEnhance';
 
-const buildVersion = (cv: string, r: Github.Release) => {
+enum VersionIdent {
+  CURRENT,
+  OLDER,
+  NEWER,
+};
+
+const buildVersion = (ident: VersionIdent, r: Github.Release) => {
   const el = document.createElement('div');
-  el.className = `version version-${r.tag_name} ${r.tag_name === cv ? 'current' : ''}`;
+  el.className = `version version-${r.tag_name} ${ident === VersionIdent.CURRENT ? 'current' : ident === VersionIdent.NEWER ? 'newer' : 'older'}`;
   const h = el.appendChild(document.createElement('h2'));
   h.className = 'version-title';
   const link = h.appendChild(document.createElement('a'));
@@ -18,7 +24,7 @@ const buildVersion = (cv: string, r: Github.Release) => {
   link.innerText = r.name;
   const v = h.appendChild(document.createElement('span'));
   v.className = 'more';
-  v.innerText = releaseToMore(cv, r);
+  v.innerText = releaseToMore(ident, r);
   const time = el.appendChild(document.createElement('span'));
   time.className = 'published-at';
   time.textContent = new Date(r.published_at).toLocaleString();
@@ -27,8 +33,8 @@ const buildVersion = (cv: string, r: Github.Release) => {
   return el;
 };
 
-const releaseToMore = (cv: string, r: Github.Release) => [
-  ...r.tag_name === cv ? [msg('optionsChangelogYourVersion')] : [],
+const releaseToMore = (ident: VersionIdent, r: Github.Release) => [
+  ...ident === VersionIdent.CURRENT ? [msg('optionsChangelogYourVersion')] : [],
   ...([ 'draft', 'prerelease' ] as Array<keyof Github.Release>).filter(e => r[e] === true).map(s => s[0].toUpperCase() + s.slice(1)),
 ].join(', ');
 
@@ -43,7 +49,16 @@ export const showLogs = withLoader(async (currentVersion: string, installed = fa
   if (!releases)
     return;
   const cv = `v${currentVersion}`;
-  const rs = await Promise.all(releases.map(async r => ({ ...r, body: DOMPurify.sanitize(await marked(r.body)) })).map(async r => buildVersion(cv, await r)));
+  const rs = await Promise.all(
+    releases.map(async r => ({ ...r, body: DOMPurify.sanitize(await marked(r.body)) })),
+  );
+  let ident = VersionIdent.NEWER;
+  const elements = Array.from<HTMLElement>({ length: rs.length });
+  for (let i = 0; i < elements.length; ++i) {
+    const isCurrent = rs[i].tag_name === cv;
+    elements[i] = buildVersion(isCurrent ? VersionIdent.CURRENT : ident, rs[i]);
+    if (isCurrent) ident = VersionIdent.OLDER;
+  }
   const last = document.createElement('p');
   last.className = 'all-releases';
   const full = last.appendChild(document.createElement('a'));
@@ -54,5 +69,5 @@ export const showLogs = withLoader(async (currentVersion: string, installed = fa
   const welcome = document.createElement('div');
   welcome.className = 'enhancer-welcome-banner';
   welcome.innerHTML = msg('optionsChangelogInstalled');
-  buildModalDirect(msg('optionsChangelogTitle'), installed ? welcome : null, 'changelog', ...rs, last);
+  buildModalDirect(msg('optionsChangelogTitle'), installed ? welcome : null, 'changelog', ...elements, last);
 });

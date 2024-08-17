@@ -398,6 +398,17 @@
     padding-bottom: 16px;
     margin-bottom: 16px;
     border-bottom: 1px solid $gray_transparent;
+
+    &.newer {
+      opacity: 0.4;
+    }
+
+    .more:not(:empty) {
+      font-size: 0.7em;
+      border: 1px solid $gray;
+      border-radius: $border_radius;
+      padding: 4px 8px;
+    }
   }
 
   .version-title {
@@ -417,7 +428,7 @@
   .enhancer-welcome-banner {
     background: rgb(128 128 128 / 0.1);
     padding: 20px;
-    border-radius: 8px;
+    border-radius: $border_radius;
     margin-bottom: 32px;
 
     *:first-child {
