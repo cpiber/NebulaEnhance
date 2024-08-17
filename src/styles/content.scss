@@ -23,13 +23,13 @@ html.enhancer-fullVideo.page-video {
     }
   }
 
+  #NebulaApp > div {
+    margin-top: 0 !important;
+  }
+
   #NebulaApp > div:first-of-type {
     position: absolute !important;
     top: 100vh !important;
-  }
-
-  #NebulaApp > div {
-    margin-top: 0 !important;
   }
 
   [aria-label="video description"] {
