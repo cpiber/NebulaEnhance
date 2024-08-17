@@ -9,7 +9,9 @@ export const enum Message {
 
   REGISTER_LISTENER = 'registerListener',
 
+  // why are these not camel-case like the others...
   HISTORY = 'enhancer-history',
+  HISTORY_SETUP = 'enhancer-history-setup',
 }
 export const isQueueMessage = (msg: string) => msg.startsWith('queue');
 

@@ -1,3 +1,4 @@
+import type { History } from 'history';
 import { Settings, builtin as builtinComponents, slot as componentSlot, toSorted as componentsSorted, ours as oursComponents } from './components';
 import createExpandButton from './components/expand';
 import { findTime } from './components/htmlhelper';
@@ -5,7 +6,7 @@ import createQueueButton, { toggleQueueButton } from './components/queue';
 import createSpeedDial from './components/speeddial';
 import attachVolumeText, { toggleVolumeShow } from './components/volume';
 import { init as initDispatch, loadPrefix } from './dispatcher';
-import { Message, arrFromLengthy, getFromStorage, notification, onStorageChange, sendMessage } from './sharedpage';
+import { Message, arrFromLengthy, getFromStorage, notification, onStorageChange, parseTypeObject, replyMessage, sendMessage } from './sharedpage';
 
 export type Player = HTMLVideoElement & { _enhancerInit: boolean; };
 
@@ -24,7 +25,28 @@ const optionsDefaults = {
 let options = { ...optionsDefaults };
 const msgs: Record<string, string> = {};
 
+type Msg = { type: string, name?: string, [key: string]: any; };
+
 export const init = async () => {
+  window.addEventListener('message', (e) => {
+    const msg = parseTypeObject<Msg>(e.data, true);
+    if (msg === null)
+      return true; // ignore invalid messages
+    if (msg.type.startsWith('enhancer-message-') || msg.type.startsWith('enhancer-event-'))
+      return true; // ignore replies and events
+    console.dev.debug('[Player] Handling message', msg);
+
+    switch (msg.type) {
+      case Message.HISTORY_SETUP: {
+        try {
+          replyMessage(e, msg.name, setupHistory(), null);
+        } catch (err) {
+          replyMessage(e, msg.name, null, err);
+        }
+      } break;
+    }
+  });
+
   const {
     playbackChange, autoplay, autoplayQueue, volumeEnabled,
     volumeChange, volumeLog, volumeShow, useFirstSubtitle, autoExpand,
@@ -304,4 +326,44 @@ const clickHandler = (e: MouseEvent) => {
     console.dev.log(`Set subtitle track '${label}' active`);
     window.localStorage.setItem('player-v2-subtitle-track', JSON.stringify(label));
   }
+};
+
+export const setupHistory = () => {
+  try {
+    const root = document.getElementById('root');
+    for (const key of Object.keys(root)) {
+      if (key.startsWith('__reactContainer')) {
+        let obj = root[key] as any;
+        while (true) {
+          if (obj.stateNode && obj.stateNode.history) {
+            if (obj.stateNode.history.__enhancer_handled) return true;
+            /* eslint-disable-next-line camelcase */
+            obj.stateNode.history.__enhancer_handled = true;
+            const history = obj.stateNode.history as History;
+            window.addEventListener('message', ev => {
+              try {
+                const data = JSON.parse(ev.data);
+                if (data.type !== Message.HISTORY) return;
+                switch (data.action) {
+                  case 'push':
+                    history.push(data.to, data.state);
+                    break;
+                  case 'replace':
+                    history.replace(data.to, data.state);
+                    break;
+                }
+              } catch { }
+            });
+            return true;
+          }
+          if (!obj.child) break;
+          obj = obj.child;
+        }
+        break;
+      }
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  return false;
 };

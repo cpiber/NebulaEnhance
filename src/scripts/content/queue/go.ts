@@ -1,46 +1,11 @@
-import type { History } from 'history';
-import { Message, getBrowserInstance, injectFunctionWithReturn, sendMessage } from '../../helpers/sharedExt';
+import { Message, getBrowserInstance, sendMessage } from '../../helpers/sharedExt';
 import type { Queue } from './index';
 
 const nothingToPlay = getBrowserInstance().i18n.getMessage('pageNothingToPlay');
 
 export async function setupHistory(this: Queue) {
   try {
-    this.hasHistoryGlobal = await injectFunctionWithReturn(document.body, () => {
-      const root = document.getElementById('root');
-      for (const key of Object.keys(root)) {
-        if (key.startsWith('__reactContainer')) {
-          let obj = root[key] as any;
-          while (true) {
-            if (obj.stateNode && obj.stateNode.history) {
-              if (obj.stateNode.history.__enhancer_handled) return true;
-              /* eslint-disable-next-line camelcase */
-              obj.stateNode.history.__enhancer_handled = true;
-              const history = obj.stateNode.history as History;
-              window.addEventListener('message', ev => {
-                try {
-                  const data = JSON.parse(ev.data);
-                  if (data.type !== 'enhancer-history') return;
-                  switch (data.action) {
-                    case 'push':
-                      history.push(data.to, data.state);
-                      break;
-                    case 'replace':
-                      history.replace(data.to, data.state);
-                      break;
-                  }
-                } catch { }
-              });
-              return true;
-            }
-            if (!obj.child) break;
-            obj = obj.child;
-          }
-          break;
-        }
-      }
-      return false;
-    });
+    this.hasHistoryGlobal = await sendMessage<boolean>(Message.HISTORY_SETUP);
   } catch (err) {
     console.error(err);
     this.hasHistoryGlobal = false;
