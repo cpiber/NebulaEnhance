@@ -43,8 +43,14 @@ getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: st
     }
     if (ret) {
       ret.then(
-        res => { console.dev.log('Result for', msg.type, ':', res); sendResponse({ res }); },
-        err => { console.dev.log('Error running', msg.type, ':', err); sendResponse({ err }); },
+        res => {
+          console.dev.log('Result for', msg.type, ':', res);
+          sendResponse({ res });
+        },
+        err => {
+          console.dev.log('Error running', msg.type, ':', err);
+          sendResponse({ err });
+        },
       );
       return true;
     }

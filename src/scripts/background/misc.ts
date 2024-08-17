@@ -10,7 +10,7 @@ async function setupOffscreenDocument(path: string) {
   // @ts-expect-error offscreen API not typed
   const existingContexts = await getBrowserInstance().runtime.getContexts({
     contextTypes: ['OFFSCREEN_DOCUMENT'],
-    documentUrls: [offscreenUrl]
+    documentUrls: [offscreenUrl],
   });
 
   if (existingContexts.length > 0) {
