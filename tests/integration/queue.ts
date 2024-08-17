@@ -9,8 +9,8 @@ beforeAll(async () => {
   await login();
 
   await page.goto(__NEBULA_BASE__);
-  await page.waitForSelector('.CookieConsent-Button');
-  await page.click('.CookieConsent-Button');
+  await page.waitForSelector('.CookieConsent');
+  await page.click('.CookieConsent #rcc-confirm-button');
 });
 
 beforeEach(maybeLogin(async () => {
