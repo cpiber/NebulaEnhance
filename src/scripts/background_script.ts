@@ -26,7 +26,7 @@ getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: st
   let ret: Promise<any>;
   try {
     const msg = parseTypeObject<{ type: string, name?: string; }>(message);
-    console.dev.log('Handling message', msg);
+    if (__DEV__) console.log('Handling message', msg);
     switch (msg.type) {
       case BrowserMessage.INIT_PAGE:
         ret = openChangelog();
