@@ -12,11 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup Node.js environment
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
     - name: Cache pnpm modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -40,7 +40,7 @@ jobs:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
 
     - name: Archive extension
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
@@ -53,7 +53,7 @@ jobs:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
 
     - name: Archive extension V3
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: enhancer_for_nebula_v3-${{ env.npm_package_version }}
         path: |
@@ -66,11 +66,11 @@ jobs:
     needs: build
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup Node.js environment
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
     - name: Cache pnpm modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -87,7 +87,7 @@ jobs:
         npm run env | grep npm_package_version >> $GITHUB_ENV
     
     - name: Get build files
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
@@ -127,11 +127,11 @@ jobs:
     needs: build
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup Node.js environment
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
     - name: Cache pnpm modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -148,7 +148,7 @@ jobs:
         npm run env | grep npm_package_version >> $GITHUB_ENV
     
     - name: Get build files
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: enhancer_for_nebula_v3-${{ env.npm_package_version }}
         path: |
@@ -174,11 +174,11 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup Node.js environment
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
     - name: Cache pnpm modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -195,7 +195,7 @@ jobs:
         npm run env | grep npm_package_version >> $GITHUB_ENV
     
     - name: Get build files
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
@@ -216,7 +216,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Get build files
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: enhancer_for_nebula_v3-${{ env.npm_package_version }}
         path: |
@@ -242,11 +242,11 @@ jobs:
     needs: build
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Setup Node.js environment
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
     - name: Cache pnpm modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -276,7 +276,7 @@ jobs:
       run: npm run lint:ext
     
     - name: Get build files
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: enhancer_for_nebula-${{ env.npm_package_version }}
         path: |
@@ -301,13 +301,13 @@ jobs:
       id: tagfetch
     - run: |
         echo Checking out tag ${{ steps.tagfetch.outputs.tag }}
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         ref: ${{ steps.tagfetch.outputs.tag }}
     - name: Setup Node.js environment
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
     - name: Cache pnpm modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       env:
         cache-name: cache-pnpm-modules
       with:
@@ -324,7 +324,7 @@ jobs:
       env:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
     
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         clean: false
     - run: pnpm install --frozen-lockfile
