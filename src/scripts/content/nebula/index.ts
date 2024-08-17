@@ -240,6 +240,8 @@ const loadComments = async () => {
   try {
     // TODO: in MV3 this always returns false for some reason, even if the creator loading is fixed, so disable for now
     const vid: ytvideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_YTID, creator, title, nebula });
+    console.dev.log('got:', vid);
+    if (vid as any === false) throw new Error('Unknown error');
     e.querySelectorAll('.enhancer-yt, .enhancer-yt-err, .enhancer-yt-outside, .enhancer-yt-inside').forEach(e => e.remove());
     console.debug('Found video:', vid);
     const v = document.createElement('span');

@@ -1,7 +1,7 @@
 import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString } from './background';
 import { purgeCache, purgeCacheIfNecessary } from './background/ext';
 import type { CreatorSettings } from './content/nebula/creator-settings';
-import { BrowserMessage, getBase, getBrowserInstance, getFromStorage, nebulavideo, parseTimeString, parseTypeObject, setToStorage, toTimeString } from './helpers/sharedExt';
+import { BrowserMessage, getBase, getBrowserInstance, getFromStorage, isChrome, nebulavideo, parseTimeString, parseTypeObject, setToStorage, toTimeString } from './helpers/sharedExt';
 
 const videoFetchYt = 50;
 const videoFetchNebula = 50;
@@ -14,21 +14,38 @@ if (getBrowserInstance().action) {
   getBrowserInstance().browserAction.onClicked.addListener(() => openOptions());
 }
 
-getBrowserInstance().runtime.onMessage.addListener(async (message: string | { [key: string]: any; }) => {
+getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: string]: any; }) => {
+  // Return early if this message isn't meant for the background script
+  if (typeof message !== 'string' && message.target !== undefined && message.target !== 'background') {
+    return;
+  }
+
   const keepAlive = setInterval(getBrowserInstance().runtime.getPlatformInfo, 25 * 1000);
+  let ret: Promise<any>;
   try {
     const msg = parseTypeObject(message);
     console.dev.log('Handling message', msg);
     switch (msg.type) {
       case BrowserMessage.INIT_PAGE:
-        return openChangelog();
+        ret = openChangelog();
+        break;
       case BrowserMessage.LOAD_CREATORS:
-        return console.debug(await loadCreators());
+        ret = loadCreators();
+        break;
       case BrowserMessage.GET_YTID:
-        return getYoutubeId(msg);
+        ret = getYoutubeId(msg);
+        break;
       case BrowserMessage.GET_VID:
-        return getNebulaVideo(msg);
+        ret = getNebulaVideo(msg);
+        break;
     }
+    if (ret) {
+      ret.then(
+        res => console.dev.log('Result for', msg.type, ':', res),
+        err => console.dev.log('Error running', msg.type, ':', err),
+      );
+    }
+    return ret;
   } catch {
   } finally {
     clearInterval(keepAlive);
@@ -168,7 +185,7 @@ const openOptions = (active = true, ...args: string[]) => {
   console.debug(await loadCreators());
 
   // debug code
-  if (!__DEV__) return;
+  if (!__DEV__ || isChrome()) return;
   (window as any).loadCreators = loadCreators;
   Object.defineProperty(window, 'loadCreatorsPromise', {
     get: () => promise, set(v) {

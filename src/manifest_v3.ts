@@ -40,6 +40,7 @@ const manifest: browser._manifest.WebExtensionManifest = {
   ],
   permissions: [
     'storage',
+    'offscreen',
   ],
   host_permissions: [
     // Only firefox requires this, and the subdomain must be completely specified, otherwise the request fails
