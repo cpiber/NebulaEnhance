@@ -123,7 +123,9 @@ const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vid
     } else {
       yield* videoDetailsFromDOMDesktop();
     }
-    const vid: nebulavideo = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_VID, channelID, channelName, channelNice, videoTitle });
+    const { res: vid, err }: { res?: nebulavideo, err?: any; } = await getBrowserInstance().runtime.sendMessage({ type: BrowserMessage.GET_VID, channelID, channelName, channelNice, videoTitle });
+    console.dev.log('got:', vid, err);
+    if (!vid) throw new Error(err);
     console.debug('got video information',
       '\nchannelID:', channelID, 'channelName:', channelName, '(', channelNice, ')', 'videoTitle:', videoTitle, 'vidID:', vidID,
       '\non nebula?', !!vid);

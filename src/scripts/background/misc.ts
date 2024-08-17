@@ -36,34 +36,15 @@ async function closeOffscreenDocument() {
   await getBrowserInstance().offscreen.closeDocument();
 }
 
-let dataPromiseResolve: (data: Creator[]) => void | undefined = undefined;
-getBrowserInstance().runtime.onMessage.addListener(async (message: { [key: string]: any; }) => {
-  if (message.target !== 'background') {
-    return false;
-  }
-  console.dev.log('Received message from offcanvas', message);
-  switch (message.type) {
-    case 'receiveCreatorInformation': {
-      console.dev.log('dataPromiseResolve is set?', !!dataPromiseResolve);
-      if (dataPromiseResolve) dataPromiseResolve(message.data);
-    } break;
-  }
-});
-
 export const loadCreators: () => Promise<Creator[]> = (() => {
   if (__MV3__) {
     console.info('MV3! Using offscreen API instead');
     return async () => {
       await setupOffscreenDocument('offscreen.html');
-      const data = await new Promise<Creator[]>(async resolve => {
-        dataPromiseResolve = resolve;
-
-        await getBrowserInstance().runtime.sendMessage({
-          type: 'getCreatorInformation',
-          target: 'offscreen',
-        });
+      const data: Creator[] = await getBrowserInstance().runtime.sendMessage({
+        type: 'getCreatorInformation',
+        target: 'offscreen',
       });
-      dataPromiseResolve = undefined;
       await closeOffscreenDocument();
       console.dev.log('Creator data:', data);
       return data;

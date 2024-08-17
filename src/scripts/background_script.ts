@@ -14,7 +14,9 @@ if (getBrowserInstance().action) {
   getBrowserInstance().browserAction.onClicked.addListener(() => openOptions());
 }
 
-getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: string]: any; }) => {
+// NOTE: not promise-based, because Chrome really doesn't like it, when there are multiple listeners
+// need to return immediately, then call sendResponse manually, otherwise the other listener in offscreen.ts interferes
+getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: string]: any; }, sender, sendResponse) => {
   // Return early if this message isn't meant for the background script
   if (typeof message !== 'string' && message.target !== undefined && message.target !== 'background') {
     return;
@@ -23,7 +25,7 @@ getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: st
   const keepAlive = setInterval(getBrowserInstance().runtime.getPlatformInfo, 25 * 1000);
   let ret: Promise<any>;
   try {
-    const msg = parseTypeObject(message);
+    const msg = parseTypeObject<{ type: string, name?: string; }>(message);
     console.dev.log('Handling message', msg);
     switch (msg.type) {
       case BrowserMessage.INIT_PAGE:
@@ -41,11 +43,11 @@ getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: st
     }
     if (ret) {
       ret.then(
-        res => console.dev.log('Result for', msg.type, ':', res),
-        err => console.dev.log('Error running', msg.type, ':', err),
+        res => { console.dev.log('Result for', msg.type, ':', res); sendResponse({ res }); },
+        err => { console.dev.log('Error running', msg.type, ':', err); sendResponse({ err }); },
       );
+      return true;
     }
-    return ret;
   } catch {
   } finally {
     clearInterval(keepAlive);
