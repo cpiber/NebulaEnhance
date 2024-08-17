@@ -18,8 +18,10 @@ This extension is available on the official add-on stores:
 - Firefox: [![amo](https://badgen.net/amo/v/enhancer-for-nebula)](https://addons.mozilla.org/en-US/firefox/addon/enhancer-for-nebula/) 
 - Chromium: [![chrome](https://badgen.net/chrome-web-store/v/niaholaehmipmbpoagjmdlocnhakeonl)](https://chrome.google.com/webstore/detail/enhancer-for-nebula/niaholaehmipmbpoagjmdlocnhakeonl)
 
-The most recent releases are available [here](https://github.com/cpiber/NebulaEnhance/releases).
-Installing the `enhancer_for_nebula_<version>.zip` should work on any browser. The `enhancer_for_nebula_<version>.xpi` is produced and signed by Mozilla.
+The most recent releases are available [here](https://github.com/cpiber/NebulaEnhance/releases) for installing manually.
+Installing the `enhancer_for_nebula-<version>.zip` should work on any browser that supports MV2.
+For [MV3](https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3)-only browsers (Chromium based), use the `enhancer_for_nebula-v3-<version>.zip`.
+The `enhancer_for_nebula-<version>.xpi` is produced and signed by Mozilla.
 
 Please be aware that both Mozilla and Google need to verify my changes before making them visible in the stores.
 
@@ -47,7 +49,7 @@ Please be aware that both Mozilla and Google need to verify my changes before ma
 - ~~Target qualities: Set the preferred video quality or qualities~~ Now natively supported
 
 **Custom scripts**
-- Execute custom JavaScript code on the web page
+- Execute custom JavaScript code on the web page (MV2 only)
 
 If you have any suggestions, please open a new [issue](https://github.com/cpiber/NebulaEnhance/issues) or start a [discussion](https://github.com/cpiber/NebulaEnhance/discussions/new).
 
