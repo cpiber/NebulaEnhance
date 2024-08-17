@@ -1,14 +1,6 @@
 import { TestEnvironment } from 'jest-environment-puppeteer';
 
 class Env extends TestEnvironment {
-  async setup() {
-    await super.setup();
-
-    if (this.global.context.isIncognito === undefined) {
-      this.global.context.isIncognito = () => false;
-    }
-  }
-
   /**
    * @param {import('@jest/types').Circus.AsyncEvent} event
    * @param {import('@jest/types').Circus.State} state
