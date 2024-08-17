@@ -1,6 +1,7 @@
 import { jest } from '@jest/globals';
 import fetch from 'node-fetch';
-import { Video, creatorHasYTVideo, loadYTVideos } from '../../src/scripts/background';
+import type { Video } from '../../src/scripts/background';
+import { creatorHasYTVideo, loadYTVideos } from '../../src/scripts/background/youtube';
 import '../../src/scripts/helpers/shared/prototype';
 
 global.fetch = fetch as unknown as typeof global.fetch;
@@ -36,9 +37,9 @@ describe('loading youtube videos', () => {
     const fetchMock = jest.fn<any>();
     global.fetch = fetchMock;
     await expect(creatorHasYTVideo('UUuCkxoKLYO_EQ2GeFtbM_bw', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
-    expect(fetchMock).not.toBeCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
     await expect(loadYTVideos('UUuCkxoKLYO_EQ2GeFtbM_bw', 100)).resolves.toHaveLength(100);
-    expect(fetchMock).not.toBeCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
     global.fetch = fetch as unknown as typeof global.fetch;
   });
 });

@@ -5,7 +5,7 @@ import '../../src/scripts/helpers/shared/prototype';
 
 global.fetch = fetch as unknown as typeof global.fetch;
 
-const { creatorHasNebulaVideo, loadNebulaChannelVideos, existsNebulaVideo, loadNebulaSearchVideos } = await import('../../src/scripts/background');
+const { creatorHasNebulaVideo, loadNebulaChannelVideos, existsNebulaVideo, loadNebulaSearchVideos } = await import('../../src/scripts/background/nebula');
 
 describe('loading nebula videos', () => {
   const consoleError = console.error;
@@ -40,9 +40,9 @@ describe('loading nebula videos', () => {
     const fetchMock = jest.fn<any>();
     global.fetch = fetchMock;
     await expect(creatorHasNebulaVideo('hai', vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
-    expect(fetchMock).not.toBeCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
     await expect(loadNebulaChannelVideos('hai', 100)).resolves.toHaveLength(100);
-    expect(fetchMock).not.toBeCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
     global.fetch = fetch as unknown as typeof global.fetch;
   });
 
@@ -60,9 +60,9 @@ describe('loading nebula videos', () => {
     const fetchMock = jest.fn<any>();
     global.fetch = fetchMock;
     await expect(existsNebulaVideo(vid.title, 50)).resolves.toEqual({ confidence: 1, video: vid.videoId });
-    expect(fetchMock).not.toBeCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
     await expect(loadNebulaSearchVideos('test', 100)).resolves.toHaveLength(100);
-    expect(fetchMock).not.toBeCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
     global.fetch = fetch as unknown as typeof global.fetch;
   });
 });

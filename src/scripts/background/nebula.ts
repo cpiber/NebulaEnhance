@@ -2,7 +2,7 @@ import type { Video } from '.';
 import { getChannelVideos, searchVideos } from '../helpers/api';
 import { ytvideo } from '../helpers/shared';
 import { creatorHasVideo } from './ifidf';
-import { normalizeString } from './misc';
+import { normalizeString } from './normalize';
 
 const plistcache: { [key: string]: Video[]; } = {};
 export const loadNebulaChannelVideos = async (channel: string, num: number) => {

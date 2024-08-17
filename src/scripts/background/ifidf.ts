@@ -1,5 +1,5 @@
 import { dot, norm } from '../helpers/shared';
-import { normalizeString } from './misc';
+import { normalizeString } from './normalize';
 
 type SearchableVideo = {
   title: string,

@@ -1,5 +1,6 @@
 export * from './misc';
 export * from './nebula';
+export * from './normalize';
 export * from './youtube';
 
 export type Creator = {

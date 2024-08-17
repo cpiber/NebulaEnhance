@@ -1,8 +1,8 @@
 import { jest } from '@jest/globals';
 import fetch from 'node-fetch';
-import { loadCreators } from '../../src/scripts/background';
 import { matchVideoConfidence } from '../../src/scripts/background/ifidf';
 import '../../src/scripts/helpers/shared/prototype';
+import { getInformation as loadCreators } from '../../src/scripts/page/offscreen';
 
 global.fetch = fetch as unknown as typeof global.fetch;
 

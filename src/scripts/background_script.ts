@@ -44,11 +44,11 @@ getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: st
     if (ret) {
       ret.then(
         res => {
-          console.dev.log('Result for', msg.type, ':', res);
+          if (__DEV__) console.log('Result for', msg.type, ':', res);
           sendResponse({ res });
         },
         err => {
-          console.dev.log('Error running', msg.type, ':', err);
+          if (__DEV__) console.log('Error running', msg.type, ':', err);
           sendResponse({ err });
         },
       );

@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 import { JSDOM } from 'jsdom';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { Event, Message, arrFromLengthy, clone, debounce, dot, getCookie, injectFunction, injectScript, isMobile, isVideoListPage, isVideoPage, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
+import { Event, Message, arrFromLengthy, clone, debounce, dot, getCookie, injectScript, isMobile, isVideoListPage, isVideoPage, norm, parseMaybeJSON, parseTypeObject, replyMessage, sendEventHandler, sendMessage } from '../../src/scripts/helpers/shared';
 import '../../src/scripts/helpers/shared/prototype';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -102,7 +102,7 @@ describe('other', () => {
 
     expect(isMobile()).toBe(true);
     expect(isMobile()).toBe(false);
-    expect(mock).toBeCalledTimes(2);
+    expect(mock).toHaveBeenCalledTimes(2);
     mock.mock.calls.forEach(c => {
       expect(c[0]).toMatch(/pointer/);
     });
@@ -121,12 +121,12 @@ describe('other', () => {
     for (let i = 0; i < 10; i++)
       m();
     jest.runAllTimers();
-    expect(mock).toBeCalledTimes(1);
+    expect(mock).toHaveBeenCalledTimes(1);
 
     for (let i = 0; i < 10; i++)
       m();
     jest.runAllTimers();
-    expect(mock).toBeCalledTimes(2);
+    expect(mock).toHaveBeenCalledTimes(2);
   });
 
   test('arrFromLengthy converts to array', () => {
@@ -234,17 +234,8 @@ describe('script injection', () => {
 
     const wrapper = dom.window.document.head;
     await expect(injectScript('../fixtures/waitForEvent.js', wrapper, 'test', 'data', dom.window as never as Window)).resolves.toBe(void 0);
-    expect(mock).toBeCalledTimes(1);
-    expect(mock).toHaveBeenCalledWith('data');
-    console.log = log;
-  });
-
-  test('injecting function works with arguments', () => {
-    const { log } = console;
-    const mock = console.log = jest.fn();
-    injectFunction(document.body, data => console.log(data), 'test-data');
     expect(mock).toHaveBeenCalledTimes(1);
-    expect(mock).toHaveBeenCalledWith('test-data');
+    expect(mock).toHaveBeenCalledWith('data');
     console.log = log;
   });
 });
@@ -358,7 +349,7 @@ describe('message event listeners', () => {
         cb.mockImplementationOnce(resolve);
         window.postMessage({ type: name, res: i }, '*');
       })).resolves.toBe(i);
-      expect(cb).toBeCalledTimes(i + 1);
+      expect(cb).toHaveBeenCalledTimes(i + 1);
     }
   });
 });
