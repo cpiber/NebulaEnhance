@@ -95,7 +95,7 @@ describe('queue', () => {
     await expectQueueLength().toBe(0);
   });
 
-  test.skip('clicking video changes queue top title', async () => {
+  test('clicking video changes queue top title', async () => {
     await addToQueue(2);
     await page.click(`${queueSelector} .element`);
     const title = await page.evaluate(sel => document.querySelector(`${sel} .element .title`).textContent, queueSelector);

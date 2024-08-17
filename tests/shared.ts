@@ -1,6 +1,6 @@
 import { setTimeout } from 'node:timers/promises';
 import type { Browser } from 'puppeteer';
-import { videoselector as videoSelector } from '../src/scripts/page/dispatcher';
+import { videoselector as videoSelector } from '../src/scripts/helpers/shared/helpers';
 
 export { videoSelector };
 export const qbuttSelector = '.enhancer-queueButton';
@@ -14,7 +14,14 @@ export const getNthVideo = async (num: number) => {
 };
 export const addToQueue = async (num: number, offset = 0) => {
   for (let index = 0; index < num; index++) {
+    await page.waitForSelector(`${await getNthVideo(index + 1 + offset)} img`);
+    const eimg = await page.$(`${await getNthVideo(index + 1 + offset)} img`);
+    await page.evaluate((elem: HTMLElement) => {
+      elem?.scrollIntoView();
+      window.scroll({ top: window.scrollY - 90 }); // scroll past nav bar
+    }, eimg);
     await page.hover(`${await getNthVideo(index + 1 + offset)} img`);
+    await page.waitForSelector(`${await getNthVideo(index + 1 + offset)} ${qbuttSelector}`);
     await page.click(`${await getNthVideo(index + 1 + offset)} ${qbuttSelector}`);
   }
 };

@@ -23,17 +23,16 @@ export default {
       testMatch: ['<rootDir>/tests/unit/**/*.ts'],
       transform,
     },
-    // TODO: re-enable tests
-    // {
-    //   displayName: 'integration',
-    //   extensionsToTreatAsEsm: ['.ts'],
-    //   moduleFileExtensions,
-    //   moduleNameMapper,
-    //   preset: 'jest-puppeteer',
-    //   testEnvironment: './jestEnv.js',
-    //   testMatch: ['<rootDir>/tests/integration/**/*.ts'],
-    //   testTimeout: 20,
-    //   transform,
-    // },
+    {
+      displayName: 'integration',
+      extensionsToTreatAsEsm: ['.ts'],
+      moduleFileExtensions,
+      moduleNameMapper,
+      preset: 'jest-puppeteer',
+      testEnvironment: './jestEnv.js',
+      testMatch: ['<rootDir>/tests/integration/**/*.ts'],
+      testTimeout: 20,
+      transform,
+    },
   ],
 };
