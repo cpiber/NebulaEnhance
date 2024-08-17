@@ -12,6 +12,12 @@ export const enum Message {
   // why are these not camel-case like the others...
   HISTORY = 'enhancer-history',
   HISTORY_SETUP = 'enhancer-history-setup',
+
+  GET_BROWSE_ID = 'YTgetBrowseId',
+  GET_BROWSE_ID_MOBILE = 'YTgetBrowseIdMobile',
+  GET_VID_ID_MOBILE = 'YTgetVidIdMobile',
+  PAUSE_YT_VIDEO = 'YTpauseVideo',
+  MUTE_YT_VIDEO = 'YTmuteVideo',
 }
 export const isQueueMessage = (msg: string) => msg.startsWith('queue');
 

@@ -33,6 +33,10 @@ const manifest: browser._manifest.WebExtensionManifest = {
       resources: ['scripts/player.js'],
       matches: ['*://*.nebula.tv/*'],
     },
+    {
+      resources: ['scripts/youtube-helpers.js'],
+      matches: ['*://*.youtube.com/*'],
+    },
   ],
   permissions: [
     'storage',

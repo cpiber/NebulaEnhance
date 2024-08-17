@@ -13,7 +13,7 @@ export function sendMessage<T>(name: Message, data?: { [key: string]: any; }, ex
   return new Promise<T>((resolve, reject) => {
     const e = `enhancer-message-${Math.random().toString().substring(2)}`;
     const c = (ev: MessageEvent) => {
-      if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula\.com|(?:.+\.)?nebula\.(?:app|tv))/)) return;
+      if (!skipOriginCheck && !ev.origin.match(/https?:\/\/(?:watchnebula\.com|(?:.+\.)?nebula\.(?:app|tv))|https?:\/\/(?:m\.|www\.)youtube\.com/)) return;
       try {
         const msg = parseTypeObject<{ type: string, err?: any, res?: any; }>(ev.data);
         if (msg.type !== e) return;
@@ -48,9 +48,12 @@ export function sendEventHandler(event: Event, listener: Listener, skipOriginChe
   window.parent.postMessage(JSON.stringify({ type: Message.REGISTER_LISTENER, name: e, event }), '*');
 }
 
-export const replyMessage = (e: MessageEvent, name: string, data?: any, err?: any) => name &&
+export const replyMessage = (e: MessageEvent, name: string, data?: any, err?: any) => {
+  if (!name) return;
+  console.dev.debug('Replying to', name, 'with data', data, 'and error', err);
   e.source.postMessage(
     clone({ type: name, res: data, err }),
     // @ts-expect-error Why??
     e.origin,
   );
+};

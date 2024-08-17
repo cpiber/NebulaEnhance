@@ -85,6 +85,7 @@ export function injectScript(arg1: HTMLElement | string, arg2: HTMLElement | str
     s.addEventListener('load', end);
     s.addEventListener('error', ev => {
       s.remove();
+      console.error(ev);
       reject(ev);
     });
     if (gotSrc)
@@ -94,37 +95,6 @@ export function injectScript(arg1: HTMLElement | string, arg2: HTMLElement | str
     n.appendChild(s);
     if (!gotSrc)
       end(); // no on-load, do it manually
-  });
-}
-
-export function injectFunction<T extends any[]>(node: HTMLElement, fn: (...args: T) => void, ...args: T) {
-  const script = document.createElement('script');
-  script.textContent = `(${fn})(${args.map(v => JSON.stringify(v)).join(',')})`;
-  node.appendChild(script);
-  script.remove();
-}
-
-export function injectFunctionWithReturn<T extends any[], R>(node: HTMLElement, fn: (...args: T) => R, ...args: T): Promise<R> {
-  return new Promise((resolve, reject) => {
-    const e = `enhancer-function-${fn.name}-${Math.random().toString().substring(2)}`;
-    const listener = (ev: MessageEvent) => {
-      const data = parseTypeObject<{ type: string, ret?: R, err: any; }>(ev.data);
-      if (data.type !== e) return;
-      window.removeEventListener('message', listener);
-      if ('ret' in data) resolve(data.ret); else reject(data.err);
-    };
-    window.addEventListener('message', listener);
-    const script = document.createElement('script');
-    script.textContent = `(async () => {
-      try {
-        const ret = await ((${fn})(${args.map(v => JSON.stringify(v)).join(',')}));
-        window.postMessage({ type: "${e}", ret });
-      } catch (e) {
-        window.postMessage({ type: "${e}", err: ''+e });
-      }
-    })()`;
-    node.appendChild(script);
-    script.remove();
   });
 }
 
@@ -165,10 +135,10 @@ export class CancellableRepeatingAction {
   private running = false;
 
   async run<Action>(fn: () => Generator<any, Action | boolean> | AsyncGenerator<any, Action | boolean>, timeout: number, kill?: number): Promise<Action> {
-    if (this.running) this.cancel();
-    this.running = true;
     if (kill) this.killtime = window.setTimeout(this.cancel.bind(this), kill);
     return new Promise<Action>((resolve, reject) => {
+      if (this.running) this.cancel();
+      this.running = true;
       this.interval = window.setInterval(async () => {
         if (!this.running) return reject(this.cancel());
         const gen = fn();
@@ -184,6 +154,7 @@ export class CancellableRepeatingAction {
           }
           this.cancel();
           resolve(ret.value as Action);
+          break;
         }
       }, timeout);
     });

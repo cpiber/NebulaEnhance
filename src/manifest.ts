@@ -35,6 +35,7 @@ const manifest: browser._manifest.WebExtensionManifest = {
   ],
   web_accessible_resources: [
     'scripts/player.js',
+    'scripts/youtube-helpers.js',
   ],
   permissions: [
     'storage',

@@ -3,7 +3,7 @@
  * @see https://github.com/parkeraddison/watch-on-nebula/blob/main/extension/scripts/content_script.js
  */
 
-import { BrowserMessage, CancellableRepeatingAction, debounce, getBrowserInstance, getFromStorage, injectFunction, injectFunctionWithReturn, nebulavideo } from '../../helpers/sharedExt';
+import { BrowserMessage, CancellableRepeatingAction, Message, debounce, getBrowserInstance, getFromStorage, injectScript, nebulavideo, sendMessage } from '../../helpers/sharedExt';
 import { constructButton } from './html';
 
 const optionsDefaults = {
@@ -26,6 +26,9 @@ export const youtube = async () => {
     console.dev.debug('Reload information', changed);
     setTimeout(run, 100);
   });
+
+  // inject web content script
+  await injectScript(getBrowserInstance().runtime.getURL('/scripts/youtube-helpers.js'), document.body);
 
   Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.remove());
   setTimeout(run, 0);
@@ -74,8 +77,7 @@ const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vid
     if (!channelElement || !titleElement || !idElement) yield true; // retry
 
     // accessing custom attributes is not possible from content scripts, so inject this helper
-    const foundChannelID = await injectFunctionWithReturn(document.body, () =>
-      (document.querySelector('ytd-channel-name .yt-simple-endpoint') as any)?.data?.browseEndpoint?.browseId as string);
+    const foundChannelID = await sendMessage<string>(Message.GET_BROWSE_ID);
     channelID ??= foundChannelID;
     if (first && channelID !== foundChannelID) {
       channelName = channelNice;
@@ -99,8 +101,7 @@ const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vid
     if (!channelElement || !titleElement || !idElement) yield true; // retry
 
     // accessing custom attributes is not possible from content scripts, so inject this helper
-    const foundChannelID = await injectFunctionWithReturn(document.body, () =>
-      (document.querySelector('ytm-slim-owner-renderer') as any)?.data?.navigationEndpoint?.browseEndpoint?.browseId as string);
+    const foundChannelID = await sendMessage<string>(Message.GET_BROWSE_ID_MOBILE);
     channelID ??= foundChannelID;
     if (first && channelID !== foundChannelID) {
       channelName = channelNice;
@@ -112,8 +113,7 @@ const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vid
 
     videoTitle ??= titleElement.textContent;
     if (!vidID) {
-      vidID = await injectFunctionWithReturn(document.body, () =>
-        (document.querySelector('ytm-slim-video-metadata-section-renderer') as any)?.data?.videoId as string);
+      vidID = await sendMessage<string>(Message.GET_VID_ID_MOBILE);
     }
   }
 
@@ -165,39 +165,6 @@ const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vid
     }
 
     window.open(vid.link, vidID);
-    injectFunction(document.body, !muteOnly ? () => {
-      document.querySelectorAll('video').forEach(v => {
-        try {
-          v.pause();
-          (v.parentElement.parentElement as unknown as YouTubePlayer.MediaPlayer).pauseVideo();
-        } catch (e) {
-          console.dev.error(e);
-        }
-      });
-    } : () => {
-      document.querySelectorAll('video').forEach(v => {
-        try {
-          const player = v.parentElement.parentElement as unknown as YouTubePlayer.MediaPlayer;
-          if (player.isMuted()) return;
-
-          const cbStateChange = (state: number) => {
-            if (state > 0) return; // stopped=0, killed=-1 ?
-            player.unMute();
-            player.removeEventListener('onStateChange', cbStateChange);
-            player.removeEventListener('onVideoDataChange', cbDataChange);
-          };
-          const cbDataChange = () => {
-            player.unMute();
-            player.removeEventListener('onStateChange', cbStateChange);
-            player.removeEventListener('onVideoDataChange', cbDataChange);
-          };
-          player.mute();
-          player.addEventListener('onStateChange', cbStateChange);
-          player.addEventListener('onVideoDataChange', cbDataChange);
-        } catch (e) {
-          console.dev.error(e);
-        }
-      });
-    });
+    await sendMessage(!muteOnly ? Message.PAUSE_YT_VIDEO : Message.MUTE_YT_VIDEO, undefined, false);
   }, 500, 10_000);
 }, 5);

@@ -62,9 +62,10 @@ const openChangelog = async () => {
   const { showChangelogs: show, lastVersion: version } = await getFromStorage({ showChangelogs: true, lastVersion: '-1' });
   console.debug({ show, version }, 'open changelogs?', show && version !== getBrowserInstance().runtime.getManifest().version);
   const actualVersion = getBrowserInstance().runtime.getManifest().version;
-  if (show && version !== actualVersion)
+  if (show && version !== actualVersion) {
     openOptions(false, 'show-changelogs');
-  await setToStorage({ lastVersion: actualVersion });
+    await setToStorage({ lastVersion: actualVersion });
+  }
   isHandlingChangelog = false;
 };
 
