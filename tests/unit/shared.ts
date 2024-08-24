@@ -104,7 +104,7 @@ describe('other', () => {
     expect(isMobile()).toBe(false);
     expect(mock).toHaveBeenCalledTimes(2);
     mock.mock.calls.forEach(c => {
-      expect(c[0]).toMatch(/pointer/);
+      expect(c[0]).toMatch(/any-hover/);
     });
     window = w;
   });
