@@ -40,7 +40,7 @@ export const calcOuterBounds = (e: HTMLElement) => {
   return { rect: r, offset: oldx - r.x };
 };
 
-export const isMobile = () => window.matchMedia('(any-pointer: coarse), (any-hover: none)').matches;
+export const isMobile = () => window.matchMedia('(any-hover: none)').matches;
 export const isVideoPage = () => !!window.location.pathname.match(videoUrlMatch);
 export const isVideoListPage = () => !!window.location.pathname.match(knownHomeRegex) || !!window.location.pathname.match(/^\/(videos\/?|myshows\/?|library|library\/.*|explore\/.*)$/);
 export const getBase = () => 'nebula.tv';

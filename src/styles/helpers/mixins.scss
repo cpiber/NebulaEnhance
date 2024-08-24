@@ -4,8 +4,9 @@
   }
 }
 
+// not always correct, see https://patrickhlauke.github.io/touch/pointer-hover-any-pointer-any-hover/results/
 @mixin mobile() {
-  @media (any-pointer: coarse), (any-hover: none) {
+  @media (any-hover: none) {
     @content;
   }
 }
