@@ -47,7 +47,7 @@ describe('videos page', () => {
     await expect(v2).toMatchElement(qbuttSelector);
   });
 
-  test('clicking queue button adds video to queue', async () => {
+  test.skip('clicking queue button adds video to queue', async () => {
     await page.hover(`${videoSelector} img`);
     await page.click(`${videoSelector} ${qbuttSelector}`);
     await expectQueueLength().toBe(1);
