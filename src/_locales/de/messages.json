@@ -135,6 +135,14 @@
     "message": "Vollbildmodus Knopf",
     "description": "Beschriftung für Fullscreen Komponente"
   },
+  "optionsCompPictureInPicture": {
+    "message": "Picture-in-Picture Knopf",
+    "description": "Beschriftung für Picture-in-Picture Komponente"
+  },
+  "optionsCompChromecast": {
+    "message": "Chromecast Knopf",
+    "description": "Beschriftung für Chromecast Komponente"
+  },
   "optionsCompQueueBack": {
     "message": "Zurück Knopf",
     "description": "Beschriftung für QueueBack Komponente"

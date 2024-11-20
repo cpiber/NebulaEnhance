@@ -1,5 +1,5 @@
 import type { History } from 'history';
-import { Settings, builtin as builtinComponents, slot as componentSlot, toSorted as componentsSorted, ours as oursComponents } from './components';
+import { Settings, builtin as builtinComponents, slot as componentSlot, toSorted as componentsSorted, ours as oursComponents, setDefaultIds } from './components';
 import createExpandButton from './components/expand';
 import { findTime } from './components/htmlhelper';
 import createQueueButton, { toggleQueueButton } from './components/queue';
@@ -86,6 +86,7 @@ export const initPlayer = async () => {
 
   if (!player || player._enhancerInit)
     return; // already initialized this player
+  await waitForButtonsAndSetIds();
 
   player.addEventListener('ended', () => sendMessage(Message.QUEUE_NEXT, null, false));
 
@@ -120,6 +121,22 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<Player>((
     if (player) {
       window.clearInterval(i);
       resolve(player);
+    }
+  }, 100);
+});
+const waitForButtonsAndSetIds = (maxiter: number | null = 10) => new Promise((resolve, reject) => {
+  let iter = 0;
+  const i = window.setInterval(() => {
+    try {
+      setDefaultIds();
+      window.clearInterval(i);
+      resolve(void 0);
+    } catch (err) {
+      if (maxiter !== null && iter++ > maxiter) {
+        window.clearInterval(i);
+        reject(err);
+        return;
+      }
     }
   }, 100);
 });

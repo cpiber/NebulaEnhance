@@ -135,6 +135,14 @@
     "message": "Fullscreen button",
     "description": "Title for Fullscreen component"
   },
+  "optionsCompPictureInPicture": {
+    "message": "Picture-in-Picture button",
+    "description": "Title for Picture-in-Picture component"
+  },
+  "optionsCompChromecast": {
+    "message": "Chromecast button",
+    "description": "Title for Chromecast component"
+  },
   "optionsCompQueueBack": {
     "message": "Back button",
     "description": "Title for QueueBack component"

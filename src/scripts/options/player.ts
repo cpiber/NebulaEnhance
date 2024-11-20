@@ -1,6 +1,8 @@
 import iconExpand from '../../icons/expand.svg';
 import iconAutoplay from '../../icons/nebula/autoplay.svg';
+import iconChromecast from '../../icons/nebula/chromecast.svg';
 import iconFullscreen from '../../icons/nebula/fullscreen.svg';
+import iconPictureInPicture from '../../icons/nebula/picture-in-picture.svg';
 import iconPlay from '../../icons/nebula/play.svg';
 import iconSettings from '../../icons/nebula/settings.svg';
 import iconSubtitles from '../../icons/nebula/subtitles.svg';
@@ -24,6 +26,8 @@ const nameToIcon: Record<Comp, string> = {
   'settings-button': iconSettings,
   'theater-mode-button': iconTheater,
   'fullscreen-mode-button': iconFullscreen,
+  'picture-in-picture-button': iconPictureInPicture,
+  'chromecast-button': iconChromecast,
   'queue-prev': iconNext,
   'queue-next': iconNext,
   'time': '<div class="enhancer-time">00:16&nbsp;/&nbsp;25:02</div>',
@@ -38,6 +42,8 @@ const nameToTitle: Record<Comp, string> = {
   'settings-button': msg('optionsCompSettings'),
   'theater-mode-button': msg('optionsCompTheater'),
   'fullscreen-mode-button': msg('optionsCompFullscreen'),
+  'picture-in-picture-button': msg('optionsCompPictureInPicture'),
+  'chromecast-button': msg('optionsCompChromecast'),
   'queue-prev': msg('optionsCompQueueBack'),
   'queue-next': msg('optionsCompQueueNext'),
   'time': msg('optionsCompTime'),
