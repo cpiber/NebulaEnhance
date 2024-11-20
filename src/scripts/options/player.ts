@@ -72,7 +72,8 @@ const render = (settings: Partial<Settings>, selected: Comp = undefined) => {
   vid.addEventListener('click', rerenderSel);
   if (vid2) vid2.addEventListener('click', rerenderSel);
 
-  const sorted = !isMobile() ? toSorted(settings, true) : toSorted(settings, true).filter(b => [ 'volume-toggle-button', 'theater-mode-button' ].indexOf(b) === -1);
+  const sortedMobile = !isMobile() ? toSorted(settings, true) : toSorted(settings, true).filter(b => [ 'volume-toggle-button', 'theater-mode-button' ].indexOf(b) === -1);
+  const sorted = document.pictureInPictureEnabled === true ? sortedMobile : sortedMobile.filter(b => [ 'picture-in-picture-button', 'chromecast-button' ].indexOf(b) === -1);
   console.dev.log('render', selected, settings, sorted);
   for (const comp of sorted) {
     const container = slot(comp, settings[comp], left, right);
