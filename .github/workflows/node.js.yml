@@ -3,7 +3,7 @@ name: Build & Test
 on:
   push:
   schedule:
-  - cron: '0 0 * * */2' # at 0:00 every two days
+  - cron: '0 6 * * */2' # at 6:00 every two days
   workflow_dispatch:
 
 jobs:
