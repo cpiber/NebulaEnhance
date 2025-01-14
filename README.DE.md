@@ -40,7 +40,7 @@ Bitte beachten Sie, dass sowohl Mozilla als auch Google meine Änderungen überp
 - Scroll über Videospieler um Lautstärke zu ändern (Aktivierung in den Einstellungen)
 - Zeit-Anzeige lässt sich zwischen aktueller und verbleibender Zeit wechseln
 - Kontrolle über Video Autoplay
-- Keyboard Shortcuts: Tastaturkürzel für einfachere und schnellere Bedienung ([siehe Playback Sektion](https://www.mrfdev.com/youtube-keyboard-shortcuts))
+- Keyboard Shortcuts: Tastaturkürzel für einfachere und schnellere Bedienung ([siehe diese Seite in English](keybinds.md))
 - ~~Standard Abspielgeschwindigkeit und Lautstärke: Erlaubt es, standardmäßig Videos mit anderer Geschwindigkeit und Lautstärke abzuspielen~~ Jetzt nativ unterstützt
 - ~~Zielqualitäten: Erlaubt es, bevorzugte Videoqualität(en) zu setzen~~ Jetzt nativ unterstützt
 
