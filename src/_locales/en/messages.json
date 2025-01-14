@@ -107,6 +107,14 @@
     "message": "Move left",
     "description": "Label for moving of PlayerConfigure of options page."
   },
+  "optionsPlayerKeybindsTitle": {
+    "message": "Keybinds",
+    "description": "Label for PlayerKeybinds of options page."
+  },
+  "optionsPlayerKeybinds": {
+    "message": "See the documentation <a href=\"https://github.com/cpiber/NebulaEnhance/blob/master/keybinds.md\">here</a>.",
+    "description": "Text for PlayerKeybinds of options page."
+  },
   "optionsCompPlay": {
     "message": "Play button",
     "description": "Title for Play component"

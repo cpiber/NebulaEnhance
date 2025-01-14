@@ -107,6 +107,14 @@
     "message": "Nach links",
     "description": "Beschriftung für moving of PlayerConfigure der Optionen Seite."
   },
+  "optionsPlayerKeybindsTitle": {
+    "message": "Tastaturkürzel",
+    "description": "Beschriftung für PlayerKeybinds der Optionen Seite."
+  },
+  "optionsPlayerKeybinds": {
+    "message": "Siehe Dokumentation (Englisch) <a href=\"https://github.com/cpiber/NebulaEnhance/blob/master/keybinds.md\">hier</a>.",
+    "description": "Text für PlayerKeybinds der Optionen Seite."
+  },
   "optionsCompPlay": {
     "message": "Play Knopf",
     "description": "Beschriftung für Play Komponente"
