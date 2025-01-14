@@ -288,7 +288,7 @@ const keydownHandler = (e: KeyboardEvent) => {
     case 'p':
       sendMessage(Message.QUEUE_PREV, null, false);
       break;
-    case 'u':
+    case 'z':
       if (lastPositon != undefined) player.currentTime = lastPositon;
       break;
     default:
