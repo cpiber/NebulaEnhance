@@ -5,7 +5,7 @@ import { findTime } from './components/htmlhelper';
 import createQueueButton, { toggleQueueButton } from './components/queue';
 import createSpeedDial from './components/speeddial';
 import attachVolumeText, { toggleVolumeShow } from './components/volume';
-import { init as initDispatch, loadPrefix } from './dispatcher';
+import { init as initDispatch, loadPrefix, navigatePrefix } from './dispatcher';
 import { Message, arrFromLengthy, getFromStorage, notification, onStorageChange, parseTypeObject, replyMessage, sendMessage } from './sharedpage';
 
 export type Player = HTMLVideoElement & { _enhancerInit: boolean; };
@@ -23,6 +23,7 @@ const optionsDefaults = {
   playerSettings: {} as Partial<Settings>,
 };
 let options = { ...optionsDefaults };
+let lastPositon: number | undefined = undefined;
 const msgs: Record<string, string> = {};
 
 type Msg = { type: string, name?: string, [key: string]: any; };
@@ -59,6 +60,7 @@ export const init = async () => {
   document.addEventListener('wheel', wheelHandler, { passive: false });
   document.addEventListener('pointerup', clickHandler, { capture: true });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
+  document.addEventListener(navigatePrefix, () => lastPositon = undefined);
   await initDispatch();
 
   msgs['playerFrameBack'] = await sendMessage(Message.GET_MESSAGE, { message: 'playerFrameBack' });
@@ -255,12 +257,15 @@ const keydownHandler = (e: KeyboardEvent) => {
       break;
     case '0': case '1': case '2': case '3': case '4':
     case '5': case '6': case '7': case '8': case '9':
+      lastPositon = player.currentTime;
       player.currentTime = player.duration * (+pressedKey) / 10;
       break;
     case 'Home':
+      lastPositon = player.currentTime;
       player.currentTime = 0;
       break;
     case 'End':
+      lastPositon = player.currentTime;
       player.currentTime = player.duration;
       break;
     case '<':
@@ -282,6 +287,9 @@ const keydownHandler = (e: KeyboardEvent) => {
       break;
     case 'p':
       sendMessage(Message.QUEUE_PREV, null, false);
+      break;
+    case 'u':
+      if (lastPositon != undefined) player.currentTime = lastPositon;
       break;
     default:
       return;
