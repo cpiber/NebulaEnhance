@@ -159,9 +159,10 @@ const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vid
     if (vid.is === 'channel' || !doOpenTab) return;
     yield;
 
+    /* eslint-disable-next-line camelcase */
+    window.history.replaceState({ ...window.history.state, _enhancer_checked: true }, '');
+
     if (replaceTab) {
-      /* eslint-disable-next-line camelcase */
-      window.history.replaceState({ ...window.history.state, _enhancer_checked: true }, '');
       window.location.href = vid.link;
       return;
     }
