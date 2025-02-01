@@ -1,5 +1,7 @@
 import { marked } from 'marked';
+import { loadCreators } from './background';
 import { purgeCache } from './background/ext';
+import { getChannels } from './helpers/api';
 import { buildModal } from './helpers/modal';
 import { BrowserMessage, getBrowserInstance, getFromStorage, notification, setToStorage } from './helpers/sharedExt';
 import { load, saveDirect } from './options/form';
@@ -167,3 +169,15 @@ document.querySelector('[href="#load"]').addEventListener('click', async e => {
     }
   });
 })();
+
+if (__DEV__) {
+  (window as any).checkChannels = async () => {
+    const channels = await getChannels();
+    const creators = await loadCreators();
+    for (let channel of channels) {
+      const match = creators.find(c => c.nebula === channel.slug || c.nebulaAlt === channel.slug);
+      if (match) continue;
+      console.warn('Creator', channel.slug, '(', channel.title, ') has no entry in creators list');
+    }
+  };
+}

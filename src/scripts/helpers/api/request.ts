@@ -98,3 +98,17 @@ export const searchVideos = async (text: string, num = Infinity) => {
   }
   return vids;
 };
+
+export const getChannels = async (num = Infinity) => {
+  const channels: Nebula.Channel[] = [];
+  const req = new URL(`https://content.api.${getApiBase()}/video_channels/`);
+  req.searchParams.set('page_size', `${Math.min(100, num)}`);
+  let url = req.toString();
+
+  while (url && channels.length < num) {
+    const body = await request<Nebula.PagedRequest<Nebula.Channel>>(url);
+    url = body.next;
+    Array.prototype.push.apply(channels, body.results);
+  }
+  return channels;
+};
