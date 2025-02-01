@@ -8,6 +8,7 @@ module.exports = {
       `--disable-extensions-except=${paths}`,
       `--load-extension=${paths}`,
       '--disable-features=site-per-process', // we need this because otherwise the player's iframe gets detached
+      '--no-sandbox', // on CI, sandbox doesn't work
     ],
     headless: false,
   },
