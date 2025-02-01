@@ -9,12 +9,16 @@ beforeAll(async () => {
   await login();
 
   await page.goto(__NEBULA_BASE__);
-  await page.waitForSelector('.CookieConsent');
-  await page.click('.CookieConsent #rcc-confirm-button');
+  try {
+    await page.waitForSelector('.CookieConsent', { timeout: 1000 });
+    await page.click('.CookieConsent #rcc-confirm-button');
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 beforeEach(maybeLogin(async () => {
-  await page.goto(`${__NEBULA_BASE__}/videos`);
+  await page.goto(`${__NEBULA_BASE__}/explore/videos`);
   await page.waitForSelector(videoSelector);
 }));
 
