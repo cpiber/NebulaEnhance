@@ -1,7 +1,7 @@
-@import '../helpers/mixins';
-@import '../helpers/variables';
-@import '../helpers/placeholders';
-@import '../helpers/shared';
+@use '../helpers/mixins';
+@use '../helpers/variables';
+@use '../helpers/placeholders';
+@use '../helpers/shared';
 
 .enhancer-queue {
   position: fixed;
@@ -10,8 +10,8 @@
   width: 425px;
   transition: bottom 0.1s ease-in-out;
   background-color: var(--bg-color);
-  border-top-left-radius: $border_radius;
-  border-top-right-radius: $border_radius;
+  border-top-left-radius: variables.$border_radius;
+  border-top-right-radius: variables.$border_radius;
   overflow: hidden;
   @extend %box-shadow;
 
@@ -38,7 +38,7 @@
   .top {
     @extend %panel;
 
-    border-bottom: 1px solid $gray_transparent;
+    border-bottom: 1px solid variables.$gray_transparent;
 
     &::after {
       top: unset;
@@ -93,7 +93,7 @@
 
     .prev,
     .next {
-      opacity: $disabled_alpha;
+      opacity: variables.$disabled_alpha;
 
       &.clickable {
         opacity: 1;
@@ -142,7 +142,7 @@
 
       &:first-child .up,
       &:last-child .down {
-        opacity: $disabled_alpha;
+        opacity: variables.$disabled_alpha;
         cursor: initial;
       }
 
@@ -150,7 +150,7 @@
         height: 90px;
         width: auto;
 
-        @media (max-width: $mobile_small) {
+        @media (max-width: variables.$mobile_small) {
           height: auto;
           width: 160px;
           max-width: 35vw;
@@ -160,7 +160,7 @@
       .thumb {
         position: relative;
         flex-shrink: 0;
-        border-radius: $border_radius;
+        border-radius: variables.$border_radius;
         overflow: hidden;
 
         .play {
@@ -248,7 +248,7 @@
           align-items: center;
           justify-content: center;
 
-          @include hov {
+          @include mixins.hov {
             border-color: var(--font-color);
           }
 
@@ -258,12 +258,12 @@
           }
         }
 
-        @include mobile {
+        @include mixins.mobile {
           right: 5px;
         }
       }
 
-      @include hov {
+      @include mixins.hov {
         .remove {
           right: 5px;
         }
@@ -271,17 +271,17 @@
     }
   }
 
-  @media (max-width: $tablet_big) {
+  @media (max-width: variables.$tablet_big) {
     right: 63px;
   }
 
-  @media (max-width: $tablet) {
+  @media (max-width: variables.$tablet) {
     left: 63px;
     right: 63px;
     width: unset;
   }
 
-  @media (max-width: $mobile) {
+  @media (max-width: variables.$mobile) {
     left: 0;
     right: 0;
   }

@@ -1,6 +1,7 @@
-@import './helpers/mixins';
-@import './queue/queue';
-@import './queue/queue_share';
+@use 'helpers/mixins';
+@use 'queue/queue';
+@use 'queue/queue_share';
+@use "helpers/variables";
 
 a[href='/videos/_dummy_episode_'] {
   &,
@@ -77,7 +78,7 @@ html.enhancer-fullVideo.page-video {
     opacity: 1;
   }
 
-  @include hov {
+  @include mixins.hov {
     @extend %hover;
 
     svg {
@@ -99,7 +100,7 @@ html.enhancer-fullVideo.page-video {
   $self: &;
 
   @at-root [data-context-menu-hover-trigger] {
-    @include hov {
+    @include mixins.hov {
       #{$self} {
         @extend %hover;
       }
@@ -123,7 +124,7 @@ html.enhancer-fullVideo.page-video {
     }
   }
 
-  @include mobile {
+  @include mixins.mobile {
     opacity: 1;
 
     div {
@@ -134,7 +135,7 @@ html.enhancer-fullVideo.page-video {
 }
 
 div.nebula-watch-later {
-  @include mobile {
+  @include mixins.mobile {
     >div {
       background-color: black;
       color: white;
@@ -171,7 +172,7 @@ div.nebula-watch-later {
     display: none !important;
   }
 
-  @media (max-width: $tablet) {
+  @media (max-width: variables.$tablet) {
     &-inside {
       display: none !important;
     }
@@ -185,7 +186,7 @@ div.nebula-watch-later {
 time[datetime] {
   position: relative;
 
-  @include hov {
+  @include mixins.hov {
     .enhancer-datetime {
       display: block;
     }
@@ -223,16 +224,16 @@ time[datetime] {
 
   &,
   &::after {
-    @include light {
-      filter: drop-shadow($shadow_light 0 0 6px);
+    @include mixins.light {
+      filter: drop-shadow(variables.$shadow_light 0 0 6px);
     }
 
-    @include dark {
-      filter: drop-shadow($shadow_dark 0 0 4px);
+    @include mixins.dark {
+      filter: drop-shadow(variables.$shadow_dark 0 0 4px);
     }
   }
 
-  @include light {
+  @include mixins.light {
     border-color: white;
   }
 }

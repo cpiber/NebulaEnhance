@@ -1,4 +1,6 @@
-@import './mixins';
+@use 'mixins';
+@use 'variables';
+@use '../helpers/placeholders';
 
 .enhancer-field {
   display: block;
@@ -20,7 +22,7 @@
     text-align: inherit;
 
     label {
-      color: $gray;
+      color: variables.$gray;
       font-size: 12px;
       left: 16px;
       right: 16px;
@@ -55,23 +57,23 @@
         width: 100%;
         padding: 20px 10px 4px 12px !important;
 
-        @include light {
-          background: $bg_light;
-          border-color: $border_light;
-          color: $fg_light;
+        @include mixins.light {
+          background: variables.$bg_light;
+          border-color: variables.$border_light;
+          color: variables.$fg_light;
         }
 
-        @include dark {
-          background: $bg_dark;
-          border-color: $border_dark;
-          color: $fg_dark;
+        @include mixins.dark {
+          background: variables.$bg_dark;
+          border-color: variables.$border_dark;
+          color: variables.$fg_dark;
         }
 
         &:focus,
         &.has-value,
         &[placeholder] {
           & + label {
-            color: $blueish_light;
+            color: variables.$blueish_light;
             transform: translate(-5px, -8px);
             font-size: 70%;
           }
@@ -103,16 +105,16 @@
       min-width: 100%;
       padding: 6px 10px;
 
-      @include light {
-        background: $bg_light;
-        border-color: $border_light;
-        color: $fg_light;
+      @include mixins.light {
+        background: variables.$bg_light;
+        border-color: variables.$border_light;
+        color: variables.$fg_light;
       }
 
-      @include dark {
-        background: $bg_dark;
-        border-color: $border_dark;
-        color: $fg_dark;
+      @include mixins.dark {
+        background: variables.$bg_dark;
+        border-color: variables.$border_dark;
+        color: variables.$fg_dark;
       }
     }
 
@@ -131,14 +133,14 @@
         justify-content: center;
         padding: 19px 8px 4px 0;
 
-        @include light {
-          background-color: $bg_light;
-          color: $fg_light;
+        @include mixins.light {
+          background-color: variables.$bg_light;
+          color: variables.$fg_light;
         }
 
-        @include dark {
-          background-color: $bg_dark;
-          color: $fg_dark;
+        @include mixins.dark {
+          background-color: variables.$bg_dark;
+          color: variables.$fg_dark;
         }
       }
     }
@@ -168,12 +170,12 @@
 
 .enhancer-button {
   appearance: none;
-  border: 1px solid $blueish;
+  border: 1px solid variables.$blueish;
   font-family: inherit;
   line-height: 1em;
   text-shadow: none;
   background: transparent;
-  color: $blueish;
+  color: variables.$blueish;
   border-radius: 6px;
   font-size: 13px;
   font-weight: normal;
@@ -191,7 +193,7 @@
   }
 
   &:focus {
-    box-shadow: $blueish_transparent 0 0 10px;
+    box-shadow: variables.$blueish_transparent 0 0 10px;
   }
 }
 
@@ -203,9 +205,9 @@
   transform: translate(-50%, calc(100% + 40px));
   max-width: 80vw;
   transition: transform 0.1s ease-in-out;
-  border: 1px solid $blueish;
+  border: 1px solid variables.$blueish;
   border-radius: 6px;
-  box-shadow: $blueish_transparent 0 0 10px;
+  box-shadow: variables.$blueish_transparent 0 0 10px;
   padding: 8px 34px;
   font-size: 13px;
 
@@ -213,14 +215,14 @@
     transform: translate(-50%, 0);
   }
 
-  @include light {
-    background-color: $bg_light;
-    color: $fg_light;
+  @include mixins.light {
+    background-color: variables.$bg_light;
+    color: variables.$fg_light;
   }
 
-  @include dark {
-    background-color: $bg_dark;
-    color: $fg_dark;
+  @include mixins.dark {
+    background-color: variables.$bg_dark;
+    color: variables.$fg_dark;
   }
 }
 
@@ -308,7 +310,7 @@
   $pleft: 30px;
 
   position: absolute;
-  max-width: $maxwidth;
+  max-width: variables.$maxwidth;
   margin: $mtop auto;
 
   &,
@@ -333,21 +335,21 @@
   &__inner {
     position: absolute;
     margin: 0 $mleft;
-    border-radius: $border_radius;
+    border-radius: variables.$border_radius;
     bottom: unset;
     max-height: 100%;
     display: flex;
     flex-direction: column;
     @extend %box-shadow;
 
-    @include light {
-      background-color: $bg_light;
-      color: $fg_light;
+    @include mixins.light {
+      background-color: variables.$bg_light;
+      color: variables.$fg_light;
     }
 
-    @include dark {
-      background-color: $bg_dark;
-      color: $fg_dark;
+    @include mixins.dark {
+      background-color: variables.$bg_dark;
+      color: variables.$fg_dark;
     }
 
     >* {
@@ -361,7 +363,7 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      border-bottom: 1px solid $gray_transparent;
+      border-bottom: 1px solid variables.$gray_transparent;
 
       h1 {
         margin: 0;
@@ -397,7 +399,7 @@
   .version {
     padding-bottom: 16px;
     margin-bottom: 16px;
-    border-bottom: 1px solid $gray_transparent;
+    border-bottom: 1px solid variables.$gray_transparent;
 
     &.newer {
       opacity: 0.4;
@@ -405,8 +407,8 @@
 
     .more:not(:empty) {
       font-size: 0.7em;
-      border: 1px solid $gray;
-      border-radius: $border_radius;
+      border: 1px solid variables.$gray;
+      border-radius: variables.$border_radius;
       padding: 4px 8px;
     }
   }
@@ -428,7 +430,7 @@
   .enhancer-welcome-banner {
     background: rgb(128 128 128 / 0.1);
     padding: 20px;
-    border-radius: $border_radius;
+    border-radius: variables.$border_radius;
     margin-bottom: 32px;
 
     *:first-child {

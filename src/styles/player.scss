@@ -1,4 +1,4 @@
-@import './helpers/variables';
+@use 'helpers/variables';
 
 .video-mock {
   height: 80px;
@@ -6,7 +6,7 @@
   margin: 12px auto;
   padding: 0 8px;
   font-size: 12px;
-  color: $fg_dark;
+  color: variables.$fg_dark;
 
   // stolen from nebula.tv
   $shadow: linear-gradient(to top, rgb(0 0 0) 0%, rgb(0 0 0 / 0.738) 19%, rgb(0 0 0 / 0.54) 34%, rgb(0 0 0 / 0.38) 47%, rgb(0 0 0 / 0.28) 56.5%, rgb(0 0 0 / 0.194) 65%, rgb(0 0 0 / 0.126) 73%, rgb(0 0 0 / 0.075) 80.2%, rgb(0 0 0 / 0.042) 86.1%, rgb(0 0 0 / 0.02) 91%, rgb(0 0 0 / 0.008) 95.2%, rgb(0 0 0 / 0.002) 98.2%, rgb(0 0 0 / 0) 100%);
@@ -38,14 +38,14 @@
       }
 
       &.selected {
-        color: $blueish_dark;
+        color: variables.$blueish_dark;
 
         path:not([stroke], [fill]), path[fill] {
-          fill: $blueish_dark;
+          fill: variables.$blueish_dark;
         }
 
         path[stroke] {
-          stroke: $blueish_dark;
+          stroke: variables.$blueish_dark;
         }
       }
 

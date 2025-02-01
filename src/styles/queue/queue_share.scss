@@ -1,4 +1,5 @@
-@import '../helpers/placeholders';
+@use '../helpers/placeholders';
+@use '../helpers/variables';
 
 .enhancer-queue-share {
   position: relative;
@@ -6,7 +7,7 @@
   width: 100%;
   max-width: 450px;
   background-color: var(--bg-color);
-  border-radius: $border_radius;
+  border-radius: variables.$border_radius;
   box-sizing: border-box;
   @extend %box-shadow;
 
@@ -28,7 +29,7 @@
       @extend %hidden;
     }
 
-    @media (max-width: $mobile) {
+    @media (max-width: variables.$mobile) {
       inset: 4px;
     }
   }
@@ -38,7 +39,7 @@
     @extend %panel;
   }
 
-  @media (max-width: $mobile) {
+  @media (max-width: variables.$mobile) {
     padding: 12px;
   }
 }

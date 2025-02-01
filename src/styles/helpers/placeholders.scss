@@ -1,16 +1,17 @@
-@import './mixins';
+@use 'mixins';
+@use "variables";
 
 %hidden {
   display: none;
 }
 
 %box-shadow {
-  @include light {
-    box-shadow: $shadow_light 0 6px 24px;
+  @include mixins.light {
+    box-shadow: variables.$shadow_light 0 6px 24px;
   }
 
-  @include dark {
-    box-shadow: $shadow_dark 0 6px 20px;
+  @include mixins.dark {
+    box-shadow: variables.$shadow_dark 0 6px 20px;
   }
 }
 

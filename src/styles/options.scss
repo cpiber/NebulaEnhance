@@ -1,11 +1,11 @@
-@import './helpers/mixins';
-@import './helpers/variables';
-@import './helpers/placeholders';
-@import './helpers/shared';
+@use 'helpers/mixins';
+@use 'helpers/variables';
+@use 'helpers/placeholders';
+@use 'helpers/shared';
 
-@import './player';
+@use 'player';
 
-@import './fonts/lato_oxygen';
+@use 'fonts/lato_oxygen';
 
 html {
   box-sizing: border-box;
@@ -26,7 +26,7 @@ body {
 
 a {
   text-decoration: none;
-  color: $blueish_dark;
+  color: variables.$blueish_dark;
 }
 
 code,
@@ -47,7 +47,7 @@ form {
       width: 50%;
       padding: 20px;
 
-      @media screen and (max-width: $tablet) {
+      @media screen and (max-width: variables.$tablet) {
         width: 100%;
       }
 
@@ -170,17 +170,17 @@ label + .enhancer-control,
 body {
   padding-bottom: 12px;
 
-  @include light {
-    background-color: $bg_light;
-    color: $fg_light;
+  @include mixins.light {
+    background-color: variables.$bg_light;
+    color: variables.$fg_light;
   }
 
-  @include dark {
-    background-color: $bg_dark;
-    color: $fg_dark;
+  @include mixins.dark {
+    background-color: variables.$bg_dark;
+    color: variables.$fg_dark;
   }
 
-  @include mobile {
+  @include mixins.mobile {
     .no-mobile {
       display: none;
     }
@@ -192,7 +192,7 @@ body {
 
   &.standalone {
     form {
-      max-width: $maxwidth;
+      max-width: variables.$maxwidth;
       margin: 24px auto;
       padding: 20px 28px;
 
@@ -212,17 +212,17 @@ body {
       text-transform: uppercase;
       letter-spacing: 0.4em;
       font-size: 18px;
-      border-bottom: 1px solid $gray_transparent;
+      border-bottom: 1px solid variables.$gray_transparent;
 
-      @media screen and (max-width: $tablet) {
+      @media screen and (max-width: variables.$tablet) {
         font-size: 16px;
       }
 
-      @media screen and (max-width: $mobile) {
+      @media screen and (max-width: variables.$mobile) {
         font-size: 14px;
       }
 
-      @media screen and (max-width: $mobile_small) {
+      @media screen and (max-width: variables.$mobile_small) {
         font-size: 12px;
       }
 
