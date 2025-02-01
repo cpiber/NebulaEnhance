@@ -288,11 +288,11 @@ const keydownHandler = (e: KeyboardEvent) => {
     case 'p':
       sendMessage(Message.QUEUE_PREV, null, false);
       break;
-    case 'z':
+    case 'z': {
       const curPos = player.currentTime;
       if (lastPositon != undefined) player.currentTime = lastPositon;
       lastPositon = curPos;
-      break;
+    } break;
     default:
       return;
   }
