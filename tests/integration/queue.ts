@@ -116,26 +116,31 @@ describe('queue', () => {
       const t = await page.evaluate((sel, n) => document.querySelector(`${sel} .element:nth-child(${n}) .title`).textContent, queueSelector, num);
       // titles in nebula are weird...
       // e.g. https://nebula.app/videos/extra-history-vlad-the-impaler-lies-extra-history contains extra space that is stripped in document title
-      await page.waitForFunction(() => document.title.indexOf('Loading') === -1 && document.title !== 'Nebula', { timeout: 5000 });
+      await page.waitForFunction(() => document.title.indexOf('Loading') === -1 && document.title !== 'Nebula' && document.title !== 'Videos | Nebula', { timeout: 5000 });
       await expect(page.title()).resolves.toContain(t.replace(/\s+/g, ' '));
       await expect(page.evaluate(sel => document.querySelector(`${sel} .top .title`).textContent, queueSelector)).resolves.toBe(t);
       await expect(page.evaluate(sel => document.querySelector(`${sel} .top .no`).textContent, queueSelector)).resolves.toBe(`${num}`);
+    };
+    const changed = async (promise: Promise<any>) => {
+      const prev = await page.title();
+      await promise;
+      await page.waitForFunction(prev => document.title !== prev, { timeout: 5000 }, prev);
     };
 
     await addToQueue(5);
     await page.evaluate(sel => document.querySelector<HTMLDivElement>(`${sel} .element:nth-child(3)`).click(), queueSelector);
     await correct(3);
-    await page.click(`${queueSelector} .top .prev`);
+    await changed(page.click(`${queueSelector} .top .prev`));
     await correct(2);
-    await page.click(`${queueSelector} .top .prev`);
+    await changed(page.click(`${queueSelector} .top .prev`));
     await correct(1);
     await page.click(`${queueSelector} .top .prev`);
     await correct(1);
-    await page.click(`${queueSelector} .top .next`);
+    await changed(page.click(`${queueSelector} .top .next`));
     await correct(2);
-    await page.click(`${queueSelector} .top .next`);
-    await page.click(`${queueSelector} .top .next`);
-    await page.click(`${queueSelector} .top .next`);
+    await changed(page.click(`${queueSelector} .top .next`));
+    await changed(page.click(`${queueSelector} .top .next`));
+    await changed(page.click(`${queueSelector} .top .next`));
     await correct(5);
     await page.click(`${queueSelector} .top .next`);
     await correct(5);
