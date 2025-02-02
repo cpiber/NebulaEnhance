@@ -317,7 +317,7 @@ jobs:
       with:
         run_install: true
     - name: Build
-      run: npm run build:all # does not run tests
+      run: npm run clean && npm run build:all -- --configV3 true # does not run tests
       env:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
     
