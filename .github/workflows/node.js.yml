@@ -93,13 +93,10 @@ jobs:
         path: |
           extension-dist/
       
-    # for headfull chrome
-    - name: Install xvfb
-      run: sudo apt-get install xvfb
     - name: Clear jest cache
       run: npx jest --clear-cache
     - name: Run all tests
-      run: xvfb-run --auto-servernum npm run test -- --ci
+      run: xvfb-run --auto-servernum npm run test:unit -- --ci
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
@@ -139,10 +136,13 @@ jobs:
         path: |
           extension-dist/
       
+    # for headfull chrome
+    - name: Install xvfb
+      run: sudo apt-get install xvfb
     - name: Clear jest cache
       run: npx jest --clear-cache
     - name: Run all tests
-      run: xvfb-run --auto-servernum npm run test:unit -- --ci
+      run: xvfb-run --auto-servernum npm run test -- --ci
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
