@@ -105,21 +105,6 @@ jobs:
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
         NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
         NEBULA_USER: ${{ secrets.NEBULA_USER }}
-    
-    - name: Clear jest cache
-      run: npx jest --clear-cache
-    - name: Run tests on beta
-      run: xvfb-run --auto-servernum npm run test:ee -- --ci --passWithNoTests
-      continue-on-error: ${{ github.event_name != 'schedule' }}
-      id: betatest
-      env:
-        YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
-        NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
-        NEBULA_USER: ${{ secrets.NEBULA_USER }}
-        NEBULA_BASE: https://beta.nebula.tv
-    - name: Emit warning if beta test failed
-      if: ${{ steps.betatest.outcome == 'failure' }}
-      run: echo "::warning::Beta tests failed"
 
   test_v3:
     name: Test V3
@@ -154,18 +139,30 @@ jobs:
         path: |
           extension-dist/
       
-    # for headfull chrome
-    - name: Install xvfb
-      run: sudo apt-get install xvfb
     - name: Clear jest cache
       run: npx jest --clear-cache
     - name: Run all tests
-      run: xvfb-run --auto-servernum npm run test -- --ci
+      run: xvfb-run --auto-servernum npm run test:unit -- --ci
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
         NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
         NEBULA_USER: ${{ secrets.NEBULA_USER }}
+    
+    - name: Clear jest cache
+      run: npx jest --clear-cache
+    - name: Run tests on beta
+      run: xvfb-run --auto-servernum npm run test:ee -- --ci --passWithNoTests
+      continue-on-error: ${{ github.event_name != 'schedule' }}
+      id: betatest
+      env:
+        YT_API_KEY: ${{ secrets.YOUTUBE_KEY }}
+        NEBULA_PASS: ${{ secrets.NEBULA_PASS }}
+        NEBULA_USER: ${{ secrets.NEBULA_USER }}
+        NEBULA_BASE: https://beta.nebula.tv
+    - name: Emit warning if beta test failed
+      if: ${{ steps.betatest.outcome == 'failure' }}
+      run: echo "::warning::Beta tests failed"
 
   release:
     name: Release
