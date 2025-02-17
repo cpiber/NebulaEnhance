@@ -55,12 +55,25 @@ export const minMaxPos = (settings: Partial<Settings>, includeDisalbed = false) 
   }, { min: 0, max: 0 });
 export const slot = <S, T>(name: Comp, comp: PlayerComponentSetting, left: S, right: T): S | T => (comp?.position ?? defaultPositions[name]) < 0 ? right : left;
 export const setDefaultIds = () => {
-  const buttons = document.querySelectorAll('#video-controls button');
-  let given = builtin.filter(i => i != 'time');
-  // Chromecast and Picture-in-Picture are only available in Chrome
-  if (buttons.length == given.length - 2) given = given.filter(i => i != 'chromecast-button' && i != 'picture-in-picture-button');
-  if (buttons.length != given.length) throw new Error('Nebula changed player buttons, not attempting to re-ID');
-  for (let i = 0; i < buttons.length; ++i)
-    buttons[i].id = given[i];
-  document.querySelector('#video-controls > :last-child > :first-child > :last-child').id = 'time';
+  const left = document.querySelectorAll('#video-controls > :last-child > :first-child > *');
+  const right = document.querySelectorAll('#video-controls > :last-child > :last-child > *');
+  if (left.length != 3)
+    throw new Error('Expected three buttons on left');
+  const hasChromecast = document.querySelector('#video-controls > div > :last-child > [aria-label="Chromecast"]');
+  if (hasChromecast) {
+    if (right.length != 6 && right.length != 7)
+      throw new Error('Chromecast detected, expected 6 or 7 buttons on right');
+  } else if (right.length != 4 && right.length != 5)
+    throw new Error('No Chromecast detected, expected 4 or 5 buttons on right');
+  const expectNoSubtitle = hasChromecast ? right.length === 6 : right.length === 4;
+  const givenLeft = builtin.slice(0, left.length);
+  const givenRight = builtin.slice(left.length)
+    .filter(hasChromecast ? () => true : e => e != 'picture-in-picture-button' && e != 'chromecast-button')
+    .filter(expectNoSubtitle ? e => e != 'subtitles-toggle-button' : () => true);
+  if (givenRight.length != right.length)
+    throw new Error(`Logic error, found ${right.length} expected ${givenRight.length}`);
+  for (let i = 0; i < left.length; ++i)
+    left[i].id = givenLeft[i];
+  for (let i = 0; i < right.length; ++i)
+    right[i].id = givenRight[i];
 };
