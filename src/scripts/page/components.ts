@@ -73,7 +73,7 @@ export const setDefaultIds = () => {
   if (givenRight.length != right.length)
     throw new Error(`Logic error, found ${right.length} expected ${givenRight.length}`);
   for (let i = 0; i < left.length; ++i)
-    left[i].id = givenLeft[i];
+    (left[i].querySelector('button') || left[i]).id = givenLeft[i];
   for (let i = 0; i < right.length; ++i)
-    right[i].id = givenRight[i];
+    (right[i].querySelector('button') || right[i]).id = givenRight[i];
 };
