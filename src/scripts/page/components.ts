@@ -56,7 +56,7 @@ export const minMaxPos = (settings: Partial<Settings>, includeDisalbed = false) 
 export const slot = <S, T>(name: Comp, comp: PlayerComponentSetting, left: S, right: T): S | T => (comp?.position ?? defaultPositions[name]) < 0 ? right : left;
 export const setDefaultIds = () => {
   const left = document.querySelectorAll('#video-controls > :last-child > :first-child > *');
-  const right = document.querySelectorAll('#video-controls > :last-child > :last-child > *');
+  const right = document.querySelectorAll('#video-controls > :last-child > :last-child > *:not(div:empty)');
   if (left.length != 3)
     throw new Error('Expected three buttons on left');
   const hasChromecast = document.querySelector('#video-controls > div > :last-child > [aria-label="Chromecast"]');
