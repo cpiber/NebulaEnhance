@@ -58,7 +58,6 @@ export const init = async () => {
 
   document.addEventListener('keydown', keydownHandler, { capture: true });
   document.addEventListener('wheel', wheelHandler, { passive: false });
-  document.addEventListener('pointerup', clickHandler, { capture: true });
   document.addEventListener(`${loadPrefix}-video`, initPlayer);
   document.addEventListener(navigatePrefix, () => lastPositon = undefined);
   await initDispatch();
@@ -321,38 +320,6 @@ const wheelHandler = async (e: WheelEvent) => {
   player.volume = Math.min(e.deltaY * options.volumeChange > 0 && n < 0.01 ? 0 : n, 1); // lower volume and below threshold -> mute
 
   // (player.controlBar.getChild('VolumeText') as InstanceType<Comp<typeof VolumeText>>).show(); TODO
-};
-
-// NOTE: As per https://nebula.tv/static/js/components/PseudoButton/PseudoButton.js some configurations apparently don't fire click
-//       so they replaced it with pointerdown and pointerup
-// See also:
-// - https://developer.mozilla.org/en-US/docs/Web/API/Element/click_event#safari_mobile
-// - https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events
-const clickHandler = (e: MouseEvent) => {
-  if (!options.useFirstSubtitle)
-    return;
-  const player = findAPlayer();
-  if (!player)
-    return;
-  const target = e.target as HTMLElement;
-  if (target.closest('#subtitles-button') === null) // clicked subtitles button
-    return;
-  const subs = arrFromLengthy(player.textTracks).filter(e => e.kind === 'subtitles');
-  if (subs.length !== 1)
-    return;
-  // only one subtitle track (not already active), use it and prevent popup
-  e.stopPropagation();
-  e.preventDefault();
-  const { label } = subs[0];
-  if (subs[0].mode === 'showing') {
-    subs[0].mode = 'hidden';
-    console.dev.log(`Set subtitle track '${label}' inactive`);
-    window.localStorage.removeItem('player-v2-subtitle-track');
-  } else {
-    subs[0].mode = 'showing';
-    console.dev.log(`Set subtitle track '${label}' active`);
-    window.localStorage.setItem('player-v2-subtitle-track', JSON.stringify(label));
-  }
 };
 
 export const setupHistory = () => {
