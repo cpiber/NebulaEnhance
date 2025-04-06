@@ -18,7 +18,6 @@ const optionsDefaults = {
   volumeShow: false,
   volumeChange: 0.1,
   volumeLog: false,
-  useFirstSubtitle: false,
   autoExpand: false,
   playerSettings: {} as Partial<Settings>,
 };
@@ -50,11 +49,11 @@ export const init = async () => {
 
   const {
     playbackChange, autoplay, autoplayQueue, volumeEnabled,
-    volumeChange, volumeLog, volumeShow, useFirstSubtitle, autoExpand,
+    volumeChange, volumeLog, volumeShow, autoExpand,
   } = options = await getFromStorage(optionsDefaults);
   console.debug('playbackChange:', playbackChange, 'autoplay?', autoplay, 'autoplay in queue?', autoplayQueue,
     '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog, 'show?', volumeShow,
-    '\nuse first subtitle?', useFirstSubtitle, 'expand video?', autoExpand);
+    '\nexpand video?', autoExpand);
 
   document.addEventListener('keydown', keydownHandler, { capture: true });
   document.addEventListener('wheel', wheelHandler, { passive: false });

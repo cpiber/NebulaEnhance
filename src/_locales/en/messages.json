@@ -75,14 +75,6 @@
     "message": "Whether to make scrolling over the player change the playback volume. Optionally in logarithmic scale (as opposed to linear).",
     "description": "Hint for Volume Scroll of options page."
   },
-  "optionsSubtitleTitle": {
-    "message": "Use first subtitle",
-    "description": "Label for Subtitle of options page."
-  },
-  "optionsSubtitleHint": {
-    "message": "Whether clicking on the subtitle button of the player should use the first available track if it is the only one.",
-    "description": "Hint for Subtitle of options page."
-  },
   "optionsExpandTitle": {
     "message": "Expand video on load",
     "description": "Label for Expand of options page."

@@ -75,14 +75,6 @@
     "message": "Ob beim Scrollen über den Videospieler die Lautstärke geändert werden soll. Optional in logarithmischer Skala (anstatt linear).",
     "description": "Hilfstext für Volume Scroll der Optionen Seite."
   },
-  "optionsSubtitleTitle": {
-    "message": "Ersten Untertitel",
-    "description": "Beschriftung für Subtitle der Optionen Seite."
-  },
-  "optionsSubtitleHint": {
-    "message": "Ob beim Klick auf den Untertitel-Knopf die erste Spur aktiviert werden soll, wenn sie die einzige ist.",
-    "description": "Hilfstext für Subtitle der Optionen Seite."
-  },
   "optionsExpandTitle": {
     "message": "Video vergrößtert starten",
     "description": "Beschriftung für Expand der Optionen Seite."

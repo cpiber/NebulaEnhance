@@ -11,7 +11,6 @@ export class Settings {
   volumeLog: HTMLInputElement = undefined;
   volumeShow: HTMLInputElement = undefined;
   volumeChange: HTMLInputElement = undefined;
-  useFirstSubtitle: HTMLInputElement = undefined;
   autoExpand: HTMLInputElement = undefined;
   youtube: HTMLInputElement = undefined;
   ytOpenTab: HTMLInputElement = undefined;
