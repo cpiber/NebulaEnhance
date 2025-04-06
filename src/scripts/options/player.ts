@@ -52,13 +52,15 @@ const nameToTitle: Record<Comp, string> = {
 };
 
 const repairPlayerSettings = (settings: Partial<Settings>) => {
-  const keys = Object.keys(settings).toSorted((a, b) => (settings[a]?.position ?? defaultPositions[a]) - (settings[b]?.position ?? defaultPositions[b]));
+  const keys = Object.keys(defaultPositions).toSorted((a, b) => (settings[a]?.position ?? defaultPositions[a]) - (settings[b]?.position ?? defaultPositions[b]));
   const left = keys.filter(i => (settings[i]?.position ?? defaultPositions[i]) >= 0);
   const right = keys.filter(i => (settings[i]?.position ?? defaultPositions[i]) < 0);
   for (let i = 0; i < left.length; ++i) {
+    if (settings[left[i]] === undefined) settings[left[i]] = {};
     settings[left[i]].position = i;
   }
   for (let i = 0; i < right.length; ++i) {
+    if (settings[right[i]] === undefined) settings[right[i]] = {};
     settings[right[i]].position = -right.length + i;
   }
 };
@@ -115,22 +117,35 @@ const render = (settings: Partial<Settings>, selected: Comp = undefined) => {
     });
     const updateWithPos = async (oldPos: number, newPos: number) => {
       if (oldPos === newPos) return;
-      for (const other of sorted) {
-        if ((settings[other]?.position ?? defaultPositions[other]) !== newPos) continue;
+      const toReplace = (newPos < oldPos ? sorted.toReversed().filter(other => (settings[other]?.position ?? defaultPositions[other]) <= newPos) : sorted.filter(other => (settings[other]?.position ?? defaultPositions[other]) >= newPos)).shift();
+      if (toReplace !== undefined) {
+        const other = toReplace;
         if (!(other in settings)) settings[other] = {};
         settings[other].position = oldPos;
         if (!(selected in settings)) settings[selected] = {};
         settings[selected].position = newPos;
+        repairPlayerSettings(settings);
         wrapper.replaceWith(render(settings, selected));
         await setToStorage({ playerSettings: settings });
         return;
+      } else if (Math.sign(oldPos) === Math.sign(newPos)) {
+        // most common is for hidden elements to cause this
+        // when they are pushed towards the edge
+        // e.g. time ... chromecast pip subtitles
+        //      move subtitles left, tries to swap with chromecast
+        //      and pip instead of switching sides
+        const { min, max } = minMaxPos(settings, true);
+        newPos = curPos < 0 ? max + 1 : min - 1;
       }
-      if (Math.sign(oldPos) === Math.sign(newPos)) return; // edge, don't move
-      // otherwise moved to other side, new position
-      if (!(selected in settings)) settings[selected] = {};
-      settings[selected].position = newPos;
-      wrapper.replaceWith(render(settings, selected));
-      await setToStorage({ playerSettings: settings });
+      const { min, max } = minMaxPos(settings, true);
+      if (newPos < min || newPos > max) {
+        // moved to other side, new position
+        if (!(selected in settings)) settings[selected] = {};
+        settings[selected].position = newPos;
+        repairPlayerSettings(settings);
+        wrapper.replaceWith(render(settings, selected));
+        await setToStorage({ playerSettings: settings });
+      }
     };
     const left = wrapper.appendChild(document.createElement('button'));
     left.className = 'enhancer-button';

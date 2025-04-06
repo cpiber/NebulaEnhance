@@ -44,8 +44,8 @@ export const defaultPositions: Record<Comp, number> = {
 export const toSorted = (settings: Partial<Settings>, includeDisabled = false) => [ ...builtin, ...ours ]
   .filter(c => includeDisabled || (settings[c]?.enabled ?? true))
   .sort((a, b) => (settings[a]?.position ?? defaultPositions[a]) - (settings[b]?.position ?? defaultPositions[b]));
-export const minMaxPos = (settings: Partial<Settings>, includeDisalbed = false) => [ ...builtin, ...ours ]
-  .filter(c => includeDisalbed || (settings[c]?.enabled ?? true))
+export const minMaxPos = (settings: Partial<Settings>, includeDisabled = false) => [ ...builtin, ...ours ]
+  .filter(c => includeDisabled || (settings[c]?.enabled ?? true))
   .reduce((acc, c) => {
     const cur = (settings[c]?.position ?? defaultPositions[c]);
     const n = { ...acc };
