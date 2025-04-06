@@ -1,6 +1,6 @@
 {
   "name": "nebulaenhance",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "private": true,
   "description": "Enhancer for Nebula. Adds some quality of life features to the nebula player.",
   "type": "module",
