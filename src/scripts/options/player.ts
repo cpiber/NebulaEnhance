@@ -51,7 +51,7 @@ const nameToTitle: Record<Comp, string> = {
   'speeddial': msg('optionsCompSpeed'),
 };
 
-const repairPlayerSettings = (settings: Partial<Settings>) => {
+export const repairPlayerSettings = (settings: Partial<Settings>) => {
   const keys = Object.keys(defaultPositions).toSorted((a, b) => (settings[a]?.position ?? defaultPositions[a]) - (settings[b]?.position ?? defaultPositions[b]));
   const left = keys.filter(i => (settings[i]?.position ?? defaultPositions[i]) >= 0);
   const right = keys.filter(i => (settings[i]?.position ?? defaultPositions[i]) < 0);

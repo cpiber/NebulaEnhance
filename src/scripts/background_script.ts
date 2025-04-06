@@ -2,6 +2,8 @@ import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorH
 import { purgeCache, purgeCacheIfNecessary } from './background/ext';
 import type { CreatorSettings } from './content/nebula/creator-settings';
 import { BrowserMessage, getBase, getBrowserInstance, getFromStorage, isChrome, nebulavideo, parseTimeString, parseTypeObject, setToStorage, toTimeString } from './helpers/sharedExt';
+import { repairPlayerSettings } from './options/player';
+import { Settings } from './page/components';
 
 const videoFetchYt = 50;
 const videoFetchNebula = 50;
@@ -66,7 +68,7 @@ getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
     await local.clear();
   }
 
-  const { hiddenCreators, creatorSettings } = await getFromStorage({ hiddenCreators: [] as string[], creatorSettings: {} as Record<string, CreatorSettings> });
+  const { hiddenCreators, creatorSettings, playerSettings } = await getFromStorage({ hiddenCreators: [] as string[], creatorSettings: {} as Record<string, CreatorSettings>, playerSettings: {} as Partial<Settings> });
   if (Array.isArray(hiddenCreators) && hiddenCreators.length) {
     for (let c of hiddenCreators) {
       if (c.endsWith('/')) c = c.slice(0, -1);
@@ -76,6 +78,8 @@ getBrowserInstance().runtime.onInstalled.addListener(async (details) => {
     await setToStorage({ creatorSettings });
     await (sync || local).remove('hiddenCreators');
   }
+  repairPlayerSettings(playerSettings);
+  await setToStorage({ playerSettings });
 
   if (details.reason === 'install') openOptions(true, 'show-changelogs');
 });
