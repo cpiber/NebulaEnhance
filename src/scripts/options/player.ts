@@ -51,6 +51,18 @@ const nameToTitle: Record<Comp, string> = {
   'speeddial': msg('optionsCompSpeed'),
 };
 
+const repairPlayerSettings = (settings: Partial<Settings>) => {
+  const keys = Object.keys(settings).toSorted((a, b) => (settings[a]?.position ?? defaultPositions[a]) - (settings[b]?.position ?? defaultPositions[b]));
+  const left = keys.filter(i => (settings[i]?.position ?? defaultPositions[i]) >= 0);
+  const right = keys.filter(i => (settings[i]?.position ?? defaultPositions[i]) < 0);
+  for (let i = 0; i < left.length; ++i) {
+    settings[left[i]].position = i;
+  }
+  for (let i = 0; i < right.length; ++i) {
+    settings[right[i]].position = -right.length + i;
+  }
+};
+
 const render = (settings: Partial<Settings>, selected: Comp = undefined) => {
   console.debug('Rendering for mobile?', isMobile());
   const wrapper = document.createElement('div');
@@ -145,5 +157,6 @@ const render = (settings: Partial<Settings>, selected: Comp = undefined) => {
 
 export const showConfigurePlayers = withLoader(async () => {
   const { playerSettings } = await getFromStorage<{ playerSettings: Partial<Settings>; }>({ playerSettings: {} });
+  repairPlayerSettings(playerSettings);
   buildModal(msg('optionsPlayerConfigure'), '', 'configure-player', render(playerSettings));
 });
