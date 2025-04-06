@@ -6,7 +6,7 @@ import createQueueButton, { toggleQueueButton } from './components/queue';
 import createSpeedDial from './components/speeddial';
 import attachVolumeText, { toggleVolumeShow } from './components/volume';
 import { init as initDispatch, loadPrefix, navigatePrefix } from './dispatcher';
-import { Message, arrFromLengthy, getFromStorage, notification, onStorageChange, parseTypeObject, replyMessage, sendMessage } from './sharedpage';
+import { Message, getFromStorage, notification, onStorageChange, parseTypeObject, replyMessage, sendMessage } from './sharedpage';
 
 export type Player = HTMLVideoElement & { _enhancerInit: boolean; };
 
@@ -184,43 +184,45 @@ const addPlayerControls = async (player: Player) => {
     if (ours[i] !== null) continue;
     if (oursComponents[i] === 'queue-prev') {
       ours[i] = await createQueueButton(player, false);
+      left.appendChild(ours[i]);
     } else if (oursComponents[i] === 'queue-next') {
       ours[i] = await createQueueButton(player, true);
+      left.appendChild(ours[i]);
     } else if (oursComponents[i] === 'expand') {
       ours[i] = await createExpandButton(player);
+      left.appendChild(ours[i]);
     } else if (oursComponents[i] === 'speeddial') {
       ours[i] = await createSpeedDial(player, options);
+      left.appendChild(ours[i]);
     } else {
       console.assert(false, 'Unknown component', oursComponents[i]);
     }
   }
-  // remove from DOM for insertion in order
-  while (left.childNodes.length > 0) left.childNodes[0].remove();
-  while (right.childNodes.length > 0) right.childNodes[0].remove();
 
   const sorted = componentsSorted(options.playerSettings);
+  let idx = 0;
+  let lastContainer: Element | undefined = undefined;
   for (const comp of sorted) {
     const container = componentSlot(comp, options.playerSettings[comp], left, right);
+
     const bidx = builtinComponents.indexOf(comp as any);
     const oidx = oursComponents.indexOf(comp as any);
-    if (bidx >= 0 && builtins[bidx] !== null) {
-      builtins[bidx].classList.remove('enhancer-hidden');
-      container.appendChild(builtins[bidx]);
-    } else if (oidx >= 0 && ours[oidx] !== null) {
-      ours[oidx].classList.remove('enhancer-hidden');
-      container.appendChild(ours[oidx]);
-    }
+    const c = bidx >= 0 ? builtins[bidx] : ours[oidx];
+
+    if (lastContainer != container) idx = 0;
+    else if (c != null) idx += 1;
+    lastContainer = container;
+
+    if (c == null) continue;
+    if (idx == 0) container.children[0].before(c);
+    else container.children[idx - 1].after(c);
   }
-  // re-attach disabled components for compatibility
+
   for (let i = 0; i < builtinComponents.length; i++) {
-    if (options.playerSettings[builtinComponents[i]]?.enabled ?? true) continue;
-    builtins[i].classList.add('enhancer-hidden');
-    left.appendChild(builtins[i]);
+    builtins[i]?.classList.toggle('enhancer-hidden', !(options.playerSettings[builtinComponents[i]]?.enabled ?? true));
   }
   for (let i = 0; i < oursComponents.length; i++) {
-    if (options.playerSettings[oursComponents[i]]?.enabled ?? true) continue;
-    ours[i].classList.add('enhancer-hidden');
-    left.appendChild(ours[i]);
+    ours[i]?.classList.toggle('enhancer-hidden', !(options.playerSettings[oursComponents[i]]?.enabled ?? true));
   }
 
   attachVolumeText(player, controls, options);
