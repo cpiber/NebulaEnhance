@@ -69,5 +69,5 @@ export const showManageCreators = withLoader(async () => {
     if (nameA > nameB) return 1;
     return 0;
   }).map(c => buildCreator(creatorSettings, c));
-  await buildModal(msg('optionsManageHiddenCreators'), msg('optionsManageHiddenCreatorsNone'), 'manage-hidden', ...c);
+  buildModal(msg('optionsManageHiddenCreators'), msg('optionsManageHiddenCreatorsNone'), 'manage-hidden', ...c);
 });
