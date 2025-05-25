@@ -280,15 +280,19 @@ const keydownHandler = (e: KeyboardEvent) => {
       if (player.paused) player.play(); else player.pause();
       break;
     case 'x':
+    case 'X':
       document.body.parentElement.classList.toggle('enhancer-fullVideo');
       break;
     case 'n':
+    case 'N':
       sendMessage(Message.QUEUE_NEXT, null, false);
       break;
     case 'p':
+    case 'P':
       sendMessage(Message.QUEUE_PREV, null, false);
       break;
-    case 'z': {
+    case 'z':
+    case 'Z': {
       const curPos = player.currentTime;
       if (lastPositon != undefined) player.currentTime = lastPositon;
       lastPositon = curPos;
