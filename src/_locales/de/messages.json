@@ -359,6 +359,10 @@
     "message": "Frame zurück",
     "description": "Notification text für 'frame back' Aktion"
   },
+  "playerCaps": {
+    "message": "Achtung: Caps-Lock ist aktiv, manche Tastenkombinationen werden nicht funktionieren",
+    "description": "Notification text für wenn CapsLock aktiv"
+  },
   "playerFrameForward": {
     "message": "Frame nach vorne",
     "description": "Notification text für 'frame back' Aktion"

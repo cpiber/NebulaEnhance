@@ -64,6 +64,7 @@ export const init = async () => {
   msgs['playerFrameBack'] = await sendMessage(Message.GET_MESSAGE, { message: 'playerFrameBack' });
   msgs['playerFrameForward'] = await sendMessage(Message.GET_MESSAGE, { message: 'playerFrameForward' });
   msgs['playerSpeed'] = await sendMessage(Message.GET_MESSAGE, { message: 'playerSpeed' });
+  msgs['playerCaps'] = await sendMessage(Message.GET_MESSAGE, { message: 'playerCaps' });
 
   onStorageChange(changed => {
     console.dev.log('Options changed');
@@ -235,7 +236,16 @@ export const updatePlayerControls = (player: Player, canNext: boolean, canPrev: 
   toggleQueueButton(player, false, canPrev);
 };
 
+let capsHide: () => void | undefined = undefined;
 const keydownHandler = (e: KeyboardEvent) => {
+  let isCaps = e.getModifierState('CapsLock');
+  if (e.key === 'CapsLock') isCaps = !isCaps; // modifier state is updated after the event
+  if (isCaps) capsHide = notification(msgs['playerCaps'], null);
+  else {
+    capsHide?.();
+    capsHide = undefined;
+  }
+
   if (e.altKey || e.ctrlKey || e.metaKey)
     return;
   if (document.activeElement.tagName === 'INPUT')

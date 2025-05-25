@@ -363,6 +363,10 @@
     "message": "Jump frame forward",
     "description": "Notification text for 'frame back' action"
   },
+  "playerCaps": {
+    "message": "Warning: Caps-Lock is enabled, some keybinds may not work properly",
+    "description": "Notification text for when CapsLock is on"
+  },
   "pageAddToQueue": {
     "message": "Add to queue",
     "description": "Hidden hint for queue button."
