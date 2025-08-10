@@ -165,7 +165,8 @@ const addPlayerControls = async (player: Player) => {
     await waitForSubtitles(player);
   } catch { }
 
-  const controls = player.parentElement.querySelectorAll('.icon-spacing');
+
+  const controls = document.querySelectorAll('#video-controls > :last-child > :first-child, #video-controls > :last-child > :nth-child(2)');
   const left = controls[0];
   const right = controls[controls.length - 1];
   const collect = (id: string) => {

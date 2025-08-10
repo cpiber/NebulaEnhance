@@ -56,15 +56,16 @@ export const minMaxPos = (settings: Partial<Settings>, includeDisabled = false) 
 export const slot = <S, T>(name: Comp, comp: PlayerComponentSetting, left: S, right: T): S | T => (comp?.position ?? defaultPositions[name]) < 0 ? right : left;
 export const setDefaultIds = () => {
   const left = document.querySelectorAll('#video-controls > :last-child > :first-child > *');
-  const right = document.querySelectorAll('#video-controls > :last-child > :last-child > *:not(div:empty)');
+  const right = document.querySelectorAll('#video-controls > :last-child > :nth-child(2) > *');
+  console.dev.debug('Player elements left', left, 'right', right);
   if (left.length != 3)
-    throw new Error('Expected three buttons on left');
+    throw new Error(`Expected three buttons on left, got ${left.length}`);
   const hasChromecast = document.querySelector('#video-controls > div > :last-child > [aria-label="Chromecast"]');
   if (hasChromecast) {
     if (right.length != 6 && right.length != 7)
-      throw new Error('Chromecast detected, expected 6 or 7 buttons on right');
+      throw new Error(`Chromecast detected, expected 6 or 7 buttons on right, got ${right.length}`);
   } else if (right.length != 4 && right.length != 5)
-    throw new Error('No Chromecast detected, expected 4 or 5 buttons on right');
+    throw new Error(`No Chromecast detected, expected 4 or 5 buttons on right, got ${right.length}`);
   const expectNoSubtitle = hasChromecast ? right.length === 6 : right.length === 4;
   const givenLeft = builtin.slice(0, left.length);
   const givenRight = builtin.slice(left.length)
