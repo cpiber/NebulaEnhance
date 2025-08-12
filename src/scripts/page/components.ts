@@ -60,7 +60,7 @@ export const setDefaultIds = () => {
   console.dev.debug('Player elements left', left, 'right', right);
   if (left.length != 3)
     throw new Error(`Expected three buttons on left, got ${left.length}`);
-  const hasChromecast = document.querySelector('#video-controls > div > :last-child > [aria-label="Chromecast"]');
+  const hasChromecast = document.querySelector('#video-controls [aria-label="Chromecast"]');
   if (hasChromecast) {
     if (right.length != 6 && right.length != 7)
       throw new Error(`Chromecast detected, expected 6 or 7 buttons on right, got ${right.length}`);
