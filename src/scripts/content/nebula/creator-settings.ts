@@ -61,7 +61,7 @@ export const addCreatorSettings = async () => {
   buttonSettings.classList.add('enhancer-creator-settings');
 };
 
-const followFromContainer = (container: HTMLElement) => Array.from(container.children).filter(c => !c.classList.contains('enhancer-hideCreator')).pop();
+const followFromContainer = (container: HTMLElement) => Array.from(container.children).filter(c => !c.classList.contains('enhancer-hideCreator') && !c.classList.contains('enhancer-rss')).pop();
 
 const show = async () => {
   const creator = window.location.pathname.split('/')[1];
