@@ -168,8 +168,8 @@ const click = async (e: MouseEvent) => {
   if (target.closest('.nebula-watch-later'))
     return;
 
-  if (target.closest('main [role="listbox"]') && location.pathname.startsWith('/settings/preferences'))
-    return changeTheme(e);
+  if (target.closest('#root [role="listbox"]') && location.pathname.startsWith('/settings/preferences'))
+    return setTimeout(changeTheme, 0);
 
   const addAll = target.closest('.enhancer-queueButtonAll');
   if (addAll !== null) {
@@ -281,8 +281,8 @@ const createLinkForAll = () => {
   container.appendChild(link);
 };
 
-const changeTheme = (e: MouseEvent) => {
-  const theme = (e.target as HTMLElement).dataset.value.toLowerCase();
+const changeTheme = () => {
+  const theme = JSON.parse(localStorage.getItem('colorSchemeSetting'));
   console.debug('Saving theme', theme);
   setToStorage({ theme });
 };
