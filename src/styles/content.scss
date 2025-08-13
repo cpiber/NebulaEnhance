@@ -366,3 +366,133 @@ a.enhancer-queueButtonAll {
     }
   }
 }
+
+div.enhancer-creator-settings-wrap {
+  display: flex;
+  flex-direction: row;
+  -moz-box-pack: center;
+  justify-content: center;
+  margin-right: 4px;
+  color: white;
+
+  @media only screen and (width >= 574px) {
+    @media (hover: hover) and (pointer: fine) {
+      width: auto;
+      margin-right: 20px;
+    }
+  }
+
+  button {
+    cursor: pointer;
+    pointer-events: all;
+    text-align: center;
+    transition-property: all;
+    font-size: 11px;
+    line-height: 14px;
+    font-weight: 600;
+    text-shadow: rgb(0 66 102 / 0.25) 0 0.5px 3px;
+    position: relative;
+    width: 32px;
+    height: 32px !important;
+    background: transparent;
+    display: flex;
+    -moz-box-align: center;
+    align-items: center;
+    -moz-box-pack: center;
+    justify-content: center;
+    border: medium;
+    color: rgb(255 255 255);
+
+    --focus-visible-outline-offset: -3px;
+    --focus-visible-border-radius: 7px;
+
+    padding: 6px;
+    border-radius: var(--focus-visible-border-radius);
+
+    &:hover {
+      background: none;
+    }
+
+    @media only screen and (width >= 574px) {
+      width: 32px;
+      height: 32px !important;
+      margin-left: 24px;
+      margin-right: 24px;
+    }
+    @media only screen and (width <= 573px) {
+      width: 48px;
+      height: 48px !important;
+      margin-left: 24px;
+      margin-right: 24px;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      width: 48px;
+      height: 48px !important;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      @media only screen and (width >= 574px) {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+
+    &::after {
+      --typography-name: callout;
+
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 400;
+      content: attr(data-label);
+      position: absolute;
+      bottom: -16px;
+      left: 0;
+      right: 0;
+      display: flex;
+      -moz-box-pack: center;
+      justify-content: center;
+      white-space: nowrap;
+
+      @media only screen and (width <= 573px) {
+        --typography-name: paragraph;
+
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: 400;
+        bottom: -18px;
+      }
+      @media only screen and (width >= 574px) {
+        --typography-name: callout;
+
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 400;
+        bottom: -16px;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        --typography-name: paragraph;
+
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: 400;
+        bottom: -18px;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        @media only screen and (width >= 574px) {
+          display: none;
+        }
+      }
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover::after {
+        display: flex;
+      }
+    }
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+  }
+}

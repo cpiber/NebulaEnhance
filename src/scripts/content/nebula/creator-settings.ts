@@ -6,6 +6,8 @@ import { buildModal } from '../../helpers/modal';
 import { getApiBase, getBrowserInstance, getFromStorage, notification, parseTimeString, setCreatorHideAfter, setCreatorHideLonger, toggleHideCreator, toggleHideCreatorPlus } from '../../helpers/sharedExt';
 
 const msg = getBrowserInstance().i18n.getMessage;
+const creatorSettings = msg('pageCreatorSettings');
+const creatorSettingsShort = msg('pageCreatorSettingsShort');
 const hideCreator = msg('pageHideCreator');
 const showCreator = msg('pageShowCreator');
 const hideCreatorPlus = msg('pageHideCreatorPlus');
@@ -15,7 +17,7 @@ const hideAfter = msg('pageHideAfter');
 const hideAfterHint = msg('pageHideAfterHint');
 const hideLonger = msg('pageHideLonger');
 const hideLongerHint = msg('pageHideLongerHint');
-const savedtext = getBrowserInstance().i18n.getMessage('optionsSavedNote');
+const savedtext = msg('optionsSavedNote');
 
 export type CreatorSettings = {
   hideAfter?: string,
@@ -36,7 +38,20 @@ export const addCreatorSettings = async () => {
 
   const h1 = document.querySelector('h1');
   const container = h1?.parentElement;
-  if (!container) return;
+  if (!container) {
+    const startWatching = document.querySelector('a[href^="/videos/"] > svg');
+    const buttonContainer = startWatching?.parentElement?.parentElement?.nextElementSibling;
+    if (!buttonContainer) return;
+
+    const divSettings = buttonContainer.appendChild(document.createElement('div'));
+    divSettings.classList.add('enhancer-creator-settings-wrap');
+    const bSettings = divSettings.appendChild(document.createElement('button'));
+    bSettings.dataset.label = creatorSettingsShort;
+    bSettings.ariaLabel = creatorSettings;
+    bSettings.innerHTML = iconSettings;
+    bSettings.classList.add('enhancer-creator-settings');
+    return;
+  }
   const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? followFromContainer(container) : undefined;
   const creator = window.location.pathname.split('/')[1];
 

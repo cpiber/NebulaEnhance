@@ -423,6 +423,10 @@
     "message": "Kanal Einstellungen",
     "description": "Titel des Settings-Modal für Kanäle"
   },
+  "pageCreatorSettingsShort": {
+    "message": "Einstellungen",
+    "description": "Titel des Settings-Button für Kanäle"
+  },
   "pageHideCreator": {
     "message": "Alle Vidoes dieses Kanals verstecken",
     "description": "Button hinweis um creator zu verstecken."

@@ -423,6 +423,10 @@
     "message": "Creator settings",
     "description": "Title of creator-settings modal"
   },
+  "pageCreatorSettingsShort": {
+    "message": "Settings",
+    "description": "Title of creator-settings button"
+  },
   "pageHideCreator": {
     "message": "Hide all videos of this creator",
     "description": "Button hint to hide creator."

@@ -123,7 +123,7 @@ const loading = () => {
         load();
       break;
     case 'creator':
-      if (document.querySelectorAll('h1, h2').length >= 2)
+      if (document.querySelectorAll('h1, h2').length >= 2 || document.querySelector('a[href^="/videos/"]'))
         load();
       break;
     case 'videos':
