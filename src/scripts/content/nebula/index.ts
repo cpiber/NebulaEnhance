@@ -9,6 +9,7 @@ import { handle } from './message';
 
 const msg = getBrowserInstance().i18n.getMessage;
 const addToQueue = msg('pageAddToQueue');
+const addAllToQueue = msg('pageAddAllToQueue');
 
 const optionsDefaults = {
   youtube: false,
@@ -273,9 +274,9 @@ const createLinkForAll = () => {
     return;
 
   const link = !container.children.length ? document.createElement('a') : container.children[0].cloneNode(true) as HTMLAnchorElement;
-  link.style.color = link.querySelector('svg')?.getAttribute('fill');
   link.innerHTML = iconWatchLater;
   link.href = '#';
+  link.title = addAllToQueue;
   link.classList.add('enhancer-queueButton', 'enhancer-queueButtonAll');
   container.appendChild(link);
 };

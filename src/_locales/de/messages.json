@@ -371,6 +371,10 @@
     "message": "Zur Warteschlange hinzufügen",
     "description": "Versteckter Hinweis fürs hinzufügen zur Warteschlange."
   },
+  "pageAddAllToQueue": {
+    "message": "Alle zur Warteschlange hinzufügen",
+    "description": "Hidden hint for queue all button."
+  },
   "pageNothingToPlay": {
     "message": "Nichts am abspielen",
     "description": "Titel der Warteschlange wenn leer."

@@ -371,6 +371,10 @@
     "message": "Add to queue",
     "description": "Hidden hint for queue button."
   },
+  "pageAddAllToQueue": {
+    "message": "Add all to queue",
+    "description": "Hidden hint for queue all button."
+  },
   "pageNothingToPlay": {
     "message": "Nothing to play",
     "description": "Title for queue when nothing selected."
