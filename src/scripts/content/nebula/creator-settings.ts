@@ -34,13 +34,14 @@ export const init = () => {
 };
 
 export const addCreatorSettings = async () => {
-  document.querySelectorAll('.enhancer-creator-settings').forEach(e => e.remove());
+  document.querySelectorAll('.enhancer-creator-settings-wrap').forEach(e => e.remove());
+  document.querySelectorAll('.enhancer-creator-settings, .enhancer-rss').forEach(e => e.remove());
   if (document.querySelector('a[href^="https://podcasts.watchnebula.com"]')) return; // don't add ourselves to podcast overview pages
 
   const { rss: loadRss } = await getFromStorage({ rss: false });
   const creator = window.location.pathname.split('/')[1];
 
-  const h1 = document.querySelector('h1');
+  const h1 = document.querySelector('#root h1');
   const container = h1?.parentElement;
   if (!container) {
     const startWatching = document.querySelector('a[href^="/videos/"] > svg');
