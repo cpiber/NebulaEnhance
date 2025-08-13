@@ -7,6 +7,7 @@ module.exports = {
     'at-rule-empty-line-before': null,
     'at-rule-no-unknown': null,
     'color-hex-length': 'long',
+    'custom-property-pattern': '.*',
     'font-family-no-missing-generic-family-keyword': null,
     'function-calc-no-unspaced-operator': true,
     'no-irregular-whitespace': true,

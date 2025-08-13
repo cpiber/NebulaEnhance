@@ -293,13 +293,21 @@
     height: 100%;
     width: auto;
   }
+}
 
-  @media only screen and (width <= 768px) {
-    height: 30px !important;
-    padding: 7px;
-    background-color: var(--this-bg-color, rgb(111 188 230));
-    border: var(--this-border, none);
-    border-radius: 15px;
+.enhancer-creator-settings {
+  height: 32px !important;
+  padding: 6px 7px;
+  background-color: var(--chip, rgb(29 34 38));
+  border-color: var(--chipBorder, rgb(29 34 38));
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 15px;
+
+  &:hover {
+    background-color: var(--chipHover);
+    border-color: var(--chipHover);
+    color: var(--label);
   }
 }
 

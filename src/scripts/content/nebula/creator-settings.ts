@@ -38,11 +38,6 @@ export const addCreatorSettings = async () => {
   const container = h1?.parentElement;
   if (!container) return;
   const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? followFromContainer(container) : undefined;
-  const link = document.querySelector('a');
-  if (link) container.style.setProperty('--this-bg-color', window.getComputedStyle(link).color);
-  if (link) container.style.setProperty('--this-border', window.getComputedStyle(link).color);
-  if (follow) container.style.setProperty('--this-bg-color', window.getComputedStyle(follow).backgroundColor);
-  if (follow) container.style.setProperty('--this-border', window.getComputedStyle(follow).border);
   const creator = window.location.pathname.split('/')[1];
 
   const { rss: loadRss } = await getFromStorage({ rss: false });
