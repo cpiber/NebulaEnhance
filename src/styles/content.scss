@@ -381,18 +381,18 @@ div.enhancer-creator-settings-wrap {
       margin-right: 20px;
     }
   }
-  @media only screen and (max-width: 573px) {
-    margin-right: 0px;
+  @media only screen and (width <= 573px) {
+    margin-right: 0;
   }
-  @media only screen and (min-width: 574px) {
+  @media only screen and (width >= 574px) {
     @media (hover: hover) and (pointer: fine) {
       &:last-child {
-        margin-right: 0px;
+        margin-right: 0;
       }
     }
   }
 
-  button {
+  button, a {
     cursor: pointer;
     pointer-events: all;
     text-align: center;
@@ -412,6 +412,7 @@ div.enhancer-creator-settings-wrap {
     justify-content: center;
     border: medium;
     color: rgb(255 255 255);
+    margin: 0;
 
     --focus-visible-outline-offset: -3px;
     --focus-visible-border-radius: 7px;
@@ -503,6 +504,17 @@ div.enhancer-creator-settings-wrap {
   svg {
     width: 24px;
     height: 24px;
-    fill: white;
+  }
+
+  a.enhancer-rss {
+    svg {
+      width: 32px;
+      height: 32px;
+      
+      path:not(:last-child) {
+        fill: none;
+        stroke: none;
+      }
+    }
   }
 }

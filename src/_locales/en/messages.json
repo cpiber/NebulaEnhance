@@ -419,6 +419,10 @@
     "message": "Search-confidence",
     "description": "Nebula video match confidence for search on youtube."
   },
+  "pageRssFeed": {
+    "message": "Feed",
+    "description": "Title of rss feed button"
+  },
   "pageCreatorSettings": {
     "message": "Creator settings",
     "description": "Title of creator-settings modal"

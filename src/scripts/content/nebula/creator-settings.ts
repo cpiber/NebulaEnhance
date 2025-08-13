@@ -8,6 +8,7 @@ import { getApiBase, getBrowserInstance, getFromStorage, notification, parseTime
 const msg = getBrowserInstance().i18n.getMessage;
 const creatorSettings = msg('pageCreatorSettings');
 const creatorSettingsShort = msg('pageCreatorSettingsShort');
+const rssFeed = msg('pageRssFeed');
 const hideCreator = msg('pageHideCreator');
 const showCreator = msg('pageShowCreator');
 const hideCreatorPlus = msg('pageHideCreatorPlus');
@@ -36,6 +37,9 @@ export const addCreatorSettings = async () => {
   document.querySelectorAll('.enhancer-creator-settings').forEach(e => e.remove());
   if (document.querySelector('a[href^="https://podcasts.watchnebula.com"]')) return; // don't add ourselves to podcast overview pages
 
+  const { rss: loadRss } = await getFromStorage({ rss: false });
+  const creator = window.location.pathname.split('/')[1];
+
   const h1 = document.querySelector('h1');
   const container = h1?.parentElement;
   if (!container) {
@@ -50,12 +54,23 @@ export const addCreatorSettings = async () => {
     bSettings.ariaLabel = creatorSettings;
     bSettings.innerHTML = iconSettings;
     bSettings.classList.add('enhancer-creator-settings');
+
+    if (loadRss) {
+      const divRss = buttonContainer.appendChild(document.createElement('div'));
+      divRss.classList.add('enhancer-creator-settings-wrap');
+      const rss = divRss.appendChild(document.createElement('a'));
+      rss.dataset.label = rssFeed;
+      rss.ariaLabel = 'rss';
+      rss.innerHTML = iconRSS;
+      rss.href = `https://rss.${getApiBase()}/video/channels/${creator}.rss`;
+      rss.target = '_blank';
+      rss.classList.add('enhancer-rss');
+    }
     return;
   }
-  const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? followFromContainer(container) : undefined;
-  const creator = window.location.pathname.split('/')[1];
 
-  const { rss: loadRss } = await getFromStorage({ rss: false });
+  const follow = container.lastElementChild.tagName.toLowerCase() === 'button' ? followFromContainer(container) : undefined;
+
   if (loadRss) {
     const rss = document.createElement('a');
     if (follow) follow.before(rss); else container.appendChild(rss);
