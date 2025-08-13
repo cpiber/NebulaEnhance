@@ -122,13 +122,10 @@ const doVideoActions = debounce(() => {
 
 const videoHoverLink = (e: HTMLElement) => {
   // check if element is the image in a video link
-  const outer = e.closest('[data-context-menu-hover-trigger]');
+  const outer = e.closest('[data-icon-hover-trigger]');
   if (outer === null)
     return null;
-  const link = outer.firstElementChild;
-  if (!link.matches(videoselector))
-    return null;
-  return link;
+  return outer.querySelector(videoselector);
 };
 const hover = (e: MouseEvent) => {
   const target = e.target as HTMLElement;

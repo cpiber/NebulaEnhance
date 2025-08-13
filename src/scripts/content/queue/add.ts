@@ -16,11 +16,12 @@ export async function addToStore(this: Queue, name: string | Nebula.Video[], el?
     return this.store[name] = await requestData(name);
   }
   const img = el.querySelector('img');
+  const creator = creatorLocation(el);
   return this.store[name] = {
     length: durationLocation(img)?.lastChild.textContent,
     thumbnail: img.src,
     title: titleLocation(el)?.textContent,
-    creator: creatorLocation(el)?.textContent,
+    creator: (creator as HTMLMetaElement)?.content ?? creator?.textContent,
   };
 }
 

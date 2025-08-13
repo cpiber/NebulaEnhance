@@ -105,7 +105,7 @@ html.enhancer-fullVideo.page-video {
 
   $self: &;
 
-  @at-root [data-context-menu-hover-trigger] {
+  @at-root [data-icon-hover-trigger] {
     @include mixins.hov {
       #{$self} {
         @extend %hover;
