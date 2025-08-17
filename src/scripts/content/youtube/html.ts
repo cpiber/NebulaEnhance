@@ -44,6 +44,7 @@ export const constructButton = (vid: nebulavideo, before: HTMLElement, isMobile 
     });
   } else {
     document.querySelector<HTMLSpanElement>('.watch-on-nebula span').setAttribute('href', vid.link);
+    document.querySelector<HTMLButtonElement>('.watch-on-nebula button').title = generateText(vid);
   }
   const b = document.querySelector<HTMLElement>('.watch-on-nebula');
   b.style.display = '';
