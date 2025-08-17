@@ -5,11 +5,13 @@ const goChannel = getBrowserInstance().i18n.getMessage('pageGoChannel');
 const videoConfidence = getBrowserInstance().i18n.getMessage('pageVideoConfidence');
 const searchConfidence = getBrowserInstance().i18n.getMessage('pageSearchConfidence');
 
-export const constructButton = (vid: nebulavideo, isMobile = false) => {
+export const constructButton = (vid: nebulavideo, before: HTMLElement, isMobile = false) => {
   if (!document.querySelector('.watch-on-nebula') || document.querySelector('.watch-on-nebula').children.length === 0) {
     Array.from(document.querySelectorAll<HTMLElement>('.watch-on-nebula')).forEach(n => n.remove());
     // for some reason youtube custom elements clear their inner html in construct, so we have to do it like this
-    const button = document.body.appendChild(document.createElement('div'));
+    const button = document.createElement('div');
+    button.style.display = 'none';
+    before.before(button);
     button.id = 'sponsor-button';
     button.className = 'style-scope ytd-video-owner-renderer watch-on-nebula';
     const brender = button.appendChild(document.createElement('ytd-button-renderer'));
@@ -21,7 +23,7 @@ export const constructButton = (vid: nebulavideo, isMobile = false) => {
     btn.className = 'yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m';
     btn.ariaLabel = watchOnNebula;
     const bdiv = btn.appendChild(document.createElement('div'));
-    bdiv.className = 'cbox yt-spec-button-shape-next--button-text-content';
+    bdiv.className = 'yt-spec-button-shape-next__button-text-content';
     const bspan = bdiv.appendChild(document.createElement('span'));
     bspan.className = 'yt-core-attributed-string yt-core-attributed-string--white-space-no-wrap';
     bspan.textContent = isMobile ? 'Nebula' : watchOnNebula;
@@ -33,7 +35,9 @@ export const constructButton = (vid: nebulavideo, isMobile = false) => {
     bfdiv.ariaHidden = 'true';
     bfdiv.appendChild(document.createElement('div')).className = 'yt-spec-touch-feedback-shape__stroke';
     bfdiv.appendChild(document.createElement('div')).className = 'yt-spec-touch-feedback-shape__fill';
-    brender.appendChild(document.createElement('tp-yt-paper-tooltip'));
+    const tooltip = brender.appendChild(document.createElement('tp-yt-paper-tooltip'));
+    tooltip.setAttribute('offset', '8');
+    tooltip.setAttribute('disable-upgrade', '');
     btn.title = generateText(vid);
     btn.addEventListener('click', () => {
       window.open(bspan.getAttribute('href'));

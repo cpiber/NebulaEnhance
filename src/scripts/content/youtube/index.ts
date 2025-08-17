@@ -144,8 +144,7 @@ const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vid
       document.querySelector<HTMLDivElement>('ytm-slim-owner-renderer .slim-owner-subscribe-button');
     if (!subscribeElement) yield true; // retry
 
-    const button = constructButton(vid, isMobile);
-    subscribeElement.before(button);
+    const button = constructButton(vid, subscribeElement, isMobile);
     if (!isMobile) {
       subscribeElement.closest<HTMLDivElement>('#top-row.ytd-watch-metadata').style.display = 'block'; // not the prettiest, but it works
     } else {
