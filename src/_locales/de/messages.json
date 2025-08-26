@@ -83,6 +83,42 @@
     "message": "Wenn gesetzt, dann wird das Video beim Laden auf Fenstergröße erweitert. Es gibt die Option auch manuell im Spieler.",
     "description": "Hilfstext für Expand der Optionen Seite."
   },
+  "optionsQualityTitle": {
+    "message": "Automatische Videoqualität",
+    "description": "Beschriftung für Quality der Optionen Seite."
+  },
+  "optionsQualityHint": {
+    "message": "Erlaubt das automatische Überschreiben der Videoqualität je auch höchste/niedrigste Verfügbare, oder mit Präferenz und wechsel auf nächst-höhere/nierere Option wenn nicht verfügbar.",
+    "description": "Hilfstext für Quality der Optionen Seite."
+  },
+  "optionsQualityTypeLabel": {
+    "message": "Qualität Modus",
+    "description": "Beschriftung für Quality der Optionen Seite."
+  },
+  "optionsQualityPreferredLabel": {
+    "message": "Bevorzugte Qualität",
+    "description": "Beschriftung für Preferred Quality der Optionen Seite."
+  },
+  "optionsQualityOff": {
+    "message": "Aus (keine Anpassung)",
+    "description": "Beschriftung für Quality Off der Optionen Seite."
+  },
+  "optionsQualityHighest": {
+    "message": "Höchste Verfügbare",
+    "description": "Beschriftung für Quality Highest der Optionen Seite."
+  },
+  "optionsQualityLowest": {
+    "message": "Niedrigste Verfügbare",
+    "description": "Beschriftung für Quality Lowest der Optionen Seite."
+  },
+  "optionsQualityPreferredChooseHigher": {
+    "message": "Bevorzugt, Rückfallend auf Höhere",
+    "description": "Beschriftung für Quality PreferredChooseHigher der Optionen Seite."
+  },
+  "optionsQualityPreferredChooseLower": {
+    "message": "Bevorzugt, Rückfallend auf Niederere",
+    "description": "Beschriftung für Quality PreferredChooseLower der Optionen Seite."
+  },
   "optionsPlayerConfigureTitle": {
     "message": "Videospieler konfigurieren",
     "description": "Beschriftung für PlayerConfigure der Optionen Seite."

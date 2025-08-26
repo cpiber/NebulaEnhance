@@ -6,7 +6,7 @@ import createQueueButton, { toggleQueueButton } from './components/queue';
 import createSpeedDial from './components/speeddial';
 import attachVolumeText, { toggleVolumeShow } from './components/volume';
 import { init as initDispatch, loadPrefix, navigatePrefix } from './dispatcher';
-import { Message, getFromStorage, notification, onStorageChange, parseTypeObject, replyMessage, sendMessage } from './sharedpage';
+import { Message, QualityType, getFromStorage, notification, onStorageChange, parseTypeObject, replyMessage, sendMessage } from './sharedpage';
 
 export type Player = HTMLVideoElement & { _enhancerInit: boolean; };
 
@@ -20,6 +20,8 @@ const optionsDefaults = {
   volumeLog: false,
   autoExpand: false,
   playerSettings: {} as Partial<Settings>,
+  qualityType: QualityType.Off as keyof typeof QualityType,
+  preferredQuality: 1080,
 };
 let options = { ...optionsDefaults };
 let lastPositon: number | undefined = undefined;
@@ -79,6 +81,7 @@ export const init = async () => {
     player.autoplay = options.autoplay;
     toggleVolumeShow(player, options.volumeShow);
     addPlayerControls(player);
+    setPlayerQuality();
   });
 };
 
@@ -90,6 +93,9 @@ export const initPlayer = async () => {
   await waitForButtonsAndSetIds();
 
   player.addEventListener('ended', () => sendMessage(Message.QUEUE_NEXT, null, false));
+  const handlers = getPlayerController();
+  handlers.store.subscribe(e => e.qualityLevels, setPlayerQuality);
+  setPlayerQuality();
 
   const { autoplay, autoplayQueue } = options;
   console.debug('autoplay?', autoplay, 'autoplayQueue?', autoplayQueue);
@@ -376,4 +382,128 @@ export const setupHistory = () => {
     console.error(e);
   }
   return false;
+};
+
+interface Store<T> {
+  getInitialState: () => T,
+  getState: () => T & { set: (n: Partial<T>) => void; },
+  setState: (n: T | ((old: T) => T), options?: any) => void,
+  subscribe: <U>(selector: (state: T) => U, notify: (old_value: U, new_value: U) => void, options?: Partial<{ equalityFn: (o: U, n: U) => boolean, fireImmediately: boolean; }>) => (() => void),
+}
+
+interface VideoStoreData {
+  airPlayAvailable: boolean;
+  airPlayConnected: undefined;
+  aspectRatio: number,
+  autoplayAvailable: boolean;
+  autoplayEnabled: boolean;
+  buffered: number[];
+  chromecastAvailable: boolean;
+  chromecastConnected: boolean;
+  chromecastDeviceName: string;
+  chromecastQueue: undefined;
+  currentAutoLevel: any;
+  currentLanguage: string;
+  currentTime: number;
+  deviceSupportsVideoCodecs: boolean;
+  duration: number,
+  fullScreenAvailable: boolean;
+  hasEnded: boolean;
+  isBuffering: boolean;
+  isEndScreenShowing: boolean;
+  isFullScreen: boolean;
+  isInitialized: boolean;
+  isMuted: boolean;
+  isPictureInPicture: boolean;
+  isPlaying: boolean;
+  isScrubbing: boolean;
+  isSeeking: boolean;
+  mediaId: string;
+  mediaSessionMetadata: any;
+  mediaTitle: 'The Hunt For the World\'s Top-4 Most Wanted Leaders';
+  mediaType: 'video/mp4';
+  muteChangeAvailable: true;
+  muxData: any;
+  pictureInPictureAvailable: undefined;
+  playbackSpeed: number;
+  quality: number;
+  qualityLevels: ({ height: number; } & Record<string, any>)[];
+  resetTech: () => void;
+  src: string;
+  subtitles: { label: string, language: string; }[];
+  volume: number;
+  volumeChangeAvailable: boolean;
+  wasEverPlayed: boolean;
+}
+
+interface PlayerHandlers {
+  store: Store<VideoStoreData>,
+  hls: any,
+  options: Record<string, any>,
+  relativeSeek: any,
+  videoElement: HTMLVideoElement,
+  changeLanguage: (name: string) => void,
+  nextFrame: () => void,
+  previousFrame: () => void,
+  setCurrentTime: (time: number) => void,
+  setHls: (hls: any) => void,
+  setQualityLevel: (level: number) => void,
+}
+
+const getPlayerController = () => {
+  try {
+    const root = document.getElementById('video-player');
+    if (!root) {
+      console.dev.error('Player not found');
+      return undefined;
+    }
+    for (const key of Object.keys(root)) {
+      if (key.startsWith('__reactProps')) {
+        for (const child of (root[key] as any).children) {
+          if (child.props && child.props.playerHandlers)
+            return child.props.playerHandlers as PlayerHandlers;
+        }
+        break;
+      }
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  console.dev.error('Player handlers not found');
+  return undefined;
+};
+
+const setPlayerQuality = () => {
+  const handlers = getPlayerController();
+  if (!handlers) return;
+  const state = handlers.store.getState();
+  const levels = state.qualityLevels.map(e => e.height);
+  if (levels.length === 0) {
+    console.dev.debug('No quality levels defined, postponing setting of quality');
+    return;
+  }
+  let targetQuality: number;
+  switch (options.qualityType) {
+    case QualityType.Highest:
+      targetQuality = Math.max(...levels);
+      break;
+    case QualityType.Lowest:
+      targetQuality = Math.min(...levels);
+      break;
+    case QualityType.PreferredChooseHigher:
+      // sort ascending, choose first which is higher than preferred
+      targetQuality = levels.filter(a => a >= options.preferredQuality).toSorted((a, b) => a - b)[0];
+      break;
+    case QualityType.PreferredChooseLower:
+      targetQuality = levels.filter(a => a <= options.preferredQuality).toSorted((a, b) => b - a)[0];
+      break;
+    default:
+      return;
+  }
+  if (state.quality === targetQuality) {
+    console.dev.debug('Target quality', targetQuality, 'already matches current state');
+    return;
+  }
+  console.log('Setting quality to', targetQuality, 'setting was', options.qualityType);
+  handlers.setQualityLevel(targetQuality);
 };

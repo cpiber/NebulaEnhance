@@ -37,3 +37,11 @@ export const enum BrowserMessage {
   GET_YTID = 'getYoutubeId',
   GET_VID = 'getNebulaVid',
 }
+
+export const QualityType = {
+  Off: 'Off',
+  Highest: 'Highest',
+  Lowest: 'Lowest',
+  PreferredChooseHigher: 'PreferredChooseHigher',
+  PreferredChooseLower: 'PreferredChooseLower',
+} as const;

@@ -1,5 +1,5 @@
 import { purgeCacheIfNecessary } from '../background/ext';
-import { arrFromLengthy, getBrowserInstance, getFromStorage, parseTimeString, toTimeString } from '../helpers/sharedExt';
+import { QualityType, arrFromLengthy, getBrowserInstance, getFromStorage, parseTimeString, toTimeString } from '../helpers/sharedExt';
 
 export class Settings {
   private static instance: Settings = null;
@@ -12,6 +12,8 @@ export class Settings {
   volumeShow: HTMLInputElement = undefined;
   volumeChange: HTMLInputElement = undefined;
   autoExpand: HTMLInputElement = undefined;
+  qualityType: HTMLSelectElement = undefined;
+  preferredQuality: HTMLInputElement = undefined;
   youtube: HTMLInputElement = undefined;
   ytOpenTab: HTMLInputElement = undefined;
   ytMuteOnly: HTMLInputElement = undefined;
@@ -43,6 +45,13 @@ export class Settings {
         }
       }
     });
+
+    for (const opt of Object.keys(QualityType)) {
+      const option = document.createElement('option');
+      option.value = QualityType[opt];
+      option.text = getBrowserInstance().i18n.getMessage('optionsQuality' + QualityType[opt]);
+      this.qualityType.appendChild(option);
+    }
   }
 
   static get() {
@@ -70,6 +79,9 @@ export const toData = async (useDefaults = false) => {
     }
     data[key] = val;
   });
+
+  if (!((data.qualityType as string) in QualityType))
+    data.qualityType = QualityType.Off;
 
   data.visitedColor = (data.visitedColor as string).split(';')[0].trim();
   els.visitedColor.value = data.visitedColor;

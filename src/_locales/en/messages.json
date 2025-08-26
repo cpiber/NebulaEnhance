@@ -83,6 +83,42 @@
     "message": "If set the video will be expanded to the size of the window on load. This can also be done manually in the player.",
     "description": "Hint for Expand of options page."
   },
+  "optionsQualityTitle": {
+    "message": "Auto Video Quality",
+    "description": "Label for Quality of options page."
+  },
+  "optionsQualityHint": {
+    "message": "Override the video quality of the player to highest/lowest available, or to a preferred quality with switch to next higher/lower if not available.",
+    "description": "Hint for Quality of options page."
+  },
+  "optionsQualityTypeLabel": {
+    "message": "Quality Mode",
+    "description": "Label for Quality of options page."
+  },
+  "optionsQualityPreferredLabel": {
+    "message": "Preferred Quality",
+    "description": "Label for Preferred Quality of options page."
+  },
+  "optionsQualityOff": {
+    "message": "Off (default)",
+    "description": "Label for Quality Off of options page."
+  },
+  "optionsQualityHighest": {
+    "message": "Highest available",
+    "description": "Label for Quality Highest of options page."
+  },
+  "optionsQualityLowest": {
+    "message": "Lowest available",
+    "description": "Label for Quality Lowest of options page."
+  },
+  "optionsQualityPreferredChooseHigher": {
+    "message": "Preferred, fallback to next higher",
+    "description": "Label for Quality PreferredChooseHigher of options page."
+  },
+  "optionsQualityPreferredChooseLower": {
+    "message": "Preferred, fallback to next lower",
+    "description": "Label for Quality PreferredChooseLower of options page."
+  },
   "optionsPlayerConfigureTitle": {
     "message": "Configure player",
     "description": "Label for PlayerConfigure of options page."

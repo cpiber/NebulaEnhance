@@ -81,7 +81,8 @@ form {
 }
 
 label + .enhancer-control,
-.hint + .enhancer-control {
+.hint + .enhancer-control,
+.enhancer-control + .enhancer-control {
   margin-top: 8px;
 }
 

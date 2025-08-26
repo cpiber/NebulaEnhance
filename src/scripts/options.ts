@@ -3,7 +3,7 @@ import { loadCreators } from './background';
 import { purgeCache } from './background/ext';
 import { getChannels } from './helpers/api';
 import { buildModal } from './helpers/modal';
-import { BrowserMessage, getBrowserInstance, getFromStorage, notification, setToStorage } from './helpers/sharedExt';
+import { BrowserMessage, QualityType, getBrowserInstance, getFromStorage, notification, setToStorage } from './helpers/sharedExt';
 import { load, saveDirect } from './options/form';
 import { showLogs } from './options/logs';
 import { showManageCreators } from './options/managecreators';
@@ -46,6 +46,11 @@ const vChange = () => {
   els.volumeChange.disabled = !c;
 };
 els.volumeEnabled.addEventListener('change', vChange);
+const qChange = () => {
+  const type = els.qualityType.value as keyof typeof QualityType;
+  els.preferredQuality.parentElement.style.display = type === QualityType.PreferredChooseHigher || type === QualityType.PreferredChooseLower ? '' : 'none';
+};
+els.qualityType.addEventListener('change', qChange);
 const nChange = () => {
   els.ytOpenTab.disabled = !els.watchnebula.checked;
 };
@@ -82,6 +87,7 @@ document.querySelector('#configurePlayer').addEventListener('click', showConfigu
 load(true)
   .then(aChange)
   .then(vChange)
+  .then(qChange)
   .then(nChange)
   .then(nTabChange)
   .then(hChange)
