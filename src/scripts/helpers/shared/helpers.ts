@@ -1,4 +1,4 @@
-export const knownPages = [ 'library', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings', 'explore' ] as const;
+export const knownPages = [ 'library', 'videos', 'podcasts', 'classes', 'search', 'account', 'login', 'join', 'terms', 'privacy', 'beta', 'faq', 'suggest', 'jobs', 'settings', 'explore', 'verify-email' ] as const;
 export const knownHomePages = [ 'featured', 'originals', 'culture', 'science', 'history', 'podcasts', 'classes' ] as const;
 
 export const knownRegex = new RegExp(`^\\/(${knownPages.join('|')})(?:\\/(.+))?\\/?$`);
