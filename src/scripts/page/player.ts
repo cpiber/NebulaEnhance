@@ -131,9 +131,11 @@ export const getAPlayer = (maxiter: number | null = 10) => new Promise<Player>((
     }
   }, 100);
 });
-const waitForButtonsAndSetIds = (maxiter: number | null = 10) => new Promise((resolve, reject) => {
+let buttonInterval: number = 0;
+const waitForButtonsAndSetIds = (maxiter: number | null = 1000) => new Promise((resolve, reject) => {
   let iter = 0;
-  const i = window.setInterval(() => {
+  window.clearInterval(buttonInterval);
+  const i = buttonInterval = window.setInterval(() => {
     try {
       setDefaultIds();
       window.clearInterval(i);
@@ -143,6 +145,8 @@ const waitForButtonsAndSetIds = (maxiter: number | null = 10) => new Promise((re
         window.clearInterval(i);
         reject(err);
         return;
+      } else {
+        console.dev.warn('Skipping:', err);
       }
     }
   }, 100);
