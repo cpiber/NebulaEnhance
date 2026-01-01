@@ -1,8 +1,8 @@
 import { isVideoListPage } from './shared';
 
-export const queueBottonLocation = (img: HTMLImageElement) => img.parentElement.parentElement;
-export const durationLocation = (img: HTMLImageElement) => queueBottonLocation(img).querySelector('time').parentElement;
-export const watchLaterLocation = (img: HTMLImageElement) => queueBottonLocation(img).querySelector('[data-icon-itself]');
+export const queueBottonLocation = (img: HTMLImageElement | HTMLTimeElement) => img.parentElement.parentElement;
+export const durationLocation = (img: HTMLImageElement | HTMLTimeElement) => queueBottonLocation(img).querySelector('time').parentElement;
+export const watchLaterLocation = (img: HTMLImageElement | HTMLTimeElement) => queueBottonLocation(img).querySelector('[data-icon-itself]');
 export const titleLocation = (link: HTMLElement) => link.nextElementSibling ? link.nextElementSibling.querySelector('h3') : link.parentElement.nextElementSibling.querySelector('a[href^="/videos/"] span:last-child');
 export const creatorLocation = (link: HTMLElement) => isVideoListPage() && link.nextElementSibling ? titleLocation(link).nextElementSibling.firstElementChild : document.querySelector('h1, meta[property="og:title"]');
 export const watchProgressLocation = (link: HTMLElement) => link.querySelector('picture')?.parentElement?.lastElementChild as HTMLDivElement;

@@ -112,9 +112,10 @@ const setStyles = () => {
 };
 
 const doVideoActions = debounce(() => {
+  console.dev.debug('Video actions');
   // add links on mobile to substitute hover
   if (isMobile())
-    Array.from(document.querySelectorAll<HTMLImageElement>(`${videoselector} img`)).forEach(createLink);
+    Array.from(document.querySelectorAll<HTMLTimeElement>(`${videoselector} time`)).forEach(createLink);
   // hide creators
   if (isVideoListPage())
     Array.from(document.querySelectorAll<HTMLElement>(videoselector)).forEach(el =>
@@ -136,7 +137,7 @@ const hover = (e: MouseEvent) => {
     return;
   createLink(link.querySelector('img'));
 };
-const createLink = (img: HTMLImageElement): void => {
+const createLink = (img: HTMLImageElement | HTMLTimeElement): void => {
   if (!img || queueBottonLocation(img).querySelector('.enhancer-queueButton') !== null)
     return; // queue button exists
   // create queue button
