@@ -94,7 +94,7 @@ export const initPlayer = async () => {
 
   player.addEventListener('ended', () => sendMessage(Message.QUEUE_NEXT, null, false));
   const handlers = getPlayerController();
-  handlers.store.subscribe(e => e.qualityLevels, setPlayerQuality);
+  handlers?.store.subscribe(e => e.qualityLevels, setPlayerQuality);
   setPlayerQuality();
 
   const { autoplay, autoplayQueue } = options;
@@ -464,7 +464,7 @@ const getPlayerController = () => {
     for (const key of Object.keys(root)) {
       if (key.startsWith('__reactProps')) {
         for (const child of (root[key] as any).children) {
-          if (child.props && child.props.playerHandlers)
+          if (child && child.props && child.props.playerHandlers)
             return child.props.playerHandlers as PlayerHandlers;
         }
         break;
