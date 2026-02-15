@@ -10,6 +10,7 @@ module.exports = {
     'custom-property-pattern': '.*',
     'font-family-no-missing-generic-family-keyword': null,
     'function-calc-no-unspaced-operator': true,
+    'no-descending-specificity': null,
     'no-irregular-whitespace': true,
     'scss/at-rule-no-unknown': true,
     'scss/dollar-variable-pattern': null,

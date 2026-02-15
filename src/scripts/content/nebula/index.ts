@@ -13,6 +13,7 @@ const addAllToQueue = msg('pageAddAllToQueue');
 
 const optionsDefaults = {
   youtube: false,
+  gridAsList: false,
   theme: '',
   customScriptPage: '',
   hideVideosEnabled: false,
@@ -25,6 +26,7 @@ let options = { ...optionsDefaults };
 export const nebula = async () => {
   const {
     youtube,
+    gridAsList,
     theme,
     customScriptPage,
     hideVideosEnabled,
@@ -32,7 +34,7 @@ export const nebula = async () => {
     visitedColor,
   } = options = await getFromStorage(optionsDefaults);
 
-  console.debug('Youtube:', youtube, 'Theme:', theme, 'visitedColor:', visitedColor,
+  console.debug('Youtube:', youtube, 'Grid as List:', gridAsList, 'Theme:', theme, 'visitedColor:', visitedColor,
     '\nhide videos?', hideVideosEnabled, 'with perc watched:', hideVideosPerc);
 
   if (!theme) try {
@@ -99,7 +101,8 @@ export const nebula = async () => {
 };
 
 const setStyles = () => {
-  const { visitedColor } = options;
+  const { visitedColor, gridAsList } = options;
+  document.body.classList.toggle('enhancer-videoGridAsList', gridAsList);
   document.getElementById('enhancer-styles')?.remove();
 
   // set hidden creator overlay content from translation

@@ -199,6 +199,14 @@
     "message": "Speed button",
     "description": "Title for Speed component"
   },
+  "optionsVideoGridAsListTitle": {
+    "message": "Video Grid as List",
+    "description": "Label for GridAsList of options page."
+  },
+  "optionsVideoGridAsListHint": {
+    "message": "Display the grid of video thumbnails as a list instead (on all pages, e.g. creator page, explore, ...).",
+    "description": "Hint for GridAsList of options page."
+  },
   "optionsLoadYoutubeTitle": {
     "message": "Load YouTube link",
     "description": "Label for LoadYoutube of options page."

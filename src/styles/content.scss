@@ -1,12 +1,35 @@
 @use 'helpers/mixins';
 @use 'queue/queue';
 @use 'queue/queue_share';
-@use "helpers/variables";
+@use 'helpers/variables';
 
 a[href='/videos/_dummy_episode_'] {
   &,
   & + div {
     display: none;
+  }
+}
+
+a[href^='/videos/'][aria-hidden] {
+  body.enhancer-videoGridAsList & {
+    flex: 0 0 min(35%, 297.333px);
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  body.enhancer-videoGridAsList div:has(> &) {
+    display: flex;
+    gap: 1em;
+    width: 100%;
+
+    > div {
+      flex-grow: 1;
+    }
+  }
+
+  body.enhancer-videoGridAsList div:has(> div > &) {
+    grid-template-columns: 1fr !important;
+    gap: 1em;
   }
 }
 

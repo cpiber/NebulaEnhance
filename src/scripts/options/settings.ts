@@ -14,6 +14,7 @@ export class Settings {
   autoExpand: HTMLInputElement = undefined;
   qualityType: HTMLSelectElement = undefined;
   preferredQuality: HTMLInputElement = undefined;
+  gridAsList: HTMLInputElement = undefined;
   youtube: HTMLInputElement = undefined;
   ytOpenTab: HTMLInputElement = undefined;
   ytMuteOnly: HTMLInputElement = undefined;

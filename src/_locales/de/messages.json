@@ -199,6 +199,14 @@
     "message": "Geschwindigkeit Knopf",
     "description": "Beschriftung für Speed Komponente"
   },
+  "optionsVideoGridAsListTitle": {
+    "message": "Video Grid als Liste",
+    "description": "Beschriftung für GridAsList der Optionen Seite."
+  },
+  "optionsVideoGridAsListHint": {
+    "message": "Wenn aktiviert, dann werden die Video Thumbnail-Grids als Liste dargestellt (auf allen Seiten, z.b. Kanal, Explore, ...).",
+    "description": "Hilfstext für GridAsList der Optionen Seite."
+  },
   "optionsLoadYoutubeTitle": {
     "message": "YouTube Videolink laden",
     "description": "Beschriftung für LoadYoutube der Optionen Seite."
