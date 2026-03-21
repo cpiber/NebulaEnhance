@@ -393,7 +393,6 @@ a.enhancer-queueButtonAll {
 div.enhancer-creator-settings-wrap {
   display: flex;
   flex-direction: row;
-  -moz-box-pack: center;
   justify-content: center;
   margin-right: 4px;
   color: white;
@@ -429,9 +428,7 @@ div.enhancer-creator-settings-wrap {
     height: 32px !important;
     background: transparent;
     display: flex;
-    -moz-box-align: center;
     align-items: center;
-    -moz-box-pack: center;
     justify-content: center;
     border: medium;
     color: rgb(255 255 255);
@@ -482,7 +479,6 @@ div.enhancer-creator-settings-wrap {
       left: 0;
       right: 0;
       display: flex;
-      -moz-box-pack: center;
       justify-content: center;
       white-space: nowrap;
 

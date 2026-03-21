@@ -8,6 +8,7 @@ const moduleNameMapper = {
 };
 const moduleFileExtensions = [ 'ts', 'tsx', 'js', 'jsx', 'cjs', 'json', 'node' ];
 
+/** @type {import('jest').Config} */
 export default {
   projects: [
     {

@@ -20,7 +20,7 @@ export const handle = (e: MessageEvent) => {
   if (isQueueMessage(msg.type))
     return Queue.get().handleMessage(e, msg), true;
 
-  let promise: Promise<any> = null;
+  let promise: Promise<any>;
   switch (msg.type) {
     case Message.GET_STORAGE:
       promise = getFromStorage(msg.get);

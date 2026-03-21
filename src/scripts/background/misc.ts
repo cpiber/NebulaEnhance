@@ -7,8 +7,8 @@ async function setupOffscreenDocument(path: string) {
   // Check all windows controlled by the service worker to see if one
   // of them is the offscreen document with the given path
   const offscreenUrl = getBrowserInstance().runtime.getURL(path);
-  // @ts-expect-error offscreen API not typed
   const existingContexts = await getBrowserInstance().runtime.getContexts({
+    // @ts-expect-error offscreen API not typed
     contextTypes: ['OFFSCREEN_DOCUMENT'],
     documentUrls: [offscreenUrl],
   });
