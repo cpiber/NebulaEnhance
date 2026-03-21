@@ -42,7 +42,7 @@ const run = debounce(async () => {
   const channelEl = document.getElementById('channel-name');
   const channelNice = channelEl?.textContent.trim();
   const channelLink = findParentLink(channelEl);
-  const channelID = channelLink?.href.match(/\/channel\/([^\/]+)/)?.[1];
+  const channelID = channelLink?.href.match(/\/channel\/([^/]+)/)?.[1];
   const titleEl = document.querySelector('#player-container ~ * h1');
   const videoTitle = titleEl?.textContent.trim();
   console.dev.debug('Elements', !!channelEl, !!titleEl, !!channelLink);

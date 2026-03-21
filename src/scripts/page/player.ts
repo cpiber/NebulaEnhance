@@ -458,7 +458,7 @@ const getPlayerController = () => {
   try {
     const root = document.getElementById('video-player');
     if (!root) {
-      console.dev.error('Player not found');
+      console.warn('Player not found');
       return undefined;
     }
     for (const key of Object.keys(root)) {

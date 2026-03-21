@@ -23,7 +23,7 @@ if (__MV3__)
 const els = Settings.get();
 const purgeField = document.querySelector('#purgeCacheField');
 const youtubePerms = '*://*.googleapis.com/*';
-const ownPermissions = [...manifest.permissions, ...manifest.content_scripts.flatMap(c => c.matches)];
+const ownPermissions = [ ...manifest.permissions, ...manifest.content_scripts.flatMap(c => c.matches) ];
 let invidiousPerms: string[] = [];
 
 // permissions for youtube comments
