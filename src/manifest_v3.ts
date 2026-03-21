@@ -47,6 +47,11 @@ const manifest: browser._manifest.WebExtensionManifest = {
     '*://content.api.nebula.app/*',
     '*://*.nebula.tv/*',
   ],
+  // @ts-expect-error optional_host_permissions is not yet supported in the type definitions
+  optional_host_permissions: [
+    '*://*.googleapis.com/*',
+    '<all_urls>',
+  ],
   action: {
     default_icon: {
       128: 'icons/icon_128.png',

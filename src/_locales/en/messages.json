@@ -31,6 +31,10 @@
     "message": "Enable",
     "description": "Text next to enable/disable feature textbox."
   },
+  "optionsNone": {
+    "message": "None",
+    "description": "Text to indicate no items configured."
+  },
   "optionsPlaybackChangeRateTitle": {
     "message": "Playback speed change rate",
     "description": "Title for speed change rate of options page."
@@ -219,6 +223,14 @@
     "message": "Load Nebula link",
     "description": "Label for LoadNebula of options page."
   },
+  "optionsEnableYoutube": {
+    "message": "Enable on YouTube",
+    "description": "Label for LoadNebula of options page."
+  },
+  "optionsEnableInvidious": {
+    "message": "Enable on Invidious",
+    "description": "Label for LoadNebula of options page."
+  },
   "optionsYtOpenTab": {
     "message": "Automatically open link",
     "description": "Option to automatically open found link."
@@ -231,9 +243,25 @@
     "message": "Re-use tab",
     "description": "Option to re-use the youtube tab for nebula instead of a new tab"
   },
+  "optionsInvidiousAdd": {
+    "message": "Add instance",
+    "description": "Label for LoadNebula Invidious Instance of options page."
+  },
   "optionsLoadNebulaHint": {
-    "message": "Whether to automatically try and find the matching Nebula video or not.",
+    "message": "Whether to automatically try and find the matching Nebula video on YouTube or not.",
     "description": "Hint for LoadNebula of options page."
+  },
+  "optionsInvidiousAddTitle": {
+    "message": "Add Invidious instance",
+    "description": "Title for LoadNebula Invidious Instance modal of options page."
+  },
+  "optionsInvidiousAddDescription": {
+    "message": "To load the matching video from Nebula on Indidious, the extension needs to know on which Invidious instance(s) to support this. Here you can add the URL of an Invidious instance to enable this feature, and find links to Nebula on known creators.",
+    "description": "Description for LoadNebula Invidious Instance modal of options page."
+  },
+  "optionsInvidiousAddLabel": {
+    "message": "Instance URL",
+    "description": "Label for LoadNebula Invidious Instance of options page."
   },
   "optionsLoadRSSTitle": {
     "message": "Add RSS/Atom Feed",

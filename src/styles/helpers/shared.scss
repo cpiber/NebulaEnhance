@@ -195,6 +195,14 @@
   &:focus {
     box-shadow: variables.$blueish_transparent 0 0 10px;
   }
+
+  &.remove {
+    padding: 2px 4px;
+    color: variables.$error;
+    border-color: variables.$error;
+    margin-left: .3em;
+    font-size: 80%;
+  }
 }
 
 .notification {

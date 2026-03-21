@@ -45,6 +45,7 @@ const manifest: browser._manifest.WebExtensionManifest = {
   ],
   optional_permissions: [
     '*://*.googleapis.com/*',
+    '<all_urls>',
   ],
   browser_action: {
     default_icon: {

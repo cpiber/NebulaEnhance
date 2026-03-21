@@ -40,6 +40,7 @@ const question = q => new Promise(resolve => readline.question(q, answer => reso
  * JS BUILD
  */
 const jsreplace = (dev = !process.env.BUILD, v3 = false) => ({
+  '__VERSION__': JSON.stringify(process.env.npm_package_version),
   '__YT_API_KEY__': JSON.stringify(process.env.YT_API_KEY),
   '__DEV__': JSON.stringify(dev),
   '__MV3__': JSON.stringify(v3),

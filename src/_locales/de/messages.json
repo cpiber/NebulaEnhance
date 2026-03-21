@@ -31,6 +31,10 @@
     "message": "Aktivieren",
     "description": "Text neben Checkbox zum aktivieren eines Features."
   },
+  "optionsNone": {
+    "message": "Keine",
+    "description": "Text zur Information, dass keine Einträge konfiguriert sind."
+  },
   "optionsPlaybackChangeRateTitle": {
     "message": "Geschwindigkeits-Änderungsrate",
     "description": "Beschriftung für Änderungsrate der Abspielgeschwindigkeit der Optionen Seite."
@@ -219,6 +223,14 @@
     "message": "Nebula Videolink laden",
     "description": "Beschriftung für LoadNebula der Optionen Seite."
   },
+  "optionsEnableYoutube": {
+    "message": "Aktiviere bei YouTube",
+    "description": "Beschriftung für LoadNebula der Optionen Seite."
+  },
+  "optionsEnableInvidious": {
+    "message": "Aktiviere bei Invidious",
+    "description": "Beschriftung für LoadNebula der Optionen Seite."
+  },
   "optionsYtOpenTab": {
     "message": "Link automatisch öffnen",
     "description": "Option zum automatischen Öffnen des gefundenen Links."
@@ -231,9 +243,25 @@
     "message": "Tab wiederverwenden",
     "description": "Option um youtube Tab weiterzuverwenden anstatt eines neuen Tabs"
   },
+  "optionsInvidiousAdd": {
+    "message": "Instanz hinzufügen",
+    "description": "Beschriftung für LoadNebula Invidious Instance der Optionen Seite."
+  },
   "optionsLoadNebulaHint": {
-    "message": "Ob automatisch versucht werden soll, das Nebula Video zu finden.",
+    "message": "Ob automatisch versucht werden soll, das Nebula Video von YouTube zu finden.",
     "description": "Hilfstext für LoadNebula der Optionen Seite."
+  },
+  "optionsInvidiousAddTitle": {
+    "message": "Invidious Instanz hinzufügen",
+    "description": "Titel für LoadNebula Invidious Instance Modal der Optionen Seite."
+  },
+  "optionsInvidiousAddDescription": {
+    "message": "Um das passende Video von Nebula auf Invidious zu laden, muss die Erweiterung wissen, auf welchem Invidious Instanz(en) sie dies unterstützen soll. Hier kann die URL einer Invidious Instanz hinzugefügt werden, um diese Funktion zu aktivieren, und Links zu Nebula bei bekannten Kanälen finden.",
+    "description": "Beschriftung für LoadNebula Invidious Instance Modal der Optionen Seite."
+  },
+  "optionsInvidiousAddLabel": {
+    "message": "Instanz URL",
+    "description": "Beschriftung für LoadNebula Invidious Instance der Optionen Seite."
   },
   "optionsLoadRSSTitle": {
     "message": "RSS/Atom Feed laden",

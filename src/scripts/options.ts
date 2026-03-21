@@ -1,10 +1,12 @@
 import { marked } from 'marked';
+import manifest from '../manifest';
 import { loadCreators } from './background';
 import { purgeCache } from './background/ext';
 import { getChannels } from './helpers/api';
 import { buildModal } from './helpers/modal';
 import { BrowserMessage, QualityType, getBrowserInstance, getFromStorage, notification, setToStorage } from './helpers/sharedExt';
 import { load, saveDirect } from './options/form';
+import { showAddInstance } from './options/invidious';
 import { showLogs } from './options/logs';
 import { showManageCreators } from './options/managecreators';
 import { showConfigurePlayers } from './options/player';
@@ -20,6 +22,9 @@ if (__MV3__)
 
 const els = Settings.get();
 const purgeField = document.querySelector('#purgeCacheField');
+const youtubePerms = '*://*.googleapis.com/*';
+const ownPermissions = [...manifest.permissions, ...manifest.content_scripts.flatMap(c => c.matches)];
+let invidiousPerms: string[] = [];
 
 // permissions for youtube comments
 const { permissions } = getBrowserInstance();
@@ -27,14 +32,47 @@ els.youtube.addEventListener('change', async () => {
   const y = els.youtube;
   const perms: browser.permissions.Permissions = {
     origins: [
-      '*://*.googleapis.com/*',
+      youtubePerms,
     ],
   };
   const success = await (y.checked ? permissions.request : permissions.remove)(perms);
   if (!success) y.checked = !y.checked; // revert
   if (y.checked && success) getBrowserInstance().runtime.sendMessage(BrowserMessage.LOAD_CREATORS);
 });
-permissions.onRemoved.addListener(p => p.origins?.length && (els.youtube.checked = false));
+const rebuildInvidiousList = () => {
+  const el = document.getElementById('watchnebulainv');
+  if (!el) return;
+  if (invidiousPerms.length === 0) {
+    el.textContent = msg('optionsNone');
+    return;
+  }
+  while (el.firstChild) el.removeChild(el.firstChild);
+  for (const perm of invidiousPerms) {
+    const node = document.createTextNode(perm.replace(/^\*:\/\/(?:\*\.)?(.*?)\/.*$/, '$1'));
+    el.appendChild(node);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.innerHTML = '&times;';
+    btn.className = 'i18n enhancer-button remove';
+    btn.addEventListener('click', async () => {
+      const success = await permissions.remove({ origins: [perm] });
+      if (success) invidiousPerms = invidiousPerms.filter(p => p !== perm);
+      rebuildInvidiousList();
+    });
+    el.appendChild(btn);
+    el.append(', ');
+  }
+  el.removeChild(el.lastChild); // remove last comma
+};
+const permissionUpdate = async () => {
+  const p = await permissions.getAll();
+  if (!p.origins) return;
+  els.youtube.checked = p.origins.indexOf(youtubePerms) >= 0;
+  invidiousPerms = p.origins.filter(o => o != youtubePerms && ownPermissions.indexOf(o) < 0);
+  rebuildInvidiousList();
+};
+permissions.onAdded.addListener(permissionUpdate);
+permissions.onRemoved.addListener(permissionUpdate);
 
 const aChange = () => {
   els.autoplayQueue.disabled = els.autoplay.checked;
@@ -82,6 +120,7 @@ document.querySelector('#purgeCacheNow').addEventListener('click', async () => {
 document.querySelector('#showChangelogsNow').addEventListener('click', () => showLogs(getBrowserInstance().runtime.getManifest().version));
 document.querySelector('#manageHiddenCreators').addEventListener('click', showManageCreators);
 document.querySelector('#configurePlayer').addEventListener('click', showConfigurePlayers);
+document.querySelector('#watchnebulainvadd').addEventListener('click', showAddInstance);
 
 // load initial values from storage
 load(true)
@@ -91,7 +130,8 @@ load(true)
   .then(nChange)
   .then(nTabChange)
   .then(hChange)
-  .then(vidChange);
+  .then(vidChange)
+  .then(permissionUpdate);
 
 document.querySelector('[href="#save"]').addEventListener('click', async e => {
   e.preventDefault();
@@ -186,4 +226,5 @@ if (__DEV__) {
       console.warn('Creator', channel.slug, '(', channel.title, ') has no entry in creators list');
     }
   };
+  console.log(ownPermissions);
 }
