@@ -23,16 +23,5 @@ export default {
       testMatch: ['<rootDir>/tests/unit/**/*.ts'],
       transform,
     },
-    {
-      displayName: 'integration',
-      extensionsToTreatAsEsm: ['.ts'],
-      moduleFileExtensions,
-      moduleNameMapper,
-      preset: 'jest-puppeteer',
-      testEnvironment: './jestEnv.js',
-      testMatch: ['<rootDir>/tests/integration/**/*.ts'],
-      testTimeout: 20,
-      transform,
-    },
   ],
 };

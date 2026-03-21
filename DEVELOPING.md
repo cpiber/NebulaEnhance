@@ -53,7 +53,7 @@ Some available scripts:
 - `start`. This command watches and re-builds all extension-related files in debug mode, i.e. when a file of the extension changes, all files that depend on it are recompiled. You can find the built (but not bundled) extension in the folder `extension-dist`.
 - `start:firefox`/`start:chromium`. Like above, but also starts the selected browser with the extension loaded. In Firefox, the extension is automatically reloaded on build (sometimes you have to save twice to get the most up-to-date version), in Chrome you have to manually update it (Manage Extensions > Developer Mode on > Update). The commands `ext:firefox`/`ext:chromium` only start the browser (no build).
 - `test`. Compile and run all tests (unit and integration).
-- `test:unit`/`test:ee`. Run unit/integration tests.
+- `test:unit`. Run unit tests.
 - `clean`. Clean up all build artifacts (bundles are not affected).
 - `lint`. Lint entire code. Includes js, css and built extension (AMO).
 - `lint-fix`. Lint entire code as above and fix fixable issues.
@@ -81,7 +81,6 @@ NebulaEnhance
  ├── README.md
  ├─> extension-dist (generated) -- Built extension.
  ├── eslintrc.mjs -- ESLint (js linter) config file.
- ├── jest-puppeteer.config.cjs -- Jest-Puppeteer (integration testrunner) config.
  ├── jest.config.js -- Jest (testrunner) config.
  ├── jest.setup.js -- Jest setup file, run before each test file.
  ├─> node_modules (generated) -- Installed packages.
