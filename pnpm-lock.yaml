@@ -14,6 +14,9 @@ importers:
       marked:
         specifier: ^15.0.6
         version: 15.0.6
+      webext-dynamic-content-scripts:
+        specifier: ^10.0.4
+        version: 10.0.4
       webextension-polyfill:
         specifier: ^0.12.0
         version: 0.12.0
@@ -1810,6 +1813,9 @@ packages:
     resolution: {integrity: sha512-yk7/5PN5im4qwz0WFZW3PXnzHgPu9mX29Y8uZ3aefe2lBPC1FYttWZRcaW9fKkT0pBCJyuQ2HfbmPVaODi9jcQ==}
     engines: {node: '>=18'}
 
+  content-scripts-register-polyfill@4.0.2:
+    resolution: {integrity: sha512-8hDm+tu3BkxHZP7EUIIIo/495F6QNXF7cI9Lwr4PQaiohw2wWmi9k2SE4W4kNrAaLnFw6RZ2ev8EmrQb+sCoGQ==}
+
   convert-source-map@1.8.0:
     resolution: {integrity: sha512-+OQdjP49zViI/6i7nIJpA8rAl4sV/JdPfU9nZs3VqOwGIgizICvuN2ru6fMd+4llL0tar18UYJXfZ/TWtmhUjA==}
 
@@ -2187,6 +2193,10 @@ packages:
   escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+
+  escape-string-regexp@5.0.0:
+    resolution: {integrity: sha512-/veY75JbMK4j1yjvuUxuVsiS/hr/4iHs9FTT6cgTexxdE0Ly/glccBAkloH/DofkjRbZU3bnoj38mOmhkZ0lHw==}
+    engines: {node: '>=12'}
 
   escodegen@2.0.0:
     resolution: {integrity: sha512-mmHKys/C8BFUGI+MAWNcSYoORYLMdPzjrknd2Vc+bUsjN5bXcr8EhrNB+UTqfL1y3I9c4fw2ihgtMPQLBRiQxw==}
@@ -4867,6 +4877,32 @@ packages:
     resolution: {integrity: sha512-Czi3fG883e96T4DLEPRvufrF2ydhOOW1+1a6c3gNjH2aIh50DNFBdfwh2AKoOf1rXvpvavAoA11Qdq9+BKjE0Q==}
     engines: {node: '>= 8'}
 
+  webext-content-scripts@2.7.2:
+    resolution: {integrity: sha512-7e6ZHha2jUww3RXWBkqBkSNa/qVPp8bHHY4BNDPfFIOkCebR+mjDq67BgWxnO51OUJU5skntRndjGmEGVcgvpQ==}
+    engines: {node: '>=16'}
+
+  webext-detect@5.3.2:
+    resolution: {integrity: sha512-RU/e8OLiPwU0efWs/cHp3sRCY+vakaTnbOS/x8VM/FkTtv6cfW/Ofed0i7WnkAKw2jbp4gki3WcpAdii+2QVMw==}
+    engines: {node: '>=18'}
+
+  webext-dynamic-content-scripts@10.0.4:
+    resolution: {integrity: sha512-41n7/H7MIV7QpWrFjwhEQKhaj4xdicD8+2tZyKETcIw2Vzo29481VbBsRZWdHxhegshflC6RfFZs0LM5q0pqSw==}
+
+  webext-events@3.1.1:
+    resolution: {integrity: sha512-/QlXfa8LHcPOwLIycLglnHbXLqBOGetNn4pOyVJhV5UA6RifcP1tfkp8DYj3R6CjnHbjpSqFWXyc6dD4aTUcXw==}
+    engines: {node: '>=18'}
+
+  webext-patterns@1.5.1:
+    resolution: {integrity: sha512-N0r4U1vhsa+7zgIt4qsf6j6X7vRf10/nG7ycwRXIjg0+45v5/fFmjpSrFSe0RKW9bB3Lo5RqYJXEFb6syRFxpQ==}
+    engines: {node: '>=18'}
+
+  webext-permissions@3.1.4:
+    resolution: {integrity: sha512-/20ihnr67KzVUdI+NJFia3VM04UILM00xLpG2MbmWSaZK7P7ZYPyMxfT0wKhA5SyfXAPQV7bLscX4arN2IIHcQ==}
+    engines: {node: '>=18'}
+
+  webext-polyfill-kinda@1.0.2:
+    resolution: {integrity: sha512-rqQUKeBTOicej0tjDJWDQlOTnDcm9yYJTzgI+7rMdyYV4QHmYMRm+yjkcVgECkg/Wu9MboZ4lYeBPdp1Ep9WgQ==}
+
   webextension-polyfill@0.12.0:
     resolution: {integrity: sha512-97TBmpoWJEE+3nFBQ4VocyCdLKfw54rFaJ6EVQYLBCXqCIpLSZkwGgASpv4oPt9gdKCJ80RJlcmNzNn008Ag6Q==}
 
@@ -6970,6 +7006,12 @@ snapshots:
       graceful-fs: 4.2.11
       xdg-basedir: 5.1.0
 
+  content-scripts-register-polyfill@4.0.2:
+    dependencies:
+      webext-content-scripts: 2.7.2
+      webext-patterns: 1.5.1
+      webext-polyfill-kinda: 1.0.2
+
   convert-source-map@1.8.0:
     dependencies:
       safe-buffer: 5.1.2
@@ -7333,6 +7375,8 @@ snapshots:
   escape-string-regexp@2.0.0: {}
 
   escape-string-regexp@4.0.0: {}
+
+  escape-string-regexp@5.0.0: {}
 
   escodegen@2.0.0:
     dependencies:
@@ -10490,6 +10534,37 @@ snapshots:
       - utf-8-validate
 
   web-streams-polyfill@3.1.1: {}
+
+  webext-content-scripts@2.7.2:
+    dependencies:
+      webext-patterns: 1.5.1
+      webext-polyfill-kinda: 1.0.2
+
+  webext-detect@5.3.2: {}
+
+  webext-dynamic-content-scripts@10.0.4:
+    dependencies:
+      content-scripts-register-polyfill: 4.0.2
+      webext-content-scripts: 2.7.2
+      webext-detect: 5.3.2
+      webext-events: 3.1.1
+      webext-patterns: 1.5.1
+      webext-permissions: 3.1.4
+      webext-polyfill-kinda: 1.0.2
+
+  webext-events@3.1.1:
+    dependencies:
+      webext-detect: 5.3.2
+
+  webext-patterns@1.5.1:
+    dependencies:
+      escape-string-regexp: 5.0.0
+
+  webext-permissions@3.1.4:
+    dependencies:
+      webext-patterns: 1.5.1
+
+  webext-polyfill-kinda@1.0.2: {}
 
   webextension-polyfill@0.12.0: {}
 

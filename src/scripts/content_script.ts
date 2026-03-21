@@ -1,3 +1,4 @@
+import { invidious } from './content/invidious';
 import { nebula } from './content/nebula';
 import { youtube } from './content/youtube';
 import { BrowserMessage, getBrowserInstance } from './helpers/sharedExt';
@@ -7,8 +8,10 @@ import { BrowserMessage, getBrowserInstance } from './helpers/sharedExt';
 
   if (window.location.hostname.endsWith('youtube.com')) {
     youtube();
-  } else {
+  } else if (window.location.hostname.endsWith('nebula.tv') || window.location.hostname.endsWith('nebula.app')) {
     nebula();
+  } else {
+    invidious();
   }
 })();
 

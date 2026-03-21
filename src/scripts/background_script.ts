@@ -1,3 +1,4 @@
+import 'webext-dynamic-content-scripts';
 import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString } from './background';
 import { purgeCache, purgeCacheIfNecessary } from './background/ext';
 import type { CreatorSettings } from './content/nebula/creator-settings';
