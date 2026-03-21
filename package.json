@@ -15,7 +15,7 @@
     "prebuild": "npm run clean && npm run build:all",
     "build": "web-ext build",
     "build:light": "rollup -c --configType all",
-    "postbuild": "npm run test",
+    "postbuild": "npm run test:unit",
     "start": "npm run watch:all",
     "start:firefox": "[ -d extension-dist ] || npm run build:light && concurrently \"npm:start\" \"npm:ext:firefox\"",
     "start:chromium": "[ -d extension-dist ] || npm run build:light && concurrently \"npm:start\" \"npm:ext:chromium\"",
