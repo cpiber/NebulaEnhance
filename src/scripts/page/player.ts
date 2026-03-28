@@ -85,33 +85,45 @@ export const init = async () => {
   });
 };
 
-export const initPlayer = async () => {
-  const player = await getAPlayer();
+let initLock = false;
+const initPlayer = async () => {
+  if (initLock) return;
+  initLock = true;
 
-  if (!player || player._enhancerInit)
-    return; // already initialized this player
-  await waitForButtonsAndSetIds();
-
-  player.addEventListener('ended', () => sendMessage(Message.QUEUE_NEXT, null, false));
-  const handlers = getPlayerController();
-  handlers?.store.subscribe(e => e.qualityLevels, setPlayerQuality);
-  setPlayerQuality();
-
-  const { autoplay, autoplayQueue } = options;
-  console.debug('autoplay?', autoplay, 'autoplayQueue?', autoplayQueue);
-  await addPlayerControls(player);
-  if (options.autoExpand) document.body.parentElement.classList.toggle('enhancer-fullVideo');
-
-  const { canNext, canPrev, length: queueLen } = await sendMessage(Message.GET_QSTATUS);
-  console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev, 'queueLen:', queueLen);
-  updatePlayerControls(player, canNext, canPrev);
-  player.autoplay = autoplay || (autoplayQueue && !!queueLen);
   try {
-    if (player.autoplay) await player.play();
-    else player.pause();
-  } catch { }
+    const player = await getAPlayer();
 
-  player._enhancerInit = true;
+    if (!player || player._enhancerInit)
+      return; // already initialized this player
+    const handlers = getPlayerController();
+
+    await waitForButtonsAndSetIds();
+
+    if (!handlers)
+      return setTimeout(initPlayer, 100);
+
+    player.addEventListener('ended', () => sendMessage(Message.QUEUE_NEXT, null, false));
+    handlers?.store.subscribe(e => e.qualityLevels, setPlayerQuality);
+    setPlayerQuality();
+
+    const { autoplay, autoplayQueue } = options;
+    console.debug('autoplay?', autoplay, 'autoplayQueue?', autoplayQueue);
+    await addPlayerControls(player);
+    if (options.autoExpand) document.body.parentElement.classList.toggle('enhancer-fullVideo');
+
+    const { canNext, canPrev, length: queueLen } = await sendMessage(Message.GET_QSTATUS);
+    console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev, 'queueLen:', queueLen);
+    updatePlayerControls(player, canNext, canPrev);
+    player.autoplay = autoplay || (autoplayQueue && !!queueLen);
+    try {
+      if (player.autoplay) await player.play();
+      else player.pause();
+    } catch { }
+
+    player._enhancerInit = true;
+  } finally {
+    initLock = false;
+  }
 };
 
 export const findAPlayer = () => document.querySelector<Player>('#video-player video');
