@@ -134,35 +134,39 @@ const getNebulaVideo = async (message: { [key: string]: any; }): Promise<nebulav
   if (!channelID && !channelName) throw 'not enough information';
 
   const creators = await loadCreators();
-  const creator = creators.find(c => c.channel === channelID || c.name === channelName || c.name === channelNice || c.nebulaAlt === channelName);
-  console.debug('creator:', creator, '\nchannelID:', channelID, '\nvideoTitle:', videoTitle);
-  if (!creator) return;
+  const matches = creators.filter(c => c.channel === channelID || c.name === channelName || c.name === channelNice || c.nebulaAlt === channelName);
+  console.debug('creators:', matches, '\nchannelID:', channelID, '\nvideoTitle:', videoTitle);
+  if (!matches) return;
 
-  // try search the channel's newest videos locally
-  if (creator.nebula) {
-    try {
-      const video = await creatorHasNebulaVideo(creator.nebula, videoTitle, videoFetchNebula);
-      return {
-        is: 'video',
-        confidence: video.confidence,
-        link: video.video,
-      };
-    } catch (err) {
-      console.error(err);
+  for (const creator of matches) {
+    // try search the channel's newest videos locally
+    if (creator.nebula) {
+      try {
+        const video = await creatorHasNebulaVideo(creator.nebula, videoTitle, videoFetchNebula);
+        return {
+          is: 'video',
+          confidence: video.confidence,
+          link: video.video,
+        };
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 
-  // try search the alternative channel's newest videos locally
-  if (creator.nebulaAlt && creator.nebula !== creator.nebulaAlt) {
-    try {
-      const video = await creatorHasNebulaVideo(creator.nebulaAlt, videoTitle, videoFetchNebula);
-      return {
-        is: 'video',
-        confidence: video.confidence,
-        link: video.video,
-      };
-    } catch (err) {
-      console.error(err);
+  for (const creator of matches) {
+    // try search the alternative channel's newest videos locally
+    if (creator.nebulaAlt && creator.nebula !== creator.nebulaAlt) {
+      try {
+        const video = await creatorHasNebulaVideo(creator.nebulaAlt, videoTitle, videoFetchNebula);
+        return {
+          is: 'video',
+          confidence: video.confidence,
+          link: video.video,
+        };
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 
@@ -179,6 +183,7 @@ const getNebulaVideo = async (message: { [key: string]: any; }): Promise<nebulav
   }
 
   // last resort: link to channel
+  const creator = matches[0];
   if (!creator.nebula && !creator.nebulaAlt) return;
   return {
     is: 'channel',
