@@ -1,3 +1,4 @@
+import type { Browser } from 'webextension-polyfill';
 import { Event, Message, sendEventHandler, sendMessage } from '../helpers/shared';
 export * from '../helpers/shared';
 
@@ -7,6 +8,6 @@ export function getFromStorage<T>(key: string | string[] | { [key: string]: any;
   return sendMessage<T>(Message.GET_STORAGE, { get: key });
 }
 
-export function onStorageChange(cb: Parameters<typeof browser.storage.onChanged.addListener>[0]) {
+export function onStorageChange(cb: Parameters<Browser['storage']['onChanged']['addListener']>[0]) {
   return sendEventHandler(Event.STORAGE_CHANGE, res => cb(...res));
 }

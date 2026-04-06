@@ -3,7 +3,4 @@ declare module '*.svg' {
   export default content;
 }
 
-declare module 'webextension-polyfill' {
-  const b: typeof browser;
-  export default b;
-}
+declare module 'webext-dynamic-content-scripts' { }

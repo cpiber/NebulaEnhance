@@ -19,9 +19,10 @@ if (getBrowserInstance().action) {
 
 // NOTE: not promise-based, because Chrome really doesn't like it, when there are multiple listeners
 // need to return immediately, then call sendResponse manually, otherwise the other listener in offscreen.ts interferes
-getBrowserInstance().runtime.onMessage.addListener((message: string | { [key: string]: any; }, sender, sendResponse) => {
+getBrowserInstance().runtime.onMessage.addListener((message: unknown, sender, sendResponse) => {
   // Return early if this message isn't meant for the background script
-  if (typeof message !== 'string' && message.target !== undefined && message.target !== 'background') {
+  if (message === undefined || message === null) return;
+  if ((typeof message !== 'string' && typeof message !== 'object') || (typeof message === 'object' && 'target' in message && message.target !== 'background')) {
     return;
   }
 

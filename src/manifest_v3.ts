@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 
-const manifest: browser._manifest.WebExtensionManifest = {
+import type { Manifest } from 'webextension-polyfill';
+
+const manifest: Manifest.WebExtensionManifest = {
   manifest_version: 3,
   name: '__MSG_title__',
   description: '__MSG_extensionDescription__',

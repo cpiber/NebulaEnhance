@@ -1,3 +1,4 @@
+import type { Browser } from 'webextension-polyfill';
 import { Event, Message } from './constants';
 import { clone, parseTypeObject } from './helpers';
 
@@ -31,7 +32,7 @@ export function sendMessage<T>(name: Message, data?: { [key: string]: any; }, ex
 
 export type Listener<R = any, E = any> = (res: R, err: E) => void;
 export function sendEventHandler(event: Event.QUEUE_CHANGE, listener: Listener<{ canNext: boolean, canPrev: boolean; }>, skipOriginCheck?: boolean): void;
-export function sendEventHandler(event: Event.STORAGE_CHANGE, listener: Listener<Parameters<Parameters<typeof browser.storage.onChanged.addListener>[0]>>, skipOriginCheck?: boolean): void;
+export function sendEventHandler(event: Event.STORAGE_CHANGE, listener: Listener<Parameters<Parameters<Browser['storage']['onChanged']['addListener']>[0]>>, skipOriginCheck?: boolean): void;
 export function sendEventHandler(event: Exclude<Event, Event.QUEUE_CHANGE | Event.STORAGE_CHANGE>, listener: Listener, skipOriginCheck?: boolean): void;
 export function sendEventHandler(event: Event, listener: Listener, skipOriginCheck = false) {
   console.dev.debug('Registering remote listener for', event);
