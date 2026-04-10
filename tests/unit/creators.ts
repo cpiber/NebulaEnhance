@@ -1,6 +1,7 @@
-import { jest } from '@jest/globals';
+import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 import fetch from 'node-fetch';
 import { matchVideoConfidence } from '../../src/scripts/background/ifidf';
+import { getChannels } from '../../src/scripts/helpers/api';
 import '../../src/scripts/helpers/shared/prototype';
 import { getInformation as loadCreators } from '../../src/scripts/page/offscreen';
 
@@ -10,6 +11,32 @@ test('loading creators works', async () => {
   const creators = await loadCreators();
   expect(creators.length).not.toBe(0);
 });
+
+test('loaded creators cover all channels', async () => {
+  const channels = await getChannels();
+  const creators = await loadCreators();
+  const excluded = [ 'apple-talk', 'avoidclimatechange', 'nextlevelworldbuilding', 'dinnerplan', 'dex', 'edith', 'faithless', 'getaway', 'one-villainous-scene', 'one-x-cellent-scene', 'rng', 'scav', 'trussissues', 'theeditorial', 'layover', 'theprince', 'wtf', 'workingtitles' ];
+  for (const channel of channels) {
+    const match = creators.find(c => c.nebula === channel.slug || c.nebulaAlt === channel.slug);
+    if (match) continue;
+    if (excluded.includes(channel.slug)) continue;
+    expect(channel.slug).toBeUndefined();
+  }
+
+  return; // only run manually
+  let i = 0;
+  for (const creator of creators) {
+    if (!creator.uploads) continue;
+    const url = new URL('https://youtube.googleapis.com/youtube/v3/playlistItems');
+    url.searchParams.set('part', 'snippet');
+    url.searchParams.set('playlistId', creator.uploads);
+    url.searchParams.set('key', __YT_API_KEY__);
+    url.searchParams.set('maxResults', '0');
+    console.log('creator ', creator.name, ' (', creator.nebula, '): ');
+    await expect(fetch(url).then(r => r.status)).resolves.toBe(200);
+    if ((i++ % 20) === 0) await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+}, 200_000);
 
 describe('matching', () => {
   const consoleError = console.error;
