@@ -129,7 +129,7 @@
   { "name": "The Friday Chillout", "nebula": "chillout", "channel": "UCGTTVp2tAa997OaHQXvjjzg" },
   { "name": "Thomas Percy Kim", "nebula": "thomaspercykim", "channel": "UCcFoxUZrPn3qT0WGLDjqaxA", "uploads": "UUcFoxUZrPn3qT0WGLDjqaxA" },
   { "name": "Tiana Michele", "nebula": "tianamichele", "channel": "UCldWHorkNMxl-LyGZKrrWFQ", "uploads": "UUldWHorkNMxl-LyGZKrrWFQ" },
-  { "name": "Tom Nicholas 2", "nebula": "tomnicholas2", "channel": "UCV4MuJHfEXNMjrjwcd4tHEA", "uploads": "UUV4MuJHfEXNMjrjwcd4tHEA" },
+  { "name": "Tom Nicholas 2", "nebula": "tomnicholas2", "nebulaAlt": "slownewsday", "channel": "UCV4MuJHfEXNMjrjwcd4tHEA", "uploads": "UUV4MuJHfEXNMjrjwcd4tHEA" },
   { "name": "Tom Scott", "nebula": "tomscott", "nebulaAlt": "tom-scott-presents-money", "channel": "UCBa659QWEk1AI4Tg--mrJ2A", "uploads": "UUBa659QWEk1AI4Tg--mrJ2A" },
   { "name": "V. Birchwood", "nebula": "vbirchwood", "channel": "UCgz4oLdeKP1Pt2BpiUn2iXQ", "uploads": "UUgz4oLdeKP1Pt2BpiUn2iXQ" },
   { "name": "The Vintage Space", "nebula": "thevintagespace", "channel": "UCw95T_TgbGHhTml4xZ9yIqg", "uploads": "UUw95T_TgbGHhTml4xZ9yIqg" },
@@ -139,6 +139,7 @@
   { "name": "The Wonder of It All", "nebula": "wonder", "channel": "UCuLzkAd_VZtRpyPJGt5FrXw", "uploads": "UUuLzkAd_VZtRpyPJGt5FrXw" },
   { "name": "ZierToo", "nebula": "ziertoo", "channel": "UCH-1ieGGk1942uyn_nlc-lQ", "uploads": "UUH-1ieGGk1942uyn_nlc-lQ" },
   { "name": "Captain Disillusion", "nebula": "captaindisillusion", "channel": "UCEOXxzW2vU0P-0THehuIIeg", "uploads": "UUEOXxzW2vU0P-0THehuIIeg" },
+  { "name": "Steven Bridges", "nebula": "stevenbridges", "channel": "UCqK0ukwGsTDh7sHih1OmLJA", "uploads": "UUqK0ukwGsTDh7sHih1OmLJA" },
   
   
   { "name": "BobbyBroccoli", "nebula": "17pages", "channel": "UCSPLhwvj0gBufjDRzSQb3GQ", "uploads": "UUSPLhwvj0gBufjDRzSQb3GQ" },
