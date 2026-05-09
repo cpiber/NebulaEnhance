@@ -15,7 +15,7 @@ test('loading creators works', async () => {
 test('loaded creators cover all channels', async () => {
   const channels = await getChannels();
   const creators = await loadCreators();
-  const excluded = [ 'apple-talk', 'avoidclimatechange', 'nextlevelworldbuilding', 'dinnerplan', 'dex', 'edith', 'faithless', 'getaway', 'one-villainous-scene', 'one-x-cellent-scene', 'rng', 'scav', 'trussissues', 'theeditorial', 'layover', 'theprince', 'wtf', 'workingtitles' ];
+  const excluded = [ 'apple-talk', 'avoidclimatechange', 'nextlevelworldbuilding', 'dinnerplan', 'dex', 'edith', 'faithless', 'getaway', 'one-villainous-scene', 'one-x-cellent-scene', 'rng', 'scav', 'trussissues', 'theeditorial', 'layover', 'theprince', 'wtf', 'workingtitles', 'lostandfound' ];
   for (const channel of channels) {
     const match = creators.find(c => c.nebula === channel.slug || c.nebulaAlt === channel.slug);
     if (match) continue;
