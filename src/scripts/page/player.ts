@@ -99,7 +99,7 @@ const initPlayer = async () => {
 
     await waitForButtonsAndSetIds();
 
-    if (!handlers)
+    if (!handlers || !handlers.store)
       return setTimeout(initPlayer, 100);
 
     player.addEventListener('ended', () => sendMessage(Message.QUEUE_NEXT, null, false));
