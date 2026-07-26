@@ -120,9 +120,17 @@ const doVideoActions = debounce(() => {
   if (isMobile())
     Array.from(document.querySelectorAll<HTMLTimeElement>(`${videoselector} time`)).forEach(createLink);
   // hide creators
-  if (isVideoListPage())
-    Array.from(document.querySelectorAll<HTMLElement>(videoselector)).forEach(el =>
-      hideVideo(el, options.creatorSettings, options.hideVideosEnabled, options.hideVideosPerc));
+  if (isVideoListPage()) {
+    const cb = () => {
+      const anyRemoved = Array.from(document.querySelectorAll<HTMLElement>(videoselector)).reduce((acc, el) =>
+        hideVideo(el, options.creatorSettings, options.hideVideosEnabled, options.hideVideosPerc) || acc, false);
+      console.dev.debug('Iteration: Hid videos?', anyRemoved);
+      if (anyRemoved) {
+        setTimeout(cb, 100);
+      }
+    };
+    cb();
+  }
 }, 500);
 
 const videoHoverLink = (e: HTMLElement) => {
@@ -291,7 +299,7 @@ const changeTheme = () => {
   setToStorage({ theme });
 };
 
-const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSettings>, hideWatched: boolean, hidePerc: number) => {
+const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSettings>, hideWatched: boolean, hidePerc: number): boolean => {
   try {
     const creator = creatorLink(el)?.split('/')?.[1];
     const uploadTime = Date.parse(uploadTimeLocation(el).dateTime);
@@ -327,10 +335,12 @@ const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSetti
         }
       }
     }
-    if (!hide) return;
+    if (!hide) return false;
     if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
     else el.parentElement.classList.add('enhancer-hiddenVideo');
+    return true;
   } catch (err) {
     console.error(err);
+    return false;
   }
 };
