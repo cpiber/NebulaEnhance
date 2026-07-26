@@ -9,5 +9,5 @@ export const watchProgressLocation = (link: HTMLElement) => link.querySelector('
 export const uploadTimeLocation = (link: HTMLElement) => link.nextElementSibling?.querySelector('time');
 export const uploadDurationLocation = (link: HTMLElement) => link.querySelector('time');
 export const isPlusContent = (link: HTMLElement) => !!link.querySelector('img[alt="Nebula Plus"]');
-export const creatorLink = (video: HTMLElement) => isVideoListPage() ? video.nextElementSibling.firstElementChild.getAttribute('href') : null;
+export const creatorLink = (video: HTMLElement) => isVideoListPage() ? video.nextElementSibling.querySelector('a[href]:not([href^="/videos/"]')?.getAttribute('href') : null;
 export const isWatchProgress = (el: HTMLElement) => el.tagName === 'DIV' && el.childElementCount === 1 && el.children[0].tagName === 'DIV' && el.children[0].childElementCount === 0;
