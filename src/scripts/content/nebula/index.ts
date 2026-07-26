@@ -18,6 +18,7 @@ const optionsDefaults = {
   customScriptPage: '',
   hideVideosEnabled: false,
   hideVideosPerc: 80,
+  showAtMostVideos: 0,
   creatorSettings: {} as Record<string, CreatorSettings>,
   visitedColor: '',
 };
@@ -122,8 +123,26 @@ const doVideoActions = debounce(() => {
   // hide creators
   if (isVideoListPage()) {
     const cb = () => {
-      const anyRemoved = Array.from(document.querySelectorAll<HTMLElement>(videoselector)).reduce((acc, el) =>
-        hideVideo(el, options.creatorSettings, options.hideVideosEnabled, options.hideVideosPerc) || acc, false);
+      const videoElements = Array.from(document.querySelectorAll<HTMLElement>(videoselector));
+      const toRemove = videoElements.map(el => {
+        const creator = creatorLink(el)?.split('/')?.[1];
+        const hide = checkHideVideo(el, creator, options.creatorSettings, options.hideVideosEnabled, options.hideVideosPerc);
+        return { creator, hide };
+      });
+      videoElements.forEach((el, index) => {
+        // eslint-disable-next-line prefer-const
+        let { creator, hide } = toRemove[index];
+        const byThisCreatorBefore = toRemove.slice(0, index).filter(c => !c.hide && c.creator === creator).length;
+        if (options.showAtMostVideos > 0 && creator && byThisCreatorBefore >= options.showAtMostVideos) {
+          console.debug('Hiding video because visible limit reached', `(was ${byThisCreatorBefore})`, creator);
+          hide = true;
+        }
+        if (!hide) return;
+        if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
+        else el.parentElement.classList.add('enhancer-hiddenVideo');
+      });
+      const anyRemoved = !!toRemove.find(x => x.hide);
+
       console.dev.debug('Iteration: Hid videos?', anyRemoved);
       if (anyRemoved) {
         setTimeout(cb, 100);
@@ -306,9 +325,8 @@ const determineShowWatchedFromSection = (el: HTMLElement): boolean => {
   return explicitHistoryPageRegex.test(target);
 };
 
-const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSettings>, hideWatched: boolean, hidePerc: number): boolean => {
+const checkHideVideo = (el: HTMLElement, creator: string, creatorSettings: Record<string, CreatorSettings>, hideWatched: boolean, hidePerc: number): boolean => {
   try {
-    const creator = creatorLink(el)?.split('/')?.[1];
     const uploadTime = Date.parse(uploadTimeLocation(el).dateTime);
     const duration = parseDuration(uploadDurationLocation(el).textContent);
     let hide = false;
@@ -342,10 +360,7 @@ const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSetti
         }
       }
     }
-    if (!hide) return false;
-    if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
-    else el.parentElement.classList.add('enhancer-hiddenVideo');
-    return true;
+    return hide;
   } catch (err) {
     console.error(err);
     return false;

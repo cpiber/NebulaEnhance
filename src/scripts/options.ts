@@ -1,4 +1,5 @@
 import { marked } from 'marked';
+import type browser from 'webextension-polyfill';
 import manifest from '../manifest';
 import { loadCreators } from './background';
 import { purgeCache } from './background/ext';
@@ -30,7 +31,7 @@ let invidiousPerms: string[] = [];
 const { permissions } = getBrowserInstance();
 els.youtube.addEventListener('change', async () => {
   const y = els.youtube;
-  const perms: browser.permissions.Permissions = {
+  const perms: browser.Permissions.Permissions = {
     origins: [
       youtubePerms,
     ],

@@ -347,6 +347,18 @@
     "message": "Blendet angesehene Videos aus, basierend auf Nebulas aufgezeichneten Daten. Entscheidet basierend auf Prozent angesehener Zeit.",
     "description": "Hilfstext für Hide Videos der Optionen Seite."
   },
+  "optionsShowAtMostVideosTitle": {
+    "message": "Limit für sichtbare Videos",
+    "description": "Beschriftung für Show at most videos der Optionen Seite."
+  },
+  "optionsShowAtMostVideosName": {
+    "message": "Anzahl sichtbare Videos pro Kanal",
+    "description": "Anzahl für Show at most videos der Optionen Seite."
+  },
+  "optionsShowAtMostVideosHint": {
+    "message": "Limitiere die maximale Anzahl an sichtbaren Videos pro Kanal. Nützlich, wenn die Option 'Angesehene Videos ausblenden' verwendet wird, um Überfüllung durch einzelne Kanäle zu vermeiden. Setze auf 0, um alle Videos anzuzeigen.",
+    "description": "Hilfstext für Show at most videos der Optionen Seite."
+  },
   "optionsCustomScriptPageHint": {
     "message": "Erlaubt es, benutzerdefinierten JavaScript Code auf der Nebula Seite auszuführen.<br />Siehe <a href=\"https://github.com/cpiber/NebulaEnhance/blob/master/docs/index.md\" target=\"_blank\">docs</a> für Informationen zur Interaktion mit Enhancer for Nebula.",
     "description": "Hilfstext fürs Einfügen von custom scripts zur Webseite der Optionen Seite."

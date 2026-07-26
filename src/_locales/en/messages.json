@@ -343,6 +343,18 @@
     "message": "Hide watched videos, based on Nebula's recorded information. Decision is based on percent of time watched.",
     "description": "Hint for Hide videos of options page."
   },
+  "optionsShowAtMostVideosTitle": {
+    "message": "Video visible limit",
+    "description": "Label for Show at most videos of options page."
+  },
+  "optionsShowAtMostVideosName": {
+    "message": "Limit of videos per creator",
+    "description": "Number for Show at most videos of options page."
+  },
+  "optionsShowAtMostVideosHint": {
+    "message": "Set the maximum number of visible videos per creator. Useful if 'Hide watched' is enabled, to avoid pages filling with a single creator. Set to 0 to disable the limit.",
+    "description": "Hint for Show at most videos of options page."
+  },
   "optionsCustomScriptPageTitle": {
     "message": "Custom script for page",
     "description": "Label for adding custom scripts to webpage of options page."

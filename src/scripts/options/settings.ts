@@ -23,6 +23,7 @@ export class Settings {
   rss: HTMLInputElement = undefined;
   hideVideosEnabled: HTMLInputElement = undefined;
   hideVideosPerc: HTMLInputElement = undefined;
+  showAtMostVideos: HTMLInputElement = undefined;
   customScriptPage: HTMLTextAreaElement = undefined;
   showChangelogs: HTMLInputElement = undefined;
   visitedColor: HTMLInputElement = undefined;
