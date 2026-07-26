@@ -299,13 +299,20 @@ const changeTheme = () => {
   setToStorage({ theme });
 };
 
+const determineShowWatchedFromSection = (el: HTMLElement): boolean => {
+  const section = el.closest('section:has([data-relative-view-all-url])');
+  if (!section) return false;
+  const target = section.querySelector<HTMLElement>('[data-relative-view-all-url]')!.dataset.relativeViewAllUrl;
+  return explicitHistoryPageRegex.test(target);
+};
+
 const hideVideo = (el: HTMLElement, creatorSettings: Record<string, CreatorSettings>, hideWatched: boolean, hidePerc: number): boolean => {
   try {
     const creator = creatorLink(el)?.split('/')?.[1];
     const uploadTime = Date.parse(uploadTimeLocation(el).dateTime);
     const duration = parseDuration(uploadDurationLocation(el).textContent);
     let hide = false;
-    const showWatched = explicitHistoryPageRegex.test(window.location.pathname);
+    const showWatched = explicitHistoryPageRegex.test(window.location.pathname) || determineShowWatchedFromSection(el);
     if (creator === '_dummy_channel_') hide = true;
     if (creator && creator in creatorSettings && creatorSettings[creator].hideCompletely) {
       console.debug('Hiding video by creator', creator, `https://${getBase()}/${creator}`);
