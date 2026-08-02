@@ -1,5 +1,5 @@
 import 'webext-dynamic-content-scripts';
-import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, existsNebulaVideo, normalizeString } from './background';
+import { Creator, loadCreators as _loadCreators, creatorHasNebulaVideo, creatorHasYTVideo, normalizeString } from './background';
 import { purgeCache, purgeCacheIfNecessary } from './background/ext';
 import type { CreatorSettings } from './content/nebula/creator-settings';
 import { BrowserMessage, getBase, getBrowserInstance, getFromStorage, isChrome, nebulavideo, parseTimeString, parseTypeObject, setToStorage, toTimeString } from './helpers/sharedExt';
@@ -168,18 +168,6 @@ const getNebulaVideo = async (message: { [key: string]: any; }): Promise<nebulav
         console.error(err);
       }
     }
-  }
-
-  // fall back to site-wide search
-  try {
-    const video = await existsNebulaVideo(videoTitle, videoFetchNebula);
-    return {
-      is: 'search',
-      confidence: video.confidence,
-      link: video.video,
-    };
-  } catch (err) {
-    console.error(err);
   }
 
   // last resort: link to channel
