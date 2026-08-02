@@ -102,7 +102,8 @@ const initPlayer = async () => {
     if (!handlers || !handlers.store)
       return setTimeout(initPlayer, 100);
 
-    player.addEventListener('ended', () => sendMessage(Message.QUEUE_NEXT, null, false));
+    player.addEventListener('ended', () => onPlayerEnded(player));
+    player.addEventListener('seeked', () => onPlayerSeeked(player));
     handlers?.store.subscribe(e => e.qualityLevels, setPlayerQuality);
     setPlayerQuality();
 
@@ -163,6 +164,7 @@ const waitForButtonsAndSetIds = (maxiter: number | null = 1000) => new Promise((
     }
   }, 100);
 });
+
 export const waitForSubtitles = (player: Player, maxiter: number | null = 10) => new Promise<HTMLElement>((resolve, reject) => {
   let iter = 0;
   const i = window.setInterval(() => {
@@ -188,7 +190,7 @@ const addPlayerControls = async (player: Player) => {
   } catch { }
 
 
-  const controls = document.querySelectorAll('#video-controls > :last-child > :first-child, #video-controls > :last-child > :nth-child(2)');
+  const controls = document.querySelectorAll('#video-controls > :not(:first-child, .enhancer-tooltip) > :first-child, #video-controls > :not(:first-child, .enhancer-tooltip) > :nth-child(2)');
   const left = controls[0];
   const right = controls[controls.length - 1];
   const collect = (id: string) => {
@@ -257,6 +259,23 @@ export const updatePlayerControls = (player: Player, canNext: boolean, canPrev: 
   if (!player) return;
   toggleQueueButton(player, true, canNext);
   toggleQueueButton(player, false, canPrev);
+};
+
+const onPlayerEnded = (player: Player) => {
+  sendMessage(Message.QUEUE_NEXT, null, false);
+  if (player.parentElement.querySelector('.enhancer-queue-control-next')?.classList.contains('disabled')) {
+    console.dev.log('Ended: updating controls');
+    const replay = player.parentElement.querySelector('button[aria-label="Replay"]');
+    if (replay) replay.id = 'toggle-play-button';
+    addPlayerControls(player);
+  }
+};
+
+const onPlayerSeeked = (player: Player) => {
+  console.dev.log('Seeked: updating controls');
+  const replay = player.parentElement.querySelector('button[aria-label="Replay"], button[aria-label="Play"], button[aria-label="Pause"]');
+  if (replay) replay.id = 'toggle-play-button';
+  addPlayerControls(player);
 };
 
 let capsHide: () => void | undefined = undefined;

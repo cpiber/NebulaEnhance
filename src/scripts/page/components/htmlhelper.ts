@@ -21,5 +21,9 @@ export const findTime = (controls: NodeListOf<Element>): HTMLElement => {
       if (comp.childNodes.length === 3 && (comp.childNodes[1] as HTMLElement).innerHTML === '&nbsp;/&nbsp;') return comp as HTMLElement;
     }
   }
+  for (const side of Array.from(controls)) {
+    const t = side.querySelector('#time');
+    if (t) return t as HTMLElement;
+  }
   return null;
 };
