@@ -94,7 +94,7 @@ const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vid
   async function* videoDetailsFromDOMMobile() {
     if (first && vidID && videoTitle && channelID && channelNice) return;
 
-    const channelElement = document.querySelector<HTMLAnchorElement>('a.slim-owner-icon-and-title[href^="/@"]');
+    const channelElement = document.querySelector<HTMLAnchorElement>('a.slim-video-owner-icon[href^="/@"]');
     const titleElement = document.querySelector<HTMLSpanElement>('h2.slim-video-information-title span');
     const idElement = document.querySelector('ytm-slim-video-metadata-section-renderer');
     console.dev.debug('Elements', !!channelElement, !!titleElement, !!idElement);
@@ -139,9 +139,7 @@ const run = debounce(async ({ vidID, videoTitle, channelID, channelNice }: { vid
     console.dev.log('Found video:', vid);
     first = false;
 
-    const subscribeElement = !isMobile ?
-      document.querySelector<HTMLDivElement>('ytd-watch-metadata #subscribe-button, ytd-video-secondary-info-renderer #subscribe-button') :
-      document.querySelector<HTMLDivElement>('ytm-slim-owner-renderer .slim-owner-subscribe-button');
+    const subscribeElement = document.querySelector('ytm-subscribe-button-renderer, ytd-subscribe-button-renderer')?.parentElement;
     if (!subscribeElement) yield true; // retry
 
     const button = constructButton(vid, subscribeElement, isMobile);

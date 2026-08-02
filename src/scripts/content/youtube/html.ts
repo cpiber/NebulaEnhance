@@ -20,7 +20,7 @@ export const constructButton = (vid: nebulavideo, before: HTMLElement, isMobile 
     brender.setAttribute('button-renderer', '');
     const bshape = brender.appendChild(document.createElement('yt-button-shape'));
     const btn = bshape.appendChild(document.createElement('button'));
-    btn.className = 'ytSpecButtonShapeNextHost ytSpecButtonShapeNextFilled ytSpecButtonShapeNextMono ytSpecButtonShapeNextSizeM ytSpecButtonShapeNextEnableBackdropFilterExperiment';
+    btn.className = 'ytSpecButtonShapeNextHost ytSpecButtonShapeNextFilled ytSpecButtonShapeNextMono ' + (!isMobile ? 'ytSpecButtonShapeNextSizeM' : 'ytSpecButtonShapeNextSizeS') + ' ytSpecButtonShapeNextEnableBackdropFilterExperiment';
     btn.ariaLabel = watchOnNebula;
     const bdiv = btn.appendChild(document.createElement('div'));
     bdiv.className = 'ytSpecButtonShapeNextButtonTextContent ytSpecButtonShapeNextElevatedContent';

@@ -1,7 +1,5 @@
 
-export const getBrowseId = () => (document.querySelector('ytd-channel-name .yt-simple-endpoint') as any)?.data?.browseEndpoint?.browseId as string;
-
-export const getBrowseIdMobile = () => (document.querySelector('ytm-slim-owner-renderer') as any)?.data?.navigationEndpoint?.browseEndpoint?.browseId as string;
+export const getBrowseId = () => (document.querySelector('ytm-subscribe-button-renderer, ytd-subscribe-button-renderer') as any)?.data?.channelId as string;
 
 export const getVidIdMobile = () => (document.querySelector('ytm-slim-video-metadata-section-renderer') as any)?.data?.videoId as string;
 

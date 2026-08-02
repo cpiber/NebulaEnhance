@@ -1,5 +1,5 @@
 import { Message, parseTypeObject, replyMessage } from './page/sharedpage';
-import { getBrowseId, getBrowseIdMobile, getVidIdMobile, muteVideo, pauseVideo } from './page/youtube';
+import { getBrowseId, getVidIdMobile, muteVideo, pauseVideo } from './page/youtube';
 
 type Msg = { type: string, name?: string, [key: string]: any; };
 
@@ -22,7 +22,7 @@ type Msg = { type: string, name?: string, [key: string]: any; };
           replyMessage(e, msg.name, getBrowseId(), null);
         } break;
         case Message.GET_BROWSE_ID_MOBILE: {
-          replyMessage(e, msg.name, getBrowseIdMobile(), null);
+          replyMessage(e, msg.name, getBrowseId(), null);
         } break;
         case Message.GET_VID_ID_MOBILE: {
           replyMessage(e, msg.name, getVidIdMobile(), null);
