@@ -5,7 +5,7 @@ import { newButton } from './htmlhelper';
 import { Tooltip } from './tooltip';
 
 export const toggleQueueButton = (player: Player, next: boolean, enable: boolean) =>
-  player.parentElement.querySelector(`.enhancer-queue-control-${next ? 'next' : 'prev'}`).classList.toggle('disabled', !enable);
+  player.closest('#video-player').querySelector(`.enhancer-queue-control-${next ? 'next' : 'prev'}`).classList.toggle('disabled', !enable);
 
 const createQueueButton = async (player: Player, next: boolean) => {
   const click = next ? () => sendMessage(Message.QUEUE_NEXT, null, false) : () => sendMessage(Message.QUEUE_PREV, null, false);

@@ -26,7 +26,7 @@ export class Tooltip {
     return this;
   }
   appendToPlayer(player: Player) {
-    return this.appendTo(player.parentElement.querySelector('#video-controls'));
+    return this.appendTo(player.closest('#video-player').querySelector('#video-controls'));
   }
 
   remove() {

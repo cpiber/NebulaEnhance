@@ -173,7 +173,7 @@ export const waitForSubtitles = (player: Player, maxiter: number | null = 10) =>
       reject('No element found');
       return;
     }
-    const sub = player.parentElement.querySelector<HTMLElement>('#subtitles-toggle-button');
+    const sub = player.closest('#video-player').querySelector<HTMLElement>('#subtitles-toggle-button');
     if (sub) {
       window.clearInterval(i);
       resolve(sub);
@@ -188,6 +188,7 @@ const addPlayerControls = async (player: Player) => {
   try {
     await waitForSubtitles(player);
   } catch { }
+  console.dev.log('Adding controls to player', player);
 
 
   const controls = document.querySelectorAll('#video-controls > :not(:first-child, .enhancer-tooltip) > :first-child, #video-controls > :not(:first-child, .enhancer-tooltip) > :nth-child(2)');
@@ -195,7 +196,7 @@ const addPlayerControls = async (player: Player) => {
   const right = controls[controls.length - 1];
   const collect = (id: string) => {
     if (id === 'time') return findTime(controls);
-    let node = player.parentElement.querySelector(`#${id}`);
+    let node = player.closest('#video-player').querySelector(`#${id}`);
     console.dev.debug(id, node);
     while (node !== null) {
       const parent = node.parentElement;
@@ -263,9 +264,9 @@ export const updatePlayerControls = (player: Player, canNext: boolean, canPrev: 
 
 const onPlayerEnded = (player: Player) => {
   sendMessage(Message.QUEUE_NEXT, null, false);
-  if (player.parentElement.querySelector('.enhancer-queue-control-next')?.classList.contains('disabled')) {
+  if (player.closest('#video-player').querySelector('.enhancer-queue-control-next')?.classList.contains('disabled')) {
     console.dev.log('Ended: updating controls');
-    const replay = player.parentElement.querySelector('button[aria-label="Replay"]');
+    const replay = player.closest('#video-player').querySelector('button[aria-label="Replay"]');
     if (replay) replay.id = 'toggle-play-button';
     addPlayerControls(player);
   }
@@ -273,7 +274,7 @@ const onPlayerEnded = (player: Player) => {
 
 const onPlayerSeeked = (player: Player) => {
   console.dev.log('Seeked: updating controls');
-  const replay = player.parentElement.querySelector('button[aria-label="Replay"], button[aria-label="Play"], button[aria-label="Pause"]');
+  const replay = player.closest('#video-player').querySelector('button[aria-label="Replay"], button[aria-label="Play"], button[aria-label="Pause"]');
   if (replay) replay.id = 'toggle-play-button';
   addPlayerControls(player);
 };
