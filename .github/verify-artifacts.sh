@@ -13,6 +13,6 @@ if [ -n "$dev" ]; then
   echo "::group::Invalid statements"
   echo "$dev"
   echo "::endgroup::"
-  echo "::warn ::Found statements that shouldn't be in the production build!"
+  echo "::warning ::Found statements that shouldn't be in the production build!"
 fi
 exit 0
