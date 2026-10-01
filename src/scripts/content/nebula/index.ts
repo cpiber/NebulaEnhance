@@ -260,9 +260,11 @@ const loadComments = async () => {
   const creator = h2[1].textContent;
   if (!title || !creator) return;
   const nebula = (h2[1].parentElement as HTMLAnchorElement).getAttribute('href').split('/')[1];
-  const e = h2[0].nextElementSibling;
-  const time = e?.children[e?.childElementCount - 2];
-  if (!e || !time || e.querySelector('.enhancer-yt, .enhancer-yt-err'))
+  const buttons = Array.from(h2[0].closest('section')?.querySelectorAll('button') ?? []);
+  console.dev.log('Found buttons', buttons);
+  if (buttons.length < 3) return;
+  const e = buttons[1].parentElement;
+  if (!e || e.querySelector('.enhancer-yt, .enhancer-yt-err'))
     return; // already requested
   console.debug(`Requesting '${title}' by ${creator} (${nebula})`);
 
@@ -279,21 +281,15 @@ const loadComments = async () => {
     a.target = '_blank';
     a.textContent = a.href;
     v.append(a, ` (${(vid.confidence * 100).toFixed(1)}%)`);
-    const dot = document.createElement('span');
-    dot.appendChild(document.createTextNode('•'));
-    const v2 = v.cloneNode(true) as HTMLElement;
-    v2.classList.add('enhancer-yt-outside', ...Array.from(time.parentElement.classList));
-    time.parentElement.after(v2);
-    dot.classList.add('enhancer-yt-inside', 'dot');
-    v.classList.add('enhancer-yt-inside');
-    time.after(dot, v);
+    v.classList.add('enhancer-yt-inside', ...Array.from(buttons[1].querySelector('span')?.classList ?? []));
+    buttons[1].after(v);
   } catch (err) {
     console.debug('Request failed:', err);
     console.dev.error('Failed loading comments:', err);
     const er = document.createElement('span');
     er.classList.add('enhancer-yt-err');
     er.textContent = `${err}`;
-    time.after(er);
+    buttons[1].after(er);
   }
   console.debug('Loading comments done.');
 };

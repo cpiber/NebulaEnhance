@@ -161,21 +161,8 @@ div.nebula-watch-later {
   }
 }
 
-.enhancer-yt {
-  &-err,
-  &-outside {
-    display: none !important;
-  }
-
-  @media (max-width: variables.$tablet) {
-    &-inside {
-      display: none !important;
-    }
-
-    &-outside {
-      display: unset !important;
-    }
-  }
+.enhancer-yt-err {
+  display: none !important;
 }
 
 time[datetime] {
