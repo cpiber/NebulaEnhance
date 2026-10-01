@@ -11,7 +11,6 @@ export class Settings {
   volumeLog: HTMLInputElement = undefined;
   volumeShow: HTMLInputElement = undefined;
   volumeChange: HTMLInputElement = undefined;
-  autoExpand: HTMLInputElement = undefined;
   qualityType: HTMLSelectElement = undefined;
   preferredQuality: HTMLInputElement = undefined;
   gridAsList: HTMLInputElement = undefined;

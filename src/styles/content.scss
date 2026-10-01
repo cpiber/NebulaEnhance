@@ -33,40 +33,6 @@ a[href^='/videos/'][aria-hidden] {
   }
 }
 
-html.enhancer-fullVideo.page-video {
-  #video-player {
-    height: 100vh !important;
-    width: 100vw !important;
-    max-height: 100vh !important;
-    min-height: 100vh !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    
-    &, video, .video-poster {
-      border-radius: 0 !important;
-    }
-  }
-
-  main > div {
-    margin: 0;
-    padding: 0;
-    max-width: 100vw;
-  }
-
-  #NebulaApp > div, #NebulaApp > div > div {
-    margin-top: 0 !important;
-  }
-
-  #app-header {
-    position: absolute !important;
-    top: 100vh !important;
-  }
-
-  [aria-label="video description"] {
-    margin-top: 96px;
-  }
-}
-
 .enhancer-creator-settings {
   grid-area: follow / follow-end;
   align-self: center;

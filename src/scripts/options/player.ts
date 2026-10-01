@@ -1,4 +1,3 @@
-import iconExpand from '../../icons/expand.svg';
 import iconAutoplay from '../../icons/nebula/autoplay.svg';
 import iconChromecast from '../../icons/nebula/chromecast.svg';
 import iconFullscreen from '../../icons/nebula/fullscreen.svg';
@@ -31,7 +30,6 @@ const nameToIcon: Record<Comp, string> = {
   'queue-prev': iconNext,
   'queue-next': iconNext,
   'time': '<div class="enhancer-time">00:16&nbsp;/&nbsp;25:02</div>',
-  'expand': iconExpand,
   'speeddial': iconSpeed,
 };
 const nameToTitle: Record<Comp, string> = {
@@ -47,7 +45,6 @@ const nameToTitle: Record<Comp, string> = {
   'queue-prev': msg('optionsCompQueueBack'),
   'queue-next': msg('optionsCompQueueNext'),
   'time': msg('optionsCompTime'),
-  'expand': msg('optionsCompExpand'),
   'speeddial': msg('optionsCompSpeed'),
 };
 

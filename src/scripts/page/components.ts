@@ -19,7 +19,6 @@ export const builtin = [
 export const ours = [
   'queue-prev',
   'queue-next',
-  'expand',
   'speeddial',
 ] as const;
 type Comp = (typeof builtin | typeof ours)[number];
@@ -38,7 +37,6 @@ export const defaultPositions: Record<Comp, number> = {
   'queue-prev': 0,
   'queue-next': 2,
   'time': 4,
-  'expand': -9,
   'speeddial': -8,
 };
 export const toSorted = (settings: Partial<Settings>, includeDisabled = false) => [ ...builtin, ...ours ]

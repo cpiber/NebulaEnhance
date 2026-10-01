@@ -79,14 +79,6 @@
     "message": "Ob beim Scrollen über den Videospieler die Lautstärke geändert werden soll. Optional in logarithmischer Skala (anstatt linear).",
     "description": "Hilfstext für Volume Scroll der Optionen Seite."
   },
-  "optionsExpandTitle": {
-    "message": "Video vergrößtert starten",
-    "description": "Beschriftung für Expand der Optionen Seite."
-  },
-  "optionsExpandHint": {
-    "message": "Wenn gesetzt, dann wird das Video beim Laden auf Fenstergröße erweitert. Es gibt die Option auch manuell im Spieler.",
-    "description": "Hilfstext für Expand der Optionen Seite."
-  },
   "optionsQualityTitle": {
     "message": "Automatische Videoqualität",
     "description": "Beschriftung für Quality der Optionen Seite."
@@ -194,10 +186,6 @@
   "optionsCompTime": {
     "message": "Zeit Element",
     "description": "Beschriftung für Time Komponente"
-  },
-  "optionsCompExpand": {
-    "message": "Vergrößern Knopf",
-    "description": "Beschriftung für Expand Komponente"
   },
   "optionsCompSpeed": {
     "message": "Geschwindigkeit Knopf",
@@ -434,10 +422,6 @@
   "playerNewSpeed": {
     "message": "Neue Geschwindigkeit",
     "description": "'Speed' text im popup."
-  },
-  "playerExpand": {
-    "message": "Video zu Fenstergröße vergrößern",
-    "description": "'Expand' text im Tooltip."
   },
   "playerFrameBack": {
     "message": "Frame zurück",

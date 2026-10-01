@@ -79,14 +79,6 @@
     "message": "Whether to make scrolling over the player change the playback volume. Optionally in logarithmic scale (as opposed to linear).",
     "description": "Hint for Volume Scroll of options page."
   },
-  "optionsExpandTitle": {
-    "message": "Expand video on load",
-    "description": "Label for Expand of options page."
-  },
-  "optionsExpandHint": {
-    "message": "If set the video will be expanded to the size of the window on load. This can also be done manually in the player.",
-    "description": "Hint for Expand of options page."
-  },
   "optionsQualityTitle": {
     "message": "Auto Video Quality",
     "description": "Label for Quality of options page."
@@ -194,10 +186,6 @@
   "optionsCompTime": {
     "message": "Time element",
     "description": "Title for Time component"
-  },
-  "optionsCompExpand": {
-    "message": "Expand button",
-    "description": "Title for Expand component"
   },
   "optionsCompSpeed": {
     "message": "Speed button",
@@ -434,10 +422,6 @@
   "playerNewSpeed": {
     "message": "New Speed",
     "description": "'Speed' text in popup."
-  },
-  "playerExpand": {
-    "message": "Expand player to window size",
-    "description": "'Expand' text in tooltip."
   },
   "playerFrameBack": {
     "message": "Jump frame back",

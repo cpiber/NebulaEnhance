@@ -17,7 +17,6 @@ Keybindings corresponding to player elements are also self-documented in the too
 - <kbd>z</kbd>: Undo previous jump via <kbd>0</kbd>-<kbd>9</kbd>, <kbd>Home</kbd>, <kbd>End</kbd> ✝
 - <kbd>&lt;</kbd>, <kbd>&gt;</kbd>: Decrease/Increase playback speed ✝
 - <kbd>p</kbd>, <kbd>n</kbd>: Go to previous/next video in queue ✝
-- <kbd>x</kbd>: Toggle expanded player ✝
 - <kbd>c</kbd>: Switch subtitles \*
 - <kbd>s</kbd>: Open settings \*
 - <kbd>m</kbd>: Mute \*

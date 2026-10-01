@@ -1,6 +1,5 @@
 import type { History } from 'history';
 import { Settings, builtin as builtinComponents, slot as componentSlot, toSorted as componentsSorted, ours as oursComponents, setDefaultIds } from './components';
-import createExpandButton from './components/expand';
 import { findTime } from './components/htmlhelper';
 import createQueueButton, { toggleQueueButton } from './components/queue';
 import createSpeedDial from './components/speeddial';
@@ -18,7 +17,6 @@ const optionsDefaults = {
   volumeShow: false,
   volumeChange: 0.1,
   volumeLog: false,
-  autoExpand: false,
   playerSettings: {} as Partial<Settings>,
   qualityType: QualityType.Off as keyof typeof QualityType,
   preferredQuality: 1080,
@@ -51,11 +49,10 @@ export const init = async () => {
 
   const {
     playbackChange, autoplay, autoplayQueue, volumeEnabled,
-    volumeChange, volumeLog, volumeShow, autoExpand,
+    volumeChange, volumeLog, volumeShow,
   } = options = await getFromStorage(optionsDefaults);
   console.debug('playbackChange:', playbackChange, 'autoplay?', autoplay, 'autoplay in queue?', autoplayQueue,
-    '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog, 'show?', volumeShow,
-    '\nexpand video?', autoExpand);
+    '\nvolume scroll?', volumeEnabled, 'change:', volumeChange, 'log?', volumeLog, 'show?', volumeShow);
 
   document.addEventListener('keydown', keydownHandler, { capture: true });
   document.addEventListener('wheel', wheelHandler, { passive: false });
@@ -110,7 +107,6 @@ const initPlayer = async () => {
     const { autoplay, autoplayQueue } = options;
     console.debug('autoplay?', autoplay, 'autoplayQueue?', autoplayQueue);
     await addPlayerControls(player);
-    if (options.autoExpand) document.body.parentElement.classList.toggle('enhancer-fullVideo');
 
     const { canNext, canPrev, length: queueLen } = await sendMessage(Message.GET_QSTATUS);
     console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev, 'queueLen:', queueLen);
@@ -214,9 +210,6 @@ const addPlayerControls = async (player: Player) => {
       left.appendChild(ours[i]);
     } else if (oursComponents[i] === 'queue-next') {
       ours[i] = await createQueueButton(player, true);
-      left.appendChild(ours[i]);
-    } else if (oursComponents[i] === 'expand') {
-      ours[i] = await createExpandButton(player);
       left.appendChild(ours[i]);
     } else if (oursComponents[i] === 'speeddial') {
       ours[i] = await createSpeedDial(player, options);
@@ -331,10 +324,6 @@ const keydownHandler = (e: KeyboardEvent) => {
       break;
     case ' ': // normally handled by video.js, but they don't use capture, see #12
       if (player.paused) player.play(); else player.pause();
-      break;
-    case 'x':
-    case 'X':
-      document.body.parentElement.classList.toggle('enhancer-fullVideo');
       break;
     case 'n':
     case 'N':
