@@ -500,7 +500,7 @@ const getPlayerController = () => {
 
 const setPlayerQuality = () => {
   const handlers = getPlayerController();
-  if (!handlers) return;
+  if (!handlers || !handlers.store) return;
   const state = handlers.store.getState();
   const levels = state.qualityLevels.map(e => e.height);
   if (levels.length === 0) {
