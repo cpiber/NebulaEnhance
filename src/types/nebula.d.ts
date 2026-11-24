@@ -54,6 +54,7 @@ declare namespace Nebula {
       hero: Asset<BannerSizes>,
       featured: Asset<BannerSizes>,
     },
+    images: Record<string, { alt_text: string, formats: string[], height: number, width: number, src: string; }>,
     genre_category_title: string,
     genre_category_slug: string,
     categories: Category[],
