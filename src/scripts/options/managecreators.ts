@@ -55,13 +55,16 @@ const buildCreator = (creatorSettings: Record<string, CreatorSettings>, channel:
 
 export const showManageCreators = withLoader(async () => {
   const { creatorSettings } = await getFromStorage({ creatorSettings: {} as Record<string, CreatorSettings> });
-  // This could get expensive for long lists of channels...
-  // but no way to query multiple slugs, alternative: check all at some point
-  const cr = await Promise.all(Object.keys(creatorSettings).map(c => getChannel(c).catch<Partial<Nebula.Channel>>(() => ({
-    title: '??',
-    assets: { avatar: {} as Nebula.Asset<Nebula.IconSizes>, banner: undefined, featured: undefined, hero: undefined },
-    slug: c,
-  }))));
+  const creatorNames = Object.keys(creatorSettings);
+  const cr: Partial<Nebula.Channel>[] = [];
+  for (let i = 0; i < creatorNames.length; i += 5) {
+    const a = await Promise.all(creatorNames.slice(i, i + 5).map(c => getChannel(c).catch<Partial<Nebula.Channel>>(() => ({
+      title: '??',
+      assets: { avatar: {} as Nebula.Asset<Nebula.IconSizes>, banner: undefined, featured: undefined, hero: undefined },
+      slug: c,
+    }))));
+    Array.prototype.push.apply(cr, a);
+  }
   const c = cr.filter(c => c !== null).sort((a, b) => {
     const nameA = a.title.toUpperCase();
     const nameB = b.title.toUpperCase();

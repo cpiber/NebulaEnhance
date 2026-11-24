@@ -36,11 +36,13 @@ const request = async <T = any>(url: string, init?: RequestInit) => {
 export const getVideo = (name: string) => request<Nebula.Video>(`https://content.api.${getApiBase()}/content/videos/${name}/`, {
   referrer: `https://${getApiBase()}/videos/${name}`,
   method: 'GET',
+  cache: "force-cache",
 });
 
 export const getChannel = (name: string) => request<Nebula.Channel>(`https://content.api.${getApiBase()}/content/${name}/`, {
   referrer: `https://${getApiBase()}/`,
   method: 'GET',
+  cache: "force-cache",
 });
 
 export const getChannelVideos = async (name: string, num = Infinity) => {
