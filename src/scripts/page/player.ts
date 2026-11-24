@@ -65,7 +65,7 @@ export const init = async () => {
   msgs['playerSpeed'] = await sendMessage(Message.GET_MESSAGE, { message: 'playerSpeed' });
   msgs['playerCaps'] = await sendMessage(Message.GET_MESSAGE, { message: 'playerCaps' });
 
-  onStorageChange(changed => {
+  onStorageChange(async changed => {
     console.dev.log('Options changed');
     Object.keys(options).forEach(prop => {
       if (prop in changed && 'newValue' in changed[prop]) {
@@ -77,21 +77,23 @@ export const init = async () => {
     if (!player) return;
     player.autoplay = options.autoplay;
     toggleVolumeShow(player, options.volumeShow);
-    addPlayerControls(player);
+    await addPlayerControls(player);
     setPlayerQuality();
   });
 };
 
 let initLock = false;
 const initPlayer = async () => {
+  console.log("HEREEEEE", initLock);
   if (initLock) return;
   initLock = true;
 
   try {
     const player = await getAPlayer();
+    console.dev.log('Initializing player', player);
+    if (!player)
+      return setTimeout(initPlayer, 100);
 
-    if (!player || player._enhancerInit)
-      return; // already initialized this player
     const handlers = getPlayerController();
 
     await waitForButtonsAndSetIds();
@@ -117,7 +119,7 @@ const initPlayer = async () => {
       else player.pause();
     } catch { }
 
-    player._enhancerInit = true;
+    console.dev.log('Done initializing player', player);
   } finally {
     initLock = false;
   }
@@ -161,7 +163,7 @@ const waitForButtonsAndSetIds = (maxiter: number | null = 1000) => new Promise((
   }, 100);
 });
 
-export const waitForSubtitles = (player: Player, maxiter: number | null = 10) => new Promise<HTMLElement>((resolve, reject) => {
+const waitForPlayerControls = (player: Player, maxiter: number | null = 10) => new Promise((resolve, reject) => {
   let iter = 0;
   const i = window.setInterval(() => {
     if (maxiter !== null && iter++ > maxiter) {
@@ -169,8 +171,9 @@ export const waitForSubtitles = (player: Player, maxiter: number | null = 10) =>
       reject('No element found');
       return;
     }
-    const sub = player.closest('#video-player').querySelector<HTMLElement>('#subtitles-toggle-button');
-    if (sub) {
+    const sub = player.closest('#video-player').querySelectorAll<HTMLElement>('#toggle-play-button, #volume-toggle-button, #auto-play-switch, #subtitles-toggle-button, #settings-button, #theater-mode-button, #fullscreen-mode-button');
+    console.debug('found player controls:', sub);
+    if (sub.length === 7) {
       window.clearInterval(i);
       resolve(sub);
     }
@@ -182,94 +185,98 @@ const addPlayerControls = async (player: Player) => {
   if (playerControlLock) return;
   playerControlLock = true;
   try {
-    await waitForSubtitles(player);
-  } catch { }
-  console.dev.log('Adding controls to player', player);
+    await waitForPlayerControls(player);
+    console.dev.log('Adding controls to player', player);
 
-
-  const controls = document.querySelectorAll('#video-controls > :not(:first-child, .enhancer-tooltip) > :first-child, #video-controls > :not(:first-child, .enhancer-tooltip) > :nth-child(2)');
-  const left = controls[0];
-  const right = controls[controls.length - 1];
-  const collect = (id: string) => {
-    if (id === 'time') return findTime(controls);
-    let node = player.closest('#video-player').querySelector(`#${id}`);
-    console.dev.debug(id, node);
-    while (node !== null) {
-      const parent = node.parentElement;
-      if (parent === left || parent === right) break;
-      node = parent;
+    const controls = document.querySelectorAll('#video-controls > :not(:first-child, .enhancer-tooltip) > :first-child, #video-controls > :not(:first-child, .enhancer-tooltip) > :nth-child(2)');
+    const left = controls[0];
+    const right = controls[controls.length - 1];
+    const collect = (id: string) => {
+      if (id === 'time') return findTime(controls);
+      let node = player.closest('#video-player').querySelector(`#${id}`);
+      console.dev.debug(id, node);
+      while (node !== null) {
+        const parent = node.parentElement;
+        if (parent === left || parent === right) break;
+        node = parent;
+      }
+      return node;
+    };
+    const builtins = builtinComponents.map(collect);
+    const ours = oursComponents.map(collect);
+    for (let i = 0; i < builtinComponents.length; i++) {
+      if (builtinComponents[i] === null) throw new Error("Failed to find " + builtins[i]);
     }
-    return node;
-  };
-  const builtins = builtinComponents.map(collect);
-  const ours = oursComponents.map(collect);
-  for (let i = 0; i < oursComponents.length; i++) {
-    if (ours[i] !== null) continue;
-    if (oursComponents[i] === 'queue-prev') {
-      ours[i] = await createQueueButton(player, false);
-      left.appendChild(ours[i]);
-    } else if (oursComponents[i] === 'queue-next') {
-      ours[i] = await createQueueButton(player, true);
-      left.appendChild(ours[i]);
-    } else if (oursComponents[i] === 'speeddial') {
-      ours[i] = await createSpeedDial(player, options);
-      left.appendChild(ours[i]);
-    } else {
-      console.assert(false, 'Unknown component', oursComponents[i]);
+    for (let i = 0; i < oursComponents.length; i++) {
+      if (ours[i] !== null) continue;
+      if (oursComponents[i] === 'queue-prev') {
+        ours[i] = await createQueueButton(player, false);
+        left.appendChild(ours[i]);
+      } else if (oursComponents[i] === 'queue-next') {
+        ours[i] = await createQueueButton(player, true);
+        left.appendChild(ours[i]);
+      } else if (oursComponents[i] === 'speeddial') {
+        ours[i] = await createSpeedDial(player, options);
+        left.appendChild(ours[i]);
+      } else {
+        console.assert(false, 'Unknown component', oursComponents[i]);
+      }
     }
+
+    const sorted = componentsSorted(options.playerSettings);
+    let idx = 0;
+    let lastContainer: Element | undefined = undefined;
+    for (const comp of sorted) {
+      const container = componentSlot(comp, options.playerSettings[comp], left, right);
+
+      const bidx = builtinComponents.indexOf(comp as any);
+      const oidx = oursComponents.indexOf(comp as any);
+      const c = bidx >= 0 ? builtins[bidx] : ours[oidx];
+
+      if (lastContainer != container) idx = 0;
+      else if (c != null) idx += 1;
+      lastContainer = container;
+
+      if (c == null) continue;
+      if (idx == 0) container.children[0].before(c);
+      else container.children[idx - 1].after(c);
+    }
+
+    for (let i = 0; i < builtinComponents.length; i++) {
+      builtins[i]?.classList.toggle('enhancer-hidden', !(options.playerSettings[builtinComponents[i]]?.enabled ?? true));
+    }
+    for (let i = 0; i < oursComponents.length; i++) {
+      ours[i]?.classList.toggle('enhancer-hidden', !(options.playerSettings[oursComponents[i]]?.enabled ?? true));
+    }
+
+    attachVolumeText(player, controls, options);
+  } finally {
+    playerControlLock = false;
   }
-
-  const sorted = componentsSorted(options.playerSettings);
-  let idx = 0;
-  let lastContainer: Element | undefined = undefined;
-  for (const comp of sorted) {
-    const container = componentSlot(comp, options.playerSettings[comp], left, right);
-
-    const bidx = builtinComponents.indexOf(comp as any);
-    const oidx = oursComponents.indexOf(comp as any);
-    const c = bidx >= 0 ? builtins[bidx] : ours[oidx];
-
-    if (lastContainer != container) idx = 0;
-    else if (c != null) idx += 1;
-    lastContainer = container;
-
-    if (c == null) continue;
-    if (idx == 0) container.children[0].before(c);
-    else container.children[idx - 1].after(c);
-  }
-
-  for (let i = 0; i < builtinComponents.length; i++) {
-    builtins[i]?.classList.toggle('enhancer-hidden', !(options.playerSettings[builtinComponents[i]]?.enabled ?? true));
-  }
-  for (let i = 0; i < oursComponents.length; i++) {
-    ours[i]?.classList.toggle('enhancer-hidden', !(options.playerSettings[oursComponents[i]]?.enabled ?? true));
-  }
-
-  attachVolumeText(player, controls, options);
-  playerControlLock = false;
 };
 
 export const updatePlayerControls = (player: Player, canNext: boolean, canPrev: boolean) => {
   if (!player) return;
+  console.debug(player, 'canGoNext?', canNext, 'canGoPrev?', canPrev);
   toggleQueueButton(player, true, canNext);
   toggleQueueButton(player, false, canPrev);
 };
 
-const onPlayerEnded = (player: Player) => {
+const onPlayerEnded = async (player: Player) => {
   sendMessage(Message.QUEUE_NEXT, null, false);
   if (player.closest('#video-player').querySelector('.enhancer-queue-control-next')?.classList.contains('disabled')) {
     console.dev.log('Ended: updating controls');
     const replay = player.closest('#video-player').querySelector('button[aria-label="Replay"]');
     if (replay) replay.id = 'toggle-play-button';
-    addPlayerControls(player);
+    await addPlayerControls(player);
   }
 };
 
-const onPlayerSeeked = (player: Player) => {
+const onPlayerSeeked = async (player: Player) => {
   console.dev.log('Seeked: updating controls');
   const replay = player.closest('#video-player').querySelector('button[aria-label="Replay"], button[aria-label="Play"], button[aria-label="Pause"]');
   if (replay) replay.id = 'toggle-play-button';
-  addPlayerControls(player);
+  await addPlayerControls(player);
 };
 
 let capsHide: () => void | undefined = undefined;

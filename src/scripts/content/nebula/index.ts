@@ -358,6 +358,7 @@ const checkHideVideo = (el: HTMLElement, creator: string, creatorSettings: Recor
     }
     return hide;
   } catch (err) {
+    console.dev.error(el, creator);
     console.error(err);
     return false;
   }
