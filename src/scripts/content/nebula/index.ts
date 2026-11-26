@@ -127,7 +127,7 @@ const doVideoActions = debounce(() => {
       const toRemove = videoElements.map(el => {
         const creator = creatorLink(el)?.split('/')?.[1];
         const hide = checkHideVideo(el, creator, options.creatorSettings, options.hideVideosEnabled, options.hideVideosPerc);
-        return { creator, hide, isHidden: el.parentElement.style.display === "none" || el.parentElement.classList.contains('enhancer-hiddenVideo') };
+        return { creator, hide, isHidden: el.parentElement.style.display === 'none' || el.parentElement.classList.contains('enhancer-hiddenVideo') };
       });
       videoElements.forEach((el, index) => {
         // eslint-disable-next-line prefer-const
@@ -138,7 +138,8 @@ const doVideoActions = debounce(() => {
           hide = true;
         }
         if (!hide || isHidden) return;
-        if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.style.display = 'none';
+        // in slider, show "hidden by you" to avoid empty/broken sliders
+        if (el.parentElement.parentElement?.dataset?.layoutWithArrows !== 'true') el.parentElement.style.display = 'none';
         else el.parentElement.classList.add('enhancer-hiddenVideo');
       });
       const anyRemoved = !!toRemove.find(x => x.hide && !x.isHidden);
