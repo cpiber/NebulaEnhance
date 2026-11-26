@@ -127,21 +127,21 @@ const doVideoActions = debounce(() => {
       const toRemove = videoElements.map(el => {
         const creator = creatorLink(el)?.split('/')?.[1];
         const hide = checkHideVideo(el, creator, options.creatorSettings, options.hideVideosEnabled, options.hideVideosPerc);
-        return { creator, hide };
+        return { creator, hide, isHidden: el.parentElement.style.display === "none" || el.parentElement.classList.contains('enhancer-hiddenVideo') };
       });
       videoElements.forEach((el, index) => {
         // eslint-disable-next-line prefer-const
-        let { creator, hide } = toRemove[index];
+        let { creator, hide, isHidden } = toRemove[index];
         const byThisCreatorBefore = toRemove.slice(0, index).filter(c => !c.hide && c.creator === creator).length;
         if (options.showAtMostVideos > 0 && creator && byThisCreatorBefore >= options.showAtMostVideos) {
           console.debug('Hiding video because visible limit reached', `(was ${byThisCreatorBefore})`, creator);
           hide = true;
         }
-        if (!hide) return;
+        if (!hide || isHidden) return;
         if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.style.display = 'none';
         else el.parentElement.classList.add('enhancer-hiddenVideo');
       });
-      const anyRemoved = !!toRemove.find(x => x.hide);
+      const anyRemoved = !!toRemove.find(x => x.hide && !x.isHidden);
 
       console.dev.debug('Iteration: Hid videos?', anyRemoved);
       if (anyRemoved) {
