@@ -138,7 +138,7 @@ const doVideoActions = debounce(() => {
           hide = true;
         }
         if (!hide) return;
-        if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.remove();
+        if (el.parentElement.parentElement.previousElementSibling?.tagName?.toLowerCase() !== 'img') el.parentElement.style.display = 'none';
         else el.parentElement.classList.add('enhancer-hiddenVideo');
       });
       const anyRemoved = !!toRemove.find(x => x.hide);
