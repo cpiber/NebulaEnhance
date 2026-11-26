@@ -1,5 +1,8 @@
+import type { Queue } from '.';
 import iconClose from '../../../icons/close.svg';
+import iconDelete from '../../../icons/delete.svg';
 import iconNext from '../../../icons/next.svg';
+import iconPlay from '../../../icons/play.svg';
 import iconReverse from '../../../icons/reverse.svg';
 import iconShare from '../../../icons/share.svg';
 import { getBrowserInstance } from '../../helpers/sharedExt';
@@ -46,3 +49,38 @@ export const html = `
   </div>
 </div>
 `;
+
+export function render(this: Queue, checkOnVideo = true) {
+  const root = this.elementsEl;
+  while (root.children.length > this.queue.length) root.removeChild(root.lastElementChild);
+  while (root.children.length < this.queue.length) {
+    const n = root.appendChild(document.createElement('div'));
+    n.className = 'element';
+    n.innerHTML = `
+        <div class="drag"><span class="up clickable">${iconNext}</span><span class="handle">&#x2630;</span><span class="down clickable">${iconNext}</span></div>
+        <div class="thumb">
+          <img class="thumbnail" draggable="false" />
+          <div class="play">${iconPlay}</div>
+        </div>
+        <div class="data">
+          <span class="title"></span>
+          <span class="creator"></span>
+        </div>
+        <div class="remove"><span class="r">${iconDelete}</span></div>
+      `;
+    n.draggable = true;
+  }
+
+  for (let i = 0; i < this.queue.length; i++) {
+    const n = root.children[i] as HTMLElement;
+    const name = this.queue[i];
+    const isOnVideo = this.queuepos === i && location.pathname === `/videos/${this.queue[this.queuepos]}`;
+    n.querySelector<HTMLImageElement>('.thumbnail').src = this.store[name].thumbnail;
+    n.querySelector('.title').textContent = this.store[name].title;
+    n.querySelector('.creator').textContent = `${this.store[name].creator} • ${this.store[name].length}`;
+    n.className = 'element';
+    n.classList.toggle('playing', checkOnVideo ? isOnVideo : i === this.queuepos);
+    n.style = '';
+  }
+  this.updateText(checkOnVideo);
+};

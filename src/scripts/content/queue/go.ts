@@ -17,8 +17,8 @@ export async function setupHistory(this: Queue) {
 
 export function goto(this: Queue, index: number, go = true) {
   if (index < 0 || index >= this.queue.length) return;
-  this.elementsEl.children[this.queuepos]?.classList.remove('playing');
   this.queuepos = index;
+  this.render(!go);
   if (go) {
     const url = `/videos/${this.queue[index]}`;
     if (this.hasHistoryGlobal) {
@@ -41,10 +41,8 @@ export function goto(this: Queue, index: number, go = true) {
     console.debug(`Queue: Navigating to ${url}`);
   }
   if (index >= 0) {
-    this.elementsEl.children[index]?.classList.add('playing');
     this.elementsEl.children[index]?.scrollIntoView();
   }
-  this.updateText();
   // chrome does not do this for us
   const yt = document.querySelector('.enhancer-yt');
   if (yt) {
@@ -62,9 +60,11 @@ export function gotoPrev(this: Queue) {
   return this.goto(this.queuepos - 1);
 }
 
-export function updateText(this: Queue) {
-  this.titleEl.textContent = this.queuepos >= 0 ? this.store[this.queue[this.queuepos]]?.title : nothingToPlay;
-  this.numberEl.textContent = this.queuepos >= 0 ? `${this.queuepos + 1}` : '-';
+export function updateText(this: Queue, checkOnVideo = true) {
+  const isOnVideo = this.queuepos >= 0 && location.pathname === `/videos/${this.queue[this.queuepos]}`;
+  const isThis = checkOnVideo ? isOnVideo : this.queuepos >= 0;
+  this.titleEl.textContent = isThis ? this.store[this.queue[this.queuepos]]?.title : nothingToPlay;
+  this.numberEl.textContent = isThis ? `${this.queuepos + 1}` : '-';
   this.totalEl.textContent = `${this.queue.length}`;
   this.prevEl.classList.toggle('clickable', this.canGoPrev());
   this.nextEl.classList.toggle('clickable', this.canGoNext());

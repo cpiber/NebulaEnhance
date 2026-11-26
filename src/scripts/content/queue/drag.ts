@@ -28,9 +28,7 @@ const dropElement = (q: Queue, e: DragEvent) => {
     return;
   el.parentElement.querySelector('.fake')?.remove();
   if (i > o) i--;
-  const elem = q.move(o, i);
-  elem.classList.remove('dragging');
-  elem.style.marginTop = '';
+  q.move(o, i);
 };
 const dragOverElement = (e: DragEvent) => {
   e.preventDefault();

@@ -2,7 +2,7 @@ import { addToStore } from './add';
 import { clear, enqueue, enqueueNow, remove } from './enqueue';
 import { emit, onChange } from './events';
 import { goto, gotoNext, gotoPrev, setupHistory, updateText } from './go';
-import { html } from './html';
+import { html, render } from './html';
 import type { Queue } from './index';
 import { handleMessage } from './listener';
 import { move, restoreStorage, reverse, set, setStorage, toggle } from './transform';
@@ -32,6 +32,7 @@ export class QueueMethods {
   onChange = onChange;
   protected emit = emit;
   protected setStorage = setStorage;
+  protected render = render;
   restoreStorage = restoreStorage;
   setupHistory = setupHistory;
 }

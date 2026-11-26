@@ -14,17 +14,18 @@ export function toggle(this: Queue) {
   this.calcBottom(tggl);
 }
 
-export function move(this: Queue, orig: number, index: number) {
+export function move(this: Queue, orig: number, index: number): HTMLElement {
   if (index < 0 || index >= this.queue.length) return;
-  const [ name, elem ] = this.queue.splice2(orig, 1);
+  const [name] = this.queue.splice(orig, 1);
   if (this.queuepos >= 0) {
     // adjust index based on new and old positions, difference always 1 (except when moving current)
     if (this.queuepos === orig) this.queuepos = index;
     else if (orig > this.queuepos && index <= this.queuepos) this.queuepos++;
     else if (orig < this.queuepos && index >= this.queuepos) this.queuepos--;
   }
-  this.queue.splice2(index, 0, name, elem);
-  return elem[0];
+  this.queue.splice(index, 0, name);
+  this.render();
+  return this.elementsEl.children[orig] as HTMLElement;
 }
 
 export async function set(this: Queue, newq: string[], current?: string | number): Promise<string[]>;
@@ -38,7 +39,8 @@ export async function set(this: Queue, newq: string[] | Nebula.Video[], current?
   if (!q)
     return;
 
-  this.queue.splice2(0, this.queue.length, q); // replace current queue
+  this.queue.splice(0, this.queue.length, ...q); // replace current queue
+  this.render();
   if (current !== undefined)
     // use timeout to make sure dom is updated
     setTimeout(() => this.goto(typeof current === 'number' ? current : this.queue.indexOf(current), false), 0);
@@ -70,7 +72,8 @@ function setVid(this: Queue, newq: Nebula.Video[]) {
 export function reverse(this: Queue) {
   if (this.queuepos !== -1)
     this.queuepos = this.queue.length - this.queuepos - 1;
-  this.queue.reverse2();
+  this.queue.reverse();
+  this.render();
   this.elementsEl.querySelector('.playing')?.scrollIntoView();
 }
 
@@ -103,7 +106,7 @@ export async function restoreStorage(this: Queue) {
     return console.debug('Queue: ignoring queue on last video');
   try {
     Object.keys(parsed.store).forEach((key: string) => this.store[key] = parsed.store[key]);
-  } catch {}
+  } catch { }
   await this.set(parsed.queue, +parsed.position);
   console.debug(`Queue: loaded from localStorage (len ${parsed.queue.length} / pos ${parsed.position})`);
 }

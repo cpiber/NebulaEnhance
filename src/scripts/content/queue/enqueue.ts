@@ -15,9 +15,10 @@ export function enqueue(this: Queue, name: string | string[], pos?: number) {
 
   const q = typeof name === 'string' ? [name] : name;
   if (pos !== undefined)
-    this.queue.splice2(pos, 0, q);
+    this.queue.splice(pos, 0, ...q);
   else if (this.queue[this.queue.length - 1] !== name)
-    this.queue.splice2(this.queue.length, 0, q);
+    this.queue.splice(this.queue.length, 0, ...q);
+  this.render();
   this.containerEl.classList.remove('hidden');
   this.calcBottom(this.containerEl.classList.contains('down'));
 
@@ -43,14 +44,16 @@ export function enqueueNow(this: Queue, name: string) {
 export function remove(this: Queue, index: number) {
   if (index < 0 || index >= this.queue.length) return;
   if (this.queue.length === 1) return this.clear();
-  if (this.queuepos >= 0 && index <= this.queuepos)
+  if (this.queuepos > 0 && index <= this.queuepos)
     --this.queuepos;
-  this.queue.splice2(index, 1);
+  this.queue.splice(index, 1);
+  this.render();
 }
 
 export function clear(this: Queue) {
   this.queuepos = -1;
-  this.queue.splice2(0, this.queue.length);
+  this.queue.splice(0, this.queue.length);
+  this.render();
   this.containerEl.classList.add('hidden');
   this.containerEl.classList.remove('down');
 }

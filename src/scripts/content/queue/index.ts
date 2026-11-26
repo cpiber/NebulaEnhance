@@ -1,4 +1,5 @@
-import { Store, VideoArray } from '../../helpers/VideoQueue';
+import { Store } from '../../helpers/VideoQueue';
+import { navigatePrefix } from '../../page/dispatcher';
 import { initDrag } from './drag';
 import { QueueMethods, initElement } from './init';
 import { clickElements, clickTop, popState } from './listener';
@@ -9,7 +10,7 @@ export class Queue extends QueueMethods {
   protected static instance: Queue;
 
   protected store: Store = {};
-  protected queue: VideoArray;
+  protected queue: string[] = [];
   protected queuepos = -1;
 
   protected containerEl: HTMLElement;
@@ -34,11 +35,10 @@ export class Queue extends QueueMethods {
 
     const q = initElement.apply(this);
 
-    this.queue = new VideoArray(this.elementsEl, this.updateText.bind(this), this.store);
-
     this.elementsEl.addEventListener('click', clickElements.bind(this));
     q.querySelector('.top').addEventListener('click', clickTop.bind(this));
     window.addEventListener('popstate', popState.bind(this));
+    document.addEventListener(navigatePrefix, () => this.render());
 
     this.shareEl.querySelector('.close').addEventListener('click', () => this.shareEl.classList.add('hidden'));
     this.shareLinkEl.addEventListener('click', ev => (ev.target as HTMLInputElement).select());
