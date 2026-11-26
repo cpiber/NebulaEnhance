@@ -24,7 +24,7 @@ if (__MV3__)
 const els = Settings.get();
 const purgeField = document.querySelector('#purgeCacheField');
 const youtubePerms = '*://*.googleapis.com/*';
-const ownPermissions = [ ...manifest.permissions, ...manifest.content_scripts.flatMap(c => c.matches) ];
+const ownPermissions = [...manifest.permissions, ...manifest.content_scripts.flatMap(c => c.matches)];
 let invidiousPerms: string[] = [];
 
 // permissions for youtube comments
@@ -43,11 +43,8 @@ els.youtube.addEventListener('change', async () => {
 const rebuildInvidiousList = () => {
   const el = document.getElementById('watchnebulainv');
   if (!el) return;
-  if (invidiousPerms.length === 0) {
-    el.textContent = msg('optionsNone');
-    return;
-  }
   while (el.firstChild) el.removeChild(el.firstChild);
+  if (invidiousPerms.length === 0) return;
   for (const perm of invidiousPerms) {
     const node = document.createTextNode(perm.replace(/^\*:\/\/(?:\*\.)?(.*?)\/.*$/, '$1'));
     el.appendChild(node);
