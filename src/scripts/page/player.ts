@@ -213,7 +213,7 @@ const addPlayerControls = async (player: Player) => {
     const builtins = builtinComponents.map(collect);
     const ours = oursComponents.map(collect);
     for (let i = 0; i < builtinComponents.length; i++) {
-      if (builtinComponents[i] === null) throw new Error("Failed to find " + builtins[i]);
+      if (builtinComponents[i] === null) throw new Error('Failed to find ' + builtins[i]);
     }
     for (let i = 0; i < oursComponents.length; i++) {
       if (ours[i] !== null) continue;
