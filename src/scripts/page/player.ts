@@ -84,7 +84,6 @@ export const init = async () => {
 
 let initLock = false;
 const initPlayer = async () => {
-  console.log("HEREEEEE", initLock);
   if (initLock) return;
   initLock = true;
 
@@ -108,11 +107,21 @@ const initPlayer = async () => {
 
     const { autoplay, autoplayQueue } = options;
     console.debug('autoplay?', autoplay, 'autoplayQueue?', autoplayQueue);
+    await waitForPlayerControls(player);
+    while (playerControlLock) {
+      console.dev.debug('playerControlLock is held, waiting');
+      await new Promise(resolve => setTimeout(resolve, 10)); // ensure addPlayerControls will run
+    }
     await addPlayerControls(player);
 
     const { canNext, canPrev, length: queueLen } = await sendMessage(Message.GET_QSTATUS);
     console.debug('canGoNext?', canNext, 'canGoPrev?', canPrev, 'queueLen:', queueLen);
-    updatePlayerControls(player, canNext, canPrev);
+    try {
+      updatePlayerControls(player, canNext, canPrev);
+    } catch (e) {
+      console.warn('failed to set player controls:', e);
+      setTimeout(() => updatePlayerControls(player, canNext, canPrev), 100);
+    }
     player.autoplay = autoplay || (autoplayQueue && !!queueLen);
     try {
       if (player.autoplay) await player.play();
@@ -185,7 +194,6 @@ const addPlayerControls = async (player: Player) => {
   if (playerControlLock) return;
   playerControlLock = true;
   try {
-    await waitForPlayerControls(player);
     console.dev.log('Adding controls to player', player);
 
     const controls = document.querySelectorAll('#video-controls > :not(:first-child, .enhancer-tooltip) > :first-child, #video-controls > :not(:first-child, .enhancer-tooltip) > :nth-child(2)');
